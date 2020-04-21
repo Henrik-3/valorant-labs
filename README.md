@@ -12,3 +12,6 @@ Features:
 - Website [later, if the Bot is growing, hopefully :D]
 
 This is my first Bot, so don't be upset if Updates takes longer than expected. If you have ideas what i could at to the Bot, write me an DM per Discord Henrik3#1451
+
+
+Invite Link: https://discordapp.com/oauth2/authorize?client_id=702201518329430117&scope=bot&permissions=8
