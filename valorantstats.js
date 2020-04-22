@@ -30,15 +30,20 @@ client.on("message", async message => {
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
-    const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%201_20.png?v=1587552437775"); //load background from url
+    const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%2010.png?v=1587586582984"); //load background from url
     ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
     
+    //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color')
+    ctx.text = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.font = size + 'px product_sans';
+    ctx.fillStyle = color
+    ctx.textAlign = textAlign
+    ctx.fillText(content, x, y)
+  }
   
     //Text WIP
-    ctx.font = "240px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center"
-    ctx.fillText("Work in Progress !!!", canvasstats.width / 2, canvasstats.height / 2)
+    ctx.text('Work in Progress...', 240, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
 /*    //no arg for GET
     if (!args.length) {
@@ -92,10 +97,18 @@ client.on("message", async message => {
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
-    const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%201_20.png?v=1587552437775"); //load background from url
+    const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%2010.png?v=1587586582984"); //load background from url
     ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
-
+    //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color')
+    ctx.text = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.font = size + 'px product_sans';
+    ctx.fillStyle = color
+    ctx.textAlign = textAlign
+    ctx.fillText(content, x, y)
+  }
+  
     //Text Help Overwiew
     ctx.font = "240px product_sans";
     ctx.fillStyle = "#ffffff";
@@ -171,8 +184,17 @@ client.on("message", async message => {
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
-    const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%201_20.png?v=1587552437775"); //load background from url
+    const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%2010.png?v=1587586582984"); //load background from url
     ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+  
+    //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color')
+    ctx.text = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.font = size + 'px product_sans';
+    ctx.fillStyle = color
+    ctx.textAlign = textAlign
+    ctx.fillText(content, x, y)
+  }
   
     //Text WIP
     ctx.font = "240px product_sans";
@@ -205,5 +227,9 @@ client.on("message", async message => {
 })
 
 
-client.login("[BOT TOKEN HERE]")
+client.login("NzAyMjAxNTE4MzI5NDMwMTE3.Xp9AbA.4gU-Jn4kc4AJRWTHRSMbol3-7xU")
 
+// Always Active
+require("express")()
+  .use((_, r) => r.send("Ok"))
+  .listen(3000);
