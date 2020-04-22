@@ -227,4 +227,9 @@ client.on("message", async message => {
 })
 
 
-client.login("BOT TOKEN HERE")
+client.login("NzAyMjAxNTE4MzI5NDMwMTE3.XqCrNQ.JZ-BkpTd95G1HsFTuBlYuH1mGtg")
+
+// Always Active
+require("express")()
+  .use((_, r) => r.send("Ok"))
+  .listen(3000);
