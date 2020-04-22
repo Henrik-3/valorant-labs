@@ -22,7 +22,7 @@ client.on('message', async message => {
     ctx.fillText('Work in Progress !!!', canvasstats.width / 4.5 , 1400)
 
     
-    const attachment = new Discord.Attachment(canvasstats.toBuffer(), 'test.png')
+    const attachment = new Discord.Attachment(canvasstats.toBuffer(), 'valorant-stats.png')
     message.channel.send(attachment)
   }
 })
