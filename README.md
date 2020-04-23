@@ -7,7 +7,7 @@
 
 - v!stats [USERNAME] - This will give you back the stats of an Player, packed in an image [soon, when API is available]
 
-- v!weapons [WEAPONNAME] - This will give you stats for a specific weapon [WIP]
+- v!weapons [WEAPONNAME] - This will give you stats for a specific weapon [WIP] -> Beta Command is v!weapon2 [WEAPONNAME]
 
 ***Features:***
 
