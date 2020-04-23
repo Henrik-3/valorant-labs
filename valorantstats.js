@@ -19,7 +19,7 @@ client.on("ready", async () => {
 
 // Commands laden
 let Commands = {};
-['help', 'weapon', 'stats', 'weapon2'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
+['help', 'weapon', 'stats'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('message', message => {
   // Command und Arguments checken
