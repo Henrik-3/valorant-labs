@@ -6,6 +6,7 @@ const client = new Discord.Client();
 const querystring = require("querystring");
 const prefix = 'v!'
 const fetch = require("node-fetch")
+const DBL = require("dblapi.js");
 
 // Schriftart runterladen ( Nur einmal nötig )
 // require('download')('https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf/product_sans.ttf', './')
@@ -18,7 +19,6 @@ client.on("ready", async () => {
   console.log("Ready");
   client.user.setActivity("v!help");
 });
-
 
 //CODE STATS
 client.on("message", async message => {
@@ -34,7 +34,7 @@ client.on("message", async message => {
     ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
     
     //function for easier text 
-    //Base: ctx.text('Text', Size, X, Y, '#Color')
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
     ctx.text = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
     ctx.font = size + 'px product_sans';
     ctx.fillStyle = color
@@ -64,10 +64,7 @@ client.on("message", async message => {
 */    
   
    //Text DC Tag/ID:
-    ctx.font = "110px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText(message.member.user.tag, 250, 160)
+    ctx.text(message.member.user.tag, 110, 250, 160)
     
     //Avatar
     const ctx_v = canvasstats.getContext('2d') //text preparation
@@ -101,7 +98,7 @@ client.on("message", async message => {
     ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
     //function for easier text 
-    //Base: ctx.text('Text', Size, X, Y, '#Color')
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
     ctx.text = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
     ctx.font = size + 'px product_sans';
     ctx.fillStyle = color
@@ -110,52 +107,28 @@ client.on("message", async message => {
   }
   
     //Text Help Overwiew
-    ctx.font = "240px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center"
-    ctx.fillText("Help Overview", canvasstats.width / 2, 350)
+    ctx.text('Help Overview', 240, canvasstats.width / 2, 350, '#ffffff', 'center')
   
     //Text Commands:
-    ctx.font = "180px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText("Commands:", 140, 650)
+    ctx.text('Commands:', 180, 140, 650)
   
-    //Text Help Command  
-    ctx.font = "110px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText("- v!help - Shows the help message", 140, 850)
+    //Text Help Command 
+    ctx.text('- v!help - Shows the help message', 110, 140 , 850)
   
     //Text Stats Command
-    ctx.font = "110px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText("- v!stats [RIOT NAME] - Shows the stats of the requested user", 140, 1050)
+    ctx.text('- v!stats [RIOT NAME] - Shows the stats of the requested user', 110, 140 , 1050)
   
     //Text Work in progress:
-    ctx.font = "180px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText("WIP:", 140, 1350)
+    ctx.text('WIP:', 180, 140 , 1350)
   
     //Text Weapon Command:
-    ctx.font = "110px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText("- v!weapon [WEAPON NAME] - Get image and stats for requested weapon", 140, 1550)
+    ctx.text('- v!weapon [WEAPON NAME] - Get image and stats for requested weapon', 110, 140 , 1550)
   
     //Text Autonews:
-    ctx.font = "110px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText("- Autonews", 140, 1750)
+    ctx.text('- Autonews', 110, 140 , 1750)
   
     //Text DC Tag/ID:
-    ctx.font = "110px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText(message.member.user.tag, 250, 160)
+    ctx.text(message.member.user.tag, 110, 250, 160)
   
     //Avatar
     // Pick up the pen
@@ -188,7 +161,7 @@ client.on("message", async message => {
     ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
     //function for easier text 
-    //Base: ctx.text('Text', Size, X, Y, '#Color')
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
     ctx.text = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
     ctx.font = size + 'px product_sans';
     ctx.fillStyle = color
@@ -197,17 +170,10 @@ client.on("message", async message => {
   }
   
     //Text WIP
-    ctx.font = "240px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center"
-    ctx.fillText("Work in Progress !!!", canvasstats.width / 2, canvasstats.height / 2)
-
+    ctx.text('Work in Progress...', 240, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
   
     //Text DC Tag/ID:
-    ctx.font = "110px product_sans";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left"
-    ctx.fillText(message.member.user.tag, 250, 160)
+    ctx.text(message.member.user.tag, 110, 250, 160)
   
     //Avatar
     // Pick up the pen
@@ -225,6 +191,3 @@ client.on("message", async message => {
     const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-weapon.png" ); //final result
     message.channel.send(attachment); //send final result
 })
-
-
-client.login("BOT TOKEN HERE")
