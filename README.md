@@ -3,11 +3,11 @@
 
 ***Commands:***
 
-v!help - Shows all commands
+- v!help - Shows all commands
 
-v!stats [USERNAME] - This will give you back the stats of an Player, packed in an image [soon, when API is available]
+- v!stats [USERNAME] - This will give you back the stats of an Player, packed in an image [soon, when API is available]
 
-v!weapons [WEAPONNAME] - This will give you stats for a specific weapon [WIP]
+- v!weapons [WEAPONNAME] - This will give you stats for a specific weapon [WIP]
 
 ***Features:***
 
