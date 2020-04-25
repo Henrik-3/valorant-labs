@@ -39,13 +39,16 @@ module.exports = async (args, client, message) => {
     ctx.text('- v!stats [RIOT NAME] - Shows the stats of the requested user', 110, 140 , 1050)
   
     //Text Work in progress:
-    ctx.text('WIP:', 180, 140 , 1350)
+    ctx.text('WIP:', 180, 140 , 1750)
   
     //Text Weapon Command:
-    ctx.text('- v!weapon [WEAPON NAME] - Get image and stats for requested weapon', 110, 140 , 1550)
+    ctx.text('- v!weapon [WEAPON NAME] - Get image and stats for requested weapon', 110, 140 , 1250)
+  
+    //Text Ranked Command:
+    ctx.text('- v!ranked - Get overview over the ranks in the upcoming ranked mode', 110, 140 , 1450)
   
     //Text Autonews:
-    ctx.text('- Autonews', 110, 140 , 1750)
+    ctx.text('- Autonews', 110, 140 , 1950)
   
     //Text DC Tag/ID:
     ctx.text(message.member.user.tag, 80, 245, 150)
