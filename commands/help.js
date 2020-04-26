@@ -1,16 +1,7 @@
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
-const Canvas = require("canvas");
-const querystring = require("querystring");
 const prefix = 'v!'
-const fetch = require("node-fetch")
-const fs = require('fs')
 
-// Required for Attachment
-const Discord = require('discord.js')
-
-Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
-
-module.exports = async (args, client, message) => {
+module.exports = async (args, client, message, { Canvas, Discord }) => {
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -26,29 +17,39 @@ module.exports = async (args, client, message) => {
     ctx.fillText(content, x, y)
   }
   
+    const db = require("quick.db")
+    const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
+    
+    
     //Text Help Overwiew
-    ctx.text('Help Overview', 240, canvasstats.width / 2, 350, '#ffffff', 'center')
+    ctx.text('Help Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
   
     //Text Commands:
-    ctx.text('Commands:', 180, 140, 650)
+    ctx.text('Commands:', 140, 140, 450)
   
     //Text Help Command 
-    ctx.text('- v!help - Shows the help message', 110, 140 , 850)
+    ctx.text('- ' + prefix + 'help - Shows the help message', 110, 140 , 650)
   
     //Text Stats Command
-    ctx.text('- v!stats [RIOT NAME] - Shows the stats of the requested user', 110, 140 , 1050)
+    ctx.text('- ' + prefix + 'stats [RIOT NAME] - Shows the stats of the requested user', 110, 140 , 850)
   
     //Text Work in progress:
-    ctx.text('WIP:', 180, 140 , 1750)
+    ctx.text('WIP:', 180, 140 , 2025, '#3f888f')
   
     //Text Weapon Command:
-    ctx.text('- v!weapon [WEAPON NAME] - Get image and stats for requested weapon', 110, 140 , 1250)
+    ctx.text('- ' + prefix + 'weapon [WEAPON NAME] - Get image and stats for requested weapon', 110, 140 , 1050)
   
     //Text Ranked Command:
-    ctx.text('- v!ranked - Get overview over the ranks in the upcoming ranked mode', 110, 140 , 1450)
+    ctx.text('- ' + prefix + 'ranked - Get overview over the ranks in the upcoming ranked mode', 110, 140 , 1250)
+  
+    //text settings command:
+    ctx.text('- ' + prefix + 'settings - Get overview over the settings', 110, 140, 1450)
+  
+     //text prefix command:
+    ctx.text('- ' + prefix + 'settings prefix [NEW PREFIX]- Set new prefix', 110, 140, 1650)
   
     //Text Autonews:
-    ctx.text('- Autonews', 110, 140 , 1950)
+    ctx.text('- Autonews', 110, 550 , 2025)
   
     //Text DC Tag/ID:
     ctx.text(message.member.user.tag, 80, 245, 150)
