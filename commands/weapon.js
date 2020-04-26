@@ -1,9 +1,9 @@
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 const Canvas = require("canvas");
 const querystring = require("querystring");
-const prefix = 'v!'
-const fetch = require("node-fetch")
 const fs = require('fs')
+const data = require("../server.js")
+
 
 // Required for Attachment
 const Discord = require('discord.js')
@@ -266,7 +266,7 @@ module.exports = async (args, client, message) => {
   const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%2010.png?v=1587586582984"); //load background from url
   ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
-  if (message.content.toLowerCase().startsWith('v!weapon ')) {
+ // if (message.content.toLowerCase().startsWith('v!weapon ')) {
     // Cut start to get the name
     const name = message.content.toLowerCase().substr(9)
     // lookup data for weapon
@@ -297,7 +297,68 @@ module.exports = async (args, client, message) => {
       ctx.text(weapon.penetration, 110, 2525, 1850, weapon.penetration == 'Low' ? '#ff0000' : weapon.penetration == 'Medium' ? '#FFFF00' : weapon.penetration == 'High' ? '#008000' : '#ffffff')
     } else {
       //No info for this Weapon
-      ctx.text('This weapon does not exist, check your input', 180, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text('Weapon Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text("Sidearm:", 120, 200, 400, '#3f888f')
+      ctx.text("Classic - 0", 100, 200, 600)
+      ctx.text("Shorty - 200", 100, 200, 900)
+      ctx.text("Frenzy - 400", 100, 200, 1200)
+      ctx.text("Ghost - 500", 100, 200, 1500)
+      ctx.text("Sheriff - 800", 100, 200, 1800)
+      
+      ctx.text("SMG:", 120, 950, 400, '#3f888f')
+      ctx.text("Stinger - 1000", 100, 950, 600)
+      ctx.text("Spectre - 1600", 100, 950, 900)
+      ctx.text("Shotgun:", 120, 950, 1200, '#3f888f')
+      ctx.text("Bucky - 900", 100, 950, 1500)
+      ctx.text("Judge - 1500", 100, 950, 1800)
+      
+      ctx.text("Rifle:", 120, 1800, 400, '#3f888f')
+      ctx.text("Bulldog - 2100", 100, 1800, 600)
+      ctx.text("Guardian - 2700", 100, 1800, 900)
+      ctx.text("Phantom - 2900", 100, 1800, 1200)
+      ctx.text("Vandal - 2900", 100, 1800, 1500)
+      
+      ctx.text("Sniper:", 120, 2700, 400, '#3f888f')
+      ctx.text("Marshall - 1100", 100, 2700, 600)
+      ctx.text("Operator - 4500", 100, 2700, 900)
+      ctx.text("LMG:", 120, 2700, 1200, '#3f888f')
+      ctx.text("Ares - 1700", 100, 2700, 1500)
+      ctx.text("Odin - 3200", 100, 2700, 1800)
+      
+      ctx.beginPath()
+      ctx.moveTo(850, 300)
+      ctx.lineTo(850, 1900);
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      
+      ctx.beginPath()
+      ctx.moveTo(1700, 300)
+      ctx.lineTo(1700, 1900);
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      
+      ctx.beginPath()
+      ctx.moveTo(2600, 300)
+      ctx.lineTo(2600, 1900);
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      
+      ctx.beginPath()
+      ctx.moveTo(900, 1025)
+      ctx.lineTo(1650, 1025);
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      
+      ctx.beginPath()
+      ctx.moveTo(2650, 1025)
+      ctx.lineTo(3500, 1025);
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 5;
+      ctx.stroke();
     }
   
       //Text DC Tag/ID:
@@ -319,4 +380,4 @@ module.exports = async (args, client, message) => {
       const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-weapon.png" ); //final result
       message.channel.send(attachment); //send final result
   }
-}
+//}
