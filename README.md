@@ -1,4 +1,4 @@
-**VALORANT- Discord Bot**
+**VALORANT LAB**
 
 ***Commands:***
 
