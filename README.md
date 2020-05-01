@@ -25,8 +25,8 @@
 - v?patch - Shows the important changes of the latest patch [READY]
 
 
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help%20github.png?v=1588085034778" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2%20github.png?v=1588085035109" alt="VALORANT LABS HELP 2">
+ <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help-redesign.png?v=1588366362514" alt="VALORANT LABS HELP 1">
+ <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2-redesign.png?v=1588366362363" alt="VALORANT LABS HELP 2">
  
  
 ***Features:***
