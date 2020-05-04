@@ -10,7 +10,7 @@
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
-- v?weapon - Get overview over all available weapons [READY]
+- v?weapons - Get overview over all available weapons [READY]
 
 - v?ranked - Get overview over the ranks in the upcoming ranked mode [READY]
 
@@ -20,9 +20,15 @@
 
 - v?map [MAP NAME] - Shows Map details for an specific Map [READY]
 
-- v?map - Shows an overview for all Maps [READY]
+- v?maps - Shows an overview for all Maps [READY]
 
 - v?patch - Shows the important changes of the latest patch [READY]
+
+- v?agents [AGENT NAME] - Shows Agent details for an specific Agent [READY]
+
+- v?botinfo - Get information about the bot [READY]
+
+- v?vote - Get the Vote Link [WIP]
 
 
  <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-overview-1.png?v=1588435702807" alt="VALORANT LABS HELP 1">
@@ -32,8 +38,6 @@
 ***Features:***
 
 - Auto News [WIP]
-
-- v?agents [AGENT NAME] - Shows Agent details for an specific Agent [WIP]
 
 - Website: https://valorant-labs.glitch.me/
 
