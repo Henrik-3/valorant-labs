@@ -1,1 +1,50 @@
+**VALORANT LABS** | **Discord Verified** | **All Data based on v0.50 Patch**
 
+[INVITE THE BOT HERE](https://top.gg/bot/702201518329430117)
+
+***Commands:***
+
+- v?help - Shows the help message [READY]
+
+- v?stats [NAME] [TAG] - Shows the stats of the requested user (Note: TAG without #) (Note: Valorant is still in Beta so stats might be missing or inaccurate.) [READY]
+
+- v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
+
+- v?weapons - Get overview over all available weapons [READY]
+
+- v?ranked - Get overview over the ranks in the upcoming ranked mode [READY]
+
+- v?settings - Get overview over the settings [READY]
+
+- v?settings prefix [NEW PREFIX] - Set new prefix [READY]
+
+- v?map [MAP NAME] - Shows Map details for an specific Map [READY]
+
+- v?maps - Shows an overview for all Maps [READY]
+
+- v?patch - Shows the latest Patch [READY]
+
+- v?agents [AGENT NAME] - Shows Agent details for an specific Agent [READY]
+
+- v?botinfo - Get information about the bot [READY]
+
+- v?vote - Get the Vote Link [READY]
+
+
+ <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-overview-1.png?v=1588435702807" alt="VALORANT LABS HELP 1">
+ <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2.png?v=1589306349061" alt="VALORANT LABS HELP 2">
+ 
+ 
+***Features:***
+
+- Auto News [WIP]
+
+- Website: https://valorant-labs.glitch.me/
+
+- Compare Stats between players [later]
+
+- Party Option to find mates [later]
+
+If you have any suggestions, write me a DM per Discord: Henrik3#1451
+
+VALORANT LABS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
