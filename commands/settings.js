@@ -1,7 +1,6 @@
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
-
 // Database
-const db = require("quick.db")
+const db = require('../db.js')
 const Default = {
   prefix: 'v?',
   news: false
@@ -16,6 +15,8 @@ function read(id) {
 function write(id, value) {
   db.set(id, value)
 }
+
+
 
 // Nutzer Funktionen
 // Macht ein Embed aus den Einstellungen
@@ -72,6 +73,8 @@ function set(message, key, value) {
     message.channel.send(`Can not find Category \`${key}\`.`)
   }
 }
+
+
 
 module.exports = (args, client, message) => {
   if (args[0]) {
