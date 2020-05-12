@@ -1,4 +1,4 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v0.50 Patch** test
+**VALORANT LABS** | **Discord Verified** | **All Data based on v0.50 Patch**
 
 [INVITE THE BOT HERE](https://top.gg/bot/702201518329430117)
 
