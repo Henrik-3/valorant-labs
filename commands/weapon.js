@@ -8,6 +8,8 @@ const data = require("../server.js")
 // Required for Attachment
 const Discord = require('discord.js')
 
+const db = require('../db.js')
+
 
 Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
 
@@ -27,7 +29,9 @@ module.exports = async (args, client, message) => {
       magsize: '12',
       firerate: '6,75',
       penetration: 'Low',
-      description: 'Classic'
+      description: 'Classic',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/classic/classic-model.png',
+      imagesize: '147x113'
     },
     shorty: {
       type: 'Sidearm - Shotgun',
@@ -40,7 +44,9 @@ module.exports = async (args, client, message) => {
       magsize: '2',
       firerate: '3,3',
       penetration: 'Low',
-      description: 'Shorty'
+      description: 'Shorty',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/shorty/shorty-model.png',
+      imagesize: '155x50'
     },
     frenzy: {
       type: 'Sidearm - SMG',
@@ -53,7 +59,9 @@ module.exports = async (args, client, message) => {
       magsize: '13',
       firerate: '10',
       penetration: 'Low',
-      description: 'Frenzy'
+      description: 'Frenzy',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/frenzy/frenzy-model.png',
+      imagesize: '127x97'
     },
     ghost: {
       type: 'Sidearm - Pistol',
@@ -66,7 +74,9 @@ module.exports = async (args, client, message) => {
       magsize: '15',
       firerate: '6,75',
       penetration: 'Medium',
-      description: 'Ghost'
+      description: 'Ghost',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/ghost/ghost-model.png',
+      imagesize: '109x60'
     },
     sheriff: {
       type: 'Sidearm - Pistol',
@@ -79,7 +89,9 @@ module.exports = async (args, client, message) => {
       magsize: '6',
       firerate: '4',
       penetration: 'High',
-      description: 'Sheriff'
+      description: 'Sheriff',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/sheriff/sheriff-model.png',
+      imagesize: '125x67'
     },
     stinger: {
       type: 'SMG',
@@ -92,7 +104,9 @@ module.exports = async (args, client, message) => {
       magsize: '20',
       firerate: '18',
       penetration: 'Low',
-      description: 'Stinger'
+      description: 'Stinger',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/stinger/stinger-model.png',
+      imagesize: '231x95'
     },
     spectre: {
       type: 'SMG',
@@ -105,7 +119,9 @@ module.exports = async (args, client, message) => {
       magsize: '30',
       firerate: '15.33',
       penetration: 'Medium',
-      description: 'Spectre'
+      description: 'Spectre',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/spectre/spectre-model.png',
+      imagesize: '232x86'
     },
     bucky: {
       type: 'Shotgun',
@@ -118,7 +134,9 @@ module.exports = async (args, client, message) => {
       magsize: '8',
       firerate: '1.1',
       penetration: 'Low',
-      description: 'Bucky'
+      description: 'Bucky',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/bucky/bucky-model.png',
+      imagesize: '230x43'
     },
     judge: {
       type: 'Shotgun',
@@ -131,7 +149,9 @@ module.exports = async (args, client, message) => {
       magsize: '7',
       firerate: '1.5',
       penetration: 'Medium',
-      description: 'Judge'
+      description: 'Judge',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/judge/judge-model.png',
+      imagesize: '231x72'
     },
     bulldog: {
       type: 'Rifle',
@@ -144,7 +164,9 @@ module.exports = async (args, client, message) => {
       magsize: '24',
       firerate: '9.15',
       penetration: 'Medium',
-      description: 'Bulldog'
+      description: 'Bulldog',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/bulldog/bulldog-model.png',
+      imagesize: '222x70'
     },
     guardian: {
       type: 'Rifle',
@@ -157,7 +179,9 @@ module.exports = async (args, client, message) => {
       magsize: '12',
       firerate: '8.5',
       penetration: 'Medium',
-      description: 'Guardian'
+      description: 'Guardian',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/guardian/guardian-model.png',
+      imagesize: '231x52'
     },
     phantom: {
       type: 'Rifle',
@@ -170,7 +194,9 @@ module.exports = async (args, client, message) => {
       magsize: '30',
       firerate: '11',
       penetration: 'Medium',
-      description: 'Phantom'
+      description: 'Phantom',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/phantom/phantom-model.png',
+      imagesize: '298x94'
     },
     vandal: {
       type: 'Rifle',
@@ -183,7 +209,9 @@ module.exports = async (args, client, message) => {
       magsize: '25',
       firerate: '9.25',
       penetration: 'Medium',
-      description: 'Vandal'
+      description: 'Vandal',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/vandal/vandal-model.png',
+      imagesize: '231x76'
     },
     marshal: {
       type: 'Sniper',
@@ -196,7 +224,9 @@ module.exports = async (args, client, message) => {
       magsize: '5',
       firerate: '1.5',
       penetration: 'Medium',
-      description: 'Marshal'
+      description: 'Marshal',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/marshal/marshal-model.png',
+      imagesize: '231x40'
     },
     operator: {
       type: 'Sniper',
@@ -209,11 +239,13 @@ module.exports = async (args, client, message) => {
       magsize: '5',
       firerate: '0.75',
       penetration: 'High',
-      description: 'Operator'
+      description: 'Operator',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/operator/operator-model.png',
+      imagesize: '231x46'
     },
     ares: {
       type: 'LMG',
-      cost: '1700',
+      cost: '1600',
       firemode: 'Full Auto',
       head: '72',
       body: '30',
@@ -222,7 +254,9 @@ module.exports = async (args, client, message) => {
       magsize: '50',
       firerate: '13',
       penetration: 'High',
-      description: 'Ares'
+      description: 'Ares',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/ares/ares-model.png',
+      imagesize: '231x47'
     },
     odin: {
       type: 'LMG',
@@ -235,7 +269,9 @@ module.exports = async (args, client, message) => {
       magsize: '100',
       firerate: '15.6',
       penetration: 'High',
-      description: 'Odin'
+      description: 'Odin',
+      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/odin/odin-model.png',
+      imagesize: '231x65'
     },
     knife: {
       type: 'Knife',
@@ -263,106 +299,187 @@ module.exports = async (args, client, message) => {
     ctx.textAlign = textAlign
     ctx.fillText(content, x, y)
   }
-  const background = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FKomp%2010.png?v=1587586582984"); //load background from url
+  
+    //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
+    ctx.text2 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.font = size + 'px valorant_font';
+    ctx.fillStyle = color
+    ctx.textAlign = textAlign
+    ctx.fillText(content, x, y)
+    }
+  
+  const background = await Canvas.loadImage("https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2FUnbenannt-1%20(2).png?v=1588341225969"); //load background from url
   ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
  // if (message.content.toLowerCase().startsWith('v!weapon ')) {
+    const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
     // Cut start to get the name
-    const name = message.content.toLowerCase().substr(9)
+    const name = message.content.toLowerCase().substr(prefix.length + 7)
     // lookup data for weapon
     const weapon = Weapons[name]
     //check if weapon exist
     if (weapon) {
-      ctx.text('STATS: ' + weapon.description, 240, canvasstats.width / 2, 320, '#ffffff', 'center')
-      ctx.text('Type: ', 110, 140, 650, '#3f888f')
-      ctx.text(weapon.type, 110, 415, 650)
-      ctx.text('Cost: ', 110, 140, 950, '#3f888f')
-      ctx.text(weapon.cost, 110, 415, 950)
-      ctx.text('Firemode:  ', 110, 140, 1250, '#3f888f')
-      ctx.text(weapon.firemode, 110, 645, 1250)
-      ctx.text('Range: ', 110, 140, 1550, '#3f888f')
-      ctx.text(weapon.range, 110, 490, 1550)
-      ctx.text('Magsize: ', 110, 140, 1850, '#3f888f')
-      ctx.text(weapon.magsize, 110, 590, 1850)
+      ctx.text2('STATS: ' + weapon.description, 220, canvasstats.width / 2, 235, '#ffffff', 'center')
+      ctx.text('Type: ', 110, 140, 550, '#3f888f')
+      ctx.text(weapon.type, 110, 415, 550)
+      ctx.text('Cost: ', 110, 140, 850, '#3f888f')
+      ctx.text(weapon.cost, 110, 415, 850)
+      ctx.text('Firemode:  ', 110, 140, 1150, '#3f888f')
+      ctx.text(weapon.firemode, 110, 645, 1150)
+      ctx.text('Range: ', 110, 140, 1450, '#3f888f')
+      ctx.text(weapon.range, 110, 490, 1450)
+      ctx.text('Magsize: ', 110, 140, 1750, '#3f888f')
+      ctx.text(weapon.magsize, 110, 590, 1750)
       
-      ctx.text('Head: ', 110, 1920, 650, '#3f888f')
-      ctx.text(weapon.head, 110, 2225, 650)
-      ctx.text('Body: ', 110, 1920, 950, '#3f888f')
-      ctx.text(weapon.body, 110, 2225, 950)
-      ctx.text('Leg: ', 110, 1920, 1250, '#3f888f')
-      ctx.text(weapon.leg, 110, 2150, 1250)
-      ctx.text('Firerate: ', 110, 1920, 1550, '#3f888f')
-      ctx.text(weapon.firerate, 110, 2350, 1550)
-      ctx.text('Penetration: ', 110, 1920, 1850, '#3f888f')
-      ctx.text(weapon.penetration, 110, 2525, 1850, weapon.penetration == 'Low' ? '#ff0000' : weapon.penetration == 'Medium' ? '#FFFF00' : weapon.penetration == 'High' ? '#008000' : '#ffffff')
+      ctx.text('Head: ', 110, 1620, 550, '#3f888f')
+      ctx.text(weapon.head, 110, 1925, 550)
+      ctx.text('Body: ', 110, 1620, 850, '#3f888f')
+      ctx.text(weapon.body, 110, 1925, 850)
+      ctx.text('Leg: ', 110, 1620, 1150, '#3f888f')
+      ctx.text(weapon.leg, 110, 1850, 1150)
+      ctx.text('Firerate: ', 110, 1620, 1450, '#3f888f')
+      ctx.text(weapon.firerate, 110, 2050, 1450)
+      ctx.text('Penetration: ', 110, 1620, 1750, '#3f888f')
+      ctx.text(weapon.penetration, 110, 2225, 1750, weapon.penetration == 'Low' ? '#ff0000' : weapon.penetration == 'Medium' ? '#FFFF00' : weapon.penetration == 'High' ? '#008000' : '#ffffff')
+      
+      if(weapon.imagesize == '147x113') { //Classic
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 900, 588, 452); // displays mapap
+      }
+      if(weapon.imagesize == '155x50') { //Shorty
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 950, 620, 200); // displays mapap
+      }
+      if(weapon.imagesize == '127x97') { //Frenzy
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 850, 635, 582); // displays mapap
+      }
+      if(weapon.imagesize == '109x60') { //Ghost
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 850, 654, 360); // displays mapap
+      }
+      if(weapon.imagesize == '125x67') { //Sheriff
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 900, 625, 335); // displays mapap
+      }
+      if(weapon.imagesize == '231x95') { //Stinger
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 380); // displays mapap
+      }
+      if(weapon.imagesize == '232x86') { //Spectre
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 928, 344); // displays mapap
+      }
+      if(weapon.imagesize == '230x43') { //Bucky
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 920, 172); // displays mapap
+      }
+      if(weapon.imagesize == '231x72') { //Judge
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 288); // displays mapap
+      }
+      if(weapon.imagesize == '222x70') { //Bulldog
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 999, 315); // displays mapap
+      }
+      if(weapon.imagesize == '231x52') { //Guardian
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 208); // displays mapap
+      }
+      if(weapon.imagesize == '298x94') { //Phantom
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 1043, 329); // displays mapap
+      }
+      if(weapon.imagesize == '231x76') { //Vandal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 304); // displays mapap
+      }
+      if(weapon.imagesize == '231x40') { //Marshal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 160); // displays mapap
+      }
+      if(weapon.imagesize == '231x46') { //Operator
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 1000, 924, 184); // displays mapap
+      }
+      if(weapon.imagesize == '231x47') { //Vandal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 1000, 924, 188); // displays mapap
+      }
+      if(weapon.imagesize == '231x65') { //Vandal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 950, 924, 260); // displays mapap
+      }
+      
     } else {
       //No info for this Weapon
-      ctx.text('Weapon Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text("Sidearm:", 120, 200, 400, '#3f888f')
-      ctx.text("Classic - 0", 100, 200, 600)
-      ctx.text("Shorty - 200", 100, 200, 900)
-      ctx.text("Frenzy - 400", 100, 200, 1200)
-      ctx.text("Ghost - 500", 100, 200, 1500)
-      ctx.text("Sheriff - 800", 100, 200, 1800)
+      ctx.text2('Weapon Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text2("Sidearm:", 120, 480, 425, '#3f888f', 'center')
+      ctx.text("Classic - 0", 100, 480, 600, '#ffffff','center')
+      ctx.text("Shorty - 200", 100, 480, 900, '#ffffff', 'center')
+      ctx.text("Frenzy - 400", 100, 480, 1200, '#ffffff', 'center')
+      ctx.text("Ghost - 500", 100, 480, 1500, '#ffffff', 'center')
+      ctx.text("Sheriff - 800", 100, 480, 1800, '#ffffff', 'center')
       
-      ctx.text("SMG:", 120, 950, 400, '#3f888f')
-      ctx.text("Stinger - 1000", 100, 950, 600)
-      ctx.text("Spectre - 1600", 100, 950, 900)
-      ctx.text("Shotgun:", 120, 950, 1200, '#3f888f')
-      ctx.text("Bucky - 900", 100, 950, 1500)
-      ctx.text("Judge - 1500", 100, 950, 1800)
+      ctx.text2("SMG:", 120, 1440, 425, '#3f888f', 'center')
+      ctx.text("Stinger - 1000", 100, 1440, 600, '#ffffff', 'center')
+      ctx.text("Spectre - 1600", 100, 1440, 900, '#ffffff', 'center')
+      ctx.text2("Shotgun:", 120, 1440, 1200, '#3f888f', 'center')
+      ctx.text("Bucky - 900", 100, 1440, 1500, '#ffffff', 'center')
+      ctx.text("Judge - 1500", 100, 1440, 1800, '#ffffff', 'center')
       
-      ctx.text("Rifle:", 120, 1800, 400, '#3f888f')
-      ctx.text("Bulldog - 2100", 100, 1800, 600)
-      ctx.text("Guardian - 2700", 100, 1800, 900)
-      ctx.text("Phantom - 2900", 100, 1800, 1200)
-      ctx.text("Vandal - 2900", 100, 1800, 1500)
+      ctx.text2("Rifle:", 120, 2400, 425, '#3f888f','center')
+      ctx.text("Bulldog - 2100", 100, 2400, 600, '#ffffff', 'center')
+      ctx.text("Guardian - 2700", 100, 2400, 1000, '#ffffff', 'center')
+      ctx.text("Phantom - 2900", 100, 2400, 1400, '#ffffff', 'center')
+      ctx.text("Vandal - 2900", 100, 2400, 1800, '#ffffff', 'center')
       
-      ctx.text("Sniper:", 120, 2700, 400, '#3f888f')
-      ctx.text("Marshall - 1100", 100, 2700, 600)
-      ctx.text("Operator - 4500", 100, 2700, 900)
-      ctx.text("LMG:", 120, 2700, 1200, '#3f888f')
-      ctx.text("Ares - 1700", 100, 2700, 1500)
-      ctx.text("Odin - 3200", 100, 2700, 1800)
+      ctx.text2("Sniper:", 120, 3360, 425, '#3f888f', 'center')
+      ctx.text("Marshall - 1100", 100, 3360, 600, '#ffffff', 'center')
+      ctx.text("Operator - 4500", 100, 3360, 900,'#ffffff', 'center')
+      ctx.text2("LMG:", 120, 3360, 1225, '#3f888f', 'center')
+      ctx.text("Ares - 1600", 100, 3360, 1500, '#ffffff', 'center')
+      ctx.text("Odin - 3200", 100, 3360, 1800, '#ffffff', 'center')
       
       ctx.beginPath()
-      ctx.moveTo(850, 300)
-      ctx.lineTo(850, 1900);
+      ctx.moveTo(960, 300)
+      ctx.lineTo(960, 1900);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(1700, 300)
-      ctx.lineTo(1700, 1900);
+      ctx.moveTo(1920, 300)
+      ctx.lineTo(1920, 1900);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(2600, 300)
-      ctx.lineTo(2600, 1900);
+      ctx.moveTo(2880, 300)
+      ctx.lineTo(2880, 1900);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(900, 1025)
-      ctx.lineTo(1650, 1025);
+      ctx.moveTo(1100, 1025)
+      ctx.lineTo(1800, 1025);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(2650, 1025)
-      ctx.lineTo(3500, 1025);
+      ctx.moveTo(2950, 1025)
+      ctx.lineTo(3650, 1025);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
     }
   
       //Text DC Tag/ID:
-      ctx.text(message.member.user.tag, 80, 245, 150)
+      ctx.text2(message.member.user.tag, 80, 245, 150)
   
       //Avatar
       // Pick up the pen
