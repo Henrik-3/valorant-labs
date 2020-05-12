@@ -1,32 +1,50 @@
-**VALORANT- Discord Bot**
+**VALORANT LABS** | **Discord Verified** | **All Data based on v0.50 Patch**
+
+[INVITE THE BOT HERE](https://top.gg/bot/702201518329430117)
 
 ***Commands:***
 
-- v?help - Shows all commands [READY]
+- v?help - Shows the help message [READY]
 
-- v?stats [USERNAME] - This will give you back the stats of an Player, packed in an image [soon, when API is available]
+- v?stats [NAME] [TAG] - Shows the stats of the requested user (Note: TAG without #) (Note: Valorant is still in Beta so stats might be missing or inaccurate.) [READY]
 
-- v?weapon [WEAPONNAME] - This will give you stats for a specific weapon [READY]
+- v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
+
+- v?weapons - Get overview over all available weapons [READY]
 
 - v?ranked - Get overview over the ranks in the upcoming ranked mode [READY]
 
-- v?settings - Get overview over the settings
+- v?settings - Get overview over the settings [READY]
 
-- v?settings prefix [NEW PREFIX] - Set new prefix
+- v?settings prefix [NEW PREFIX] - Set new prefix [READY]
 
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help%20(2).png?v=1587921773527" alt="VALORANT LAB">
+- v?map [MAP NAME] - Shows Map details for an specific Map [READY]
+
+- v?maps - Shows an overview for all Maps [READY]
+
+- v?patch - Shows the latest Patch [READY]
+
+- v?agents [AGENT NAME] - Shows Agent details for an specific Agent [READY]
+
+- v?botinfo - Get information about the bot [READY]
+
+- v?vote - Get the Vote Link [READY]
+
+
+ <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-overview-1.png?v=1588435702807" alt="VALORANT LABS HELP 1">
+ <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2.png?v=1589306349061" alt="VALORANT LABS HELP 2">
  
  
 ***Features:***
 
 - Auto News [WIP]
 
-- Website [later, if the Bot is growing, hopefully :D]
+- Website: https://valorant-labs.glitch.me/
 
-- Compare Stats between players [soon, when API is available]
+- Compare Stats between players [later]
 
 - Party Option to find mates [later]
 
-The Help command looks like this [LINK](https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help%20(1).png?v=1587921573197) or later like this [LINK](https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2Fvalorant1.png?v=1587588848858)
+If you have any suggestions, write me a DM per Discord: Henrik3#1451
 
-This is my first Bot, so don't be upset if Updates takes longer than expected. If you have ideas what i could at to the Bot, write me an DM per Discord Henrik3#1451
+VALORANT LABS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
