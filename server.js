@@ -14,27 +14,30 @@ Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
 Canvas.registerFont('valorant_font.ttf', { family: 'valorant_font'})
 
 //DBL Things
-//const DBL = require("dblapi.js");
-//const dbl = new DBL(config.dbltoken, client)
+const DBL = require("dblapi.js");
+const dbl = new DBL(config.dbltoken, client)
 
 //db
-const db = require('./db.js')
+const db = require("./db.js")
 
 // dev log
-const log = new Discord.WebhookClient('705516506557055067', '8wWaNoFx5zc_E1GXxoWnN5RufaPocxCKGtAE3D6EZxTgoBC7xoaV72VvVTQnFRoTWJNn')
+const log = new Discord.WebhookClient('HERE WEBHOOK DATA')
 
 client.on("ready", () => {
   console.log("Ready")
-  client.user.setActivity('w?help | ' + client.guilds.size + ' Servers')
+  client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
+  setInterval(() =>{ 
+    dbl.postStats(client.guilds.size)
+  }, 180000)
 })
 
 client.on('guildCreate', g => {
-  client.user.setActivity('w?help | ' + client.guilds.size + ' Servers')
+  client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
   log_(g, '+')
 })
 
 client.on('guildDelete', g => {
-  client.user.setActivity('w?help | ' + client.guilds.size + ' Servers')
+  client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
   log_(g, '-')
 })
 
@@ -59,7 +62,7 @@ async function log_(g, type) {
 
 // Commands laden
 let Commands = {};
-['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'maps', 'agent', 'botinfo', 'vote', 'newsornewz', 'party'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
+['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'maps', 'agent', 'botinfo', 'vote', 'agents'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('message', message => {
   // Command und Arguments checken
@@ -82,6 +85,7 @@ client.on('message', message => {
 
   
 client.login(config.token)
+
 
 // Always Active
 // TODO: Better Docs + Analytics
@@ -107,6 +111,20 @@ web.get('/banner.png', (req, res) => {
 web.get('/ping', (req, res) => res.send('Ok'))
 
 web.get('/article', require('./autonews/redirect.js'))
-web.get('/db', (req, res) => res.json(db.all()) && console.log(db.set))
+
+const News = require('./autonews/check.js')
+
+web.get('/check', async (req, res) => {
+  const news = await News()
+  if (news) {
+    const data = db.get('')
+    Object.keys(data).forEach(guild_id => {
+      if (data[guild_id].news) {
+        client.channels.get(data[guild_id].news).replace(/[^0-9]/g, '').send({ embed: news })
+      }
+    })
+   }
+})
+
 
 web.listen(3000)
