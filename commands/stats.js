@@ -51,7 +51,7 @@ module.exports = async (args, client, message) => {
 
     //HTTP GET VALORANT NAME
     const raw = await r({
-      url: `https://api.riotstats.com/player/profile?game=valorant&nickname=${name}&tag=${tag}`,
+      url: `API LINK`,
       json: true
     })
     
