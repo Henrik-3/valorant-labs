@@ -6,7 +6,7 @@
 
 - v?help - Shows the help message [READY]
 
-- v?stats [NAME] [TAG] - Shows the stats of the requested user (Note: TAG without #) (Note: Valorant is still in Beta so stats might be missing or inaccurate.) [READY]
+!TEMPORARY DISABLED!- v?stats [NAME] [TAG] - Shows the stats of the requested user (Note: TAG without #) (Note: Valorant is still in Beta so stats might be missing or inaccurate.) [READY]
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
