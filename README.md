@@ -6,7 +6,7 @@
 
 - v?help - Shows the help message [READY]
 
-!TEMPORARY DISABLED!- v?stats [NAME] [TAG] - Shows the stats of the requested user (Note: TAG without #) (Note: Valorant is still in Beta so stats might be missing or inaccurate.) [READY]
+- !TEMPORARY DISABLED! v?stats [NAME] [TAG] - Shows the stats of the requested user (Note: TAG without #) (Note: Valorant is still in Beta so stats might be missing or inaccurate.) [READY] 
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
@@ -18,21 +18,22 @@
 
 - v?settings prefix [NEW PREFIX] - Set new prefix [READY]
 
-- v?map [MAP NAME] - Shows Map details for an specific Map [READY]
+- v?map [MAP NAME] - Shows map details for a specific map [READY]
 
-- v?maps - Shows an overview for all Maps [READY]
+- v?maps - Shows an overview for all maps [READY]
 
 - v?patch - Shows the latest Patch [READY]
 
-- v?agents [AGENT NAME] - Shows Agent details for an specific Agent [READY]
+- v?agents [AGENT NAME] - Shows agent details for an specific agent [READY]
 
 - v?botinfo - Get information about the bot [READY]
 
 - v?vote - Get the Vote Link [READY]
 
+- v?status [EU OR NA] - Shows the server status for requested region [BETA]
 
  <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-overview-1.png?v=1588435702807" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2.png?v=1589306349061" alt="VALORANT LABS HELP 2">
+ <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2-fixed.png?v=1590141003370" alt="VALORANT LABS HELP 2">
  
  
 ***Features:***
