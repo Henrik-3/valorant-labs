@@ -62,7 +62,7 @@ async function log_(g, type) {
 
 // Commands laden
 let Commands = {};
-['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'maps', 'agent', 'botinfo', 'vote', 'agents'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
+['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'maps', 'agent', 'botinfo', 'vote', 'agents', 'status].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('message', message => {
   // Command und Arguments checken
