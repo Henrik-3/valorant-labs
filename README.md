@@ -40,7 +40,7 @@
 
 - Auto News [WIP]
 
-- Website: https://valorant-labs.glitch.me/
+- Website:
 
 - Compare Stats between players [later]
 
