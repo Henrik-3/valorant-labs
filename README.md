@@ -1,4 +1,4 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v0.50 Patch**
+**VALORANT LABS** | **Discord Verified** | **All Data based on v0.50 Patch** 
 
 If you use code from my bot, please credit it somewhere in your app/product
 
