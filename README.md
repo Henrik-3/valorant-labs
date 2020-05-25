@@ -48,6 +48,6 @@ If you use code from my bot, please credit it somewhere in your app/product
 
 - Party Option to find mates [later]
 
-If you have any suggestions, write me a DM per Discord: Henrik3#1451
+If you have any suggestions, write me a DM on Discord: Henrik3#1451
 
 VALORANT LABS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
