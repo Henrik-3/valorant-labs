@@ -30,7 +30,7 @@ module.exports = async (args, client, message) => {
       firerate: '6,75',
       penetration: 'Low',
       description: 'Classic',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/classic/classic-model.png',
+      url: 'commands/images/classic-model.png',
       imagesize: '147x113'
     },
     shorty: {
@@ -45,7 +45,7 @@ module.exports = async (args, client, message) => {
       firerate: '3,3',
       penetration: 'Low',
       description: 'Shorty',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/shorty/shorty-model.png',
+      url: 'commands/images/shorty-model.png',
       imagesize: '155x50'
     },
     frenzy: {
@@ -60,7 +60,7 @@ module.exports = async (args, client, message) => {
       firerate: '10',
       penetration: 'Low',
       description: 'Frenzy',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/frenzy/frenzy-model.png',
+      url: 'commands/images/frenzy-model.png',
       imagesize: '127x97'
     },
     ghost: {
@@ -75,7 +75,7 @@ module.exports = async (args, client, message) => {
       firerate: '6,75',
       penetration: 'Medium',
       description: 'Ghost',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/ghost/ghost-model.png',
+      url: 'commands/images/ghost-model.png',
       imagesize: '109x60'
     },
     sheriff: {
@@ -90,7 +90,7 @@ module.exports = async (args, client, message) => {
       firerate: '4',
       penetration: 'High',
       description: 'Sheriff',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/sheriff/sheriff-model.png',
+      url: 'commands/images/sheriff-model.png',
       imagesize: '125x67'
     },
     stinger: {
@@ -105,7 +105,7 @@ module.exports = async (args, client, message) => {
       firerate: '18',
       penetration: 'Low',
       description: 'Stinger',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/stinger/stinger-model.png',
+      url: 'commands/images/stinger-model.png',
       imagesize: '231x95'
     },
     spectre: {
@@ -120,7 +120,7 @@ module.exports = async (args, client, message) => {
       firerate: '15.33',
       penetration: 'Medium',
       description: 'Spectre',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/spectre/spectre-model.png',
+      url: 'commands/images/spectre-model.png',
       imagesize: '232x86'
     },
     bucky: {
@@ -135,7 +135,7 @@ module.exports = async (args, client, message) => {
       firerate: '1.1',
       penetration: 'Low',
       description: 'Bucky',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/bucky/bucky-model.png',
+      url: 'commands/images/bucky-model.png',
       imagesize: '230x43'
     },
     judge: {
@@ -150,7 +150,7 @@ module.exports = async (args, client, message) => {
       firerate: '1.5',
       penetration: 'Medium',
       description: 'Judge',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/judge/judge-model.png',
+      url: 'commands/images/judge-model.png',
       imagesize: '231x72'
     },
     bulldog: {
@@ -165,7 +165,7 @@ module.exports = async (args, client, message) => {
       firerate: '9.15',
       penetration: 'Medium',
       description: 'Bulldog',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/bulldog/bulldog-model.png',
+      url: 'commands/images/bulldog-model.png',
       imagesize: '222x70'
     },
     guardian: {
@@ -180,7 +180,7 @@ module.exports = async (args, client, message) => {
       firerate: '8.5',
       penetration: 'Medium',
       description: 'Guardian',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/guardian/guardian-model.png',
+      url: 'commands/images/guardian-model.png',
       imagesize: '231x52'
     },
     phantom: {
@@ -195,7 +195,7 @@ module.exports = async (args, client, message) => {
       firerate: '11',
       penetration: 'Medium',
       description: 'Phantom',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/phantom/phantom-model.png',
+      url: 'commands/images/phantom-model.png',
       imagesize: '298x94'
     },
     vandal: {
@@ -210,7 +210,7 @@ module.exports = async (args, client, message) => {
       firerate: '9.25',
       penetration: 'Medium',
       description: 'Vandal',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/vandal/vandal-model.png',
+      url: 'commands/images/vandal-model.png',
       imagesize: '231x76'
     },
     marshal: {
@@ -225,7 +225,7 @@ module.exports = async (args, client, message) => {
       firerate: '1.5',
       penetration: 'Medium',
       description: 'Marshal',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/marshal/marshal-model.png',
+      url: 'commands/images/marshal-model.png',
       imagesize: '231x40'
     },
     operator: {
@@ -240,7 +240,7 @@ module.exports = async (args, client, message) => {
       firerate: '0.75',
       penetration: 'High',
       description: 'Operator',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/operator/operator-model.png',
+      url: 'commands/images/operator-model.png',
       imagesize: '231x46'
     },
     ares: {
@@ -255,7 +255,7 @@ module.exports = async (args, client, message) => {
       firerate: '13',
       penetration: 'High',
       description: 'Ares',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/ares/ares-model.png',
+      url: 'commands/images/ares-model.png',
       imagesize: '231x47'
     },
     odin: {
@@ -270,7 +270,7 @@ module.exports = async (args, client, message) => {
       firerate: '15.6',
       penetration: 'High',
       description: 'Odin',
-      url: 'https://blitz-cdn.blitz.gg/blitz/val/weapons/odin/odin-model.png',
+      url: 'commands/images/odin-model.png',
       imagesize: '231x65'
     },
     knife: {
