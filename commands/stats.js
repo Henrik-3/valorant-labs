@@ -37,31 +37,36 @@ module.exports = async (args, client, message) => {
     }
   
     //Text WIP
-    //ctx.text2('Work in Progress...', 240, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+    ctx.text2('Temporary Disabled', 280, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
-  
-    const nametest = message.content.split(' ').slice(1); // All arguments behind the command name with the prefix
-    const name = nametest[0];
-    const tag = args.slice(1).join(' ');
-
-    //no arg for GET
+/*  
+    /no arg for GET
     if (!args.length) {
     return message.channel.send("You need to supply a valid name and tag");
     }
+  
+    const nametest = message.content.split(' ');// All arguments behind the command name with the prefix
+    const namefinal = nametest[1].split('#')
+    const name = namefinal[0];
+    const tag = namefinal[1];
 
     //HTTP GET VALORANT NAME
     const raw = await r({
-      url: `API LINK`,
+      url: `https://api.riotstats.com/player/profile?game=valorant&nickname=${name}&tag=${tag}`,
       json: true
     })
     
+    
     if(raw.error){
-      message.channel.send("Error, this User is not available or typed something wrong. Try again in a few hours or correct your mistake. (Note: Riot Developers removed ability to get other's user stats, so we can't update stats anymore. Only existing people in the databse can get their old stats :C )")
+      message.channel.send("Error, this User is not available or typed something wrong. Try again later or correct your mistake. ")
     }
     
+    if(raw.data.nickname = 'undefined') {
+      message.channel.send("Error, this User is not available or typed something wrong. Try again later or correct your mistake. ")
+    }
     // const [answer] = raw
     
-    ctx.text2('STATS: ' + raw.data.nickname + "#" + raw.data.tag, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
+    ctx.text2('STATS: ' + raw.data.nickname.catch(err => message.channel.send('test')) + "#" + raw.data.tag, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
     
     ctx.text2('Name: ', 100, 140, 450)
     ctx.text(raw.data.nickname + "#" + raw.data.tag, 110, 525, 450)
@@ -87,6 +92,7 @@ module.exports = async (args, client, message) => {
   
     ctx.text2('Avg. Damage per Match:', 100, 140, 1450)
     ctx.text(damagepermatch.toFixed(0), 110, 1575, 1450)
+  */
   
     ctx.text('Note: Valorant is still in Beta so stats might be missing or inaccurate.', 90, canvasstats.width / 2, 2050, '#ffffff', 'center')
     
