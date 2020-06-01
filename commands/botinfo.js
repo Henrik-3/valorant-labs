@@ -25,17 +25,19 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     }
   
     ctx.text2('Bot Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
-    ctx.text2('- Powering       Server', 120, 140, 500)
+    ctx.text2('- Powering          Server', 120, 140, 500)
     ctx.text2(client.guilds.size, 120, 975, 500, '#ff0000')
-    ctx.text2('- Created by                          and', 120, 140, 750)
-    ctx.text2('Henrik3#1451', 120, 1000, 750, '#ff0000')
-    ctx.text2('ggg#7000', 120, 2125, 750, '#ff0000')
-    ctx.text2('- Vote for us on', 120, 140, 1000)
-    ctx.text2('top.gg', 120, 1275, 1000, '#ff0000')
-    ctx.text('(v?vote)', 120, 1775, 1000)
+    ctx.text2('- Is Online for              Users', 120, 140, 750)
+    ctx.text2(client.users.size, 120, 1150, 750, '#ff0000')
+    ctx.text2('- Created by                          and', 120, 140, 1000)
+    ctx.text2('Henrik3#1451', 120, 1000, 1000, '#ff0000')
+    ctx.text2('ggg#7000', 120, 2125, 1000, '#ff0000')
+    ctx.text2('- Vote for us on', 120, 140, 1250)
+    ctx.text2('top.gg', 120, 1275, 1250, '#ff0000')
+    ctx.text('(v?vote)', 120, 1775, 1250)
   
-    ctx.text2('Last Change:', 140, 140, 1250, '#3f888f')
-    ctx.text2('- Updated all info to v0.50', 120, 140, 1500)
+    ctx.text2('Last Change:', 140, 140, 1500, '#3f888f')
+    ctx.text2('- Added Server Status Command', 120, 140, 1750)
     //Text DC Tag/ID:
     ctx.text2(message.member.user.tag, 80, 245, 150)
     
