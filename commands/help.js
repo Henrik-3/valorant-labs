@@ -59,10 +59,10 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.text('- ' + prefix + 'help2 - Shows the next help page', 110, 140 , 2050, '#3f888f')
 */  
     const exampleEmbed = new Discord.RichEmbed()
-	  .setColor('#0099ff')
+	  .setColor('#ee3054')
 	  .setTitle('Vote here or join the support Server')
 	  .setURL('https://top.gg/bot/702201518329430117')
-  	  .setImage('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-overview-1.png?v=1588435702807')
+  	  .setImage('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help.png?v=1591004844004')
 	  .setTimestamp()
 	  .setFooter('Timestamp:');
 
