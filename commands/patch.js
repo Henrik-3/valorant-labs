@@ -82,11 +82,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     */
   
   const Embed = new Discord.RichEmbed()
-	  .setColor('#0099ff')
-    .setDescription('Credit cap, ability cost adjustments, as well as important Agent and weapon updates are part of this beefy patch.')
+	  .setColor('#ee3054')
+    	  .setDescription('Credit cap, ability cost adjustments, as well as important Agent and weapon updates are part of this beefy patch.')
 	  .setTitle('Click here for the last Patch Notes of v0.50')
 	  .setURL('https://beta.playvalorant.com/en-us/news/game-updates/valorant-patch-notes-0-50/')
-  	.setImage('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2FValorant%20Patch%20Notes.png?v=1588340741442')
+  	  .setImage('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2FValorant%20Patch%20Notes.png?v=1588340741442')
 	  .setTimestamp()
 	  .setFooter('VALORANT LABS');
 
