@@ -30,9 +30,9 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.text2('Ranked Overview', 150, canvasstats.width / 2, 175, '#ffffff', 'center')
   
     //Upcoming Text
-    ctx.text2("Available in the new 0.49 patch :D", 60, 2700, 150)
+    //ctx.text2("Available in the new 0.49 patch :D", 60, 2700, 150)
       
-    const rankedimage = await Canvas.loadImage("https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf%2FVALORANT_ICONS_UPDATED-ger_v1.jpg?v=1587846787626");
+    const rankedimage = await Canvas.loadImage("commands/images/VALORANT_RANK.jpg");
     ctx.drawImage(rankedimage, 0, 250, 3840, 1950)
   
      //Text DC Tag/ID:
