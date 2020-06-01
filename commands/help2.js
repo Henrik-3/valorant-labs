@@ -48,14 +48,14 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.text('WIP:', 150, 140 , 1250, '#3f888f')
 */  
      const exampleEmbed = new Discord.RichEmbed()
-	  .setColor('#0099ff')
+	  .setColor('#ee3054')
 	  .setTitle('Vote here for the Bot on top.gg')
 	  .setURL('https://top.gg/bot/702201518329430117/vote')
-  	.setImage('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2.png?v=1589306349061')
+  	  .setImage('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2-fixed%20(3).png?v=1591004958028')
 	  .setTimestamp()
 	  .setFooter('Timestamp:');
 
-   //  const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-stats.png" ); //final result
+   //  const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-help2.png" ); //final result
    //  message.channel.send(attachment); //send final result
     
     message.channel.send(exampleEmbed);
