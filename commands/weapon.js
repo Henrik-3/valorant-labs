@@ -15,7 +15,7 @@ Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
 
 
 module.exports = async (args, client, message) => {
-    
+  message.channel.startTyping()
   //can also be added to an config file
   const Weapons = {
     classic: {
@@ -496,5 +496,6 @@ module.exports = async (args, client, message) => {
   
       const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-weapon.png" ); //final result
       message.channel.send(attachment); //send final result
+      message.channel.stopTyping()
   }
 //}
