@@ -12,6 +12,7 @@ const Discord = require('discord.js')
 Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
 
 module.exports = async (args, client, message) => { 
+    message.channel.startTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -114,4 +115,5 @@ module.exports = async (args, client, message) => {
   
     const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-stats.png" ); //final result
     message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
   }
