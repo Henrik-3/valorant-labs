@@ -1,4 +1,5 @@
 module.exports = async (args, client, message, { Canvas, Discord }) => {
+  message.channel.startTyping()
     //can also be added to an config file
   const Weapons = {
     classic: {
@@ -342,4 +343,5 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
       const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-weapon-overview.png" ); //final result
       message.channel.send(attachment); //send final result
+      message.channel.stopTyping()
 }
