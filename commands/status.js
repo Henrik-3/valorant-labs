@@ -2,6 +2,7 @@ const r = require('request-promise')
 const moment = require('moment')
 
 module.exports = async (args, client, message, { Canvas, Discord }) => {
+  message.channel.startTyping()
   const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
   const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -50,7 +51,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     
     if(eustatus.maintenances.toString() == "" && eustatus.incidents.toString() == "" ) {
       ctx.text("NO ISSUES", 90, 3200, 170, '#008000')
-      ctx.text('No Issues on EU Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2('No Issues on EU Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
       //message.channel.send("No Issues")
     }
     
@@ -63,7 +64,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       
       var content = eustatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
       var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
+      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
       
       ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 120, 140, 1000)
       ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 120, 140, 1200)
@@ -79,7 +80,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       
       var content = eustatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
       var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
+      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
       
       console.log(contentarray[27])
       
@@ -108,6 +109,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
     const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-status-EU.png" ); //final result
     message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
   }
   
   if (serverregion == "na" || serverregion == "NA" || serverregion == "Na" || serverregion == "nA") {
@@ -133,7 +135,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       
       var content = nastatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
       var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
+      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
       
       console.log(contentarray[27])
       
@@ -151,7 +153,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       
       var content = nastatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
       var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
+      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
       
       console.log(contentarray[27])
       
@@ -179,5 +181,6 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
     const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-status-NA.png" ); //final result
     message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
   }
 }
