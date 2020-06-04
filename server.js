@@ -29,40 +29,52 @@ client.on("ready", () => {
   setInterval(() =>{ 
     dbl.postStats(client.guilds.size)
   }, 180000)
+	
+setInterval (function() {
+  require('./autonews/check.js')().then(data => {
+    console.log(data)
+  if (data.article) {
+    const Embed = new Discord.RichEmbed()
+	  .setColor('#ee3054')
+    	  .setDescription(data.article.description)
+	  .setTitle(data.article.title)
+	  .setURL(data.article.link)
+  	  .setImage(data.article.banner)
+	  .setTimestamp()
+	  .setFooter('VALORANT LABS');
+    
+    const settings = require('./db.json');
+    
+  
+    // Filter for Guilds with Newschannel
+    Object.keys(settings).filter(guild => settings[guild].news).forEach(guild => {
+      let channel = settings[guild].news.replace(/[^0-9]/g, '') // Replace all non-numbers
+      guild = client.guilds.get(guild)
+      if (guild) {
+        channel = guild.channels.get(channel)
+        if (channel) {
+          channel.send({ embed: Embed })
+        }
+      }
+    })
+  
+}
+})
+}, 60000)
+
 })
 
 client.on('guildCreate', g => {
   client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
-  log_(g, '+')
 })
 
 client.on('guildDelete', g => {
   client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
-  log_(g, '-')
 })
-
-async function log_(g, type) {
-  log.send({
-    embeds: [{
-      author: {
-        name: g.owner.user.username,
-        icon_url: g.owner.user.displayAvatarURL
-      },
-      thumbnail: {
-        url: g.iconURL
-      },
-      title: (type == '+' ? ':heavy_plus_sign:' : ':heavy_minus_sign:') + g.name,
-      description: `:busts_in_silhouette: ${g.memberCount}\n[Join](${((await g.fetchInvites()).first()||{}).url})`,
-      timestamp: g.createdAt,
-      footer: { text: 'Created at' },
-      color: 16729686
-    }]
-  })
-}
 
 // Commands laden
 let Commands = {};
-['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'maps', 'agent', 'botinfo', 'vote', 'agents', 'status].forEach(name => Commands[name] = require(`./commands/${name}.js`))
+['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'agent', 'botinfo', 'vote', 'agents', 'status'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('message', message => {
   // Command und Arguments checken
