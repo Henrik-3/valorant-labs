@@ -1,5 +1,5 @@
 module.exports = async (args, client, message, { Canvas, Discord }) => {
-    
+    message.channel.startTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -37,7 +37,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.text('(v?vote)', 120, 1775, 1250)
   
     ctx.text2('Last Change:', 140, 140, 1500, '#3f888f')
-    ctx.text2('- Added Server Status Command', 120, 140, 1750)
+    ctx.text2('- Updated to v1.0', 120, 140, 1750)
     //Text DC Tag/ID:
     ctx.text2(message.member.user.tag, 80, 245, 150)
     
@@ -56,4 +56,5 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
     const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-stats.png" ); //final result
     message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
 }
