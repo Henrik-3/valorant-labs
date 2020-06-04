@@ -1,7 +1,7 @@
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
 module.exports = async (args, client, message, { Canvas, Discord }) => {
-  
+    message.channel.startTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -53,4 +53,5 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
     const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-ranked.png" ); //final result
     message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
 }
