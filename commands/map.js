@@ -1,4 +1,5 @@
 module.exports = async (args, client, message, { Canvas, Discord }) => {
+    message.channel.startTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -27,17 +28,22 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const Maps = {
     bind: {
       name: 'Bind',
-      mapurl: 'https://blitz-cdn-plain.blitz.gg/blitz/val/maps/bind/images/bind-layout-offense5.svg'
+      mapurl: 'commands/images/bind-layout-offense5.svg'
     },
     split: {
       name: 'Split',
-      mapurl: 'https://blitz-cdn-plain.blitz.gg/blitz/val/maps/split/images/split-layout-offense5.svg'
+      mapurl: 'commands/images/split-layout-offense5.svg'
     },
     haven: {
       name: 'Haven',
-      mapurl: 'https://blitz-cdn-plain.blitz.gg/blitz/val/maps/haven/images/haven-layout-offense6.svg'
+      mapurl: 'commands/images/haven-layout-offense6.svg'
     },
-  }
+    ascent: {
+      name: 'Ascent',
+      mapurl: 'commands/images/ascent-layout-base.png'
+    },
+}
+  
     
     
     const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
@@ -51,7 +57,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       const mapimage = await Canvas.loadImage(map.mapurl); //load map from url
       ctx.drawImage(mapimage, 1100, 350, 1500, 1500); // displays map
       ctx.text('Source: https://blitz.gg/valorant/maps', 60, 50, 2100)
-    } else {
+    } /*else {
           ctx.text2('Map Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
       ctx.text2('Bind:', 150, 640, 500, '#ffffff', 'center')
       ctx.text2('Split:', 150, 1920, 500, '#ffffff', 'center')
@@ -79,7 +85,9 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke()
-    }
+    } */
+
+
     //Text DC Tag/ID:
     ctx.text2(message.member.user.tag, 80, 245, 150)
   
@@ -98,4 +106,5 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     
     const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-map.png" ); //final result
     message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
   }
