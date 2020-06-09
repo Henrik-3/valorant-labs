@@ -1,45 +1,54 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v0.50 Patch**
+**VALORANT LABS** | **Discord Verified** | **All Data based on v1.0 Patch**
 
-[INVITE THE BOT HERE](https://top.gg/bot/702201518329430117)
+We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
+
+Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://discord.com/oauth2/authorize?client_id=717337318222069842&permissions=388289&scope=bot)
+
+
+**LAST UPDATE:**
+
+- Redesign + Added AutoNews [BETA]
+
+- Update from discord.js v11 to v12 (improved reaction speed and stability)
+
 
 ***Commands:***
 
 - v?help - Shows the help message [READY]
 
-- v?stats [NAME] [TAG] - Shows the stats of the requested user (Note: TAG without #) (Note: Valorant is still in Beta so stats might be missing or inaccurate.) [READY]
+- [!] v?stats [RIOTNAME] - Shows the stats of the requested user [READY] 
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
 - v?weapons - Get overview over all available weapons [READY]
 
-- v?ranked - Get overview over the ranks in the upcoming ranked mode [READY]
+- v?ranked - Get overview over the ranks ranked mode [READY]
 
 - v?settings - Get overview over the settings [READY]
 
 - v?settings prefix [NEW PREFIX] - Set new prefix [READY]
 
-- v?map [MAP NAME] - Shows Map details for an specific Map [READY]
+- v?settings news [#CHANNEL] - Set news channel [BETA]
 
-- v?maps - Shows an overview for all Maps [READY]
+- v?map [MAP NAME] - Shows map details for a specific map [READY]
 
 - v?patch - Shows the latest Patch [READY]
 
-- v?agents [AGENT NAME] - Shows Agent details for an specific Agent [READY]
+- v?agents [AGENT NAME] - Shows agent details for an specific agent [READY]
 
 - v?botinfo - Get information about the bot [READY]
 
 - v?vote - Get the Vote Link [READY]
 
+- v?status [EU OR NA] - Shows the server status for requested region [BETA]
 
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-overview-1.png?v=1588435702807" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2.png?v=1589306349061" alt="VALORANT LABS HELP 2">
+ <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496044471812146/valorant-help.png" alt="VALORANT LABS HELP 1">
+ <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496051350470786/valorant-help2.png" alt="VALORANT LABS HELP 2">
  
  
-***Features:***
+***WIP:***
 
-- Auto News [WIP]
-
-- Website: https://valorant-labs.glitch.me/
+- Website: 
 
 - Compare Stats between players [later]
 
