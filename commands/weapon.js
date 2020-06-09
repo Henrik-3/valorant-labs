@@ -302,17 +302,28 @@ module.exports = async (args, client, message) => {
   
     //function for easier text 
     //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
-    ctx.text2 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.text2 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left', rotate=-0.5*Math.PI) {
     ctx.font = size + 'px valorant_font';
     ctx.fillStyle = color
     ctx.textAlign = textAlign
-    ctx.fillText(content, x, y)
-    }
+    ctx.save();
+    ctx.translate(200,canvasstats.height/2);
+    ctx.rotate(rotate);
+    ctx.fillText(content , 0, 0);
+    ctx.restore();
+  }
+    //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
+    ctx.text3 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.font = size + 'px valorant_font';
+    ctx.fillStyle = color
+    ctx.textAlign = textAlign
+    ctx.fillText(content , x, y);
+  }
   
-  const background = await Canvas.loadImage("https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2FUnbenannt-1%20(2).png?v=1588341225969"); //load background from url
+  const background = await Canvas.loadImage("commands/images/Valorant_LABS.png"); //load background from url
   ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
- // if (message.content.toLowerCase().startsWith('v!weapon ')) {
     const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
     // Cut start to get the name
     const name = message.content.toLowerCase().substr(prefix.length + 7)
@@ -320,28 +331,28 @@ module.exports = async (args, client, message) => {
     const weapon = Weapons[name]
     //check if weapon exist
     if (weapon) {
-      ctx.text2('STATS: ' + weapon.description, 220, canvasstats.width / 2, 235, '#ffffff', 'center')
-      ctx.text('Type: ', 110, 140, 550, '#3f888f')
-      ctx.text(weapon.type, 110, 415, 550)
-      ctx.text('Cost: ', 110, 140, 850, '#3f888f')
-      ctx.text(weapon.cost, 110, 415, 850)
-      ctx.text('Firemode:  ', 110, 140, 1150, '#3f888f')
-      ctx.text(weapon.firemode, 110, 645, 1150)
-      ctx.text('Range: ', 110, 140, 1450, '#3f888f')
-      ctx.text(weapon.range, 110, 490, 1450)
-      ctx.text('Magsize: ', 110, 140, 1750, '#3f888f')
-      ctx.text(weapon.magsize, 110, 590, 1750)
+      ctx.text2('STATS: ' + weapon.description, 160, canvasstats.width / 2, 190, '#ffffff', 'center')
+      ctx.text('Type: ', 110, 340, 450, '#3f888f')
+      ctx.text(weapon.type, 110, 615, 450)
+      ctx.text('Cost: ', 110, 340, 750, '#3f888f')
+      ctx.text(weapon.cost, 110, 615, 750)
+      ctx.text('Firemode:  ', 110, 340, 1050, '#3f888f')
+      ctx.text(weapon.firemode, 110, 845, 1050)
+      ctx.text('Range: ', 110, 340, 1350, '#3f888f')
+      ctx.text(weapon.range, 110, 690, 1350)
+      ctx.text('Magsize: ', 110, 340, 1650, '#3f888f')
+      ctx.text(weapon.magsize, 110, 790, 1650)
       
-      ctx.text('Head: ', 110, 1620, 550, '#3f888f')
-      ctx.text(weapon.head, 110, 1925, 550)
-      ctx.text('Body: ', 110, 1620, 850, '#3f888f')
-      ctx.text(weapon.body, 110, 1925, 850)
-      ctx.text('Leg: ', 110, 1620, 1150, '#3f888f')
-      ctx.text(weapon.leg, 110, 1850, 1150)
-      ctx.text('Firerate: ', 110, 1620, 1450, '#3f888f')
-      ctx.text(weapon.firerate, 110, 2050, 1450)
-      ctx.text('Penetration: ', 110, 1620, 1750, '#3f888f')
-      ctx.text(weapon.penetration, 110, 2225, 1750, weapon.penetration == 'Low' ? '#ff0000' : weapon.penetration == 'Medium' ? '#FFFF00' : weapon.penetration == 'High' ? '#008000' : '#ffffff')
+      ctx.text('Head: ', 110, 1820, 450, '#3f888f')
+      ctx.text(weapon.head, 110, 2125, 450)
+      ctx.text('Body: ', 110, 1820, 750, '#3f888f')
+      ctx.text(weapon.body, 110, 2125, 750)
+      ctx.text('Leg: ', 110, 1820, 1050, '#3f888f')
+      ctx.text(weapon.leg, 110, 2050, 1050)
+      ctx.text('Firerate: ', 110, 1820, 1350, '#3f888f')
+      ctx.text(weapon.firerate, 110, 2250, 1350)
+      ctx.text('Penetration: ', 110, 1820, 1650, '#3f888f')
+      ctx.text(weapon.penetration, 110, 2425, 1650, weapon.penetration == 'Low' ? '#ff0000' : weapon.penetration == 'Medium' ? '#FFFF00' : weapon.penetration == 'High' ? '#008000' : '#ffffff')
       
       if(weapon.imagesize == '147x113') { //Classic
         const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
@@ -414,87 +425,84 @@ module.exports = async (args, client, message) => {
       
     } else {
       //No info for this Weapon
-      ctx.text2('Weapon Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text2("Sidearm:", 120, 480, 425, '#3f888f', 'center')
-      ctx.text("Classic - 0", 100, 480, 600, '#ffffff','center')
-      ctx.text("Shorty - 200", 100, 480, 900, '#ffffff', 'center')
-      ctx.text("Frenzy - 400", 100, 480, 1200, '#ffffff', 'center')
-      ctx.text("Ghost - 500", 100, 480, 1500, '#ffffff', 'center')
-      ctx.text("Sheriff - 800", 100, 480, 1800, '#ffffff', 'center')
+      ctx.text2('Weapon Overview', 140, 1890, 130, '#ffffff', 'center')
+      ctx.text3("Sidearm:", 120, 580, 425, '#3f888f', 'center')
+      ctx.text("Classic - 0", 100, 580, 600, '#ffffff','center')
+      ctx.text("Shorty - 200", 100, 580, 900, '#ffffff', 'center')
+      ctx.text("Frenzy - 400", 100, 580, 1200, '#ffffff', 'center')
+      ctx.text("Ghost - 500", 100, 580, 1500, '#ffffff', 'center')
+      ctx.text("Sheriff - 800", 100, 580, 1800, '#ffffff', 'center')
       
-      ctx.text2("SMG:", 120, 1440, 425, '#3f888f', 'center')
-      ctx.text("Stinger - 1000", 100, 1440, 600, '#ffffff', 'center')
-      ctx.text("Spectre - 1600", 100, 1440, 900, '#ffffff', 'center')
-      ctx.text2("Shotgun:", 120, 1440, 1200, '#3f888f', 'center')
-      ctx.text("Bucky - 900", 100, 1440, 1500, '#ffffff', 'center')
-      ctx.text("Judge - 1500", 100, 1440, 1800, '#ffffff', 'center')
+      ctx.text3("SMG:", 120, 1540, 425, '#3f888f', 'center')
+      ctx.text("Stinger - 1000", 100, 1540, 600, '#ffffff', 'center')
+      ctx.text("Spectre - 1600", 100, 1540, 900, '#ffffff', 'center')
+      ctx.text3("Shotgun:", 120, 1540, 1200, '#3f888f', 'center')
+      ctx.text("Bucky - 900", 100, 1540, 1500, '#ffffff', 'center')
+      ctx.text("Judge - 1500", 100, 1540, 1800, '#ffffff', 'center')
       
-      ctx.text2("Rifle:", 120, 2400, 425, '#3f888f','center')
-      ctx.text("Bulldog - 2100", 100, 2400, 600, '#ffffff', 'center')
-      ctx.text("Guardian - 2700", 100, 2400, 1000, '#ffffff', 'center')
-      ctx.text("Phantom - 2900", 100, 2400, 1400, '#ffffff', 'center')
-      ctx.text("Vandal - 2900", 100, 2400, 1800, '#ffffff', 'center')
+      ctx.text3("Rifle:", 120, 2500, 425, '#3f888f','center')
+      ctx.text("Bulldog - 2100", 100, 2500, 600, '#ffffff', 'center')
+      ctx.text("Guardian - 2700", 100, 2500, 1000, '#ffffff', 'center')
+      ctx.text("Phantom - 2900", 100, 2500, 1400, '#ffffff', 'center')
+      ctx.text("Vandal - 2900", 100, 2500, 1800, '#ffffff', 'center')
       
-      ctx.text2("Sniper:", 120, 3360, 425, '#3f888f', 'center')
-      ctx.text("Marshall - 1100", 100, 3360, 600, '#ffffff', 'center')
-      ctx.text("Operator - 4500", 100, 3360, 900,'#ffffff', 'center')
-      ctx.text2("LMG:", 120, 3360, 1225, '#3f888f', 'center')
-      ctx.text("Ares - 1600", 100, 3360, 1500, '#ffffff', 'center')
-      ctx.text("Odin - 3200", 100, 3360, 1800, '#ffffff', 'center')
+      ctx.text3("Sniper:", 120, 3410, 425, '#3f888f', 'center')
+      ctx.text("Marshall - 1100", 100, 3410, 600, '#ffffff', 'center')
+      ctx.text("Operator - 4500", 100, 3410, 900,'#ffffff', 'center')
+      ctx.text3("LMG:", 120, 3410, 1225, '#3f888f', 'center')
+      ctx.text("Ares - 1600", 100, 3410, 1500, '#ffffff', 'center')
+      ctx.text("Odin - 3200", 100, 3410, 1800, '#ffffff', 'center')
       
       ctx.beginPath()
-      ctx.moveTo(960, 300)
-      ctx.lineTo(960, 1900);
+      ctx.moveTo(1060, 300)
+      ctx.lineTo(1060, 1900);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(1920, 300)
-      ctx.lineTo(1920, 1900);
+      ctx.moveTo(2020, 300)
+      ctx.lineTo(2020, 1900);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(2880, 300)
-      ctx.lineTo(2880, 1900);
+      ctx.moveTo(2980, 300)
+      ctx.lineTo(2980, 1900);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(1100, 1025)
-      ctx.lineTo(1800, 1025);
+      ctx.moveTo(1200, 1025)
+      ctx.lineTo(1900, 1025);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
       
       ctx.beginPath()
-      ctx.moveTo(2950, 1025)
-      ctx.lineTo(3650, 1025);
+      ctx.moveTo(3100, 1025)
+      ctx.lineTo(3800, 1025);
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
     }
   
-      //Text DC Tag/ID:
-      ctx.text2(message.member.user.tag, 80, 245, 150)
-  
       //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
-	    ctx.arc(125, 125, 80, 0, Math.PI * 2, true);
+	    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
 	    // Put the pen down
 	    ctx.closePath();
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL);
-      ctx.drawImage(avatarl, 25, 25, 200, 200)
+      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      ctx.drawImage(avatarl, 30, 1925, 200, 200)
   
-      const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-weapon.png" ); //final result
+      const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-weapon.png" ); //final result
       message.channel.send(attachment); //send final result
       message.channel.stopTyping()
   }

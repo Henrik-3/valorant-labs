@@ -5,7 +5,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
-    const background = await Canvas.loadImage("https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2FUnbenannt-1%20(2).png?v=1588341225969"); //load background from url
+    const background = await Canvas.loadImage("commands/images/Valorant_LABS.png"); //load background from url
     ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
     //function for easier text 
@@ -15,43 +15,49 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.fillStyle = color
     ctx.textAlign = textAlign
     ctx.fillText(content, x, y)
-    }
+  }
   
     //function for easier text 
     //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
-    ctx.text2 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.text2 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left', rotate=-0.5*Math.PI) {
     ctx.font = size + 'px valorant_font';
     ctx.fillStyle = color
     ctx.textAlign = textAlign
-    ctx.fillText(content, x, y)
-    }
+    ctx.save();
+    ctx.translate(200,canvasstats.height/2);
+    ctx.rotate(rotate);
+    ctx.fillText(content , 0, 0);
+    ctx.restore();
+  }
+    //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
+    ctx.text3 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+    ctx.font = size + 'px valorant_font';
+    ctx.fillStyle = color
+    ctx.textAlign = textAlign
+    ctx.fillText(content , x, y);
+  }
   
     //ranked
     ctx.text2('Ranked Overview', 150, canvasstats.width / 2, 175, '#ffffff', 'center')
-  
-    //Upcoming Text
-    //ctx.text2("Available in the new 0.49 patch :D", 60, 2700, 150)
       
     const rankedimage = await Canvas.loadImage("commands/images/VALORANT_RANK.jpg");
-    ctx.drawImage(rankedimage, 0, 250, 3840, 1950)
+    ctx.drawImage(rankedimage, 550, 250, 2880, 1620)
+
+     //Avatar
+      // Pick up the pen
+	    ctx.beginPath();
+	    // Start the arc to form a circle
+	    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
+	    // Put the pen down
+	    ctx.closePath();
+	    // Clip off the region you drew on
+	    ctx.clip();
   
-     //Text DC Tag/ID:
-    ctx.text2(message.member.user.tag, 80, 245, 150)
-    
-    //Avatar
-    const ctx_v = canvasstats.getContext('2d') //text preparation
-    // Pick up the pen
-	  ctx_v.beginPath();
-	  // Start the arc to form a circle
-	  ctx_v.arc(125, 125, 100, 0, Math.PI * 2, true);
-	  // Put the pen down
-	  ctx_v.closePath();
-	  // Clip off the region you drew on
-	  ctx_v.clip();
-    const avatarl = await Canvas.loadImage(message.author.displayAvatarURL);
-    ctx_v.drawImage(avatarl, 25, 25, 200, 200) 
+      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      ctx.drawImage(avatarl, 30, 1925, 200, 200)
   
-    const attachment = new Discord.Attachment(canvasstats.toBuffer(),"valorant-ranked.png" ); //final result
+    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-ranked.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
 }
