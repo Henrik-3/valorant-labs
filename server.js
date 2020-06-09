@@ -20,14 +20,18 @@ const dbl = new DBL(config.dbltoken, client)
 //db
 const db = require("./db.js")
 
+
 client.on("ready", () => {
   console.log("Ready")
   client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')
+  setInterval(() =>{ 
+    dbl.postStats(client.guilds.size)
+  }, 180000)
  setInterval (function() {
   require('./autonews/check.js')().then(data => {
     console.log(data)
   if (data.article) {
-    const Embed = new Discord.RichEmbed()
+    const Embed = new Discord.MessageEmbed()
 	  .setColor('#ee3054')
     	  .setDescription(data.article.description)
 	  .setTitle(data.article.title)
@@ -42,9 +46,9 @@ client.on("ready", () => {
     // Filter for Guilds with Newschannel
     Object.keys(settings).filter(guild => settings[guild].news).forEach(guild => {
       let channel = settings[guild].news.replace(/[^0-9]/g, '') // Replace all non-numbers
-      guild = client.guilds.get(guild)
+      guild = client.guilds.cache.get(guild)
       if (guild) {
-        channel = guild.channels.get(channel)
+        channel = guild.channels.cache.get(channel)
         if (channel) {
           channel.send({ embed: Embed })
         }
@@ -57,14 +61,10 @@ client.on("ready", () => {
 })
 
 client.on('guildCreate', g => {
-  client.channels.cache.get('705516325455528047').send(`New guild joined: ${g.name} (id: ${g.id}). This guild has ${g.memberCount} members!`)
-  client.channels.cache.get('702435906757328897').send(`New guild joined: ${g.name} (id: ${g.id}). This guild has ${g.memberCount} members!`)
   client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')
 })
 
 client.on('guildDelete', g => {
-  client.channels.cache.get('705516325455528047').send(`I have been removed from: ${g.name} (id: ${g.id})`)
-  client.channels.cache.get('702435906757328897').send(`I have been removed from: ${g.name} (id: ${g.id})`)
   client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')})
 
 // Commands laden
