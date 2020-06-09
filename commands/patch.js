@@ -1,4 +1,5 @@
 module.exports = async (args, client, message, { Canvas, Discord }) => {
+    message.channel.startTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -81,14 +82,15 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     message.channel.send(attachment); //send final result
     */
   
-  const Embed = new Discord.RichEmbed()
-	  .setColor('#0099ff')
-    .setDescription('Credit cap, ability cost adjustments, as well as important Agent and weapon updates are part of this beefy patch.')
-	  .setTitle('Click here for the last Patch Notes of v0.50')
-	  .setURL('https://beta.playvalorant.com/en-us/news/game-updates/valorant-patch-notes-0-50/')
-  	.setImage('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2FValorant%20Patch%20Notes.png?v=1588340741442')
+  const Embed = new Discord.MessageEmbed()
+	  .setColor('#ee3054')
+    	  .setDescription('New launch stuff! Also, major balance updates for 5 Agents, and  performance and hit registration improvements.')
+	  .setTitle('Click here for the last Patch Notes of v1.0')
+	  .setURL('https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-1-0/')
+	  .attachFiles(['./commands/images/VALORANT_Patch_1.jpg'])
+  	  .setImage('attachment://VALORANT_Patch_1.jpg')
 	  .setTimestamp()
 	  .setFooter('VALORANT LABS');
-
-  message.channel.send(Embed);
+	   message.channel.send(Embed);
+	   message.channel.stopTyping()
 }
