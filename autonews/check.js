@@ -5,11 +5,7 @@ const fs = require('fs')
 module.exports = async function check() {  
   // 1. Load API and Cache
     const raw = await r({
-
-        url: 'https://playvalorant.com/page-data/en-us/news/page-data.json', //replace en-us with your region if needed
-
-        url: 'https://playvalorant.com/page-data/en-us/news/page-data.json', //replace en-us with your region if needed
-
+        url: 'https://playvalorant.com/page-data/en-us/news/page-data.json',
         json: true
     })
     let last = fs.readFileSync('./autonews/autonews.txt', 'utf8') || 0
@@ -29,7 +25,7 @@ module.exports = async function check() {
             article: {
                 title: article.title,
                 description: article.description,
-                link: article.article_type == 'External Link' ? article.external_link : `https://playvalorant.com/en-us/${article.url.url}`, //replace en-us with your region if needed
+                link: article.article_type == 'External Link' ? article.external_link : `https://playvalorant.com/en-us/${article.url.url}`,
                 banner: article.banner.url
             }
         }
