@@ -7,11 +7,11 @@ const client = new Discord.Client();
 const config = require("./commands/config.json");
 const fetch = require("node-fetch")
 
-//require('download')('https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf/product_sans.ttf', './')
-//require('download')('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca/valorant_font.ttf', './')
+require('download')('https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf/product_sans.ttf', './')
+require('download')('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca/valorant_font.ttf', './')
 
-Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
-Canvas.registerFont('valorant_font.ttf', { family: 'valorant_font'})
+//Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
+//Canvas.registerFont('valorant_font.ttf', { family: 'valorant_font'})
 
 //DBL Things
 const DBL = require("dblapi.js");
@@ -20,49 +20,56 @@ const dbl = new DBL(config.dbltoken, client)
 //db
 const db = require("./db.js")
 
-// dev log
-const log = new Discord.WebhookClient('HERE WEBHOOK DATA')
-
 client.on("ready", () => {
   console.log("Ready")
-  client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
-  setInterval(() =>{ 
-    dbl.postStats(client.guilds.size)
-  }, 180000)
+  client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')
+ setInterval (function() {
+  require('./autonews/check.js')().then(data => {
+    console.log(data)
+  if (data.article) {
+    const Embed = new Discord.RichEmbed()
+	  .setColor('#ee3054')
+    	  .setDescription(data.article.description)
+	  .setTitle(data.article.title)
+	  .setURL(data.article.link)
+  	  .setImage(data.article.banner)
+	  .setTimestamp()
+	  .setFooter('VALORANT LABS');
+    
+    const settings = require('./db.json');
+    
+  
+    // Filter for Guilds with Newschannel
+    Object.keys(settings).filter(guild => settings[guild].news).forEach(guild => {
+      let channel = settings[guild].news.replace(/[^0-9]/g, '') // Replace all non-numbers
+      guild = client.guilds.get(guild)
+      if (guild) {
+        channel = guild.channels.get(channel)
+        if (channel) {
+          channel.send({ embed: Embed })
+        }
+      }
+    })
+  
+}
+})
+}, 60000)
 })
 
 client.on('guildCreate', g => {
-  client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
-  log_(g, '+')
+  client.channels.cache.get('705516325455528047').send(`New guild joined: ${g.name} (id: ${g.id}). This guild has ${g.memberCount} members!`)
+  client.channels.cache.get('702435906757328897').send(`New guild joined: ${g.name} (id: ${g.id}). This guild has ${g.memberCount} members!`)
+  client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')
 })
 
 client.on('guildDelete', g => {
-  client.user.setActivity('v?help | ' + client.guilds.size + ' Servers')
-  log_(g, '-')
-})
-
-async function log_(g, type) {
-  log.send({
-    embeds: [{
-      author: {
-        name: g.owner.user.username,
-        icon_url: g.owner.user.displayAvatarURL
-      },
-      thumbnail: {
-        url: g.iconURL
-      },
-      title: (type == '+' ? ':heavy_plus_sign:' : ':heavy_minus_sign:') + g.name,
-      description: `:busts_in_silhouette: ${g.memberCount}\n[Join](${((await g.fetchInvites()).first()||{}).url})`,
-      timestamp: g.createdAt,
-      footer: { text: 'Created at' },
-      color: 16729686
-    }]
-  })
-}
+  client.channels.cache.get('705516325455528047').send(`I have been removed from: ${g.name} (id: ${g.id})`)
+  client.channels.cache.get('702435906757328897').send(`I have been removed from: ${g.name} (id: ${g.id})`)
+  client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')})
 
 // Commands laden
 let Commands = {};
-['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'maps', 'agent', 'botinfo', 'vote', 'agents'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
+['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'agent', 'botinfo', 'vote', 'agents', 'status'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('message', message => {
   // Command und Arguments checken
