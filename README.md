@@ -6,9 +6,14 @@ If you use code from my bot, please credit it somewhere in your app/product
 
 We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
 
+Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://discord.com/oauth2/authorize?client_id=717337318222069842&permissions=388289&scope=bot)
+
+
 **LAST UPDATE:**
 
-- Added AutoNews [BETA]
+- Redesign + Added AutoNews [BETA]
+
+- Update from discord.js v11 to v12 (improved reaction speed and stability)
 
 
 ***Commands:***
@@ -41,8 +46,8 @@ We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valor
 
 - v?status [EU OR NA] - Shows the server status for requested region [BETA]
 
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help.png?v=1591123952031" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca%2Fvalorant-help2%20.png?v=1591123944294" alt="VALORANT LABS HELP 2">
+ <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496044471812146/valorant-help.png" alt="VALORANT LABS HELP 1">
+ <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496051350470786/valorant-help2.png" alt="VALORANT LABS HELP 2">
  
  
 ***WIP:***
