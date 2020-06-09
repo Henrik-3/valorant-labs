@@ -1,4 +1,8 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v1.0 Patch**
+**VALORANT LABS** | **Discord Verified** | **All Data based on v1.0 Patch** 
+
+If you use code from my bot, please credit it somewhere in your app/product
+
+[INVITE THE BOT HERE](https://top.gg/bot/702201518329430117)
 
 We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
 
