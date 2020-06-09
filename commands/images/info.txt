@@ -1,0 +1,1 @@
+Place in this folder your images of your background (in my case https://cdn.discordapp.com/attachments/715949560970608702/718467365146198057/Valorant_LABS.png) and check your path to this file in every command
