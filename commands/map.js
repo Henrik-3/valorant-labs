@@ -67,6 +67,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     if (map) {
       ctx.text2('MAP: ' + map.name, 180, canvasstats.width / 2, 200, '#ffffff', 'center')
       const mapimage = await Canvas.loadImage(map.mapurl); //load map from url
+
       ctx.drawImage(mapimage, 1100, 50, 2000, 2000); // displays map
       ctx.text('Source: https://blitz.gg/valorant/maps', 60, 350, 2110)
     } /*else {
@@ -90,6 +91,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    ctx.closePath();
 	    // Clip off the region you drew on
 	    ctx.clip();
+
   
       const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
       ctx.drawImage(avatarl, 30, 1925, 200, 200)

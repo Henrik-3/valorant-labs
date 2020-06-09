@@ -20,6 +20,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
     //function for easier text 
     //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
+
     ctx.text2 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left', rotate=-0.5*Math.PI) {
     ctx.font = size + 'px valorant_font';
     ctx.fillStyle = color
@@ -38,6 +39,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.textAlign = textAlign
     ctx.fillText(content , x, y);
   }
+
   
   const serverregionsplit = message.content.split(' ').slice(1); // All arguments behind the command name with the prefix
   const serverregion = serverregionsplit[0];
@@ -86,14 +88,13 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     if(eustatus.maintenances.toString() != "") {
       
 
+
       ctx.text("Issue: " + eustatus.maintenances[0].titles.find(c => c.locale == "en_US").content, 180, 340, 550, '#ffffff')
       ctx.text("Posted at: " + moment(eustatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 110, 340, 750, '#3f888f')
       
       var content = eustatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
       var contentarray = content.split(" ")
       contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
       
       ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 120, 340, 1000)
       ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 120, 340, 1200)
@@ -131,11 +132,9 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     
     if(nastatus.maintenances.toString() == "" && nastatus.incidents.toString() == "") {
       ctx.text3('No Issues on NA Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
-      //message.channel.send("No Issues")
     }
     
     if(nastatus.incidents.toString() != "") {
-      
       ctx.text("Issue: " + nastatus.incidents[0].titles.find(c => c.locale == "en_US").content, 180, 340, 550, '#ffffff')
       ctx.text("Posted at: " + moment(nastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 110, 340, 750, '#3f888f')
       
@@ -144,7 +143,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
       
       console.log(contentarray[27])
-      
+     
       ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 120, 340, 1000)
       ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 120, 340, 1200)
       ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 120, 340, 1400)

@@ -43,7 +43,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       
     const rankedimage = await Canvas.loadImage("commands/images/VALORANT_RANK.jpg");
     ctx.drawImage(rankedimage, 550, 250, 2880, 1620)
-    
+
      //Avatar
       // Pick up the pen
 	    ctx.beginPath();

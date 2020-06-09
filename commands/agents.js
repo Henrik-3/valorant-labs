@@ -194,10 +194,10 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       qability: 'Devour',
       ecost: 'Free',
       eability: 'Dismiss',
-      eabilitydescription: 'Quake, which dazing all players in its zone',
       xcost: '6 Ult Points',
       xability: 'Empress',
       xabilitydescription: 'INSTANTLY enter a frenzy, increasing firing speed, equip and reload speed.',
+
     },
 
   }

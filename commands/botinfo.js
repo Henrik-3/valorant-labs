@@ -37,6 +37,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   }
   
     ctx.text2('Bot Overview', 180, canvasstats.width / 2, 200, '#ffffff', 'center')
+
     ctx.text3('- Powering          Server', 120, 340, 200)
     ctx.text3(client.guilds.cache.size, 120, 1175, 200, '#ff4654')
     ctx.text3('- Is Online for              Users', 120, 340, 450)

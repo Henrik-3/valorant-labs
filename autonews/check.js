@@ -5,7 +5,11 @@ const fs = require('fs')
 module.exports = async function check() {  
   // 1. Load API and Cache
     const raw = await r({
+
         url: 'https://playvalorant.com/page-data/en-us/news/page-data.json', //replace en-us with your region if needed
+
+        url: 'https://playvalorant.com/page-data/en-us/news/page-data.json', //replace en-us with your region if needed
+
         json: true
     })
     let last = fs.readFileSync('./autonews/autonews.txt', 'utf8') || 0

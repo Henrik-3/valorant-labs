@@ -1,5 +1,6 @@
 
 module.exports = async (args, client, message, { Canvas, Discord }) => {
+ 
     
     message.channel.startTyping()
     
@@ -76,7 +77,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     
     ctx.text('Design by ouihq - Check out his Reyna Bot', 60, 2675, 2100, '#ffffff')
 
-    //Avatar
+   //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
@@ -85,10 +86,10 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    ctx.closePath();
 	    // Clip off the region you drew on
 	    ctx.clip();
-  
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
-      ctx.drawImage(avatarl, 30, 1925, 200, 200)
 
+  
+    const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+    ctx.drawImage(avatarl, 30, 1925, 200, 200)
 
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
     message.channel.send(attachment) //send final result

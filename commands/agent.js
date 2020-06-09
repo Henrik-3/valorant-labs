@@ -197,7 +197,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       eabilitydescription: 'Quake, which dazing all players in its zone',
       xcost: '6 Ult Points',
       xability: 'Empress',
+
       xabilitydescription: 'INSTANTLY enter a frenzy, increasing firing speed, equip and reload speed.',
+
+      xabilitydescription: 'INSTANTLY enter a frenzy, increasing firing speed, equip and reload speed.',
+
     },
 
   }
@@ -213,6 +217,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       
     const agentimage = await Canvas.loadImage(agent.url); //load map from url
     ctx.drawImage(agentimage, 2850, 30, 1056.6, 1620); // displays map
+
   
     ctx.text3('C-Cost:', 100, 350, 450, '#3f888f')
     ctx.text(agent.ccost, 100, 800, 450)

@@ -1,7 +1,7 @@
 module.exports = async (args, client, message, { Canvas, Discord }) => {
     
     message.channel.startTyping()
-    
+  
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -46,7 +46,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
     //Text Commands:
     ctx.text('Commands:', 140, 350, 250)
-  
+ 
     //Text Stats Command
     ctx.text('- ' + prefix + 'map [MAP NAME] - Shows Map details for an specific Map', 110, 350 , 450)
     

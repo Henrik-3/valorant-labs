@@ -33,10 +33,10 @@ client.on("ready", () => {
   if (data.article) {
     const Embed = new Discord.MessageEmbed()
 	  .setColor('#ee3054')
-    	  .setDescription(data.article.description)
+    .setDescription(data.article.description)
 	  .setTitle(data.article.title)
 	  .setURL(data.article.link)
-  	  .setImage(data.article.banner)
+  	.setImage(data.article.banner)
 	  .setTimestamp()
 	  .setFooter('VALORANT LABS');
     

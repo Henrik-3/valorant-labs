@@ -50,6 +50,7 @@ module.exports = async (args, client, message) => {
   }
   
     //Text WIP
+
     ctx.text3('TEMPORARY DISABLED', 230, 2000, canvasstats.height / 2, '#ffffff', 'center')
 
     //no arg for GET
@@ -67,10 +68,6 @@ module.exports = async (args, client, message) => {
     const namefinal = nametest[1].split('#')
     const name = namefinal[0];
     const tag = namefinal[1];
-  
-  
-    console.log(name)
-    console.log(tag)
 
 /*
     //HTTP GET VALORANT NAME
@@ -81,11 +78,11 @@ module.exports = async (args, client, message) => {
     
     
     if(raw.error){
-      message.channel.send("Error, this User is not available or typed something wrong. Try again in a few hours or correct your mistake. (Note: Riot Developers removed ability to get other's user stats, so we can't update stats anymore. Only existing people in the databse can get their old stats :C )")
+      message.channel.send("Error, this User is not available or typed something wrong. Try again later or correct your mistake. ")
     }
     
     if(raw.data.nickname = 'undefined') {
-      message.channel.send("Error, this User is not available or typed something wrong. Try again in a few hours or correct your mistake. (Note: Riot Developers removed ability to get other's user stats, so we can't update stats anymore. Only existing people in the databse can get their old stats :C )")
+      message.channel.send("Error, this User is not available or typed something wrong. Try again later or correct your mistake. ")
     }
     // const [answer] = raw
     
