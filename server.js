@@ -7,11 +7,11 @@ const client = new Discord.Client();
 const config = require("./commands/config.json");
 const fetch = require("node-fetch")
 
-require('download')('https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf/product_sans.ttf', './')
-require('download')('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca/valorant_font.ttf', './')
+//require('download')('https://cdn.glitch.com/15c546f8-c377-494a-a8f3-e5f452789cdf/product_sans.ttf', './')
+//require('download')('https://cdn.glitch.com/6f24e132-ed6a-4704-a40d-19f2a8f508ca/valorant_font.ttf', './')
 
-//Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
-//Canvas.registerFont('valorant_font.ttf', { family: 'valorant_font'})
+Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
+Canvas.registerFont('valorant_font.ttf', { family: 'valorant_font'})
 
 //DBL Things
 const DBL = require("dblapi.js");
