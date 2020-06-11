@@ -44,10 +44,10 @@ Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://disco
 
 - v?vote - Get the Vote Link [READY]
 
-- v?status [EU OR NA] - Shows the server status for requested region [BETA]
+- v?status - Shows overview for server regions to choose from [BETA]
 
  <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496044471812146/valorant-help.png" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496051350470786/valorant-help2.png" alt="VALORANT LABS HELP 2">
+ <img src="https://cdn.discordapp.com/attachments/702435906757328897/720609923771400223/valorant-help2.png" alt="VALORANT LABS HELP 2">
  
  
 ***WIP:***
