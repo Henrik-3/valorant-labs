@@ -11,6 +11,8 @@ Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://disco
 
 **LAST UPDATE:**
 
+- Added link command to link your Riotaccount with your Discord account 
+
 - Redesign + Added AutoNews [BETA]
 
 - Update from discord.js v11 to v12 (improved reaction speed and stability)
