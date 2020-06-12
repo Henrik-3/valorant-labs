@@ -63,7 +63,9 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   ctx.text('- ' + prefix + 'status - Shows overview for server regions to chose from', 110, 350, 1050)
 
   //text patch command  
-  ctx.text('- ' + prefix + 'botinfo -  Get information about the bot', 110, 350, 1450)
+  ctx.text('- ' + prefix + 'botinfo - Get information about the bot', 110, 350, 1450)
+
+  ctx.text('- ' + prefix + 'link [RIOTNAME] - Link your riot account with your discord account', 110, 350, 1650)
 
   ctx.text('Design by ouihq - Check out his Reyna Bot', 60, 2675, 2100, '#ffffff')
   

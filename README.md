@@ -22,6 +22,8 @@ Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://disco
 
 - [!] v?stats [RIOTNAME] - Shows the stats of the requested user [READY] 
 
+- v?link [RIOTNAME] - Link your riot account with your discord account [BETA]
+
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
 - v?weapons - Get overview over all available weapons [READY]

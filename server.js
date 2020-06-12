@@ -69,7 +69,7 @@ client.on('guildDelete', g => {
 
 // Commands laden
 let Commands = {};
-['help', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'agent', 'botinfo', 'vote', 'agents', 'status'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
+['help', 'link', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'agent', 'botinfo', 'vote', 'agents', 'status'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('message', message => {
   // Command und Arguments checken
