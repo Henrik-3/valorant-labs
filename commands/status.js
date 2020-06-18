@@ -17,7 +17,6 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.textAlign = textAlign
     ctx.fillText(content, x, y)
   }
-  
     //function for easier text 
     //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
 
@@ -136,49 +135,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       json: true
     })
     
-    ctx.text2("Server Status EU", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-    
     if(eustatus.maintenances.toString() == "" && eustatus.incidents.toString() == "" ) {
-  
+      ctx.text2("Server Status EU", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
       ctx.text3('No Issues on EU Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
-     }
-    
-    console.log(eustatus.incidents.toString())
-    
-    if(eustatus.incidents.toString() != "" ) {
 
-      ctx.text("Issue: " + eustatus.incidents[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff');
-      ctx.text("Posted at: " + moment(eustatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = eustatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)    
-      }
-    
-    if(eustatus.maintenances.toString() != "") {
-      
-
-
-      ctx.text("Issue: " + eustatus.maintenances[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(eustatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = eustatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    
-    //Avatar
+      //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
@@ -194,6 +155,41 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-EU.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
+     }
+    
+    if(eustatus.incidents.toString() != "" ) {
+
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ eustatus.incidents[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(eustatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(eustatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: eustatus.incidents[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: eustatus.incidents[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS EU]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+      }
+    
+    if(eustatus.maintenances.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ eustatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(eustatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(eustatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: eustatus.maintenances[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: eustatus.maintenances[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS EU]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()   
+      }
   }
   
   if (serverregion == "na" || serverregion == "NA" || serverregion == "Na" || serverregion == "nA") {
@@ -203,45 +199,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       json: true
     })
     
-    ctx.text2("Server Status NA", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-    
     if(nastatus.maintenances.toString() == "" && nastatus.incidents.toString() == "") {
+      ctx.text2("Server Status NA", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
       ctx.text3('No Issues on NA Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
-    }
-    
-    if(nastatus.incidents.toString() != "") {
-      ctx.text("Issue: " + nastatus.incidents[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(nastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = nastatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-     
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    if(nastatus.maintenances.toString() != "") {
-      ctx.text("Issue: " + nastatus.maintenances[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(nastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = nastatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    //Avatar
+
+      //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
@@ -257,6 +219,38 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-NA.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
+    }
+    
+    if(nastatus.incidents.toString() != "") {
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ nastatus.incidents[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(nastatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(nastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: nastatus.incidents[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: nastatus.incidents[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS NA]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+      }
+    if(nastatus.maintenances.toString() != "") {
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ nastatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(nastatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(nastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: nastatus.maintenances[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: nastatus.maintenances[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS NA]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+      }
   }
 
   if (serverregion == "AP" || serverregion == "ap" || serverregion == "Ap" || serverregion == "aP" || serverregion == "SEA" || serverregion == "sea" || serverregion == "Sea" || serverregion == "Asia" || serverregion == "ASIA"|| serverregion == "asia") {
@@ -265,48 +259,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       url: `https://valorant.secure.dyn.riotcdn.net/channels/public/x/status/ap.json`,
       json: true
     })
-    
-    ctx.text2("Server Status ASIA/SEA", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-    
+
     if(apstatus.maintenances.toString() == "" && apstatus.incidents.toString() == "" ) {
-  
+      ctx.text2("Server Status ASIA/SEA", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
       ctx.text3('No Issues on ASIA/SEA Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
-     }
-    
-    console.log(apstatus.incidents.toString())
-    
-    if(apstatus.incidents.toString() != "" ) {
 
-      ctx.text("Issue: " + apstatus.incidents[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff');
-      ctx.text("Posted at: " + moment(apstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = apstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)    
-      }
-    
-    if(apstatus.maintenances.toString() != "") {
-
-      ctx.text("Issue: " + apstatus.maintenances[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(apstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = apstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    
-    //Avatar
+      //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
@@ -322,6 +280,41 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-SEA/ASIA.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
+     }
+    
+    if(apstatus.incidents.toString() != "" ) {
+
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ apstatus.incidents[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(apstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(apstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: apstatus.incidents[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: apstatus.incidents[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS ASIA/SEA]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+      }
+    
+    if(apstatus.maintenances.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ apstatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(apstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(apstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: apstatus.maintenances[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: apstatus.maintenances[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS ASIA/SEA]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+      }
   }
 
   if (serverregion == "BR" || serverregion == "br" || serverregion == "Br" || serverregion == "bR" || serverregion == "Brazil" || serverregion == "BRAZIL" || serverregion == "brazil") {
@@ -331,45 +324,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       json: true
     })
     
-    ctx.text2("Server Status Brazil", 140, canvasstats.width / 2, 200, '#ffffff', 'center')
-    
     if(brstatus.maintenances.toString() == "" && brstatus.incidents.toString() == "") {
+      ctx.text2("Server Status Brazil", 140, canvasstats.width / 2, 200, '#ffffff', 'center')
       ctx.text3('No Issues on Brazil Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
-    }
-    
-    if(brstatus.incidents.toString() != "") {
-      ctx.text("Issue: " + brstatus.incidents[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(brstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = brstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-     
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    if(brstatus.maintenances.toString() != "") {
-      ctx.text("Issue: " + brstatus.maintenances[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(brstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = brstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    //Avatar
+
+      //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
@@ -385,6 +344,40 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-BRAZIL.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
+    }
+    
+    if(brstatus.incidents.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ brstatus.incidents[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(brstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(brstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: brstatus.incidents[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: brstatus.incidents[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS BRAZIL]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+      }
+    if(brstatus.maintenances.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+	      .setColor('#FF0000')
+	      .setTitle('Issue: '+ brstatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(brstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(brstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: brstatus.maintenances[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: brstatus.maintenances[0].incident_severity, inline: true}
+        )
+	      .setTimestamp()
+	      .setFooter('VALORANT LABS [STATUS BRAZIL]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+      }
   }
 
   if (serverregion == "KR" || serverregion == "kr" || serverregion == "Kr" || serverregion == "kR" || serverregion == "Korea" || serverregion == "KOREA" || serverregion == "korea") {
@@ -393,46 +386,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       url: `https://valorant.secure.dyn.riotcdn.net/channels/public/x/status/kr.json`,
       json: true
     })
-    
-    ctx.text2("Server Status Korea", 140, canvasstats.width / 2, 200, '#ffffff', 'center')
-    
+
     if(krstatus.maintenances.toString() == "" && krstatus.incidents.toString() == "") {
+      ctx.text2("Server Status Korea", 140, canvasstats.width / 2, 200, '#ffffff', 'center')
       ctx.text3('No Issues on Korea Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
-    }
-    
-    if(krstatus.incidents.toString() != "") {
-      ctx.text("Issue: " + krstatus.incidents[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(krstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = krstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-     
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    if(krstatus.maintenances.toString() != "") {
-      ctx.text("Issue: " + krstatus.maintenances[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(krstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = krstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    //Avatar
+
+      //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
@@ -448,6 +407,40 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-KOREA.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
+    }
+    
+    if(krstatus.incidents.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+        .setColor('#FF0000')
+        .setTitle('Issue: '+ krstatus.incidents[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(krstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(krstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: krstatus.incidents[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: krstatus.incidents[0].incident_severity, inline: true}
+        )
+        .setTimestamp()
+        .setFooter('VALORANT LABS [STATUS KOREA]');
+     message.channel.send(Embed);
+     message.channel.stopTyping()
+      }
+    if(krstatus.maintenances.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+        .setColor('#FF0000')
+        .setTitle('Issue: '+ krstatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(krstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(krstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: krstatus.maintenances[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: krstatus.maintenances[0].incident_severity, inline: true}
+        )
+        .setTimestamp()
+        .setFooter('VALORANT LABS [STATUS BRAZIL]');
+     message.channel.send(Embed);
+     message.channel.stopTyping()
+    }
   }
 
   if (serverregion == "LA" || serverregion == "la" || serverregion == "La" || serverregion == "lA" || serverregion == "LATAM" || serverregion == "Latam" || serverregion == "latam") {
@@ -457,45 +450,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       json: true
     })
     
-    ctx.text2("Server Status Latin America", 100, canvasstats.width / 2, 200, '#ffffff', 'center')
-    
     if(lastatus.maintenances.toString() == "" && lastatus.incidents.toString() == "") {
+      ctx.text2("Server Status Latin America", 100, canvasstats.width / 2, 200, '#ffffff', 'center')
       ctx.text3('No Issues on Latin America Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
-    }
-    
-    if(lastatus.incidents.toString() != "") {
-      ctx.text("Issue: " + lastatus.incidents[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(lastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = lastatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-     
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    if(lastatus.maintenances.toString() != "") {
-      ctx.text("Issue: " + lastatus.maintenances[0].titles.find(c => c.locale == "en_US").content, 130, 340, 550, '#ffffff')
-      ctx.text("Posted at: " + moment(lastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), 90, 340, 750, '#3f888f')
-      
-      var content = lastatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content
-      var contentarray = content.split(" ")
-      contentarray.push(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ")
-      
-      console.log(contentarray[27])
-      
-      ctx.text(contentarray[0] + " " + contentarray[1] + " " + contentarray[2] + " " + contentarray[3] + " " + contentarray[4] + " " + contentarray[5] + " " + contentarray[6] + " " + contentarray[7] + " " + contentarray[8], 110, 340, 1000)
-      ctx.text(contentarray[9] + " " + contentarray[10] + " " + contentarray[11] + " " + contentarray[12] + " " + contentarray[13] + " " + contentarray[14] + " " + contentarray[15] + " " + contentarray[16] + " " + contentarray[17] + " " + contentarray[18] , 110, 340, 1200)
-      ctx.text(contentarray[19] + " " + contentarray[20] + " " + contentarray[21] + " " + contentarray[22] + " " + contentarray[23] + " " + contentarray[24] + " " + contentarray[25] + " " + contentarray[26] + " " + contentarray[27] + " " + contentarray[28] , 110, 340, 1400)
-      ctx.text(contentarray[29] + " " + contentarray[30] + " " + contentarray[31] + " " + contentarray[32] + " " + contentarray[33] + " " + contentarray[34] + " " + contentarray[35] + " " + contentarray[36] + " " + contentarray[37] + " " + contentarray[38] , 110, 340, 1600)
-          
-      }
-    //Avatar
+
+      //Avatar
       // Pick up the pen
 	    ctx.beginPath();
 	    // Start the arc to form a circle
@@ -511,5 +470,39 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-LATIN-AMERICA.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
+    }
+    
+    if(lastatus.incidents.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+        .setColor('#FF0000')
+        .setTitle('Issue: '+ lastatus.incidents[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(lastatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(lastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: lastatus.incidents[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: lastatus.incidents[0].incident_severity, inline: true}
+        )
+        .setTimestamp()
+        .setFooter('VALORANT LABS [STATUS LATIN AMERICA]');
+     message.channel.send(Embed);
+     message.channel.stopTyping()
+      }
+    if(lastatus.maintenances.toString() != "") {
+
+      const Embed = new Discord.MessageEmbed()
+        .setColor('#FF0000')
+        .setTitle('Issue: '+ lastatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
+        .setDescription(lastatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .addFields(
+          { name: 'Posted at:', value: moment(lastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: 'Platforms affected:', value: lastatus.maintenances[0].platforms[0], inline: true},
+          { name: 'Issue Type', value: lastatus.maintenances[0].incident_severity, inline: true}
+        )
+        .setTimestamp()
+        .setFooter('VALORANT LABS [STATUS LATIN AMERICA]');
+     message.channel.send(Embed);
+     message.channel.stopTyping()
+    }
   }
 }
