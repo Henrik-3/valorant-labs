@@ -57,27 +57,23 @@
      if (!args.length) {
        var linkjson = JSON.parse(fs.readFileSync('link.json'))
        var author = message.author.id
-       var name = linkjson[author].ingamename
-       var tag = linkjson[author].ingametag
- 
-       console.log(name)
+       if(!linkjson[author]) {
+         const Embed = new Discord.MessageEmbed()
+             .setColor('#ee3054')
+             .setTitle('Unknown Syntax')
+             .setDescription('Please make sure you have linked your account, or use the right syntax instead as an example \n v?link HenrikX33#KEK3')
+             .setTimestamp()
+             .setFooter('VALORANT LABS [ERROR]')
+         message.channel.send(Embed)
+         message.channel.stopTyping()
+     } else {
  
        /*
      //HTTP GET VALORANT NAME
      const raw = await r({
-       url: `https://api.riotstats.com/player/profile?game=valorant&nickname=${name}&tag=${tag}`,
+       url: `https://api.riotstats.com/player/profile?game=valorant&nickname=${linkjson[author].ingamename}&tag=${linkjson[author].ingametag}`,
        json: true
      })
-     
-     
-     if(raw.error){
-       message.channel.send("Error, this User is not available or typed something wrong. Try again later or correct your mistake. ")
-     }
-     
-     if(raw.data.nickname = 'undefined') {
-       message.channel.send("Error, this User is not available or typed something wrong. Try again later or correct your mistake. ")
-     }
-     // const [answer] = raw
      
      ctx.text2('STATS: ' + raw.data.nickname.catch(err => message.channel.send('test')) + "#" + raw.data.tag, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
      
@@ -124,14 +120,23 @@
        message.channel.send(attachment); //send final result
  
        message.channel.stopTyping()
+     }
      } else {
    
      const nametest = message.content.split(' ');// All arguments behind the command name with the prefix
      const namefinal = nametest[1].split('#')
      const name = namefinal[0];
      const tag = namefinal[1];
- 
-     console.log(name)
+     
+     if(name == null || tag == null) {
+       const Embed = new Discord.MessageEmbed()
+           .setColor('#ee3054')
+           .setTitle('Unknown Syntax')
+           .setDescription('Please make sure you used the right syntax, as an example \n v?stats HenrikX33#KEK3')
+           .setTimestamp()
+           .setFooter('VALORANT LABS [ERROR]')
+       message.channel.send(Embed)
+   }
  
  /*
      //HTTP GET VALORANT NAME
