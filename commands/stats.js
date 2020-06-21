@@ -136,6 +136,7 @@
            .setTimestamp()
            .setFooter('VALORANT LABS [ERROR]')
        message.channel.send(Embed)
+       message.channel.stopTyping()
    }
  
  /*
