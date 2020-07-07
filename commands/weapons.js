@@ -89,7 +89,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       leg: '22',
       range: 'max.50m',
       magsize: '30',
-      firerate: '15.33',
+      firerate: '13.33',
       penetration: 'Medium',
       description: 'Spectre'
     },
@@ -115,7 +115,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       leg: '14',
       range: 'max.50m',
       magsize: '7',
-      firerate: '1.5',
+      firerate: '3.5',
       penetration: 'Medium',
       description: 'Judge'
     },
@@ -134,14 +134,14 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     },
     guardian: {
       type: 'Rifle',
-      cost: '2700',
+      cost: '2500',
       firemode: 'Semi-Auto',
       head: '185',
       body: '35',
       leg: '430',
       range: 'No Limit',
       magsize: '12',
-      firerate: '8.5',
+      firerate: '4.75',
       penetration: 'Medium',
       description: 'Guardian'
     },
@@ -291,12 +291,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       
       ctx.text3("Rifle:", 120, 2500, 425, '#3f888f','center')
       ctx.text("Bulldog - 2100", 100, 2500, 600, '#ffffff', 'center')
-      ctx.text("Guardian - 2700", 100, 2500, 1000, '#ffffff', 'center')
+      ctx.text("Guardian - 2500", 100, 2500, 1000, '#ffffff', 'center')
       ctx.text("Phantom - 2900", 100, 2500, 1400, '#ffffff', 'center')
       ctx.text("Vandal - 2900", 100, 2500, 1800, '#ffffff', 'center')
       
       ctx.text3("Sniper:", 120, 3410, 425, '#3f888f', 'center')
-      ctx.text("Marshall - 1100", 100, 3410, 600, '#ffffff', 'center')
+      ctx.text("Marshal - 1100", 100, 3410, 600, '#ffffff', 'center')
       ctx.text("Operator - 4500", 100, 3410, 900,'#ffffff', 'center')
       ctx.text3("LMG:", 120, 3410, 1225, '#3f888f', 'center')
       ctx.text("Ares - 1600", 100, 3410, 1500, '#ffffff', 'center')
