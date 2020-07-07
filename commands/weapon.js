@@ -29,9 +29,7 @@ module.exports = async (args, client, message) => {
       magsize: '12',
       firerate: '6,75',
       penetration: 'Low',
-      description: 'Classic',
-      url: 'commands/images/classic-model.png',
-      imagesize: '147x113'
+      description: 'Classic'
     },
     shorty: {
       type: 'Sidearm - Shotgun',
@@ -44,9 +42,7 @@ module.exports = async (args, client, message) => {
       magsize: '2',
       firerate: '3,3',
       penetration: 'Low',
-      description: 'Shorty',
-      url: 'commands/images/shorty-model.png',
-      imagesize: '155x50'
+      description: 'Shorty'
     },
     frenzy: {
       type: 'Sidearm - SMG',
@@ -59,9 +55,7 @@ module.exports = async (args, client, message) => {
       magsize: '13',
       firerate: '10',
       penetration: 'Low',
-      description: 'Frenzy',
-      url: 'commands/images/frenzy-model.png',
-      imagesize: '127x97'
+      description: 'Frenzy'
     },
     ghost: {
       type: 'Sidearm - Pistol',
@@ -74,9 +68,7 @@ module.exports = async (args, client, message) => {
       magsize: '15',
       firerate: '6,75',
       penetration: 'Medium',
-      description: 'Ghost',
-      url: 'commands/images/ghost-model.png',
-      imagesize: '109x60'
+      description: 'Ghost'
     },
     sheriff: {
       type: 'Sidearm - Pistol',
@@ -89,9 +81,7 @@ module.exports = async (args, client, message) => {
       magsize: '6',
       firerate: '4',
       penetration: 'High',
-      description: 'Sheriff',
-      url: 'commands/images/sheriff-model.png',
-      imagesize: '125x67'
+      description: 'Sheriff'
     },
     stinger: {
       type: 'SMG',
@@ -104,9 +94,7 @@ module.exports = async (args, client, message) => {
       magsize: '20',
       firerate: '18',
       penetration: 'Low',
-      description: 'Stinger',
-      url: 'commands/images/stinger-model.png',
-      imagesize: '231x95'
+      description: 'Stinger'
     },
     spectre: {
       type: 'SMG',
@@ -117,11 +105,9 @@ module.exports = async (args, client, message) => {
       leg: '22',
       range: 'max.50m',
       magsize: '30',
-      firerate: '15.33',
+      firerate: '13.33',
       penetration: 'Medium',
-      description: 'Spectre',
-      url: 'commands/images/spectre-model.png',
-      imagesize: '232x86'
+      description: 'Spectre'
     },
     bucky: {
       type: 'Shotgun',
@@ -134,9 +120,7 @@ module.exports = async (args, client, message) => {
       magsize: '8',
       firerate: '1.1',
       penetration: 'Low',
-      description: 'Bucky',
-      url: 'commands/images/bucky-model.png',
-      imagesize: '230x43'
+      description: 'Bucky'
     },
     judge: {
       type: 'Shotgun',
@@ -147,11 +131,9 @@ module.exports = async (args, client, message) => {
       leg: '14',
       range: 'max.50m',
       magsize: '7',
-      firerate: '1.5',
+      firerate: '3.5',
       penetration: 'Medium',
-      description: 'Judge',
-      url: 'commands/images/judge-model.png',
-      imagesize: '231x72'
+      description: 'Judge'
     },
     bulldog: {
       type: 'Rifle',
@@ -164,24 +146,20 @@ module.exports = async (args, client, message) => {
       magsize: '24',
       firerate: '9.15',
       penetration: 'Medium',
-      description: 'Bulldog',
-      url: 'commands/images/bulldog-model.png',
-      imagesize: '222x70'
+      description: 'Bulldog'
     },
     guardian: {
       type: 'Rifle',
-      cost: '2700',
+      cost: '2500',
       firemode: 'Semi-Auto',
       head: '185',
       body: '35',
       leg: '430',
       range: 'No Limit',
       magsize: '12',
-      firerate: '8.5',
+      firerate: '4.75',
       penetration: 'Medium',
-      description: 'Guardian',
-      url: 'commands/images/guardian-model.png',
-      imagesize: '231x52'
+      description: 'Guardian'
     },
     phantom: {
       type: 'Rifle',
@@ -194,9 +172,7 @@ module.exports = async (args, client, message) => {
       magsize: '30',
       firerate: '11',
       penetration: 'Medium',
-      description: 'Phantom',
-      url: 'commands/images/phantom-model.png',
-      imagesize: '298x94'
+      description: 'Phantom'
     },
     vandal: {
       type: 'Rifle',
@@ -209,9 +185,7 @@ module.exports = async (args, client, message) => {
       magsize: '25',
       firerate: '9.25',
       penetration: 'Medium',
-      description: 'Vandal',
-      url: 'commands/images/vandal-model.png',
-      imagesize: '231x76'
+      description: 'Vandal'
     },
     marshal: {
       type: 'Sniper',
@@ -224,9 +198,7 @@ module.exports = async (args, client, message) => {
       magsize: '5',
       firerate: '1.5',
       penetration: 'Medium',
-      description: 'Marshal',
-      url: 'commands/images/marshal-model.png',
-      imagesize: '231x40'
+      description: 'Marshal'
     },
     operator: {
       type: 'Sniper',
@@ -239,9 +211,7 @@ module.exports = async (args, client, message) => {
       magsize: '5',
       firerate: '0.75',
       penetration: 'High',
-      description: 'Operator',
-      url: 'commands/images/operator-model.png',
-      imagesize: '231x46'
+      description: 'Operator'
     },
     ares: {
       type: 'LMG',
@@ -254,9 +224,7 @@ module.exports = async (args, client, message) => {
       magsize: '50',
       firerate: '13',
       penetration: 'High',
-      description: 'Ares',
-      url: 'commands/images/ares-model.png',
-      imagesize: '231x47'
+      description: 'Ares'
     },
     odin: {
       type: 'LMG',
@@ -269,9 +237,7 @@ module.exports = async (args, client, message) => {
       magsize: '100',
       firerate: '15.6',
       penetration: 'High',
-      description: 'Odin',
-      url: 'commands/images/odin-model.png',
-      imagesize: '231x65'
+      description: 'Odin'
     },
     knife: {
       type: 'Knife',
@@ -442,12 +408,12 @@ module.exports = async (args, client, message) => {
       
       ctx.text3("Rifle:", 120, 2500, 425, '#3f888f','center')
       ctx.text("Bulldog - 2100", 100, 2500, 600, '#ffffff', 'center')
-      ctx.text("Guardian - 2700", 100, 2500, 1000, '#ffffff', 'center')
+      ctx.text("Guardian - 2500", 100, 2500, 1000, '#ffffff', 'center')
       ctx.text("Phantom - 2900", 100, 2500, 1400, '#ffffff', 'center')
       ctx.text("Vandal - 2900", 100, 2500, 1800, '#ffffff', 'center')
       
       ctx.text3("Sniper:", 120, 3410, 425, '#3f888f', 'center')
-      ctx.text("Marshall - 1100", 100, 3410, 600, '#ffffff', 'center')
+      ctx.text("Marshal - 1100", 100, 3410, 600, '#ffffff', 'center')
       ctx.text("Operator - 4500", 100, 3410, 900,'#ffffff', 'center')
       ctx.text3("LMG:", 120, 3410, 1225, '#3f888f', 'center')
       ctx.text("Ares - 1600", 100, 3410, 1500, '#ffffff', 'center')
