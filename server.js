@@ -23,7 +23,7 @@ const db = require("./db.js")
 
 client.on("ready", () => {
   console.log("Ready")
-  client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')
+  client.user.setActivity(client.guilds.cache.size + ' Servers | Send me a DM with your issues and wishes :D')	
   setInterval(() =>{ 
     dbl.postStats(client.guilds.size)
   }, 180000)
@@ -58,20 +58,100 @@ client.on("ready", () => {
 }
 })
 }, 60000)
+var linkPath = './api.json'
+    var linkRead = fs.readFileSync(linkPath);
+    var linkFile = JSON.parse(linkRead); //ready for use
+    linkFile = {servercount: client.guilds.cache.size, usercount: client.users.cache.size}; //if not, create it
+    fs.writeFileSync(linkPath, JSON.stringify(linkFile, null, 2));
 })
 
 client.on('guildCreate', g => {
-  client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')
+  const DMEmbed = new Discord.MessageEmbed()
+    .setColor('#FFFF00')
+    .setTitle('Message from the VALORANT LABS Creator')
+    .setDescription('Hey, thanks for inviting me to your server. if you have suggestions or found a bug send me them in this channel or in the support server')
+    .addFields(
+      { name: 'Support Server', value: '[Support Server](https://discord.gg/b5FmTqG)', inline: true},
+    )
+  client.users.cache.get(g.ownerID).send(DMEmbed)
+  const Embed = new Discord.MessageEmbed()
+    .setColor('#00ff00')
+    .setTitle(`Neuer Server: ${g.name}`)
+    .setThumbnail(g.iconURL())
+    .addFields(
+      { name: 'ID', value: g.id, inline: true},
+      { name: 'MemberCount', value: g.memberCount, inline: true},
+      { name: 'Region', value: g.region, inline: true},
+      { name: 'OwnerID', value: g.ownerID, inline: true},
+      { name: 'Server Boost Level', value: g.premiumTier, inline: true},
+    )
+    .setTimestamp()
+    .setFooter('VALORANT LABS [INVITE SYSTEM]');
+  client.channels.cache.get('CHANNEL ID').send(Embed)
+  client.user.setActivity(client.guilds.cache.size + ' Servers | Send me a DM with your issues and wishes :D')
+  var linkPath = './api.json'
+  var linkRead = fs.readFileSync(linkPath);
+  var linkFile = JSON.parse(linkRead); //ready for use
+  linkFile = {servercount: client.guilds.cache.size, usercount: client.users.cache.size}; //if not, create it
+  fs.writeFileSync(linkPath, JSON.stringify(linkFile, null, 2));
 })
 
 client.on('guildDelete', g => {
-  client.user.setActivity('v?help | ' + client.guilds.cache.size + ' Servers')})
+  const DMEmbed = new Discord.MessageEmbed()
+    .setColor('#FFFF00')
+    .setTitle('Message from the VALORANT LABS Creator')
+    .setDescription('Hey, i saw that you removed VALORANT LABS from your server, do you wanna tell me why so that i can improve the bot or add features that are missing? \n If yes, please write here in the chat your wishes or improvments or send me a DM if you want to discuss with me directly: Henrik3#1451')
+    .addFields(
+      { name: 'Support Server', value: '[Support Server](https://discord.gg/b5FmTqG)', inline: true},
+    )
+    client.users.cache.get(g.ownerID).send(DMEmbed)
+  const Embed = new Discord.MessageEmbed()
+    .setColor('#FF0000')
+    .setTitle(`Server Verlassen: ${g.name}`)
+    .setThumbnail(g.iconURL())
+    .addFields(
+      { name: 'ID', value: g.id, inline: true},
+      { name: 'MemberCount', value: g.memberCount, inline: true},
+      { name: 'Region', value: g.region, inline: true},
+      { name: 'OwnerID', value: g.ownerID, inline: true},
+      { name: 'Server Boost Level', value: g.premiumTier, inline: true},
+    )
+    .setTimestamp()
+    .setFooter('VALORANT LABS [INVITE SYSTEM]');
+  client.channels.cache.get('CHANNEL ID').send(Embed)
+  client.user.setActivity(client.guilds.cache.size + ' Servers | Send me a DM with your issues and wishes :D')
+    var linkPath = './api.json'
+    var linkRead = fs.readFileSync(linkPath);
+    var linkFile = JSON.parse(linkRead); //ready for use
+    linkFile = {servercount: client.guilds.cache.size, usercount: client.users.cache.size}; //if not, create it
+    fs.writeFileSync(linkPath, JSON.stringify(linkFile, null, 2));
+})
+
+client.on('message', message => {
+  if(message.author.id == "BOT OWNER ID" && message.content.startsWith('!labs') ) {
+    const args = message.content.split(' ')
+    console.log(args)
+    var userID = args[1]
+    args.shift()
+    args.shift()
+    console.log(userID)
+    const Embed = new Discord.MessageEmbed()
+    .setColor('#FFFF00')
+    .setTitle('Answer from the VALORANT LABS Creator')
+    .setDescription(args.join(' ').toString())
+    client.users.cache.get(userID).send(Embed)
+    client.channels.cache.get('CHANNEL ID').send('Message Successfully Send')
+  } else {
+    return;
+  }
+})
 
 // Commands laden
 let Commands = {};
 ['help', 'link', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'agent', 'botinfo', 'vote', 'agents', 'status'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('message', message => {
+  if(message.channel.type !== "dm") {
   // Command und Arguments checken
   const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
   if (message.content.toLowerCase().startsWith(prefix)) {
@@ -87,6 +167,13 @@ client.on('message', message => {
      } else {
         // Gibt es nicht
      }
+  } 
+ } else if(message.channel.type === "dm" && message.author.id != "AUTHOR ID" && message.author.id != "AUTHOR ID") {
+    const Embed = new Discord.MessageEmbed()
+    .setColor('#FFFF00')
+    .setTitle('Nachricht von ' + message.author.username + '#' + message.author.discriminator + ' | ID: ' + message.author.id)
+    .setDescription(message.content)
+    client.channels.cache.get('CHANNEL ID').send(Embed)
   }
 })
 
