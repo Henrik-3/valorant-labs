@@ -1,30 +1,27 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v1.02 Patch** 
+**VALORANT LABS** | **Discord Verified** | **All Data based on v1.03 Patch** 
 
-If you use code from my bot, please credit it somewhere in your app/product
 
-[INVITE THE BOT HERE](https://top.gg/bot/702201518329430117)
+**Help us translate this Project: ** [https://poeditor.com/join/project/JxdEISEPNU](https://poeditor.com/join/project/JxdEISEPNU)
 
 We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
 
-Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://discord.com/oauth2/authorize?client_id=717337318222069842&permissions=388289&scope=bot)
+Design by ouihq#1640, check out his Discord Bot: [IGNITION](https://top.gg/bot/717337318222069842)
 
 
 **LAST UPDATE:**
 
-- Added link command to link your Riotaccount with your Discord account 
+- Multi Language support (currently DE and EN)
 
-- Redesign + Added AutoNews [BETA]
-
-- Update from discord.js v11 to v12 (improved reaction speed and stability)
+- AutoNews redesign for multiple languages [BETA]
 
 
 ***Commands:***
 
 - v?help - Shows the help message [READY]
 
-- [!] v?stats [RIOTNAME] - Shows the stats of the requested user [READY] 
+- [!] v?stats [RIOT ID] - Shows the stats of the requested user [Waiting for API] 
 
-- v?link [RIOTNAME] - Link your riot account with your discord account [BETA]
+- v?link [RIOT ID] - Link your riot account with your discord account [READY]
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
@@ -49,6 +46,8 @@ Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://disco
 - v?vote - Get the Vote Link [READY]
 
 - v?status - Shows overview for server regions to choose from [BETA]
+
+- v?settings lang [de/en] - Set Bot Language [BETA]
 
  <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496044471812146/valorant-help.png" alt="VALORANT LABS HELP 1">
  <img src="https://cdn.discordapp.com/attachments/702435906757328897/720969867704008795/valorant-help2.png" alt="VALORANT LABS HELP 2">
