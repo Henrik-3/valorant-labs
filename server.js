@@ -20,6 +20,8 @@ const dbl = new DBL(config.dbltoken, client)
 //db
 const db = require("./db.js")
 
+// dev log
+const log = new Discord.WebhookClient('705516506557055067', '8wWaNoFx5zc_E1GXxoWnN5RufaPocxCKGtAE3D6EZxTgoBC7xoaV72VvVTQnFRoTWJNn')
 
 client.on("ready", () => {
   console.log("Ready")
@@ -28,7 +30,7 @@ client.on("ready", () => {
     dbl.postStats(client.guilds.size)
   }, 180000)
  setInterval (function() {
-  require('./autonews/check.js')().then(data => {
+  require('./autonews/check-en.js')().then(data => {
     console.log(data)
   if (data.article) {
     const Embed = new Discord.MessageEmbed()
@@ -41,10 +43,9 @@ client.on("ready", () => {
 	  .setFooter('VALORANT LABS');
     
     const settings = require('./db.json');
-    
   
     // Filter for Guilds with Newschannel
-    Object.keys(settings).filter(guild => settings[guild].news).forEach(guild => {
+    Object.keys(settings).filter(guild => settings[guild].news && settings[guild].lang == 'en').forEach(guild => {
       let channel = settings[guild].news.replace(/[^0-9]/g, '') // Replace all non-numbers
       guild = client.guilds.cache.get(guild)
       if (guild) {
@@ -54,10 +55,40 @@ client.on("ready", () => {
         }
       }
     })
-  
 }
 })
 }, 60000)
+setInterval (function() {
+  require('./autonews/check-de.js')().then(data => {
+    console.log(data)
+  if (data.article) {
+    const Embed = new Discord.MessageEmbed()
+	  .setColor('#ee3054')
+    .setDescription(data.article.description)
+	  .setTitle(data.article.title)
+	  .setURL(data.article.link)
+  	.setImage(data.article.banner)
+	  .setTimestamp()
+	  .setFooter('VALORANT LABS');
+    
+    const settings = require('./db.json');
+  
+    // Filter for Guilds with Newschannel
+    Object.keys(settings).filter(guild => settings[guild].news && settings[guild].lang == 'de').forEach(guild => {
+      let channel = settings[guild].news.replace(/[^0-9]/g, '') // Replace all non-numbers
+      guild = client.guilds.cache.get(guild)
+      if (guild) {
+        channel = guild.channels.cache.get(channel)
+        if (channel) {
+          channel.send({ embed: Embed })
+        }
+      }
+    })
+  }
+})
+}, 60000)
+
+
 var linkPath = './api.json'
     var linkRead = fs.readFileSync(linkPath);
     var linkFile = JSON.parse(linkRead); //ready for use
@@ -87,7 +118,8 @@ client.on('guildCreate', g => {
     )
     .setTimestamp()
     .setFooter('VALORANT LABS [INVITE SYSTEM]');
-  client.channels.cache.get('CHANNEL ID').send(Embed)
+  //client.channels.cache.get('705516325455528047').send(Embed)
+  client.channels.cache.get('702435906757328897').send(Embed)
   client.user.setActivity(client.guilds.cache.size + ' Servers | Send me a DM with your issues and wishes :D')
   var linkPath = './api.json'
   var linkRead = fs.readFileSync(linkPath);
@@ -118,7 +150,8 @@ client.on('guildDelete', g => {
     )
     .setTimestamp()
     .setFooter('VALORANT LABS [INVITE SYSTEM]');
-  client.channels.cache.get('CHANNEL ID').send(Embed)
+  //client.channels.cache.get('705516325455528047').send(Embed)
+  client.channels.cache.get('702435906757328897').send(Embed)
   client.user.setActivity(client.guilds.cache.size + ' Servers | Send me a DM with your issues and wishes :D')
     var linkPath = './api.json'
     var linkRead = fs.readFileSync(linkPath);
@@ -128,7 +161,7 @@ client.on('guildDelete', g => {
 })
 
 client.on('message', message => {
-  if(message.author.id == "BOT OWNER ID" && message.content.startsWith('!labs') ) {
+  if(message.author.id == "346345363990380546" && message.content.startsWith('!labs') ) {
     const args = message.content.split(' ')
     console.log(args)
     var userID = args[1]
@@ -140,7 +173,7 @@ client.on('message', message => {
     .setTitle('Answer from the VALORANT LABS Creator')
     .setDescription(args.join(' ').toString())
     client.users.cache.get(userID).send(Embed)
-    client.channels.cache.get('CHANNEL ID').send('Message Successfully Send')
+    client.channels.cache.get('729387358247714938').send('Message Successfully Send')
   } else {
     return;
   }
@@ -168,12 +201,12 @@ client.on('message', message => {
         // Gibt es nicht
      }
   } 
- } else if(message.channel.type === "dm" && message.author.id != "AUTHOR ID" && message.author.id != "AUTHOR ID") {
+ } else if(message.channel.type === "dm" && message.author.id != "706138094956707861" && message.author.id != "702201518329430117") {
     const Embed = new Discord.MessageEmbed()
     .setColor('#FFFF00')
     .setTitle('Nachricht von ' + message.author.username + '#' + message.author.discriminator + ' | ID: ' + message.author.id)
     .setDescription(message.content)
-    client.channels.cache.get('CHANNEL ID').send(Embed)
+    client.channels.cache.get('729387358247714938').send(Embed)
   }
 })
 
@@ -206,7 +239,7 @@ web.get('/ping', (req, res) => res.send('Ok'))
 
 web.get('/article', require('./autonews/redirect.js'))
 
-const News = require('./autonews/check.js')
+const News = require('./autonews/check-en.js')
 
 web.get('/check', async (req, res) => {
   const news = await News()

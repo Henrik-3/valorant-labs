@@ -10,7 +10,6 @@ const Discord = require('discord.js')
 
 const db = require('../db.js')
 
-
 Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
 
 
@@ -290,6 +289,8 @@ module.exports = async (args, client, message) => {
   const background = await Canvas.loadImage("commands/images/Valorant_LABS.png"); //load background from url
   ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
+    var lang = db.get(`${message.guild.id}.lang`) || 'en'
+
     const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
     // Cut start to get the name
     const name = message.content.toLowerCase().substr(prefix.length + 7)
@@ -297,6 +298,7 @@ module.exports = async (args, client, message) => {
     const weapon = Weapons[name]
     //check if weapon exist
     if (weapon) {
+      if(lang == 'en') {
       ctx.text2('STATS: ' + weapon.description, 160, canvasstats.width / 2, 190, '#ffffff', 'center')
       ctx.text('Type: ', 110, 340, 450, '#3f888f')
       ctx.text(weapon.type, 110, 615, 450)
@@ -388,7 +390,100 @@ module.exports = async (args, client, message) => {
         const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
         ctx.drawImage(weaponimage, 2600, 950, 924, 260); // displays mapap
       }
+    } else if (lang == 'de') {
+      ctx.text2('STATS: ' + weapon.description, 160, canvasstats.width / 2, 190, '#ffffff', 'center')
+      ctx.text('Typ: ', 110, 340, 450, '#3f888f')
+      ctx.text(weapon.type, 110, 575, 450)
+      ctx.text('Kosten: ', 110, 340, 750, '#3f888f')
+      ctx.text(weapon.cost, 110, 725, 750)
+      ctx.text('Feuermodus:  ', 110, 340, 1050, '#3f888f')
+      ctx.text(weapon.firemode, 110, 990, 1050)
+      ctx.text('Reichweite: ', 110, 340, 1350, '#3f888f')
+      ctx.text(weapon.range, 110, 925, 1350)
+      ctx.text('Magazingroese: ', 110, 340, 1650, '#3f888f')
+      ctx.text(weapon.magsize, 110, 1120, 1650)
       
+      ctx.text('Kopf: ', 110, 1800, 450, '#3f888f')
+      ctx.text(weapon.head, 110, 2075, 450)
+      ctx.text('Koerper: ', 110, 1800, 750, '#3f888f')
+      ctx.text(weapon.body, 110, 2230, 750)
+      ctx.text('Bein: ', 110, 1800, 1050, '#3f888f')
+      ctx.text(weapon.leg, 110, 2050, 1050)
+      ctx.text('Feuerrate: ', 110, 1800, 1350, '#3f888f')
+      ctx.text(weapon.firerate, 110, 2310, 1350)
+      ctx.text('Durchschuss: ', 110, 1800, 1650, '#3f888f')
+      ctx.text(weapon.penetration, 110, 2485, 1650, weapon.penetration == 'Low' ? '#ff0000' : weapon.penetration == 'Medium' ? '#FFFF00' : weapon.penetration == 'High' ? '#008000' : '#ffffff')
+      
+      if(weapon.imagesize == '147x113') { //Classic
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 900, 588, 452); // displays mapap
+      }
+      if(weapon.imagesize == '155x50') { //Shorty
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 950, 620, 200); // displays mapap
+      }
+      if(weapon.imagesize == '127x97') { //Frenzy
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 850, 635, 582); // displays mapap
+      }
+      if(weapon.imagesize == '109x60') { //Ghost
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 850, 654, 360); // displays mapap
+      }
+      if(weapon.imagesize == '125x67') { //Sheriff
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2700, 900, 625, 335); // displays mapap
+      }
+      if(weapon.imagesize == '231x95') { //Stinger
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 380); // displays mapap
+      }
+      if(weapon.imagesize == '232x86') { //Spectre
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 928, 344); // displays mapap
+      }
+      if(weapon.imagesize == '230x43') { //Bucky
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 920, 172); // displays mapap
+      }
+      if(weapon.imagesize == '231x72') { //Judge
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 288); // displays mapap
+      }
+      if(weapon.imagesize == '222x70') { //Bulldog
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 999, 315); // displays mapap
+      }
+      if(weapon.imagesize == '231x52') { //Guardian
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 208); // displays mapap
+      }
+      if(weapon.imagesize == '298x94') { //Phantom
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 1043, 329); // displays mapap
+      }
+      if(weapon.imagesize == '231x76') { //Vandal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 304); // displays mapap
+      }
+      if(weapon.imagesize == '231x40') { //Marshal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 900, 924, 160); // displays mapap
+      }
+      if(weapon.imagesize == '231x46') { //Operator
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 1000, 924, 184); // displays mapap
+      }
+      if(weapon.imagesize == '231x47') { //Vandal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 1000, 924, 188); // displays mapap
+      }
+      if(weapon.imagesize == '231x65') { //Vandal
+        const weaponimage = await Canvas.loadImage(weapon.url); //load map from url
+        ctx.drawImage(weaponimage, 2600, 950, 924, 260); // displays mapap
+      }
+
+    }
     } else {
       //No info for this Weapon
       ctx.text2('Weapon Overview', 140, 1890, 130, '#ffffff', 'center')

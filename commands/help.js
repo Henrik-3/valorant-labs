@@ -1,4 +1,5 @@
 
+const fs = require('fs');
 module.exports = async (args, client, message, { Canvas, Discord }) => {
  
     
@@ -42,40 +43,42 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   
     const db = require('../db.js')
     const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
+    var lang = db.get(`${message.guild.id}.lang`) || 'en'
+    var linkjson = JSON.parse(fs.readFileSync('lang.json'))
     
     
     //Text Help Overwiew
-    ctx.text2('Help Overview', 180, 200, 800, '#ffffff', 'center')
+    ctx.text2(linkjson[lang].helpoverview, 180, 200, 800, '#ffffff', 'center')
   
     //Text Commands:
     ctx.text('Commands:', 140, 350, 250)
   
     //Text Help Command 
-    ctx.text('- ' + prefix + 'help - Shows the help message', 110, 350 , 450)
+    ctx.text('- ' + prefix + 'help - ' + linkjson[lang].helphelp, 110, 350 , 450)
   
     //Text Stats Command
-    ctx.text('- ' + prefix + 'stats [RIOTNAME] - Shows the stats of the requested user', 110, 350 , 650)
+    ctx.text('- ' + prefix + 'stats [RIOTNAME] - ' + linkjson[lang].helpstats, 110, 350 , 650)
   
     //Text Weapon Command:
-    ctx.text('- ' + prefix + 'weapon [WEAPON NAME] - Get stats for requested weapon', 110, 350 , 850)
+    ctx.text('- ' + prefix + 'weapon [WEAPON NAME] - ' + linkjson[lang].helpweapon, 110, 350 , 850)
   
     //Text Ranked Command:
-    ctx.text('- ' + prefix + 'settings news [#CHANNEL] - Set news channel', 110, 350 , 1650)
+    ctx.text('- ' + prefix + 'settings news [#CHANNEL] - ' + linkjson[lang].helpnews, 110, 350 , 1650)
   
     //text settings command:
-    ctx.text('- ' + prefix + 'settings - Get overview over the settings', 110, 350, 1250)
+    ctx.text('- ' + prefix + 'settings - ' + linkjson[lang].helpsettings, 110, 350, 1250)
   
      //text prefix command:
-    ctx.text('- ' + prefix + 'settings prefix [NEW PREFIX] - Set new prefix', 110, 350, 1450)
+    ctx.text('- ' + prefix + 'settings prefix [NEW PREFIX] - ' + linkjson[lang].helpprefix, 110, 350, 1450)
   
     //text patch command  
-    ctx.text('- ' + prefix + 'weapons - Get overview over all available weapons', 110, 350, 1050)
+    ctx.text('- ' + prefix + 'weapons - ' + linkjson[lang].helpweapons, 110, 350, 1050)
   
     //Text Autonews:
-    ctx.text('- ' + prefix + 'help2 - Shows the next help page', 110, 350, 1850, '#3f888f')
+    ctx.text('- ' + prefix + 'help2 - ' + linkjson[lang].helphelp2, 110, 350, 1850, '#3f888f')
 
     
-    ctx.text('Design by ouihq - Check out his Reyna Bot', 60, 2675, 2100, '#ffffff')
+    ctx.text(linkjson[lang].helpdesign, 60, 2300, 2100, '#ffffff')
 
    //Avatar
       // Pick up the pen

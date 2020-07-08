@@ -9,6 +9,7 @@
     "discord.js": "^12.2.0",
     "download": "^8.0.0",
     "express": "^4.17.1",
+    "http-server": "^0.12.3",
     "lowdb": "^1.0.0",
     "moment": "^2.26.0",
     "node-fetch": "^2.6.0",

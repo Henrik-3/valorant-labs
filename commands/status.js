@@ -1,5 +1,6 @@
 const r = require('request-promise')
 const moment = require('moment')
+const fs = require('fs')
 
 module.exports = async (args, client, message, { Canvas, Discord }) => {
   message.channel.startTyping()
@@ -49,10 +50,14 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     message.channel.stopTyping()
     } */
 
+  const db = require('../db.js')
+  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var linkjson = JSON.parse(fs.readFileSync('lang.json'))
+
   if(serverregion == "na" || serverregion == "NA" || serverregion == "Na" || serverregion == "nA" || serverregion == "eu" || serverregion == "EU" || serverregion == "Eu" || serverregion == "eU" || serverregion == "AP" || serverregion == "ap" || serverregion == "Ap" || serverregion == "aP" || serverregion == "SEA" || serverregion == "sea" || serverregion == "Sea" || serverregion == "Asia" || serverregion == "ASIA"|| serverregion == "asia" || serverregion == "BR" || serverregion == "br" || serverregion == "Br" || serverregion == "bR" || serverregion == "Brazil" || serverregion == "BRAZIL" || serverregion == "brazil" || serverregion == "KR" || serverregion == "kr" || serverregion == "Kr" || serverregion == "kR" || serverregion == "Korea" || serverregion == "KOREA" || serverregion == "korea" || serverregion == "LA" || serverregion == "la" || serverregion == "La" || serverregion == "lA" || serverregion == "LATAM" || serverregion == "Latam" || serverregion == "latam") {
   } else {
-    ctx.text2('No Valid Region', 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-    ctx.text3('Overview for Regions: ', 140, canvasstats.width / 2, 210, '#ffffff', 'center')
+    ctx.text2(linkjson[lang].statusinvalidregion, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
+    ctx.text3(linkjson[lang].statusinvalidoverview, 140, canvasstats.width / 2, 210, '#ffffff', 'center')
 
     ctx.text3('Europe', 110, 350, 500)
     ctx.text3('North America', 110, 350, 750)
@@ -136,8 +141,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     })
     
     if(eustatus.maintenances.toString() == "" && eustatus.incidents.toString() == "" ) {
-      ctx.text2("Server Status EU", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text3('No Issues on EU Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2(linkjson[lang].statuseu, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text3(linkjson[lang].statuseuokay, 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
       //Avatar
       // Pick up the pen
@@ -161,12 +166,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ eustatus.incidents[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(eustatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + eustatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(eustatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(eustatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: eustatus.incidents[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: eustatus.incidents[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(eustatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: eustatus.incidents[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: eustatus.incidents[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS EU]');
@@ -178,12 +183,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ eustatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(eustatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + eustatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(eustatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(eustatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: eustatus.maintenances[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: eustatus.maintenances[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(eustatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: eustatus.maintenances[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: eustatus.maintenances[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS EU]');
@@ -200,8 +205,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     })
     
     if(nastatus.maintenances.toString() == "" && nastatus.incidents.toString() == "") {
-      ctx.text2("Server Status NA", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text3('No Issues on NA Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2(linkjson[lang].statusna, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text3(linkjson[lang].statusnaokay, 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
       //Avatar
       // Pick up the pen
@@ -224,12 +229,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     if(nastatus.incidents.toString() != "") {
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ nastatus.incidents[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(nastatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + nastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(nastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(nastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: nastatus.incidents[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: nastatus.incidents[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(nastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: nastatus.incidents[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: nastatus.incidents[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS NA]');
@@ -239,12 +244,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     if(nastatus.maintenances.toString() != "") {
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ nastatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(nastatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + nastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(nastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(nastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: nastatus.maintenances[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: nastatus.maintenances[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(nastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: nastatus.maintenances[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: nastatus.maintenances[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS NA]');
@@ -261,8 +266,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     })
 
     if(apstatus.maintenances.toString() == "" && apstatus.incidents.toString() == "" ) {
-      ctx.text2("Server Status ASIA/SEA", 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text3('No Issues on ASIA/SEA Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2(linkjson[lang].statusap, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text3(linkjson[lang].statusapokay, 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
       //Avatar
       // Pick up the pen
@@ -286,12 +291,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ apstatus.incidents[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(apstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + apstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(apstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(apstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: apstatus.incidents[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: apstatus.incidents[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(apstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: apstatus.incidents[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: apstatus.incidents[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS ASIA/SEA]');
@@ -303,12 +308,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ apstatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(apstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + apstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(apstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(apstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: apstatus.maintenances[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: apstatus.maintenances[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(apstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: apstatus.maintenances[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: apstatus.maintenances[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS ASIA/SEA]');
@@ -325,8 +330,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     })
     
     if(brstatus.maintenances.toString() == "" && brstatus.incidents.toString() == "") {
-      ctx.text2("Server Status Brazil", 140, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text3('No Issues on Brazil Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2(linkjson[lang].statusbr, 140, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text3(linkjson[lang].statusbrokay, 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
       //Avatar
       // Pick up the pen
@@ -350,12 +355,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ brstatus.incidents[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(brstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + brstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(brstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(brstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: brstatus.incidents[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: brstatus.incidents[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(brstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: brstatus.incidents[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: brstatus.incidents[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS BRAZIL]');
@@ -366,12 +371,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
 	      .setColor('#FF0000')
-	      .setTitle('Issue: '+ brstatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(brstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+	      .setTitle(linkjson[lang].statusissue + brstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(brstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(brstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: brstatus.maintenances[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: brstatus.maintenances[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(brstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: brstatus.maintenances[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: brstatus.maintenances[0].incident_severity, inline: true}
         )
 	      .setTimestamp()
 	      .setFooter('VALORANT LABS [STATUS BRAZIL]');
@@ -388,8 +393,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     })
 
     if(krstatus.maintenances.toString() == "" && krstatus.incidents.toString() == "") {
-      ctx.text2("Server Status Korea", 140, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text3('No Issues on Korea Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2(linkjson[lang].statuskr, 140, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text3(linkjson[lang].statuskrokay, 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
       //Avatar
       // Pick up the pen
@@ -413,12 +418,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
         .setColor('#FF0000')
-        .setTitle('Issue: '+ krstatus.incidents[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(krstatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .setTitle(linkjson[lang].statusissue + krstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(krstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(krstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: krstatus.incidents[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: krstatus.incidents[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(krstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: krstatus.incidents[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: krstatus.incidents[0].incident_severity, inline: true}
         )
         .setTimestamp()
         .setFooter('VALORANT LABS [STATUS KOREA]');
@@ -429,12 +434,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
         .setColor('#FF0000')
-        .setTitle('Issue: '+ krstatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(krstatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .setTitle(linkjson[lang].statusissue + krstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(krstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(krstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: krstatus.maintenances[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: krstatus.maintenances[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(krstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: krstatus.maintenances[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: krstatus.maintenances[0].incident_severity, inline: true}
         )
         .setTimestamp()
         .setFooter('VALORANT LABS [STATUS BRAZIL]');
@@ -451,8 +456,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     })
     
     if(lastatus.maintenances.toString() == "" && lastatus.incidents.toString() == "") {
-      ctx.text2("Server Status Latin America", 100, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text3('No Issues on Latin America Servers', 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2(linkjson[lang].statusla, 100, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text3(linkjson[lang].statuslaokay, 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
 
       //Avatar
       // Pick up the pen
@@ -476,12 +481,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
         .setColor('#FF0000')
-        .setTitle('Issue: '+ lastatus.incidents[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(lastatus.incidents[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .setTitle(linkjson[lang].statusissue + lastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(lastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(lastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: lastatus.incidents[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: lastatus.incidents[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(lastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: lastatus.incidents[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: lastatus.incidents[0].incident_severity, inline: true}
         )
         .setTimestamp()
         .setFooter('VALORANT LABS [STATUS LATIN AMERICA]');
@@ -492,12 +497,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       const Embed = new Discord.MessageEmbed()
         .setColor('#FF0000')
-        .setTitle('Issue: '+ lastatus.maintenances[0].titles.find(c => c.locale == "en_US").content)
-        .setDescription(lastatus.maintenances[0].updates[0].translations.find(c => c.locale == "en_US").content)
+        .setTitle(linkjson[lang].statusissue + lastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
+        .setDescription(lastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
         .addFields(
-          { name: 'Posted at:', value: moment(lastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: 'Platforms affected:', value: lastatus.maintenances[0].platforms[0], inline: true},
-          { name: 'Issue Type', value: lastatus.maintenances[0].incident_severity, inline: true}
+          { name: linkjson[lang].statuspostedat, value: moment(lastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
+          { name: linkjson[lang].statusplatforms, value: lastatus.maintenances[0].platforms[0], inline: true},
+          { name: linkjson[lang].statusissuetype, value: lastatus.maintenances[0].incident_severity, inline: true}
         )
         .setTimestamp()
         .setFooter('VALORANT LABS [STATUS LATIN AMERICA]');

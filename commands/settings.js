@@ -1,9 +1,12 @@
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 // Database
+const Discord = require("discord.js");
+const fs = require('fs');
 const db = require('../db.js')
 const Default = {
   prefix: 'v?',
-  news: false
+  news: false,
+  lang: 'en',
 }
 
 // System Funktionen
@@ -20,10 +23,10 @@ function write(id, value) {
 
 // Nutzer Funktionen
 // Macht ein Embed aus den Einstellungen
-function Embed({ guild, settings }) {
+function Embed({ guild, settings, message }) {
   return {
     title: 'Valorant Lab',
-    description: `Settings for ${guild.name}`,
+    description: 'Settings for '  + guild.name,
     fields: Object.keys(settings).map(k => {
       return {
         name: k,
@@ -60,6 +63,8 @@ function get(message, key) {
 }
 
 function set(message, key, value) {
+  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var linkjson = JSON.parse(fs.readFileSync('lang.json'))
   // Check Existance
   if (Object.keys(Default).includes(key)) {
     // Check Permission or Admin or Owner
@@ -67,7 +72,7 @@ function set(message, key, value) {
      write(message.guild.id, { ...read(message.guild.id), ...{ [key]: value }})
      getAll(message)
    } else {
-     message.channel.send('You don\'t have the `Manage Guild`-Permission. Please ask a Admin to change this')
+     message.channel.send(linkjson[lang].settingspermission)
    }
   } else {
     message.channel.send(`Can not find Category \`${key}\`.`)
@@ -77,6 +82,8 @@ function set(message, key, value) {
 
 
 module.exports = (args, client, message) => {
+  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var linkjson = JSON.parse(fs.readFileSync('lang.json'))
   if (args[0]) {
     if (args[1]) {
       // Database write

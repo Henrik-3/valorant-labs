@@ -336,7 +336,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 5;
       ctx.stroke();
-  
+        
       //Avatar
       // Pick up the pen
 	    ctx.beginPath();

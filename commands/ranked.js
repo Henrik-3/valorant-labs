@@ -1,5 +1,5 @@
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
-
+const fs = require('fs')
 module.exports = async (args, client, message, { Canvas, Discord }) => {
     message.channel.startTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
@@ -37,9 +37,12 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.textAlign = textAlign
     ctx.fillText(content , x, y);
   }
-  
+    const db = require('../db.js')
+    var lang = db.get(`${message.guild.id}.lang`) || 'en'
+    var linkjson = JSON.parse(fs.readFileSync('lang.json'))
+
     //ranked
-    ctx.text2('Ranked Overview', 150, canvasstats.width / 2, 175, '#ffffff', 'center')
+    ctx.text2(linkjson[lang].rankoverview, 150, canvasstats.width / 2, 175, '#ffffff', 'center')
       
     const rankedimage = await Canvas.loadImage("commands/images/VALORANT_RANK.jpg");
     ctx.drawImage(rankedimage, 550, 250, 2880, 1620)
