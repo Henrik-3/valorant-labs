@@ -1,5 +1,9 @@
 **VALORANT LABS** | **Discord Verified** | **All Data based on v1.03 Patch** 
 
+Invite LINK:  [https://discord.com/oauth2/authorize?client_id=702201518329430117&scope=bot&permissions=116736](https://discord.com/oauth2/authorize?client_id=702201518329430117&scope=bot&permissions=116736)
+
+top.gg Link: [https://top.gg/bot/702201518329430117](https://top.gg/bot/702201518329430117)
+
 
 **Help us translate this Project: ** [https://poeditor.com/join/project/JxdEISEPNU](https://poeditor.com/join/project/JxdEISEPNU)
 
