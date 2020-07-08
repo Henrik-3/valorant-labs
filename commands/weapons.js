@@ -1,6 +1,6 @@
 module.exports = async (args, client, message, { Canvas, Discord }) => {
   message.channel.startTyping()
-    //can also be added to an config file
+
   const Weapons = {
     classic: {
       type: 'Sidearm - Pistol',
@@ -272,7 +272,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.textAlign = textAlign
     ctx.fillText(content , x, y);
   }
-  
+
          //No info for this Weapon
       ctx.text2('Weapon Overview', 140, 1890, 130, '#ffffff', 'center')
       ctx.text3("Sidearm:", 120, 580, 425, '#3f888f', 'center')
