@@ -1,4 +1,8 @@
 module.exports = async (args, client, message, { Canvas, Discord }) => {
+  const db = require('../db.js')
+  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var linkjson = JSON.parse(fs.readFileSync('lang.json'))
+
     message.channel.startTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
@@ -35,8 +39,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.textAlign = textAlign
     ctx.fillText(content , x, y);
   }
-
-   const db = require('../db.js')    
+   
     const Maps = {
     bind: {
       name: 'Bind',
@@ -56,7 +59,15 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     },
 }
   
-    
+    if(!args.length) {
+      const Embed = new Discord.MessageEmbed()
+        .setColor('#ee3054')
+        .setTitle(linkjson[lang].mapunknown)
+        .setTimestamp()
+        .setFooter('VALORANT LABS [MAP ERROR]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+    }
     
     const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
     // Cut start to get the name
@@ -70,17 +81,6 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
       ctx.drawImage(mapimage, 1100, 50, 2000, 2000); // displays map
       ctx.text('Source: https://blitz.gg/valorant/maps', 60, 350, 2110)
-    } /*else {
-       const Embed = new Discord.MessageEmbed()
-	  .setColor('#ee3054')
-    	  .setDescription('Please provide a valid map name')
-	  .setTitle('No Map Found')
-	  .setTimestamp()
-	  .setFooter('VALORANT LABS');
-  	   message.channel.send(Embed);
-	   message.channel.stopTyping()
- } */
-
 
        //Avatar
       // Pick up the pen
@@ -99,4 +99,13 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-map.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
+  } else {
+    const Embed = new Discord.MessageEmbed()
+        .setColor('#ee3054')
+        .setTitle(linkjson[lang].mapunknown)
+        .setTimestamp()
+        .setFooter('VALORANT LABS [MAP ERROR]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+  }
   }
