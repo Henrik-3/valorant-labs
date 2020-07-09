@@ -203,66 +203,74 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 
   }
     
+  if (!args.length) {
+    const Embed = new Discord.MessageEmbed()
+        .setColor('#ee3054')
+        .setTitle(linkjson[lang].agentunknown)
+        .setTimestamp()
+        .setFooter('VALORANT LABS [AGENT ERROR]');
+      message.channel.send(Embed);
+      message.channel.stopTyping()
+  } else {
+  
+  const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
+  // Cut start to get the name
+  const name = message.content.toLowerCase().substr(prefix.length + 6)
+  // lookup data for weapon
+  const agent = Agents[name]
+  
+  if(agent === 'jett' || agent === 'raze' || agent === 'breach' || agent === 'omen' || agent === 'brimstone' || agent === 'phoenix' || agent === 'sage' || agent === 'sova' || agent === 'viper' || agent === 'cypher' || agent === 'reyna') { 
+  ctx.text2('Agent: ' + agent.name, 180, canvasstats.width / 2, 200, '#ffffff', 'center')
     
-    const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
-    // Cut start to get the name
-    const name = message.content.toLowerCase().substr(prefix.length + 6)
-    // lookup data for agent
-    const agent = Agents[name]
-    
-  if(name == 'breach' || name == 'brimstone' || name == 'cypher' || name == 'jett' || name == 'omen' || name == 'pheonix' || name == 'raze' || name == 'sage' || name == 'reyna' || name == 'sova' || name == 'viper') {
-    ctx.text2('Agent: ' + agent.name, 180, canvasstats.width / 2, 200, '#ffffff', 'center')
-      
-    const agentimage = await Canvas.loadImage(agent.url); //load map from url
-    ctx.drawImage(agentimage, 2850, 30, 1056.6, 1620); // displays map
-  
-    ctx.text3('C-Cost:', 100, 350, 450, '#3f888f')
-    ctx.text(agent.ccost, 100, 800, 450)
-    ctx.text3('C-Ability:', 100, 350, 575, '#3f888f')
-    ctx.text(agent.cability, 100, 900, 575)
-  
-    ctx.text3('Q-Cost:', 100, 350, 775,'#3f888f')
-    ctx.text(agent.qcost, 100, 800, 775)
-    ctx.text3('Q-Ability:', 100, 350, 900, '#3f888f')
-    ctx.text(agent.qability, 100, 900, 900)
-  
-    ctx.text3('E-Cost:', 100, 350, 1100, '#3f888f')
-    ctx.text(agent.ecost, 100, 800, 1100)
-    ctx.text3('E-Ability:', 100, 350, 1225, '#3f888f')
-    ctx.text(agent.eability, 100, 900, 1225)
-  
-    ctx.text3('X-Cost:', 100, 350, 1425, '#3f888f')
-    ctx.text(agent.xcost, 100, 800, 1425)
-    ctx.text3('X-Ability:', 100, 350, 1550, '#3f888f')
-    ctx.text(agent.xability, 100, 900, 1550)
-    ctx.text3('X-Ability-Description:', 100, 350, 1675, '#3f888f')
-    ctx.text(agent.xabilitydescription, 100, 350, 1800)
-    
-    //Avatar
-      // Pick up the pen
-	    ctx.beginPath();
-	    // Start the arc to form a circle
-	    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
-	    // Put the pen down
-	    ctx.closePath();
-	    // Clip off the region you drew on
-	    ctx.clip();
-  
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
-      ctx.drawImage(avatarl, 30, 1925, 200, 200)
-    
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-agent.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+  const agentimage = await Canvas.loadImage(agent.url); //load map from url
+  ctx.drawImage(agentimage, 2850, 30, 1056.6, 1620); // displays map
 
+  ctx.text3('C-Cost:', 100, 350, 450, '#3f888f')
+  ctx.text(agent.ccost, 100, 800, 450)
+  ctx.text3('C-Ability:', 100, 350, 575, '#3f888f')
+  ctx.text(agent.cability, 100, 900, 575)
+
+  ctx.text3('Q-Cost:', 100, 350, 775,'#3f888f')
+  ctx.text(agent.qcost, 100, 800, 775)
+  ctx.text3('Q-Ability:', 100, 350, 900, '#3f888f')
+  ctx.text(agent.qability, 100, 900, 900)
+
+  ctx.text3('E-Cost:', 100, 350, 1100, '#3f888f')
+  ctx.text(agent.ecost, 100, 800, 1100)
+  ctx.text3('E-Ability:', 100, 350, 1225, '#3f888f')
+  ctx.text(agent.eability, 100, 900, 1225)
+
+  ctx.text3('X-Cost:', 100, 350, 1425, '#3f888f')
+  ctx.text(agent.xcost, 100, 800, 1425)
+  ctx.text3('X-Ability:', 100, 350, 1550, '#3f888f')
+  ctx.text(agent.xability, 100, 900, 1550)
+  ctx.text3('X-Ability-Description:', 100, 350, 1675, '#3f888f')
+  ctx.text(agent.xabilitydescription, 100, 350, 1800)
+  
+  //Avatar
+    // Pick up the pen
+    ctx.beginPath();
+    // Start the arc to form a circle
+    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
+    // Put the pen down
+    ctx.closePath();
+    // Clip off the region you drew on
+    ctx.clip();
+
+    const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+    ctx.drawImage(avatarl, 30, 1925, 200, 200)
+  
+  const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-agents.png" ); //final result
+  message.channel.send(attachment); //send final result
+  message.channel.stopTyping()
   } else {
     const Embed = new Discord.MessageEmbed()
-          .setColor('#ee3054')
-          .setTitle('Unknown Agent')
-          .setDescription('Please make sure you typed the agent right')
-          .setTimestamp()
-          .setFooter('VALORANT LABS [ERROR]')
-      message.channel.send(Embed)
+        .setColor('#ee3054')
+        .setTitle(linkjson[lang].agentunknown)
+        .setTimestamp()
+        .setFooter('VALORANT LABS [AGENT ERROR]');
+      message.channel.send(Embed);
       message.channel.stopTyping()
   }
+}
 }
