@@ -202,7 +202,15 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       },
   
     }
-    
+    if (!args.length) {
+      const Embed = new Discord.MessageEmbed()
+          .setColor('#ee3054')
+          .setTitle(linkjson[lang].agentunknown)
+          .setTimestamp()
+          .setFooter('VALORANT LABS [AGENT ERROR]');
+        message.channel.send(Embed);
+        message.channel.stopTyping()
+    } else {
     
     const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
     // Cut start to get the name
@@ -210,6 +218,7 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     // lookup data for weapon
     const agent = Agents[name]
     
+    if(agent === 'jett' || agent === 'raze' || agent === 'breach' || agent === 'omen' || agent === 'brimstone' || agent === 'phoenix' || agent === 'sage' || agent === 'sova' || agent === 'viper' || agent === 'cypher' || agent === 'reyna') { 
     ctx.text2('Agent: ' + agent.name, 180, canvasstats.width / 2, 200, '#ffffff', 'center')
       
     const agentimage = await Canvas.loadImage(agent.url); //load map from url
@@ -239,13 +248,13 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     
     //Avatar
       // Pick up the pen
-	    ctx.beginPath();
-	    // Start the arc to form a circle
-	    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
-	    // Put the pen down
-	    ctx.closePath();
-	    // Clip off the region you drew on
-	    ctx.clip();
+      ctx.beginPath();
+      // Start the arc to form a circle
+      ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
+      // Put the pen down
+      ctx.closePath();
+      // Clip off the region you drew on
+      ctx.clip();
   
       const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
@@ -253,4 +262,14 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-agents.png" ); //final result
     message.channel.send(attachment); //send final result
     message.channel.stopTyping()
-}
+    } else {
+      const Embed = new Discord.MessageEmbed()
+          .setColor('#ee3054')
+          .setTitle(linkjson[lang].agentunknown)
+          .setTimestamp()
+          .setFooter('VALORANT LABS [AGENT ERROR]');
+        message.channel.send(Embed);
+        message.channel.stopTyping()
+    }
+  }
+  }
