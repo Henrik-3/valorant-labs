@@ -1,20 +1,14 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v1.03 Patch** 
-
-Invite LINK:  [https://discord.com/oauth2/authorize?client_id=702201518329430117&scope=bot&permissions=116736](https://discord.com/oauth2/authorize?client_id=702201518329430117&scope=bot&permissions=116736)
-
-top.gg Link: [https://top.gg/bot/702201518329430117](https://top.gg/bot/702201518329430117)
+**VALORANT LABS** | **Discord Verified** | **All Data based on v1.04 Patch** 
 
 
-**Help us translate this Project: ** [https://poeditor.com/join/project/JxdEISEPNU](https://poeditor.com/join/project/JxdEISEPNU)
+**HyperScape LABS**: [Invite](https://discord.com/oauth2/authorize?client_id=732217941185265674&permissions=388289&scope=bot)
 
 We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
-
-Design by ouihq#1640, check out his Discord Bot: [IGNITION](https://top.gg/bot/717337318222069842)
 
 
 **LAST UPDATE:**
 
-- Multi Language support (currently DE and EN)
+- Multi Language support (currently German, English, French, Japanese and Portuguese-Brazil, more coming soon...)
 
 - AutoNews redesign for multiple languages [BETA]
 
@@ -24,8 +18,6 @@ Design by ouihq#1640, check out his Discord Bot: [IGNITION](https://top.gg/bot/7
 - v?help - Shows the help message [READY]
 
 - [!] v?stats [RIOT ID] - Shows the stats of the requested user [Waiting for API] 
-
-- v?link [RIOT ID] - Link your riot account with your discord account [READY]
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
@@ -51,11 +43,11 @@ Design by ouihq#1640, check out his Discord Bot: [IGNITION](https://top.gg/bot/7
 
 - v?status - Shows overview for server regions to choose from [BETA]
 
-- v?settings lang [de/en] - Set Bot Language [BETA]
+- v?settings lang [de/en/fr/jp/pt-br] - Set Bot Language [BETA]
 
- <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496044471812146/valorant-help.png" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.discordapp.com/attachments/702435906757328897/720969867704008795/valorant-help2.png" alt="VALORANT LABS HELP 2">
- 
+ <img src="https://cdn.discordapp.com/attachments/704231681309278231/733690218376462479/valorant-help.png" alt="VALORANT LABS HELP 1">
+ <img src="https://cdn.discordapp.com/attachments/704231681309278231/733690292569374770/valorant-help.png" alt="VALORANT LABS HELP 2">
+
  
 ***WIP:***
 
@@ -67,4 +59,4 @@ Design by ouihq#1640, check out his Discord Bot: [IGNITION](https://top.gg/bot/7
 
 If you have any suggestions, write me a DM per Discord: Henrik3#1451
 
-VALORANT LABS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+VALORANT LABS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated
