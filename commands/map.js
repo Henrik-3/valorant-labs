@@ -1,3 +1,4 @@
+const fs = require('fs');
 module.exports = async (args, client, message, { Canvas, Discord }) => {
   const db = require('../db.js')
   var lang = db.get(`${message.guild.id}.lang`) || 'en'
@@ -64,10 +65,10 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
         .setColor('#ee3054')
         .setTitle(linkjson[lang].mapunknown)
         .setTimestamp()
-        .setFooter('VALORANT LABS [MAP ERROR]');
+        .setFooter('VALORANT LABS [MAP ERROR ARGS]');
       message.channel.send(Embed);
       message.channel.stopTyping()
-    }
+    } else {
     
     const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
     // Cut start to get the name
@@ -75,7 +76,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     // lookup data for weapon
     const map = Maps[name]
     //check if map exist
-    if (map) {
+    console.log(map)
+    if(map) {
       ctx.text2('MAP: ' + map.name, 180, canvasstats.width / 2, 200, '#ffffff', 'center')
       const mapimage = await Canvas.loadImage(map.mapurl); //load map from url
 
@@ -107,5 +109,6 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
         .setFooter('VALORANT LABS [MAP ERROR]');
       message.channel.send(Embed);
       message.channel.stopTyping()
+  }
   }
   }

@@ -39,7 +39,37 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     ctx.textAlign = textAlign
     ctx.fillText(content , x, y);
   }
+  //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
+    ctx.text4 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
+      ctx.font = size + 'px japan2';
+      ctx.fillStyle = color
+      ctx.textAlign = textAlign
+      ctx.fillText(content , x, y);
+    }
+    //function for easier text 
+    //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
 
+    ctx.text5 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left', rotate=-0.5*Math.PI) {
+      ctx.font = size + 'px Japan2';
+      ctx.fillStyle = color
+      ctx.textAlign = textAlign
+      ctx.save();
+      ctx.translate(200,canvasstats.height/2);
+      ctx.rotate(rotate);
+      ctx.fillText(content , 0, 0);
+      ctx.restore();
+    }
+    ctx.text6 = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left', rotate=-0.5*Math.PI) {
+      ctx.font = size + 'px product_sans';
+      ctx.fillStyle = color
+      ctx.textAlign = textAlign
+      ctx.save();
+      ctx.translate(200,canvasstats.height/2);
+      ctx.rotate(rotate);
+      ctx.fillText(content , 0, 0);
+      ctx.restore();
+    }
   
   const serverregionsplit = message.content.split(' ').slice(1); // All arguments behind the command name with the prefix
   const serverregion = serverregionsplit[0];
@@ -55,9 +85,161 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   var linkjson = JSON.parse(fs.readFileSync('lang.json'))
 
   if(serverregion == "na" || serverregion == "NA" || serverregion == "Na" || serverregion == "nA" || serverregion == "eu" || serverregion == "EU" || serverregion == "Eu" || serverregion == "eU" || serverregion == "AP" || serverregion == "ap" || serverregion == "Ap" || serverregion == "aP" || serverregion == "SEA" || serverregion == "sea" || serverregion == "Sea" || serverregion == "Asia" || serverregion == "ASIA"|| serverregion == "asia" || serverregion == "BR" || serverregion == "br" || serverregion == "Br" || serverregion == "bR" || serverregion == "Brazil" || serverregion == "BRAZIL" || serverregion == "brazil" || serverregion == "KR" || serverregion == "kr" || serverregion == "Kr" || serverregion == "kR" || serverregion == "Korea" || serverregion == "KOREA" || serverregion == "korea" || serverregion == "LA" || serverregion == "la" || serverregion == "La" || serverregion == "lA" || serverregion == "LATAM" || serverregion == "Latam" || serverregion == "latam") {
-  } else {
+  } else if(lang != 'jp' && lang != 'fr' && lang != 'pt-br') {
     ctx.text2(linkjson[lang].statusinvalidregion, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
     ctx.text3(linkjson[lang].statusinvalidoverview, 140, canvasstats.width / 2, 210, '#ffffff', 'center')
+
+    ctx.text3('Europe', 110, 350, 500)
+    ctx.text3('North America', 110, 350, 750)
+    ctx.text3('Latin America', 110, 350, 1000)
+    ctx.text3('Asia/SEA', 110, 350, 1250)
+    ctx.text3('Korea', 110, 350, 1500)
+    ctx.text3('Brazil', 110, 350, 1750)
+
+    ctx.text('EU, eu, Eu, eU', 110, 1550, 500)
+    ctx.text('NA, na, Na, nA', 110, 1550, 750)
+    ctx.text('LA, la ,La, lA, LATAM, Latam, latam', 110, 1550, 1000)
+    ctx.text('AP, ap, Ap, aP, SEA, sea, Sea, Asia, ASIA, asia', 110, 1550, 1250)
+    ctx.text('KR, kr, Kr, kR, Korea, KOREA, korea', 110, 1550, 1500)
+    ctx.text('BR, br, Br, bR, Brazil, BRAZIL, brazil', 110, 1550, 1750)
+
+    ctx.beginPath()
+    ctx.moveTo(350, 590)
+    ctx.lineTo(3700, 590);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 840)
+    ctx.lineTo(3700, 840);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 1090)
+    ctx.lineTo(3700, 1090);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 1340)
+    ctx.lineTo(3700, 1340);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 1590)
+    ctx.lineTo(3700, 1590);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(1450, 400)
+    ctx.lineTo(1450, 1800);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    //Avatar
+      // Pick up the pen
+	    ctx.beginPath();
+	    // Start the arc to form a circle
+	    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
+	    // Put the pen down
+	    ctx.closePath();
+	    // Clip off the region you drew on
+	    ctx.clip();
+  
+      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      ctx.drawImage(avatarl, 30, 1925, 200, 200)
+  
+    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-help.png" ); //final result
+    message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
+  } else if (lang == 'jp') {
+    ctx.text5(linkjson[lang].statusinvalidregion, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
+    ctx.text4(linkjson[lang].statusinvalidoverview, 140, canvasstats.width / 2, 210, '#ffffff', 'center')
+
+    ctx.text4('Europe', 110, 350, 500)
+    ctx.text4('North America', 110, 350, 750)
+    ctx.text4('Latin America', 110, 350, 1000)
+    ctx.text4('Asia/SEA', 110, 350, 1250)
+    ctx.text4('Korea', 110, 350, 1500)
+    ctx.text4('Brazil', 110, 350, 1750)
+
+    ctx.text('EU, eu, Eu, eU', 110, 1550, 500)
+    ctx.text('NA, na, Na, nA', 110, 1550, 750)
+    ctx.text('LA, la ,La, lA, LATAM, Latam, latam', 110, 1550, 1000)
+    ctx.text('AP, ap, Ap, aP, SEA, sea, Sea, Asia, ASIA, asia', 110, 1550, 1250)
+    ctx.text('KR, kr, Kr, kR, Korea, KOREA, korea', 110, 1550, 1500)
+    ctx.text('BR, br, Br, bR, Brazil, BRAZIL, brazil', 110, 1550, 1750)
+
+    ctx.beginPath()
+    ctx.moveTo(350, 590)
+    ctx.lineTo(3700, 590);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 840)
+    ctx.lineTo(3700, 840);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 1090)
+    ctx.lineTo(3700, 1090);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 1340)
+    ctx.lineTo(3700, 1340);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(350, 1590)
+    ctx.lineTo(3700, 1590);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.moveTo(1450, 400)
+    ctx.lineTo(1450, 1800);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    //Avatar
+      // Pick up the pen
+	    ctx.beginPath();
+	    // Start the arc to form a circle
+	    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
+	    // Put the pen down
+	    ctx.closePath();
+	    // Clip off the region you drew on
+	    ctx.clip();
+  
+      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      ctx.drawImage(avatarl, 30, 1925, 200, 200)
+  
+    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-help.png" ); //final result
+    message.channel.send(attachment); //send final result
+    message.channel.stopTyping()
+  } else if (lang == 'fr' || lang == 'pt-br') {
+    ctx.text6(linkjson[lang].statusinvalidregion, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
+    ctx.text(linkjson[lang].statusinvalidoverview, 140, canvasstats.width / 2, 210, '#ffffff', 'center')
 
     ctx.text3('Europe', 110, 350, 500)
     ctx.text3('North America', 110, 350, 750)
@@ -141,8 +323,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     })
     
     if(eustatus.maintenances.toString() == "" && eustatus.incidents.toString() == "" ) {
-      ctx.text2(linkjson[lang].statuseu, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
-      ctx.text3(linkjson[lang].statuseuokay, 150, canvasstats.width / 2, canvasstats.height / 2, '#ffffff', 'center')
+      ctx.text2(linkjson[lang].statuseu, 130, canvasstats.width / 2, 200, '#ffffff', 'center')
+      ctx.text3(linkjson[lang].statuseuokay, 150, 2000, canvasstats.height / 2, '#ffffff', 'center')
 
       //Avatar
       // Pick up the pen

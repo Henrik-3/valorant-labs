@@ -5,11 +5,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     var linkjson = JSON.parse(fs.readFileSync('lang.json'))
 
     message.channel.startTyping()
-    const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
+    const canvasstats = Canvas.createCanvas(4100, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
-
-    const background = await Canvas.loadImage("https://cdn.discordapp.com/attachments/715949560970608702/718467365146198057/Valorant_LABS.png"); //load background from url
-    ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
   
    //function for easier text 
     //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
@@ -208,58 +205,217 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
         .setColor('#ee3054')
         .setTitle(linkjson[lang].agentunknown)
         .setTimestamp()
-        .setFooter('VALORANT LABS [AGENT ERROR]');
+        .setFooter('VALORANT LABS [AGENT ERROR ]');
       message.channel.send(Embed);
       message.channel.stopTyping()
   } else {
-  
   const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
   // Cut start to get the name
   const name = message.content.toLowerCase().substr(prefix.length + 6)
   // lookup data for weapon
   const agent = Agents[name]
-  
-  if(agent === 'jett' || agent === 'raze' || agent === 'breach' || agent === 'omen' || agent === 'brimstone' || agent === 'phoenix' || agent === 'sage' || agent === 'sova' || agent === 'viper' || agent === 'cypher' || agent === 'reyna') { 
-  ctx.text2('Agent: ' + agent.name, 180, canvasstats.width / 2, 200, '#ffffff', 'center')
-    
-  const agentimage = await Canvas.loadImage(agent.url); //load map from url
-  ctx.drawImage(agentimage, 2850, 30, 1056.6, 1620); // displays map
-
-  ctx.text3('C-Cost:', 100, 350, 450, '#3f888f')
-  ctx.text(agent.ccost, 100, 800, 450)
-  ctx.text3('C-Ability:', 100, 350, 575, '#3f888f')
-  ctx.text(agent.cability, 100, 900, 575)
-
-  ctx.text3('Q-Cost:', 100, 350, 775,'#3f888f')
-  ctx.text(agent.qcost, 100, 800, 775)
-  ctx.text3('Q-Ability:', 100, 350, 900, '#3f888f')
-  ctx.text(agent.qability, 100, 900, 900)
-
-  ctx.text3('E-Cost:', 100, 350, 1100, '#3f888f')
-  ctx.text(agent.ecost, 100, 800, 1100)
-  ctx.text3('E-Ability:', 100, 350, 1225, '#3f888f')
-  ctx.text(agent.eability, 100, 900, 1225)
-
-  ctx.text3('X-Cost:', 100, 350, 1425, '#3f888f')
-  ctx.text(agent.xcost, 100, 800, 1425)
-  ctx.text3('X-Ability:', 100, 350, 1550, '#3f888f')
-  ctx.text(agent.xability, 100, 900, 1550)
-  ctx.text3('X-Ability-Description:', 100, 350, 1675, '#3f888f')
-  ctx.text(agent.xabilitydescription, 100, 350, 1800)
-  
+  if(agent) {
+  if(name == 'breach') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("./commands/images/agent/Breach/Breach-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("./commands/images/agent/Breach/Breach-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("./commands/images/agent/Breach/Breach-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("./commands/images/agent/Breach/Breach-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("./commands/images/agent/Breach/Breach-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if(name == 'brimstone') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("./commands/images/agent/Brimstone/Brimstone-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("./commands/images/agent/Brimstone/Brimstone-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("./commands/images/agent/Brimstone/Brimstone-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("./commands/images/agent/Brimstone/Brimstone-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("./commands/images/agent/Brimstone/Brimstone-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'cypher') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("./commands/images/agent/Cypher/Cypher-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("./commands/images/agent/Cypher/Cypher-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("./commands/images/agent/Cypher/Cypher-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("./commands/images/agent/Cypher/Cypher-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("./commands/images/agent/Cypher/Cypher-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'jett') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Jett/Jett-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Jett/Jett-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Jett/Jett-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Jett/Jett-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Jett/Jett-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'omen') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Omen/Omen-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Omen/Omen-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Omen/Omen-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Omen/Omen-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Omen/Omen-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'phoenix') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Pheonix/Pheonix-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Pheonix/Pheonix-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Pheonix/Pheonix-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Pheonix/Pheonix-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Pheonix/Pheonix-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'raze') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Raze/Raze-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Raze/Raze-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Raze/Raze-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Raze/Raze-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Raze/Raze-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'reyna') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Reyna/Reyna-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Reyna/Reyna-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Reyna/Reyna-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Reyna/Reyna-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Reyna/Reyna-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'sage') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Sage/Sage-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Sage/Sage-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Sage/Sage-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Sage/Sage-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Sage/Sage-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'sova') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Sova/Sova-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Sova/Sova-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Sova/Sova-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Sova/Sova-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Sova/Sova-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  } else if (name == 'viper') {
+    if(lang == 'de') {
+      const background = await Canvas.loadImage("commands/images/agent/Viper/Viper-Deutsch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'en') {
+      const background = await Canvas.loadImage("commands/images/agent/Viper/Viper-Englisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'fr') {
+      const background = await Canvas.loadImage("commands/images/agent/Viper/Viper-Französisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'pt-br') {
+      const background = await Canvas.loadImage("commands/images/agent/Viper/Viper-Portugisisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    } else if(lang == 'jp') {
+      const background = await Canvas.loadImage("commands/images/agent/Viper/Viper-Japanisch.png"); //load background from url
+      ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
+    }
+  }
   //Avatar
-    // Pick up the pen
-    ctx.beginPath();
-    // Start the arc to form a circle
-    ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
-    // Put the pen down
-    ctx.closePath();
-    // Clip off the region you drew on
-    ctx.clip();
-
-    const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
-    ctx.drawImage(avatarl, 30, 1925, 200, 200)
+  // Pick up the pen
+  ctx.beginPath();
+  // Start the arc to form a circle
+  ctx.arc(130, 2025, 80, 0, Math.PI * 2, true);
+  // Put the pen down
+  ctx.closePath();
+  // Clip off the region you drew on
+  ctx.clip();
   
+  const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+  ctx.drawImage(avatarl, 30, 1925, 200, 200)
+    
   const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-agents.png" ); //final result
   message.channel.send(attachment); //send final result
   message.channel.stopTyping()
@@ -272,5 +428,5 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       message.channel.send(Embed);
       message.channel.stopTyping()
   }
-}
+ }
 }

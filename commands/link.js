@@ -1,22 +1,26 @@
 const fs = require('fs')
 module.exports = async (args, client, message, { Canvas, Discord }) => {
+  const db = require('../db.js')
+  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var messagejson = JSON.parse(fs.readFileSync('lang.json'))
     if (!args.length) {
       var linkjson = JSON.parse(fs.readFileSync('link.json'))
       var author = message.author.id 
+      const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
       if(linkjson[author]) {
         var linkjson = JSON.parse(fs.readFileSync('link.json'))
         var author = message.author.id 
         console.log(linkjson)
         const Embed = new Discord.MessageEmbed()
 	        .setColor('#ee3054')
-	        .setTitle('Your current linked account is ' + linkjson[author].ingamename + '#' + linkjson[author].ingametag)
+	        .setTitle(messagejson[lang].linkcurrent + linkjson[author].ingamename + '#' + linkjson[author].ingametag)
 	        .setTimestamp()
 	        .setFooter('VALORANT LABS [LINK GET]');
         message.channel.send(Embed);
     } else {
         const Embed = new Discord.MessageEmbed()
 	        .setColor('#ee3054')
-	        .setTitle('You dont have a linked account, ' + message.author.username)
+	        .setTitle(messagejson[lang].linkna + message.author.username)
 	        .setTimestamp()
 	        .setFooter('VALORANT LABS [LINK UNKNOWN]');
         message.channel.send(Embed);
@@ -38,18 +42,17 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     if(name == null || tag == null) {
         const Embed = new Discord.MessageEmbed()
             .setColor('#ee3054')
-            .setTitle('Unknown Syntax')
-            .setDescription('Please make sure you used the right syntax, as an example \n v?link HenrikX33#KEK3')
+            .setTitle(messagejson[lang].linksyntax)
+            .setDescription(messagejson[lang].linksyntaxdesc)
             .setTimestamp()
             .setFooter('VALORANT LABS [ERROR]')
         message.channel.send(Embed)
     } else {
     linkFile[userId] = {ingamename: name, ingametag: tag};
     fs.writeFileSync(linkPath, JSON.stringify(linkFile, null, 2));
-
     const Embed = new Discord.MessageEmbed()
 	    .setColor('#ee3054')
-	    .setTitle('User succesfully linked with ' + name + '#' + tag)
+	    .setTitle(messagejson[lang].linksuccess + name + '#' + tag)
 	    .setTimestamp()
 	    .setFooter('VALORANT LABS [SUCCESS]');
 	    message.channel.send(Embed);
