@@ -1,8 +1,5 @@
 **VALORANT LABS** | **Discord Verified** | **All Data based on v1.04 Patch** 
 
-
-**HyperScape LABS**: [Invite](https://discord.com/oauth2/authorize?client_id=732217941185265674&permissions=388289&scope=bot)
-
 We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
 
 
