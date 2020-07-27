@@ -119,8 +119,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
       xability: linkjson[lang].omenxability,
       xabilitydescription: linkjson[lang].omenxabilitydescription,
     },
-    pheonix: {
-      name: 'Pheonix',
+    phoenix: {
+      name: 'Phoenix',
       url: 'https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/bltf0200e1821b5b39f/5eb7cdc144bf8261a04d87f9/V_AGENTS_587x900_Phx.png',
       ccost: linkjson[lang].pheonixccost,
       cability: linkjson[lang].pheonixcability,
