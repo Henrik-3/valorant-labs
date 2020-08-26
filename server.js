@@ -844,7 +844,7 @@ client.on('messageCreate', async message => {
 
 // Commands laden
 let Commands = {};
-['help', 'link', 'weapon', 'stats', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'agent', 'botinfo', 'vote', 'status', 'usage', 'blacklist', 'help3', 'template', 'game'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
+['help', 'link', 'weapon', 'ranked', 'settings', 'patch', 'help2', 'map', 'weapons', 'agent', 'botinfo', 'vote', 'status', 'usage', 'blacklist', 'help3', 'template'].forEach(name => Commands[name] = require(`./commands/${name}.js`))
 
 client.on('messageCreate', (message) => {
  if(message.channel.type !== 1) {
