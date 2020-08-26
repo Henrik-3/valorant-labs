@@ -1,20 +1,8 @@
 const fs = require('fs')
 module.exports = async (args, client, message, { Canvas, Discord }) => {
-    message.channel.startTyping()
     const db = require('../db.js')
-    var lang = db.get(`${message.guild.id}.lang`) || 'en'
+    var lang = db.get(`${message.guildID}.lang`) || 'en-us'
     var linkjson = JSON.parse(fs.readFileSync('lang.json'))
 
-    const Embed = new Discord.MessageEmbed()
-	  .setColor('#ee3054')
-      .setDescription(linkjson[lang].patchdesc)
-	  .setTitle(linkjson[lang].patchtitle)
-	  .setURL(linkjson[lang].patchurl)
-	  //.attachFiles(['./commands/images/VALORANT_Patch_1.jpg'])
-      //.setImage('attachment://VALORANT_Patch_1.jpg')
-      .setImage(linkjson[lang].patchimage2)
-	  .setTimestamp()
-	  .setFooter('VALORANT LABS');
-	   message.channel.send(Embed);
-       message.channel.stopTyping()
+    client.createMessage(message.channel.id, {embed: {title: linkjson[lang].patchtitle, color: 0xee3054, description: linkjson[lang].patchdesc, url: linkjson[lang].patchurl, image: { url: linkjson[lang].patchimage2}, timestamp: new Date().toISOString(), footer: {text: 'VALORANT LABS [PATCH]'}}})
 }

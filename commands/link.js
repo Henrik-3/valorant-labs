@@ -1,32 +1,22 @@
 const fs = require('fs')
 module.exports = async (args, client, message, { Canvas, Discord }) => {
   const db = require('../db.js')
-  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var lang = db.get(`${message.guildID}.lang`) || 'en-us'
   var messagejson = JSON.parse(fs.readFileSync('lang.json'))
     if (!args.length) {
-      var linkjson = JSON.parse(fs.readFileSync('link.json'))
-      var author = message.author.id 
-      const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
+      var linkjson = JSON.parse(fs.readFileSync('database/link.json'))
+      var author = message.author.id
+      const prefix = db.get(`${message.guildID}.prefix`) || 'v?'
       if(linkjson[author]) {
-        var linkjson = JSON.parse(fs.readFileSync('link.json'))
+        var linkjson = JSON.parse(fs.readFileSync('database/link.json'))
         var author = message.author.id 
         console.log(linkjson)
-        const Embed = new Discord.MessageEmbed()
-	        .setColor('#ee3054')
-	        .setTitle(messagejson[lang].linkcurrent + linkjson[author].ingamename + '#' + linkjson[author].ingametag)
-	        .setTimestamp()
-	        .setFooter('VALORANT LABS [LINK GET]');
-        message.channel.send(Embed);
+        client.createMessage(message.channel.id, {embed: {title: messagejson[lang].linkcurrent + linkjson[author].ingamename + '#' + linkjson[author].ingametag, color: 0xee3054, timestamp: new Date().toISOString(), footer: {text: 'VALORANT LABS [LINK GET]'}}})
     } else {
-        const Embed = new Discord.MessageEmbed()
-	        .setColor('#ee3054')
-	        .setTitle(messagejson[lang].linkna + message.author.username)
-	        .setTimestamp()
-	        .setFooter('VALORANT LABS [LINK UNKNOWN]');
-        message.channel.send(Embed);
+      client.createMessage(message.channel.id, {embed: {title: messagejson[lang].linkna + message.author.username, color: 0xee3054, timestamp: new Date().toISOString(), footer: {text: 'VALORANT LABS [LINK UNKNOWN]'}}})
     }
     } else {
-    var linkPath = './link.json'
+    var linkPath = './database/link.json'
     var linkRead = fs.readFileSync(linkPath);
     var linkFile = JSON.parse(linkRead); //ready for use
     var userId = message.author.id //user id here
@@ -34,28 +24,18 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
     linkFile[userId] = {ingamename: "", ingametag: ""}; //if not, create it
     fs.writeFileSync(linkPath, JSON.stringify(linkFile, null, 2));
 
-    const nametest = message.content.split(' ');// All arguments behind the command name with the prefix
-    const namefinal = nametest[1].split('#')
+    const prefix = db.get(`${message.guildID}.prefix`) || 'v?'
+    const name1 = message.content.substr(prefix.length + 5)
+    const namefinal = name1.split('#')
     const name = namefinal[0];
     const tag = namefinal[1];
     
     if(name == null || tag == null) {
-        const Embed = new Discord.MessageEmbed()
-            .setColor('#ee3054')
-            .setTitle(messagejson[lang].linksyntax)
-            .setDescription(messagejson[lang].linksyntaxdesc)
-            .setTimestamp()
-            .setFooter('VALORANT LABS [ERROR]')
-        message.channel.send(Embed)
+      client.createMessage(message.channel.id, {embed: {title: messagejson[lang].linksyntax, color: 0xee3054, description: messagejson[lang].linksyntaxdesc, timestamp: new Date().toISOString(), footer: {text: 'VALORANT LABS [ERROR]'}}})
     } else {
     linkFile[userId] = {ingamename: name, ingametag: tag};
     fs.writeFileSync(linkPath, JSON.stringify(linkFile, null, 2));
-    const Embed = new Discord.MessageEmbed()
-	    .setColor('#ee3054')
-	    .setTitle(messagejson[lang].linksuccess + name + '#' + tag)
-	    .setTimestamp()
-	    .setFooter('VALORANT LABS [SUCCESS]');
-	    message.channel.send(Embed);
+    client.createMessage(message.channel.id, {embed: {title: messagejson[lang].linksuccess + name + '#' + tag, color: 0xee3054, timestamp: new Date().toISOString(), footer: {text: 'VALORANT LABS [SUCCESS]'}}})
     }
   }
 }

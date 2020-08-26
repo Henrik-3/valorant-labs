@@ -1,14 +1,17 @@
 const fs = require('fs')
+const { create } = require('domain')
 module.exports = async (args, client, message, { Canvas, Discord }) => {
   const db = require('../db.js')
-  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var lang = db.get(`${message.guildID}.lang`) || 'en-us'
   var linkjson = JSON.parse(fs.readFileSync('lang.json'))
   
-    const Embed = new Discord.MessageEmbed()
-	  .setColor('#ee3054')
-	  .setTitle(linkjson[lang].votetitle)
-	  .setURL('https://top.gg/bot/702201518329430117/vote')
-	  .setTimestamp()
-	  .setFooter('VALORANT LABS');
-	   message.channel.send(Embed);
+  client.createMessage(message.channel.id, {embed: {
+	  color: 0xff4654,
+	  title: linkjson[lang].votetitle,
+	  url: 'https://top.gg/bot/702201518329430117/vote',
+	  timestamp: new Date().toISOString(),
+	  footer: {
+		text: 'VALORANT LABS [PATCH NOTES]'
+	  }
+  }})
 }

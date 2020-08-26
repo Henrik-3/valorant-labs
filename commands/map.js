@@ -1,10 +1,10 @@
 const fs = require('fs');
 module.exports = async (args, client, message, { Canvas, Discord }) => {
   const db = require('../db.js')
-  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var lang = db.get(`${message.guildID}.lang`) || 'en-us'
   var linkjson = JSON.parse(fs.readFileSync('lang.json'))
 
-    message.channel.startTyping()
+    message.channel.sendTyping()
     const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
     const ctx = canvasstats.getContext('2d') //text preparation
 
@@ -61,16 +61,10 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 }
   
     if(!args.length) {
-      const Embed = new Discord.MessageEmbed()
-        .setColor('#ee3054')
-        .setTitle(linkjson[lang].mapunknown)
-        .setTimestamp()
-        .setFooter('VALORANT LABS [MAP ERROR ARGS]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      client.createMessage(message.channel.id, {embed: {title: linkjson[lang].mapunknown, color: 0xee3054, timestamp: new Date().toISOString(), footer: {text: 'VALORANT LABS [MAP ERROR ARGS]'}}})
     } else {
     
-    const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
+    const prefix = db.get(`${message.guildID}.prefix`) || 'v?'
     // Cut start to get the name
     const name = message.content.toLowerCase().substr(prefix.length + 4)
     // lookup data for weapon
@@ -95,20 +89,13 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    ctx.clip();
 
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
-      ctx.drawImage(avatarl, 30, 1925, 200, 200)
-    
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-map.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
+    ctx.drawImage(avatarl, 30, 1925, 200, 200)
+
+    //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+    client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-map.png'})
   } else {
-    const Embed = new Discord.MessageEmbed()
-        .setColor('#ee3054')
-        .setTitle(linkjson[lang].mapunknown)
-        .setTimestamp()
-        .setFooter('VALORANT LABS [MAP ERROR]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+    client.createMessage(message.channel.id, {embed: {title: linkjson[lang].mapunknown, color: 0xee3054, timestamp: new Date().toISOString(), footer: {text: 'VALORANT LABS [MAP ERROR]'}}})
   }
   }
   }

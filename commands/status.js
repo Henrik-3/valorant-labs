@@ -3,13 +3,14 @@ const moment = require('moment')
 const fs = require('fs')
 
 module.exports = async (args, client, message, { Canvas, Discord }) => {
-  message.channel.startTyping()
   const canvasstats = Canvas.createCanvas(3840, 2160) //set image size
   const ctx = canvasstats.getContext('2d') //text preparation
 
   const background = await Canvas.loadImage("commands/images/Valorant_LABS.png"); //load background from url
   ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
-  
+
+  message.channel.sendTyping()
+
   //function for easier text 
     //Base: ctx.text('Text', Size, X, Y, '#Color', 'textAlign')
     ctx.text = function(content='Leer', size=100, x=0, y=0, color='#ffffff', textAlign='left') {
@@ -74,14 +75,8 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
   const serverregionsplit = message.content.split(' ').slice(1); // All arguments behind the command name with the prefix
   const serverregion = serverregionsplit[0];
 
-    /* //no arg for GET
-    if (!args.length) {
-    message.channel.send("You need to supply a valid server region [EU or NA]");
-    message.channel.stopTyping()
-    } */
-
   const db = require('../db.js')
-  var lang = db.get(`${message.guild.id}.lang`) || 'en'
+  var lang = db.get(`${message.guildID}.lang`) || 'en-us'
   var linkjson = JSON.parse(fs.readFileSync('lang.json'))
 
   if(serverregion == "na" || serverregion == "NA" || serverregion == "Na" || serverregion == "nA" || serverregion == "eu" || serverregion == "EU" || serverregion == "Eu" || serverregion == "eU" || serverregion == "AP" || serverregion == "ap" || serverregion == "Ap" || serverregion == "aP" || serverregion == "SEA" || serverregion == "sea" || serverregion == "Sea" || serverregion == "Asia" || serverregion == "ASIA"|| serverregion == "asia" || serverregion == "BR" || serverregion == "br" || serverregion == "Br" || serverregion == "bR" || serverregion == "Brazil" || serverregion == "BRAZIL" || serverregion == "brazil" || serverregion == "KR" || serverregion == "kr" || serverregion == "Kr" || serverregion == "kR" || serverregion == "Korea" || serverregion == "KOREA" || serverregion == "korea" || serverregion == "LA" || serverregion == "la" || serverregion == "La" || serverregion == "lA" || serverregion == "LATAM" || serverregion == "Latam" || serverregion == "latam") {
@@ -155,12 +150,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-help.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-overview.png'})
   } else if (lang == 'jp') {
     ctx.text5(linkjson[lang].statusinvalidregion, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
     ctx.text4(linkjson[lang].statusinvalidoverview, 140, canvasstats.width / 2, 210, '#ffffff', 'center')
@@ -231,12 +225,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-help.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-overview.png'})
   } else if (lang == 'fr' || lang == 'pt-br') {
     ctx.text6(linkjson[lang].statusinvalidregion, 150, canvasstats.width / 2, 200, '#ffffff', 'center')
     ctx.text(linkjson[lang].statusinvalidoverview, 140, canvasstats.width / 2, 210, '#ffffff', 'center')
@@ -307,12 +300,11 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-help.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-overview.png'})
   }
   
   if (serverregion == "eu" || serverregion == "EU" || serverregion == "Eu" || serverregion == "eU") {
@@ -336,49 +328,93 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-EU.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-eu-okay.png'})
      }
     
     if(eustatus.incidents.toString() != "" ) {
-
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + eustatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(eustatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(eustatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: eustatus.incidents[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: eustatus.incidents[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS EU]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      var error;
+      try {
+        eustatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
+      }
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + eustatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: eustatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(eustatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: eustatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: eustatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS EU]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + eustatus.incidents[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: eustatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(eustatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: eustatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: eustatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS EU] - Issue not available in your prefered language'
+          }
+        }})
+      }
       }
     
     if(eustatus.maintenances.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + eustatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(eustatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(eustatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: eustatus.maintenances[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: eustatus.maintenances[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS EU]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()   
+      var error;
+      try {
+        eustatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
+      }
+      if(error === undefined) {
+        client.createMessage(message.channel.send, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + eustatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: eustatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(eustatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: eustatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: eustatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS EU]'
+          }
+        }})
+      } else {
+        cclient.createMessage(message.channel.send, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + eustatus.maintenances[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: eustatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(eustatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: eustatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: eustatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS EU] - Issue not available in your prefered language'
+          }
+        }})
       }
   }
-  
+}
   if (serverregion == "na" || serverregion == "NA" || serverregion == "Na" || serverregion == "nA") {
     //HTTP GET NA STATS
     const nastatus = await r({
@@ -400,46 +436,92 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-NA.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-na-okay.png'})
     }
     
     if(nastatus.incidents.toString() != "") {
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + nastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(nastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(nastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: nastatus.incidents[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: nastatus.incidents[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS NA]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      var error;
+      try {
+        nastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
       }
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + nastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: nastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(nastatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: nastatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: nastatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS NA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + nastatus.incidents[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: nastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(nastatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: nastatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: nastatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS NA] - Issue not available in your prefered language'
+          }
+        }})
+      }
+    }
     if(nastatus.maintenances.toString() != "") {
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + nastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(nastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(nastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: nastatus.maintenances[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: nastatus.maintenances[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS NA]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      var error;
+      try {
+        nastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
+      }
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + nastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: nastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(nastatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: nastatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: nastatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS NA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + nastatus.maintenances[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: nastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(nastatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: nastatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: nastatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS NA] - Issue not available in your prefered language'
+          }
+        }})
       }
   }
-
+}
   if (serverregion == "AP" || serverregion == "ap" || serverregion == "Ap" || serverregion == "aP" || serverregion == "SEA" || serverregion == "sea" || serverregion == "Sea" || serverregion == "Asia" || serverregion == "ASIA"|| serverregion == "asia") {
     //HTTP GET EU STATS
     const apstatus = await r({
@@ -461,49 +543,92 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-SEA/ASIA.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-ap-okay.png'})
      }
     
     if(apstatus.incidents.toString() != "" ) {
-
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + apstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(apstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(apstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: apstatus.incidents[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: apstatus.incidents[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS ASIA/SEA]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      var error;
+      try {
+        apstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
       }
-    
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + apstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: apstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(apstatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: apstatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: apstatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS ASIA/SEA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + apstatus.incidents[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: apstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(apstatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: apstatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: apstatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS ASIA/SEA] - Issue not available in your prefered language'
+          }
+        }})
+      }
+    }
     if(apstatus.maintenances.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + apstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(apstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(apstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: apstatus.maintenances[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: apstatus.maintenances[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS ASIA/SEA]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      var error;
+      try {
+        apstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
+      }
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + apstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: apstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(apstatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: apstatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: apstatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS ASIA/SEA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + apstatus.maintenances[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: apstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(apstatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: apstatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: apstatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS ASIA/SEA] - Issue not available in your prefered language'
+          }
+        }})
       }
   }
-
+}
   if (serverregion == "BR" || serverregion == "br" || serverregion == "Br" || serverregion == "bR" || serverregion == "Brazil" || serverregion == "BRAZIL" || serverregion == "brazil") {
     //HTTP GET NA STATS
     const brstatus = await r({
@@ -525,48 +650,92 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-BRAZIL.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-br-okay.png'})
     }
     
     if(brstatus.incidents.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + brstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(brstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(brstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: brstatus.incidents[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: brstatus.incidents[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS BRAZIL]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      var error;
+      try {
+        brstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
       }
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + brstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: brstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(brstatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: brstatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: brstatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS BRAZIL]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + brstatus.incidents[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: brstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(brstatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: brstatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: brstatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS BRAZIL] - Issue not available in your prefered language'
+          }
+        }})
+      }
+    }
     if(brstatus.maintenances.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-	      .setColor('#FF0000')
-	      .setTitle(linkjson[lang].statusissue + brstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(brstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(brstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: brstatus.maintenances[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: brstatus.maintenances[0].incident_severity, inline: true}
-        )
-	      .setTimestamp()
-	      .setFooter('VALORANT LABS [STATUS BRAZIL]');
-      message.channel.send(Embed);
-      message.channel.stopTyping()
+      var error;
+      try {
+        brstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
+      }
+      if(error === undefined) {
+        client.createMessage(message.channnel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + brstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: brstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(brstatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: brstatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: brstatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS BRAZIL]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channnel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + brstatus.maintenances[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: brstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(brstatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: brstatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: brstatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS BRAZIL] - Issue not available in your prefered language'
+          }
+        }})
       }
   }
-
+}
   if (serverregion == "KR" || serverregion == "kr" || serverregion == "Kr" || serverregion == "kR" || serverregion == "Korea" || serverregion == "KOREA" || serverregion == "korea") {
     //HTTP GET NA STATS
     const krstatus = await r({
@@ -588,47 +757,92 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-KOREA.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-kr-okay.png'})
     }
     
     if(krstatus.incidents.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-        .setColor('#FF0000')
-        .setTitle(linkjson[lang].statusissue + krstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(krstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(krstatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: krstatus.incidents[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: krstatus.incidents[0].incident_severity, inline: true}
-        )
-        .setTimestamp()
-        .setFooter('VALORANT LABS [STATUS KOREA]');
-     message.channel.send(Embed);
-     message.channel.stopTyping()
+      var error;
+      try {
+        krstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
       }
-    if(krstatus.maintenances.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-        .setColor('#FF0000')
-        .setTitle(linkjson[lang].statusissue + krstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(krstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(krstatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: krstatus.maintenances[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: krstatus.maintenances[0].incident_severity, inline: true}
-        )
-        .setTimestamp()
-        .setFooter('VALORANT LABS [STATUS BRAZIL]');
-     message.channel.send(Embed);
-     message.channel.stopTyping()
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + krstatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: krstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(krstatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: krstatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: krstatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS KOREA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + krstatus.incidents[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: krstatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(krstatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: krstatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: krstatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS KOREA] - Issue not available in your prefered language'
+          }
+        }})
+      }
     }
+    if(krstatus.maintenances.toString() != "") {
+      var error;
+      try {
+        krstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
+      }
+      if(error === undefined) {
+        client.createMessage(message.channnel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + krstatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: krstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(krstatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: krstatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: krstatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS KOREA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channnel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + krstatus.maintenances[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: krstatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(krstatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: krstatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: krstatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS KOREA] - Issue not available in your prefered language'
+          }
+        }})
+      }
   }
+}
 
   if (serverregion == "LA" || serverregion == "la" || serverregion == "La" || serverregion == "lA" || serverregion == "LATAM" || serverregion == "Latam" || serverregion == "latam") {
     //HTTP GET NA STATS
@@ -651,45 +865,90 @@ module.exports = async (args, client, message, { Canvas, Discord }) => {
 	    // Clip off the region you drew on
 	    ctx.clip();
   
-      const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+      const avatarl = await Canvas.loadImage(message.author.avatarURL);
       ctx.drawImage(avatarl, 30, 1925, 200, 200)
-  
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-status-LATIN-AMERICA.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+       
+      //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+      client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-status-la-okay.png'})
     }
     
     if(lastatus.incidents.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-        .setColor('#FF0000')
-        .setTitle(linkjson[lang].statusissue + lastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(lastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(lastatus.incidents[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: lastatus.incidents[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: lastatus.incidents[0].incident_severity, inline: true}
-        )
-        .setTimestamp()
-        .setFooter('VALORANT LABS [STATUS LATIN AMERICA]');
-     message.channel.send(Embed);
-     message.channel.stopTyping()
+      var error;
+      try {
+        lastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
       }
-    if(lastatus.maintenances.toString() != "") {
-
-      const Embed = new Discord.MessageEmbed()
-        .setColor('#FF0000')
-        .setTitle(linkjson[lang].statusissue + lastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content)
-        .setDescription(lastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content)
-        .addFields(
-          { name: linkjson[lang].statuspostedat, value: moment(lastatus.maintenances[0].created_at).format('MMMM Do YYYY, h:mm:ss a'), inline: true},
-          { name: linkjson[lang].statusplatforms, value: lastatus.maintenances[0].platforms[0], inline: true},
-          { name: linkjson[lang].statusissuetype, value: lastatus.maintenances[0].incident_severity, inline: true}
-        )
-        .setTimestamp()
-        .setFooter('VALORANT LABS [STATUS LATIN AMERICA]');
-     message.channel.send(Embed);
-     message.channel.stopTyping()
+      if(error === undefined) {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + lastatus.incidents[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: lastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(lastatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: lastatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: lastatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS LATIN AMERICA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + lastatus.incidents[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: lastatus.incidents[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(lastatus.incidents[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: lastatus.incidents[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: lastatus.incidents[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS LATIN AMERICA] - Issue not available in your prefered language'
+          }
+        }})
+      }
     }
+    if(lastatus.maintenances.toString() != "") {
+      var error;
+      try {
+        lastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content
+      } catch (e) {
+        error = e
+      }
+      if(error === undefined) {
+        client.createMessage(message.channnel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson[lang].statusissue + lastatus.maintenances[0].titles.find(c => c.locale == linkjson[lang].statusregion).content,
+          description: lastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson[lang].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(lastatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: lastatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: lastatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS LATIN AMERICA]'
+          }
+        }})
+      } else {
+        client.createMessage(message.channnel.id, {embed: {
+          color: 0xff0000,
+          title: linkjson['en-us'].statusissue + lastatus.maintenances[0].titles.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          description: lastatus.maintenances[0].updates[0].translations.find(c => c.locale == linkjson['en-us'].statusregion).content,
+          fields: [
+            { name: linkjson[lang].statuspostedat, value: moment(lastatus.maintenances[0].created_at).format('LLLL'), inline: true},
+            { name: linkjson[lang].statusplatforms, value: lastatus.maintenances[0].platforms[0], inline: true},
+            { name: linkjson[lang].statusissuetype, value: lastatus.maintenances[0].incident_severity, inline: true}
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: 'VALORANT LABS [STATUS LATIN AMERICA] - Issue not available in your prefered language'
+          }
+        }})
+      }
   }
+}
 }
