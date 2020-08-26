@@ -14,7 +14,7 @@ module.exports = async function check() {
 
     // 2. Check for new article
     const article = raw.result.data.allContentstackArticles.nodes[0]
-    article.date = Date.parse(article.date)
+    article.date = Date.parse(article.date).toString()
     if (article.date > last) {
         // 5. Update Cache
         fs.writeFileSync('./autonews/autonews-jp.txt', article.date)
