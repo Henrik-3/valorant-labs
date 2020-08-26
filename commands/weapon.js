@@ -1,20 +1,11 @@
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 const Canvas = require("canvas");
-const querystring = require("querystring");
-const fs = require('fs')
-const data = require("../server.js")
-
-
-// Required for Attachment
-const Discord = require('discord.js')
-
 const db = require('../db.js')
-
 Canvas.registerFont('product_sans.ttf', { family: 'product_sans' })
 
 
 module.exports = async (args, client, message) => {
-  message.channel.startTyping()
+  message.channel.sendTyping()
   //can also be added to an config file
   const Weapons = {
     classic: {
@@ -123,16 +114,16 @@ module.exports = async (args, client, message) => {
       ctx.fillText(content , x, y);
     }
   
-    var lang = db.get(`${message.guild.id}.lang`) || 'en'
+    var lang = db.get(`${message.guildID}.lang`) || 'en-us'
 
-    const prefix = db.get(`${message.guild.id}.prefix`) || 'v?'
+    const prefix = db.get(`${message.guildID}.prefix`) || 'v?'
     // Cut start to get the name
     const name = message.content.toLowerCase().substr(prefix.length + 7)
     // lookup data for weapon
     const weapon = Weapons[name]
     //check if weapon exist
     if (weapon) {
-      if(lang == 'en') {
+      if(lang == 'en-us' || lang == 'en-gb') {
         const background = await Canvas.loadImage(weapon.url + '-Englisch.png'); //load background from url
         ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
     } else if (lang == 'de') {
@@ -149,6 +140,8 @@ module.exports = async (args, client, message) => {
       ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
     }        
   } else {
+    const background = await Canvas.loadImage('commands/images/Valorant_LABS.png'); //load background from url
+    ctx.drawImage(background, 0, 0, canvasstats.width, canvasstats.height); // displays background
     //No info for this Weapon
     ctx.text2('Weapon Overview', 140, 1890, 130, '#ffffff', 'center')
     ctx.text3("Sidearm:", 120, 580, 425, '#3f888f', 'center')
@@ -224,10 +217,9 @@ module.exports = async (args, client, message) => {
     // Clip off the region you drew on
     ctx.clip();
 
-    const avatarl = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg'}));
+    const avatarl = await Canvas.loadImage(message.author.avatarURL);
     ctx.drawImage(avatarl, 30, 1925, 200, 200)
-
-    const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-weapon.png" ); //final result
-    message.channel.send(attachment); //send final result
-    message.channel.stopTyping()
+  
+    //const attachment = new Discord.MessageAttachment(canvasstats.toBuffer(),"valorant-help.png" ); //final result
+    client.createMessage(message.channel.id, ' ', { file: canvasstats.toBuffer(), name: 'valorant-weapon.png'})
 }

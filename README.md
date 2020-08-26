@@ -1,20 +1,46 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v1.04 Patch** 
+**VALORANT LABS | Discord Verified | All Data based on v1.06 Patch | Bot Version: 1.6.0**
 
-We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
-
+Support me :D [Patreon](https://www.patreon.com/valorantlabs)
 
 **LAST UPDATE:**
 
-- Multi Language support (currently German, English, French, Japanese and Portuguese-Brazil, more coming soon...)
+- Added v?stats Command
 
-- AutoNews redesign for multiple languages [BETA]
+- Added v?game Command
+
+**HIGHLIGHTS**
+
+- v?stats - Stats Command
+
+- v?game - Game Command
+
+- v?blacklist - Channel Blacklist
+
+- v?settings news #CHANNEL - Set AutoNews Channel for Server Status and new website articles
+
+- v?settings lang [de/en-us/en-gb/fr/jp/pt-br] - Change Language
+
+- v?status - Get Server Status
 
 
-***Commands:***
+
+
+**Stats [BETA STATE, BUGS CAN HAPPEN, IF YOU FIND ONE JOIN THE SUPPORT SERVER]** 
+
+- v?stats - Will send the help overview over the stats command or your stats if you are linked with v?link [READY]
+
+- v?stats @User - Will send the stats of pinged user if this user is linked with v?link [READY]
+
+- v?stats RIOT-ID - Will send the stats of the entered user if the account of this user is public [READY]
+
+- v?game GAME-KEY-HERE - Will give you an advanced overview over a specific match, Game Keys can be found in the stats command [READY]
+
+
+
+
+**Commands: GET THE DOCUMENTATION ON [docs.valorantlabs.xyz](docs.valorantlabs.xyz)**
 
 - v?help - Shows the help message [READY]
-
-- [!] v?stats [RIOT ID] - Shows the stats of the requested user [Waiting for API] 
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
@@ -26,29 +52,32 @@ We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valor
 
 - v?settings prefix [NEW PREFIX] - Set new prefix [READY]
 
-- v?settings news [#CHANNEL] - Set news channel [BETA]
+- v?settings news [#CHANNEL] - Set AutoNews Channel for Server Status and new website articles [READY]
+
+- v?settings lang [de/en-us/en-gb/fr/jp/pt-br] - Set Bot Language [READY]
+
+- v?settings blacklist [true/false] - Enables/Disables channel blacklist for the bot [BETA]
+
+- v?blacklist add #CHANNEL - Add channel to the blacklist [BETA]
+
+- v?blacklist remove #CHANNEL - Remove channel from the blacklist [BETA]
+
+- v?blacklist - Shows all channel in the blacklist [BETA]
+
+- v?template create [agents/rank] - Creates Reaction Roles for agents or rank selection [TEMPORARY DISABLED BECAUSE OF PERFORMANCE ISSUES]
 
 - v?map [MAP NAME] - Shows map details for a specific map [READY]
 
 - v?patch - Shows the latest Patch [READY]
 
-- v?agents [AGENT NAME] - Shows agent details for an specific agent [READY]
+- v?agent [AGENT NAME] - Shows agent details for an specific agent [READY]
 
 - v?botinfo - Get information about the bot [READY]
 
 - v?vote - Get the Vote Link [READY]
 
-- v?status - Shows overview for server regions to choose from [BETA]
+- v?status - Shows overview for server regions to choose from [READY]
 
-- v?settings lang [de/en/fr/jp/pt-br] - Set Bot Language [BETA]
-
- <img src="https://cdn.discordapp.com/attachments/704231681309278231/733690218376462479/valorant-help.png" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.discordapp.com/attachments/704231681309278231/733690292569374770/valorant-help.png" alt="VALORANT LABS HELP 2">
-
- 
-***WIP:***
-
-- Website: 
 
 - Compare Stats between players [later]
 
@@ -56,4 +85,4 @@ We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valor
 
 If you have any suggestions, write me a DM per Discord: Henrik3#1451
 
-VALORANT LABS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated
+VALORANT LABS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
