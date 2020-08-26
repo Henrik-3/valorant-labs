@@ -1,26 +1,46 @@
-**VALORANT LABS** | **Discord Verified** | **All Data based on v1.0 Patch** 
+**VALORANT LABS | Discord Verified | All Data based on v1.06 Patch | Bot Version: 1.6.0**
 
-If you use code from my bot, please credit it somewhere in your app/product
-
-[INVITE THE BOT HERE](https://top.gg/bot/702201518329430117)
-
-We are on Twitter now: [twitter.com/valorant_labs](https://www.twitter.com/valorant_labs)
-
-Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://discord.com/oauth2/authorize?client_id=717337318222069842&permissions=388289&scope=bot)
-
+Support me :D [Patreon](https://www.patreon.com/valorantlabs)
 
 **LAST UPDATE:**
 
-- Redesign + Added AutoNews [BETA]
+- Added v?stats Command
 
-- Update from discord.js v11 to v12 (improved reaction speed and stability)
+- Added v?game Command
+
+**HIGHLIGHTS**
+
+- v?stats - Stats Command
+
+- v?game - Game Command
+
+- v?blacklist - Channel Blacklist
+
+- v?settings news #CHANNEL - Set AutoNews Channel for Server Status and new website articles
+
+- v?settings lang [de/en-us/en-gb/fr/jp/pt-br] - Change Language
+
+- v?status - Get Server Status
 
 
-***Commands:***
+
+
+**Stats [BETA STATE, BUGS CAN HAPPEN, IF YOU FIND ONE JOIN THE SUPPORT SERVER]** 
+
+- v?stats - Will send the help overview over the stats command or your stats if you are linked with v?link [READY]
+
+- v?stats @User - Will send the stats of pinged user if this user is linked with v?link [READY]
+
+- v?stats RIOT-ID - Will send the stats of the entered user if the account of this user is public [READY]
+
+- v?game GAME-KEY-HERE - Will give you an advanced overview over a specific match, Game Keys can be found in the stats command [READY]
+
+
+
+
+**Commands: GET THE DOCUMENTATION ON [docs.valorantlabs.xyz](docs.valorantlabs.xyz)**
 
 - v?help - Shows the help message [READY]
-
-- [!] v?stats [RIOTNAME] - Shows the stats of the requested user [READY] 
 
 - v?weapon [WEAPONNAME] - Get stats for requested weapon [READY]
 
@@ -32,27 +52,32 @@ Design by ouihq#1640, check out his Reyna Discord Bot: [Reyna Bot](https://disco
 
 - v?settings prefix [NEW PREFIX] - Set new prefix [READY]
 
-- v?settings news [#CHANNEL] - Set news channel [BETA]
+- v?settings news [#CHANNEL] - Set AutoNews Channel for Server Status and new website articles [READY]
+
+- v?settings lang [de/en-us/en-gb/fr/jp/pt-br] - Set Bot Language [READY]
+
+- v?settings blacklist [true/false] - Enables/Disables channel blacklist for the bot [BETA]
+
+- v?blacklist add #CHANNEL - Add channel to the blacklist [BETA]
+
+- v?blacklist remove #CHANNEL - Remove channel from the blacklist [BETA]
+
+- v?blacklist - Shows all channel in the blacklist [BETA]
+
+- v?template create [agents/rank] - Creates Reaction Roles for agents or rank selection [TEMPORARY DISABLED BECAUSE OF PERFORMANCE ISSUES]
 
 - v?map [MAP NAME] - Shows map details for a specific map [READY]
 
 - v?patch - Shows the latest Patch [READY]
 
-- v?agents [AGENT NAME] - Shows agent details for an specific agent [READY]
+- v?agent [AGENT NAME] - Shows agent details for an specific agent [READY]
 
 - v?botinfo - Get information about the bot [READY]
 
 - v?vote - Get the Vote Link [READY]
 
-- v?status [EU OR NA] - Shows the server status for requested region [BETA]
+- v?status - Shows overview for server regions to choose from [READY]
 
- <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496044471812146/valorant-help.png" alt="VALORANT LABS HELP 1">
- <img src="https://cdn.discordapp.com/attachments/716941140825210881/718496051350470786/valorant-help2.png" alt="VALORANT LABS HELP 2">
- 
- 
-***WIP:***
-
-- Website: 
 
 - Compare Stats between players [later]
 
