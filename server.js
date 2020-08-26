@@ -34,9 +34,6 @@ client.on("ready", () => {
     const index = Math.floor(Math.random() * (activities.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
     client.editStatus('online', { name: activities[index], type: 3 })
   }, 10000); // Runs this every 10 seconds.
-  setInterval(() =>{ 
-    dbl.postStats(client.guilds.size)
-  }, 180000)
  setInterval (function() {
   require('./autonews/check-en-us.js')().then(data => {
     console.log(data)
