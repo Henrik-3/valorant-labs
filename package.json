@@ -12,7 +12,7 @@
     "express": "^4.17.1",
     "lowdb": "^1.0.0",
     "moment": "^2.27.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "pm2": "^4.4.0",
     "pretty-bytes": "^5.3.0",
     "querystring": "^0.2.0",
