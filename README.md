@@ -1,4 +1,4 @@
-**VALORANT LABS | Discord Verified | All Data based on v1.06 Patch | Bot Version: 1.6.1**
+**VALORANT LABS | Discord Verified | All Data based on v1.08 Patch | Bot Version: 1.8.0**
 
 **IMPORTANT!!! NO INSTALLATION SUPPORT, CODE CAN BE USED FOR YOUR OWN INSTANCE, BUT IS NOT MEANT FOR THAT**
 
