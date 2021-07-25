@@ -1,0 +1,220 @@
+@font-face {
+    font-family: 'VALORANT-LABS';
+    src: url(valorant_font.ttf)
+}
+@font-face {
+    font-family: 'Product Sans';
+    src: url(Product_Sans.ttf)
+} 
+.name {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+ul li {
+    float: left;
+}
+ul li a:hover {
+    background-color: rgb(0, 135, 135);
+    text-decoration: none;
+}
+body {
+    margin: 0;
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Arial';
+}
+h1 {
+    color: #ffffff !important;
+    font-family: 'VALORANT-LABS';
+    position: relative;
+    margin-left: 50%;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+    width: 1000px;
+    font-size: 50px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #101822;
+}
+h1:before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: #FFF;
+    transform: skew(7deg, 2deg);
+    z-index: -2;
+}
+.Update {
+    text-decoration: none;
+}
+.http-req {
+    font-family: 'Product Sans';
+    font-weight: 500;
+    margin-left: 75px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+.http-req-h2 {
+    color: #fff;
+    margin-bottom: 12.5px;
+    font-size: 30px;
+}
+.http-req-method-get {
+    color: #009dff;
+}
+.http-req-method-patch {
+    color: #ff7700;
+}
+.http-req-method-delete {
+    color: #e61a1a;
+}
+.http-req-method-post {
+    color: #50b649;
+}
+.http-req-url {
+    margin-left: 10px;
+    color: #fff;
+}
+.http-req-paragraph {
+    color: #fff;
+    font-size: 18px;
+    margin-left: 75px;
+    margin-top: 15px;
+    font-family: 'Product Sans';
+}
+.http-req-res {
+    margin-left: 75px;
+    color: #fff;
+    font-family: 'Product Sans';
+    font-size: 15px;
+    margin-bottom: 0;
+    margin-top: 40px;
+}
+.embed-red {
+    display: block;
+    margin-left: 75px;
+    border-left: 4px solid;
+    border-color: #FF0000;
+    margin-top: 20px;
+    position: relative;
+    color: #fff;
+    background-color: rgba(60, 60, 60, 0.25);
+    font-family: 'Product Sans';
+    font-size: 20px;
+    padding: 20px;
+    height: auto;
+}
+.embed-green {
+    display: block;
+    margin-left: 75px;
+    border-left: 4px solid;
+    border-color: #00ff00;
+    margin-top: 20px;
+    position: relative;
+    color: #fff;
+    background-color: rgba(60, 60, 60, 0.25);
+    font-family: 'Product Sans';
+    font-size: 20px;
+    padding: 20px;
+    height: auto;
+}
+.embed-yellow {
+    display: block;
+    margin-left: 75px;
+    border-left: 4px solid;
+    border-color: #FFFF00;
+    margin-top: 20px;
+    position: relative;
+    color: #fff;
+    background-color: rgba(60, 60, 60, 0.25);
+    font-family: 'Product Sans';
+    font-size: 20px;
+    padding: 20px;
+    height: auto;
+}
+pre {
+    box-sizing: content-box;
+    margin-left: 75px;
+    margin-top: 0;
+    margin-bottom: 100px;
+}
+code {
+    display: block;
+    overflow-x: auto;
+    color: #87909c;
+    background: #18191c;
+    width: fit-content;
+    padding: 30px;
+    font-family: monospace;
+} 
+.space {
+    margin: 40px
+}
+a {
+    text-decoration: none;
+}
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color:#28313B;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+    font-family: 'Product Sans';
+}
+.sidebar a.active {
+    background-color: #101822;
+    color: white;
+}
+.sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 1000px;
+}
+@media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+}
+@media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }
+span.token.property {
+    color: #2aa198;
+}
+span.token.string {
+    color: #859900;
+}
+span.token.boolean {
+    color: #d33682;
+}
+span.token.number {
+    color: #d33682;
+}
