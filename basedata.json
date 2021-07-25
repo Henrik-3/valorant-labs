@@ -1,0 +1,6 @@
+{
+    "discordtoken": "DISCORD-TOKEN",
+    "mongoaccess": "MONGODB-LOGIN",
+    "riottoken": "RIOT_GAMES_API-KEY",
+    "hdevtoken": "PERSONAL-API-TOKEN-NO-ONE-KNOWS-:D"
+}
