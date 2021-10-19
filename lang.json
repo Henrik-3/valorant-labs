@@ -630,7 +630,7 @@
     "weaponrangedamage": "Coup du visage : ${String(range.headDamage)} | Coup de corps : ${String(range.bodyDamage)} | Coup de jambe : ${String(range.legDamage)}",
     "weapons": "Coûts: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Free'}"
   },
-  "es-ES": {
+  "es": {
     "agenttitle": "Agente ${cagent.displayName}",
     "agentrole": "Rol",
     "agentunknown": "Por favor introduce un agente válido como Jett o Sova",
