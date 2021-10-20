@@ -282,7 +282,35 @@
             "Affiche des informations sur une arme",
             "Affiche des informations sur toutes les armes du jeu"
         ],
-        "es": []
+        "es": [
+            "Muestra la información sobre un agente",
+            "Muestra el link para la API del backend",
+            "Muestra información sobre todos los canales en lista negra si el sistema de blacklist está habilitado",
+            "Añade un canal a la lista negra si el sistema de blacklist está habilitado",
+            "Elimina un canal a la lista negra si el sistema de blacklist está habilitado",
+            "Muestra información sobre el propio bot. (Utilización de recursos, etc.)",
+            "Muestra datos sobre la partida jugada",
+            "Muestra la página de ayuda",
+            "Muestra tu cuenta vinculada si tienes una",
+            "Vincula una nueva cuenta de Riot con tu cuenta de Discord",
+            "Elimina una cuenta vinculada",
+            "Muestra información sobre un mapa",
+            "Muestra el enlace a las notas del último parche",
+            "Muestra información sobre el sistema de rangos, quién puede jugar con quién",
+            "Muestra los ajustes de guild",
+            "Establece un prefijo de guild",
+            "Establece un canal de noticias automáticas para las notas de parche",
+            "Establece un canal de noticias automáticas para los artículos de la página web que no son notas de parche",
+            "Establece un canal de noticias automáticas para problemas del servidor",
+            "Establece idioma de guild",
+            "Activa/desactiva el sistema de blacklist",
+            "Muestra tus propias estadísticas si tienes una cuenta vinculada o devuelve un mensaje de ayuda",
+            "Muestra las estadísticas de otro jugador si está logueado via RSO",
+            "Muestra el estado de los servidores del cluster especificado",
+            "Muestra un link a la página de votación top.gg",
+            "Muestra información sobre un arma",
+            "Muestra información sobre todas las armas del juego"
+        ]
     },
     "langlist": [
         {
@@ -470,7 +498,38 @@
                     "status": "Statut"
                 }
             }
+        },
+        "es": {
+            "mainsentence": "Bot de Discord Multilenguaje VALORANT. Estadísticas, Novedades y Estado de servidor de primera mano, hecho con mucho amor",
+            "buttons": {
+                "invite": "Invitar",
+                "dashboard": "Ir al panel de control",
+                "command": "Mostrar Comandos"
+            },
+            "nav": {
+                "command": "Comandos",
+                "support": "Soporte",
+                "invite": "Invitar"
+            },
+            "numbers": {
+                "title": "Números",
+                "description": "Algunas estadísticas sobre el Bot",
+                "server_count": "Contador de Servidores",
+                "commands_used": "Comandos Usados"
+            },
+            "commands": {
+                "title": "Comandos",
+                "description": "Resumen de comandos con ejemplos"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Traducciones"
+                },
+                "information": {
+                    "updates": "Actualizaciones",
+                    "status": "Estado"
+                }
+            }
         }
-        "es": {}
     }
 }
