@@ -397,7 +397,11 @@ const statuscodes = {
             fr:  {
                 title: "Jeu introuvable",
                 description: "Ce jeu n'a pas été trouvé sur les serveurs VALORANT"
-            }
+            },
+            "es":  {
+                title: "Partida no encontrada",
+                description: "Esta partida no se ha encontrado en los servidores de VALORANT"
+            },
         },
         stats: {
             de: {
@@ -423,7 +427,11 @@ const statuscodes = {
             fr: {
                 title: "Erreur lors de la récupération de l'utilisateur",
                 description: "Soit sûr que le compte existe, si tout est correcte attend 5min et réessaie. Si l'erreur persiste rejoint le serveur d'aide"
-            }
+            },
+            "es": {
+                title: "Jugador no encontrado",
+                description: "Asegúrate de que la cuenta existe, si todo está correcto espera 5m y prueba de nuevo. Si el error continúa, entra en el servidor de soporte"
+            },
         }
     },
     451: {
@@ -469,7 +477,14 @@ const statuscodes = {
                 components_login : "Connexion",
                 components_update : "Mettre à jour",
                 components_rank : "Afficher le MMR"
-            }
+            },
+            "es": {
+                title: "Esta cuenta es privada",
+                description: "Si esta es tu cuenta, por favor pulsa el botón 'Log in' debajo de este mensaje para darle a VALORANT LABS la autorización para recuperar tus datos de partida, para esto necesitas loguearte via RSO (Riot Sign On). Después de loguearte, este mensaje debería actualizarse automáticamente. Si no funciona, simplemente utiliza el botón 'Update' debajo de este mensaje. Si ya tienes las estadísticas en tracker.gg y estás logueado allá, el bot intentará cargarlos allá.",
+                components_login: "Loguear",
+                components_update: "Actualizar",
+                components_rank: "Mostrar MMR"
+            },
         }
     },
     "Unknown": {
@@ -497,7 +512,11 @@ const statuscodes = {
             fr:  {
                 title: "Erreur lors de la récupération du match",
                 description: "Veuillez réessayer dans quelques minutes. Si l'erreur persiste, rejoignez le serveur de support et signalez le problème"
-            }
+            },
+            "es":  {
+                title: "Error durante la carga de la partida",
+                description: "Por favor prueba en unos minutos. Si el error persiste, entra al servidor de soporte y reporta el problema"
+            },
         }
     }
 }
@@ -556,6 +575,15 @@ const websites = {
         footer: "VALORANT LABS [AUTONEWS STATUS][EU]",
         dguilds: "fr",
         locale: "fr_FR"
+    },
+    "es": {
+        website: "https://playvalorant.com/page-data/es-es/news/page-data.json",
+        patch: "https://api.henrikdev.xyz/valorant/v1/website/es-es?filter=game_updates",
+        status: "https://api.henrikdev.xyz/valorant/v1/status/eu",
+        moment: "es-es",
+        footer: "VALORANT LABS [AUTONEWS STATUS][EU]",
+        dguilds: "es-es",
+        locale: "es_ES"
     }
 }
 
@@ -589,7 +617,12 @@ const help = {
         1: "commands/images/help/Help1-Französisch.png",
         2: "commands/images/help/Help2-Französisch.png",
         3: "commands/images/help/Help3-Französisch.png"
-    }
+    },
+    "es": {
+        1: "commands/images/help/Help1-Englisch.png",
+        2: "commands/images/help/Help2-Englisch.png",
+        3: "commands/images/help/Help3-Englisch.png"
+    },
 }
 
 const agents = {
@@ -1123,6 +1156,9 @@ const weapons = {
     },
     "fr": {
         query: "fr-FR"
+    },
+    "es": {
+        query: "es-ES"
     },
     "EWallPenetrationDisplayType::High": "High",
     "EWallPenetrationDisplayType::Medium": "Medium",
