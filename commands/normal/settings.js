@@ -7,7 +7,7 @@ module.exports.execute = async (message, args, guilddata) => {
     if(!["prefix", "patchnotes", "othernews", "serverstatus", "lang", "blacklist"].includes(key)) return message.reply({embeds: [{title: linkjson[guilddata.lang].settingsna, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: `VALORANT LABS [SETTINGS ERROR]`}}]})
     switch(key) {
         case "lang": 
-            if(!['de', 'en-us', 'en-gb', 'fr', 'pt-br', 'jp'].includes(value)) return message.reply({embeds: [{title: linkjson[guilddata.lang].settingslanguage, color: 0xff4654, timestamp: new Date().toISOString(), description: linkjson[guilddata.lang].settingslanguage_desc, fields: [{name: linkjson[guilddata.lang].settings_support_server, value: '[Support Server](https://discord.com/invite/b5FmTqG)', inline: false}], footer: {text: 'VALORANT LABS [SETTINGS]'}}]})
+            if(!['de', 'en-us', 'en-gb', 'fr', 'pt-br', 'jp', 'es'].includes(value)) return message.reply({embeds: [{title: linkjson[guilddata.lang].settingslanguage, color: 0xff4654, timestamp: new Date().toISOString(), description: linkjson[guilddata.lang].settingslanguage_desc, fields: [{name: linkjson[guilddata.lang].settings_support_server, value: '[Support Server](https://discord.com/invite/b5FmTqG)', inline: false}], footer: {text: 'VALORANT LABS [SETTINGS]'}}]})
             return updateGuild(message, key, value)    
         case "patchnotes":
             if(value.includes("true") || value.includes("[") || !value.includes("#")) return message.reply({embeds: [{title: linkjson[guilddata.lang].settingsnews, description: eval('`'+ linkjson[guilddata.lang].settingsnews_desc +'`'), color: 0xff4654, timestamp: new Date().toISOString(), footer: { text: 'VALORANT LABS [SETTINGS]'}}]})
