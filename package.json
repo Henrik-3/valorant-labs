@@ -1,0 +1,17 @@
+{
+    "name": "valorant-labs-v4",
+    "version": "4.0.0",
+    "description": "Advanced VALORANT Bot",
+    "main": "shard.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^13.6.0",
+        "fastify": "^3.27.0",
+        "topgg-autoposter": "^2.0.0"
+    }
+}
