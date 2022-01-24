@@ -1,0 +1,12 @@
+{
+    "de": {
+        "errors": {
+            "cmdundefined_title": "Befehl existiert nicht",
+            "cmdundefined_desc": "Benutze **/help** um alle Befehle zu sehen oder klicke unten auf den Link um alle Befehle einzusehen",
+            "cmdblacklist_title": "Ich habe keine Berechtigung hier zu schreiben",
+            "cmdblacklist_desc": "Wenn du denkst dies ist ein Fehler, kontaktiere den Server Administrator. Diese Nachricht wird in **7.5** Sekunden gelöscht"
+        },
+        "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=de",
+        "cmd": "Befehle"
+    }
+}
