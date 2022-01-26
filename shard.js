@@ -5,12 +5,12 @@ import * as f from "fastify"
 const fastify = f.fastify()
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 
-const manager = new ShardingManager('./index.js', {
+const manager = new ShardingManager('./index.cjs', {
     token: basedata.discordtoken,
     totalShards: 2,
     respawn: true
 });
-const poster = AutoPoster(basedata.dbltoken, manager)
+//const poster = AutoPoster(basedata.dbltoken, manager)
 
 let restart = false
 setInterval(async () => {

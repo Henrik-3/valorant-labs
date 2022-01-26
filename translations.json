@@ -7,6 +7,10 @@
             "cmdblacklist_desc": "Wenn du denkst dies ist ein Fehler, kontaktiere den Server Administrator. Diese Nachricht wird in **7.5** Sekunden gelöscht"
         },
         "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=de",
-        "cmd": "Befehle"
+        "cmd": "Befehle",
+        "deprecation_title": "Dieser Befehl wird nicht mehr unterstützt",
+        "deprecation_desc": "Durch eine Discord Änderung [Genauere Infos hier](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Access-Deprecation-for-Verified-Bots) wird <@702201518329430117> nach April 2022 keine Nachrichten mehr senden können. Um frühzeitig auf das Update vorbereitet zu sein, werden neue Features nur noch über die Slash Commands veröffentlich. Zudem wurden bereits einige Befehle auf Slash Commands limitiert, aktuell folgende:\n- v?agent\n- v?api\n- v?blacklist\n- v?botinfo\n- v?game\n- v?link\n- v?map\n- v?patch\n- v?status\n- v?settings\n- v?vote\n- v?weapon\n- v?weapons\n\nBitte nutze deswegen den Slash Command dieses Befehls",
+        "help_title": "Hilfe Übersicht",
+        "help_desc": "Auf unserer neuen Website findest du in allem verfügbaren Übersetzungen die Hilfsübersicht"
     }
 }

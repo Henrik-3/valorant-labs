@@ -1,9 +1,22 @@
-import {Client, Intents, Collection, Options} from "discord.js"
-import {readFileSync} from "fs"
-import {default as Utils} from "./methods.js"
-import * as path from "path"
-
-const translations = JSON.parse(readFileSync("./translations.json"))
+const {Client, Intents, Collection, Options} = require("discord.js")
+const {readFileSync, readdirSync, writeFileSync} = require("fs")
+let Utils;
+(async function () {
+    Utils = (await import("./methods.js")).default
+    for(let i = 0; normalcommands.length > i; i++) {
+        const command = await import(`./commands/normal/${normalcommands[i]}`);
+        client.ncommands.set(command.name, command);
+    }
+    for(let i = 0; slashcommands.length > i; i++) {
+        const command = await import(`./commands/slash/${slashcommands[i]}`);
+        client.scommands.set(command.name, command);
+    }
+    for(let i = 0; buttonscommand.length > i; i++) {
+        const cmd = await import(`./commands/buttons/${buttonscommand[i]}`)
+        client.buttoncommands.set(cmd.name, cmd)
+    }
+})()
+const path = require("path")
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 const api = JSON.parse(readFileSync("./api.json"))
 const client = new Client({
@@ -23,26 +36,12 @@ const client = new Client({
         PresenceManager: 0,
     }),
 })
-
 client.ncommands = new Collection()
 client.scommands = new Collection()
 client.buttoncommands = new Collection()
-
-const normalcommands = fs.readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
-const slashcommands = fs.readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
-const buttonscommand = fs.readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
-for(let i = 0; normalcommands.length > i; i++) {
-    const command = require(`./commands/normal/${normalcommands[i]}`);
-    client.ncommands.set(command.name, command);
-}
-for(let i = 0; slashcommands.length > i; i++) {
-    const command = require(`./commands/slash/${slashcommands[i]}`);
-    client.scommands.set(command.name, command);
-}
-for(let i = 0; buttonscommand.length > i; i++) {
-    const cmd = require(`./commands/buttons/${buttonscommand[i]}`)
-    client.buttoncommands.set(cmd.name, cmd)
-}
+const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
+const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
+const buttonscommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
 
 client.on("ready", async () => {
     console.log(Utils)
@@ -99,13 +98,13 @@ client.on("interactionCreate", async interaction => {
     }
     api[interaction.commandName]++
     api['all']++
-    fs.writeFileSync('./api.json', JSON.stringify(api, null, 2))
+    writeFileSync('./api.json', JSON.stringify(api, null, 2))
     if(!client.scommands.has(interaction.commandName)) {
         return interaction.editReply({
             embeds: [{
                 color: 0xff4654,
-                title: translations[guilddata.lang].errors.cmdundefined_title,
-                description: translations[guilddata.lang].errors.cmdundefined_desc,
+                title: Utils.translations[guilddata.lang].errors.cmdundefined_title,
+                description: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
                 timestamp: new Date().toISOString(),
                 footer: {
                     text: 'VALORANT LABS [UNKNOWN CMD]'
@@ -115,21 +114,21 @@ client.on("interactionCreate", async interaction => {
                 type: "ACTION_ROW",
                 components: [{
                     type: "BUTTON",
-                    url: translations[guilddata.lang].cmdurl,
+                    url: Utils.translations[guilddata.lang].cmdurl,
                     style: "LINK",
-                    label: translations[guilddata.lang].cmd
+                    label: Utils.translations[guilddata.lang].cmd
                 }]
             }]
         })
     }
-    client.scommands.get(interaction.commandName).execute(interaction, guilddata)
+    client.scommands.get(interaction.commandName).execute({interaction: interaction, guilddata: guilddata})
 })
 
 client.on("message", async message => {
     if(message.author.id == "346345363990380546" && message.content == "/reload" && message.channel.parent == "732290187090067476") {
-        const normalcommand = fs.readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
-        const slashcommands = fs.readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
-        const buttonscommands = fs.readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+        const normalcommand = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
+        const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
+        const buttonscommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
         for(let i = 0; normalcommand.length > i; i++) {
             normalcommand[i] = path.join(__dirname, `/commands/normal/${normalcommand[i]}`)
         }
@@ -162,15 +161,17 @@ client.on("message", async message => {
         return message.reply({content: "Reloaded"})
     }
     const guilddata = await Utils.guildSettings(message.guild)
+    console.log(guilddata)
     if(!message.content.startsWith(guilddata.prefix)) return
     const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guildId) : null
-    const args = message.content.substring(guilddata.prefix.length).split(' ').shift()
+    const args = message.content.substring(guilddata.prefix.length).split(' ')
+    const cmd = args.shift()
     if(blacklist && blacklist.includes(`<#${message.channelId}>`)) {
         return message.reply({
             embeds: [{
                 color: 0xff4654,
-                title: translations[guilddata.lang].errors.cmdblacklist_title,
-                description: translations[guilddata.lang].errors.cmdblacklist_desc,
+                title: Utils.translations[guilddata.lang].errors.cmdblacklist_title,
+                description: Utils.translations[guilddata.lang].errors.cmdblacklist_desc,
                 timestamp: new Date().toISOString(),
                 footer: {
                     text: 'VALORANT LABS [BLACKLIST CMD]'
@@ -184,13 +185,14 @@ client.on("message", async message => {
     }
     api[cmd]++
     api['all']++
-    fs.writeFileSync('./api.json', JSON.stringify(api, null, 2))
+    writeFileSync('./api.json', JSON.stringify(api, null, 2))
+    console.log(client.ncommands, client.ncommands.has(cmd), cmd)
     if(!client.ncommands.has(cmd)) {
         return message.reply({
             embeds: [{
                 color: 0xff4654,
-                title: translations[guilddata.lang].errors.cmdundefined_title,
-                description: translations[guilddata.lang].errors.cmdundefined_desc,
+                title: Utils.translations[guilddata.lang].errors.cmdundefined_title,
+                description: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
                 timestamp: new Date().toISOString(),
                 footer: {
                     text: 'VALORANT LABS [UNKNOWN CMD]'
@@ -200,14 +202,19 @@ client.on("message", async message => {
                 type: "ACTION_ROW",
                 components: [{
                     type: "BUTTON",
-                    url: translations[guilddata.lang].cmdurl,
+                    url: Utils.translations[guilddata.lang].cmdurl,
                     style: "LINK",
-                    label: translations[guilddata.lang].cmd
+                    label: Utils.translations[guilddata.lang].cmd
                 }]
             }]
         })
     }
-    client.ncommands.get(cmd).execute(message, args, guilddata)
+    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [{title: Utils.translations[guilddata.lang].deprecation_title, description: Utils.translations[guilddata.lang].deprecation_desc, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [DEPRECATION]"}}]})
+    client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata})
+})
+
+process.on('unhandledRejection', error => {
+    console.error('Unhandled promise rejection:', error)
 })
 
 client.login(basedata.discordtoken)
