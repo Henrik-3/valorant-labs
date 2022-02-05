@@ -87,7 +87,7 @@ client.on("guildCreate", async g => {
 client.on("interactionCreate", async interaction => {
     const guilddata = await Utils.guildSettings(interaction.guild)
     const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guildId) : null
-    await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error)
+    await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})
     if(!interaction.isCommand()) {
         const args = interaction.customId.split(";")
         if(interaction.isButton()) return client.buttoncommands.get(args[0]).execute(interaction, args, guilddata)
