@@ -1,6 +1,8 @@
 import {MongoClient} from 'mongodb'
 import {readFileSync} from "fs"
 import axios from "axios"
+import system from "systeminformation"
+import pretty from "pretty-bytes"
 import {Message} from 'discord.js'
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 const mongoclient = new MongoClient(basedata.mongoaccess)
@@ -9,6 +11,8 @@ const valodb = mongoclient.db("VALORANT-LABS")
 const translations = JSON.parse(readFileSync("./translations.json"))
 
 export default {
+    sysinfo: system,
+    pretty: pretty,
     axios: axios,
     translations: translations,
     locales: {

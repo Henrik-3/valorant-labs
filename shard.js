@@ -55,7 +55,7 @@ fastify.get("/v1/guild-available/:guild", async (req, res) => {
 
 fastify.get("/v1/shard-state", async (req, res) => {
     const sharddata = await manager.broadcastEval(client => {
-        return {status: client.ws.status, ping: client.ws.ping}
+        return {status: client.ws.status, ping: client.ws.ping, server: client.guilds.cache.size}
     })
     res.send(sharddata)
 })

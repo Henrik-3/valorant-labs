@@ -75,22 +75,29 @@
                 "component_rank": "MMR"
             }
         },
-        "agentunknown_title": "Agent nicht gefunden",
-        "agentunknown_desc": "Bitte stelle sicher das der Agent existiert. Solltest du denken dies ist ein Bug, melde dich bitte auf dem Support Server",
-        "agentrole": "Rolle",
-        "blacklistinactive_title": "Blacklist ist nicht aktiv",
-        "blacklistinactive_desc": "Aktiviere die Blacklist mit: /settings blacklist true",
-        "blacklistperms_title": "Du darfst diesen Befehl nicht nutzen",
-        "blacklistperms_desc": "Bitte stelle sicher dass du die `MANAGE_GUILD` Berechtigungen hast",
-        "blacklistoverview_title": "Kanal Blacklist Übersicht",
-        "blacklistoverview_desc": "Benutze einer der folgenden Befehle \n\n/blacklist add #channel \n/blacklist remove #channel \n\nGeblacklistete Channel: \n${cchannel ? cchannel : 'Keine Kanäle'}",
-        "blacklistalreadyadded_title": "Bereits auf der Liste",
-        "blacklistalreadyadded_desc": "Der angegebene Channel ist bereits in der Liste, du kannst ihn nicht nochmal hinzufügen",
-        "blacklistalreadyremoved_title": "Nicht auf der Liste",
-        "blacklistalreadyremoved_desc": "Der angegebene Channel befindet sich nicht in der Liste, du kannst ihn nicht nochmal entfernen",
-        "blacklistadded_title": "Channel zur Liste hinzugefügt",
-        "blacklistchannels": "Geblacklistete Channel: \n${uchannel ? uchannel : 'Keine Kanäle'}",
-        "blacklistremoved_title": "Channel aus der Liste entfernt",
+        "agent": {
+            "agentunknown_title": "Agent nicht gefunden",
+            "agentunknown_desc": "Bitte stelle sicher das der Agent existiert. Solltest du denken dies ist ein Bug, melde dich bitte auf dem Support Server",
+            "agentrole": "Rolle"
+        },
+        "blacklist": {
+            "blacklistinactive_title": "Blacklist ist nicht aktiv",
+            "blacklistinactive_desc": "Aktiviere die Blacklist mit: /settings blacklist true",
+            "blacklistperms_title": "Du darfst diesen Befehl nicht nutzen",
+            "blacklistperms_desc": "Bitte stelle sicher dass du die `MANAGE_GUILD` Berechtigungen hast",
+            "blacklistoverview_title": "Kanal Blacklist Übersicht",
+            "blacklistoverview_desc": "Benutze einer der folgenden Befehle \n\n/blacklist add #channel \n/blacklist remove #channel \n\nGeblacklistete Channel: \n${cchannel ? cchannel : 'Keine Kanäle'}",
+            "blacklistalreadyadded_title": "Bereits auf der Liste",
+            "blacklistalreadyadded_desc": "Der angegebene Channel ist bereits in der Liste, du kannst ihn nicht nochmal hinzufügen",
+            "blacklistalreadyremoved_title": "Nicht auf der Liste",
+            "blacklistalreadyremoved_desc": "Der angegebene Channel befindet sich nicht in der Liste, du kannst ihn nicht nochmal entfernen",
+            "blacklistadded_title": "Channel zur Liste hinzugefügt",
+            "blacklistchannels": "Geblacklistete Channel: \n${uchannel ? uchannel : 'Keine Kanäle'}",
+            "blacklistremoved_title": "Channel aus der Liste entfernt"
+        },
+        "botinfo": {
+            "title": "Bot Informationen zu VALORANT LABS"
+        },
         "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=de",
         "cmd": "Befehle",
         "deprecation_title": "Dieser Befehl wird nicht mehr unterstützt",

@@ -1,9 +1,10 @@
 {
   "kek": null,
-  "all": 25,
+  "all": 33,
   "status": null,
   "help": 4,
   "agent": null,
   "api": null,
-  "blacklist": 17
+  "blacklist": 17,
+  "botinfo": 7
 }
