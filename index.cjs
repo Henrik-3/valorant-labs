@@ -1,5 +1,6 @@
 const {Client, Intents, Collection, Options} = require("discord.js")
 const {readFileSync, readdirSync, writeFileSync} = require("fs")
+const axios = require("axios")
 let Utils;
 (async function () {
     Utils = (await import("./methods.js")).default
@@ -84,7 +85,35 @@ client.on("guildCreate", async g => {
     }
 })
 
+async function sendModal(interaction) {
+    axios.post(`https://discord.com/api/v9/interactions/${interaction.id}/${interaction.token}/callback`, {
+        "type": 9,
+        "data": {
+            "title": "My Cool Modal",
+            "custom_id": "cool_modal",
+            "components": [{
+                "type": 1,
+                "components": [{
+                    "type": 4,
+                    "custom_id": "name",
+                    "label": "Name",
+                    "style": 1,
+                    "min_length": 1,
+                    "max_length": 4000,
+                    "placeholder": "John",
+                    "required": true
+                }]
+            }]
+        }
+    }, {headers: {Authorization: `Bot ${client.token}`}})
+}
+
+client.ws.on("INTERACTION_CREATE", async interaction => {
+    console.log(interaction)
+})
+
 client.on("interactionCreate", async interaction => {
+    return sendModal(interaction)
     const guilddata = await Utils.guildSettings(interaction.guild)
     const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guildId) : null
     await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})

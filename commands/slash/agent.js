@@ -1,8 +1,6 @@
 import {default as Utils} from "../../methods.js"
 export async function execute(data) {
-    console.log("res")
     const request = await Utils.axios.get(`https://valorant-api.com/v1/agents?language=${Utils.translations[data.guilddata.lang].valorant_api_lang}`).catch(error => {return error})
-    console.log(request.data)
     const cagent = request.data.data.find(item => item.displayName.toLowerCase() == data.interaction.options.get("agent").value && item.role != null)
     if(cagent == undefined) return data.interaction.editReply({embeds: [{title: Utils.translations[data.guilddata.lang].agent.agentunknown_title, description: Utils.translations[data.guilddata.lang].agent.agentunknown_desc, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: `VALORANT LABS [AGENT ERROR]`}}], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: Utils.translations[data.guilddata.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
     const a1 = cagent.abilities.find(item => item.slot == "Ability1")

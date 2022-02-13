@@ -44,12 +44,13 @@ manager.on('shardCreate', async shard => {
 fastify.get("/v1/guild-available/:guild", async (req, res) => {
     const gcheck = await manager.broadcastEval((client, {guild}) => {
         try {
-            return client.guilds.cache.has(guild)
+            const check = client.guilds.cache.has(guild)
+            return check ? client.guilds.cache.get(guild) : false
         } catch(e) {
 
         }
     }, {context: {guild: req.params.guild}})
-    if(gcheck.includes(true)) return res.code(200).send({status: 200, message: "Guild available"})
+    if(gcheck.some(item => typeof item == "object")) return res.code(200).send({status: 200, data: gcheck.find(item => typeof item == "object")})
     res.code(404).send({status: 404, message: "Guild unavailable"})
 })
 
