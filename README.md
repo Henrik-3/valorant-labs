@@ -1,7 +1,7 @@
-# valorant-labs
-Invite the bot here: https://discord.com/oauth2/authorize?client_id=702201518329430117&permissions=2416307264&redirect_uri=https%3A%2F%2Fdiscord.gg%2FZr5eF5D&scope=bot%20applications.commands
+# VALORANT LABS v4
+**See the v4 branch for the next big update. With v4, VALORANT LABS will be completly open source so that everyone can work on it if they want**
 
-If u want to setup the Bot yourself, please go for it, but i don't provide any help doing this. It also could be that some files are missing :D
+Invite the bot here: https://valorantlabs.xyz/invite
 
 <a href="https://discord.gg/X3GaVkX2YN" target="_blank"><img src="https://discordapp.com/api/guilds/704231681309278228/widget.png?style=banner2"/></a>
 
