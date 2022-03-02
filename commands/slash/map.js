@@ -15,7 +15,8 @@ export async function execute(data) {
             color: 0xff4654,
             timestamp: new Date().toISOString(),
             footer: {
-                text: `VALORANT LABS [MAP ${interaction.options.get("map").value.toUpperCase()}]`
+                text: `VALORANT LABS [MAP ${interaction.options.get("map").value.toUpperCase()}]`,
+                icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
             }
         }]
     })

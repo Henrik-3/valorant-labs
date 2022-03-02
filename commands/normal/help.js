@@ -7,7 +7,8 @@ export async function execute(data) {
             description: Utils.translations[data.guilddata.lang].help_desc,
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'VALORANT LABS [HELP]'
+                text: 'VALORANT LABS [HELP]',
+                icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
             }
         }],
         components: [{

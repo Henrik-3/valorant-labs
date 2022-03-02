@@ -70,7 +70,10 @@ client.on("guildCreate", async g => {
                 title: 'Language Selection',
                 description: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
                 timestamp: new Date().toISOString(),
-                footer: {text: 'VALORANT LABS [SERVER JOINED]'}
+                footer: {
+                    text: 'VALORANT LABS [SERVER JOINED]',
+                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
+                }
             }],
             components: [{
                 type: "ACTION_ROW",
@@ -85,35 +88,7 @@ client.on("guildCreate", async g => {
     }
 })
 
-async function sendModal(interaction) {
-    axios.post(`https://discord.com/api/v9/interactions/${interaction.id}/${interaction.token}/callback`, {
-        "type": 9,
-        "data": {
-            "title": "My Cool Modal",
-            "custom_id": "cool_modal",
-            "components": [{
-                "type": 1,
-                "components": [{
-                    "type": 4,
-                    "custom_id": "name",
-                    "label": "Name",
-                    "style": 1,
-                    "min_length": 1,
-                    "max_length": 4000,
-                    "placeholder": "John",
-                    "required": true
-                }]
-            }]
-        }
-    }, {headers: {Authorization: `Bot ${client.token}`}})
-}
-
-client.ws.on("INTERACTION_CREATE", async interaction => {
-    console.log(interaction)
-})
-
 client.on("interactionCreate", async interaction => {
-    return sendModal(interaction)
     const guilddata = await Utils.guildSettings(interaction.guild)
     const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guildId) : null
     await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})
@@ -136,7 +111,8 @@ client.on("interactionCreate", async interaction => {
                 description: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
                 timestamp: new Date().toISOString(),
                 footer: {
-                    text: 'VALORANT LABS [UNKNOWN CMD]'
+                    text: 'VALORANT LABS [UNKNOWN CMD]',
+                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
                 }
             }],
             components: [{
@@ -203,7 +179,8 @@ client.on("message", async message => {
                 description: Utils.translations[guilddata.lang].errors.cmdblacklist_desc,
                 timestamp: new Date().toISOString(),
                 footer: {
-                    text: 'VALORANT LABS [BLACKLIST CMD]'
+                    text: 'VALORANT LABS [BLACKLIST CMD]',
+                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
                 }
             }]
         }).then(msg => {
@@ -224,7 +201,8 @@ client.on("message", async message => {
                 description: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
                 timestamp: new Date().toISOString(),
                 footer: {
-                    text: 'VALORANT LABS [UNKNOWN CMD]'
+                    text: 'VALORANT LABS [UNKNOWN CMD]',
+                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
                 }
             }],
             components: [{
@@ -238,7 +216,7 @@ client.on("message", async message => {
             }]
         })
     }
-    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [{title: Utils.translations[guilddata.lang].deprecation_title, description: Utils.translations[guilddata.lang].deprecation_desc, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [DEPRECATION]"}}]})
+    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [{title: Utils.translations[guilddata.lang].deprecation_title, description: Utils.translations[guilddata.lang].deprecation_desc, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [DEPRECATION]", icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}]})
     client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata})
 })
 
