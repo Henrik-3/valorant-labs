@@ -1,19 +1,19 @@
 const {Client, Intents, Collection, Options} = require("discord.js")
 const {readFileSync, readdirSync, writeFileSync} = require("fs")
-const axios = require("axios")
 let Utils;
 (async function () {
     Utils = (await import("./methods.js")).default
     for(let i = 0; normalcommands.length > i; i++) {
-        const command = await import(`./commands/normal/${normalcommands[i]}`);
+        const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
         client.ncommands.set(command.name, command);
     }
     for(let i = 0; slashcommands.length > i; i++) {
-        const command = await import(`./commands/slash/${slashcommands[i]}`);
+        const command = await import(`./commands/slash/${slashcommands[i]}?update=${Date.now()}`);
+        console.log(command.name)
         client.scommands.set(command.name, command);
     }
     for(let i = 0; buttonscommand.length > i; i++) {
-        const cmd = await import(`./commands/buttons/${buttonscommand[i]}`)
+        const cmd = await import(`./commands/buttons/${buttonscommand[i]}?update=${Date.now()}`)
         client.buttoncommands.set(cmd.name, cmd)
     }
 })()
@@ -45,7 +45,6 @@ const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWi
 const buttonscommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
 
 client.on("ready", async () => {
-    console.log(Utils)
     let guildsize
     client.user.setPresence({activities: [{name: `Bot startup | Shard: ${client.shard.ids[0]}`}], status: 'dnd'})
     process.on("message", async message => {
@@ -90,7 +89,7 @@ client.on("guildCreate", async g => {
 
 client.on("interactionCreate", async interaction => {
     const guilddata = await Utils.guildSettings(interaction.guild)
-    const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guildId) : null
+    const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guild) : null
     await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})
     if(!interaction.isCommand()) {
         const args = interaction.customId.split(";")
@@ -135,31 +134,30 @@ client.on("message", async message => {
         const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
         const buttonscommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
         for(let i = 0; normalcommand.length > i; i++) {
-            normalcommand[i] = path.join(__dirname, `/commands/normal/${normalcommand[i]}`)
+            normalcommand[i] = path.join("file:///", __dirname, `/commands/normal/${normalcommand[i]}?update=${Date.now()}`)
         }
         for(let i = 0; slashcommands.length > i; i++) {
-            slashcommands[i] = path.join(__dirname, `/commands/slash/${slashcommands[i]}`)
+            slashcommands[i] = path.join("file:///", __dirname, `/commands/slash/${slashcommands[i]}?update=${Date.now()}`)
         }
         for(let i = 0; buttonscommands.length > i; i++) {
-            buttonscommands[i] = path.join(__dirname, `/commands/buttons/${buttonscommands[i]}`)
+            buttonscommands[i] = path.join("file:///", __dirname, `/commands/buttons/${buttonscommands[i]}?update=${Date.now()}`)
         }
-        await client.shard.broadcastEval((c, {normalcommands, slashcommands, buttoncommands, dir}) => {
+        console.log(normalcommand)
+        await client.shard.broadcastEval(async (c, {normalcommands, slashcommands, buttoncommands}) => {
             c.ncommands.sweep(() => true)
             c.buttoncommands.sweep(() => true)
             c.scommands.sweep(() => true)
-            for(const file of normalcommands) {
-                delete require.cache[require.resolve(`${file}`)]
-                const command = require(`${file}`, {"flag": 'rs+'});
+            for(let i = 0; normalcommands.length > i; i++) {
+                const command = await import(normalcommands[i]);
                 c.ncommands.set(command.name, command);
             }
-            for(const file of slashcommands) {
-                delete require.cache[require.resolve(`${file}`)]
-                const command = require(`${file}`, {"flag": 'rs+'});
+            for(let i = 0; slashcommands.length > i; i++) {
+                const command = await import(slashcommands[i]);
+                console.log(command)
                 c.scommands.set(command.name, command);
             }
-            for(const button of buttoncommands) {
-                delete require.cache[require.resolve(`${button}`)]
-                const cmd = require(`${button}`, {"flag": 'rs+'})
+            for(let i = 0; buttoncommands.length > i; i++) {
+                const cmd = await import(buttoncommands[i]);
                 c.buttoncommands.set(cmd.name, cmd)
             }
         }, {context: {normalcommands: normalcommand, slashcommands: slashcommands, buttoncommands: buttonscommands}})
@@ -168,7 +166,7 @@ client.on("message", async message => {
     const guilddata = await Utils.guildSettings(message.guild)
     console.log(guilddata)
     if(!message.content.startsWith(guilddata.prefix)) return
-    const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guildId) : null
+    const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guild) : null
     const args = message.content.substring(guilddata.prefix.length).split(' ')
     const cmd = args.shift()
     if(blacklist && blacklist.includes(`<#${message.channelId}>`)) {
@@ -216,7 +214,7 @@ client.on("message", async message => {
             }]
         })
     }
-    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [{title: Utils.translations[guilddata.lang].deprecation_title, description: Utils.translations[guilddata.lang].deprecation_desc, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [DEPRECATION]", icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}]})
+    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [{title: Utils.translations[guilddata.lang].errors.deprecation_title, description: Utils.translations[guilddata.lang].errors.deprecation_desc, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [DEPRECATION]", icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}]})
     client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata})
 })
 

@@ -4,6 +4,7 @@ import axios from "axios"
 import system from "systeminformation"
 import pretty from "pretty-bytes"
 import {Message, Permissions} from 'discord.js'
+import moment from "moment"
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 const mongoclient = new MongoClient(basedata.mongoaccess)
 mongoclient.connect()
@@ -17,6 +18,30 @@ export default {
     translations: translations,
     topgg: basedata.dbltoken,
     valodb: mongoclient.db("VALORANT-LABS"),
+    moment: moment,
+    clusters: {
+        na: {
+            status: "https://api.henrikdev.xyz/valorant/v1/status/na"
+        },
+        latam: {
+            status: "https://api.henrikdev.xyz/valorant/v1/status/latam"
+        },
+        br: {
+            status: "https://api.henrikdev.xyz/valorant/v1/status/br"
+        },
+        eu: {
+            status: "https://api.henrikdev.xyz/valorant/v1/status/eu"
+        },
+        kr: {
+            status: "https://api.henrikdev.xyz/valorant/v1/status/kr"
+        },
+        ap: {
+            status: "https://api.henrikdev.xyz/valorant/v1/status/ap"
+        },
+        oce: {
+            status: "https://api.henrikdev.xyz/valorant/v1/status/ap"
+        }
+    },
     locales: {
         de: "de",
         fr: "fr",
@@ -37,7 +62,7 @@ export default {
     guildSettings: async function (guild) {
         return (await this.valodb.collection("settings").findOneAndUpdate({gid: guild.id}, {$setOnInsert: {news: false, onews: false, serverstatus: false, lang: this.locales[guild.preferredLocale] ? this.locales[guild.preferredLocale] : "en-us", blacklist: false, prefix: "v?"}}, {upsert: true, returnDocument: "after"})).value
     },
-    guildBlacklist: async function (guildId) {
+    guildBlacklist: async function (guild) {
         const request = await this.valodb.collection("settings").findOne({gid: guild.id})
         if(!request) return null
         return request.entrys.length ? request.entrys : null
@@ -80,6 +105,12 @@ export default {
         if(!this.translations[error.lang].response[error.status]) return error.message.reply({embeds: [{title: this.translations[error.lang].response[500][error.type].title, description: this.translations[error.lang].response[500][error.type].description, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [ERROR 500]", icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
         return error.message.reply({embeds: [{title: this.translations[error.lang].response[error.status][error.type].title, description: this.translations[error.lang].response[error.status][error.type].description, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: `VALORANT LABS [ERROR ${error.status}]`, icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
     },
+    errorhandlerinteraction: async function (error) {
+        if(error.status == 451) return error.interaction.editReply({embeds: [{title: this.translations[error.lang].response[451][error.type].title, description: this.translations[error.lang].response[451][error.type].description, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [ERROR 451]", icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].response[451].component_login, style: "LINK", url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: "BUTTON", label: this.translations[error.lang].response[451].component_update, style: "DANGER", customId: `update;${error.puuid}`}, {type: "BUTTON", label: this.translations[error.lang].response[451].component_rank, style: "DANGER", customId: `rank;${error.name};${error.tag}`}]}]})
+        if(!this.translations[error.lang].response[error.status]) return error.interaction.editReply({embeds: [{title: this.translations[error.lang].response[500][error.type].title, description: this.translations[error.lang].response[500][error.type].description, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [ERROR 500]", icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(!this.translations[error.lang].response[error.status][error.type]) return error.interaction.editReply({embeds: [{title: this.translations[error.lang].response[error.status]["account"].title, description: this.translations[error.lang].response[error.status]["account"].description, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: `VALORANT LABS [ERROR ${error.status}]`, icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
+        return error.interaction.editReply({embeds: [{title: this.translations[error.lang].response[error.status][error.type].title, description: this.translations[error.lang].response[error.status][error.type].description, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: `VALORANT LABS [ERROR ${error.status}]`, icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
+    },
     getGuild: async function (interaction) {
         const settings = await this.guildSettings(interaction.guild)
         return interaction.editReply({
@@ -104,36 +135,30 @@ export default {
         })
     },
     patchGuild: async function (data) {
-        let field
+        let doc
         switch(data.key) {
             case "prefix": {
-                const doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {prefix: data.value}}, {upsert: false, returnDocument: "after"})).value
-                field = [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.serverstatus.blacklist)}]
+                doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {prefix: data.value}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
-            case "lang": {
-                const doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {lang: data.value}}, {upsert: false, returnDocument: "after"})).value
-                field = [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.serverstatus.blacklist)}]
+            case "language": {
+                doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {lang: data.value}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
             case "patchnotes": {
-                const doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {news: data.value}}, {upsert: false, returnDocument: "after"})).value
-                field = [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.serverstatus.blacklist)}]
+                doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {news: data.value}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
             case "othernews": {
-                const doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {onews: data.value}}, {upsert: false, returnDocument: "after"})).value
-                field = [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.serverstatus.blacklist)}]
+                doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {onews: data.value}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
             case "serverstatus": {
-                const doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {serverstatus: data.value}}, {upsert: false, returnDocument: "after"})).value
-                field = [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.serverstatus.blacklist)}]
+                doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {serverstatus: data.value}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
             case "blacklist": {
-                const doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {blacklist: Boolean(data.value)}}, {upsert: false, returnDocument: "after"})).value
-                field = [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.serverstatus.blacklist)}]
+                doc = (await this.valodb.collection("settings").findOneAndUpdate({gid: data.interaction.guild.id}, {$set: {blacklist: Boolean(data.value)}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
         }
@@ -141,8 +166,8 @@ export default {
             embeds: [{
                 color: 0xff4654,
                 title: "VALORANT LABS Settings",
-                description: `Settings for ${interaction.guild.name}`,
-                fields: field,
+                description: `Settings for ${data.interaction.guild.name}`,
+                fields: [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.blacklist)}],
                 timestamp: new Date().toISOString(),
                 footer: {
                     text: 'VALORANT LABS [SETTINGS]',

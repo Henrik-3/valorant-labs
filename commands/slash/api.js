@@ -1,6 +1,6 @@
 import {default as Utils} from "../../methods.js"
-export async function execute(data) {
-    return data.interaction.editReply({
+export async function execute({interaction, guilddata} = {}) {
+    return interaction.editReply({
         embeds: [{
             title: "Unofficial-VALORANT-API",
             author: {

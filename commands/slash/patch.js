@@ -1,7 +1,7 @@
 import {default as Utils} from "../../methods.js"
-export async function execute(data) {
-    const website = await Utils.axios.get(Utils.translations[data.guilddata.lang].patchurl).catch(error => {return error})
-    data.interaction.editReply({
+export async function execute({interaction, guilddata} = {}) {
+    const website = await Utils.axios.get(Utils.translations[guilddata.lang].patchurl).catch(error => {return error})
+    interaction.editReply({
         embeds: [{
             title: website.data.data[0].title,
             url: website.data.data[0].url,

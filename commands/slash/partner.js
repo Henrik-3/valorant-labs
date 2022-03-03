@@ -1,6 +1,6 @@
 import {default as Utils} from "../../methods.js"
-export async function execute(data) {
-    const fg = await data.interaction.client.shard.broadcastEval(c => {
+export async function execute({interaction, guilddata} = {}) {
+    const fg = await interaction.client.shard.broadcastEval(c => {
         return c.guilds.cache.get()
     })
     const carray = []
@@ -14,6 +14,6 @@ export async function execute(data) {
     for(let i = 0; sort_array.length > i; i++) {
         fields.push({name: String(i), value: `Locale: ${sort_array[i].preferredLocale} | Member: ${sort_array[i].memberCount} | Name: ${sort_array[i].name} | ID: ${sort_array[i].id}`})
     }
-    return data.interaction.editReply({embeds: [{title: "Guilds", fields: fields}]})
+    return interaction.editReply({embeds: [{title: "Guilds", fields: fields}]})
 }
 export const name = "partner"

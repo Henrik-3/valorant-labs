@@ -13,6 +13,7 @@
         "axios": "^0.25.0",
         "discord.js": "^13.6.0",
         "fastify": "^3.27.0",
+        "moment": "^2.29.1",
         "mongodb": "^4.3.1",
         "pretty-bytes": "^5.6.0",
         "systeminformation": "^5.7.7",
