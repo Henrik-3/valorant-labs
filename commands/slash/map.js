@@ -3,22 +3,13 @@ export async function execute({interaction, guilddata} = {}) {
     const request = await Utils.axios.get(`https://valorant-api.com/v1/maps`).catch(error => {return error})
     const cmap = request.data.data.find(item => item.displayName.toLowerCase() == interaction.options.get("map").value)
     return interaction.editReply({
-        embeds: [{
+        embeds: [Utils.embedBuilder({
             title: cmap.displayName,
-            thumbnail: {
-                url: cmap.splash
-            },
-            description: cmap.coordinates ? cmap.coordinates : "N.A",
-            image: {
-                url: cmap.displayIcon
-            },
-            color: 0xff4654,
-            timestamp: new Date().toISOString(),
-            footer: {
-                text: `VALORANT LABS [MAP ${interaction.options.get("map").value.toUpperCase()}]`,
-                icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
-            }
-        }]
+            thumbnail: cmap.splash,
+            desc: cmap.coordinates ? cmap.coordinates : "N.A",
+            image: cmap.displayIcon,
+            footer: `VALORANT LABS [MAP ${interaction.options.get("map").value.toUpperCase()}]`
+        })]
     })
 }
 export const name = "map"

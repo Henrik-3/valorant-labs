@@ -64,16 +64,11 @@ client.on("guildCreate", async g => {
     const channels = g.channels.cache.filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has('SEND_MESSAGES')).sort((a, b) => a.position - b.position)
     if(channels[0]) {
         channels[0].send({
-            embeds: [{
-                color: 0xff4654,
+            embeds: [Utils.embedBuilder({
                 title: 'Language Selection',
-                description: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
-                timestamp: new Date().toISOString(),
-                footer: {
-                    text: 'VALORANT LABS [SERVER JOINED]',
-                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
-                }
-            }],
+                desc: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
+                footer: "VALORANT LABS [SERVER JOINED]"
+            })],
             components: [{
                 type: "ACTION_ROW",
                 components: [{
@@ -104,16 +99,11 @@ client.on("interactionCreate", async interaction => {
     writeFileSync('./api.json', JSON.stringify(api, null, 2))
     if(!client.scommands.has(interaction.commandName)) {
         return interaction.editReply({
-            embeds: [{
-                color: 0xff4654,
+            embeds: [Utils.embedBuilder({
                 title: Utils.translations[guilddata.lang].errors.cmdundefined_title,
-                description: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
-                timestamp: new Date().toISOString(),
-                footer: {
-                    text: 'VALORANT LABS [UNKNOWN CMD]',
-                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
-                }
-            }],
+                desc: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
+                footer: "VALORANT LABS [COMMAND UNKNOWN]"
+            })],
             components: [{
                 type: "ACTION_ROW",
                 components: [{
@@ -171,16 +161,11 @@ client.on("message", async message => {
     const cmd = args.shift()
     if(blacklist && blacklist.includes(`<#${message.channelId}>`)) {
         return message.reply({
-            embeds: [{
-                color: 0xff4654,
+            embeds: [Utils.embedBuilder({
                 title: Utils.translations[guilddata.lang].errors.cmdblacklist_title,
-                description: Utils.translations[guilddata.lang].errors.cmdblacklist_desc,
-                timestamp: new Date().toISOString(),
-                footer: {
-                    text: 'VALORANT LABS [BLACKLIST CMD]',
-                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
-                }
-            }]
+                desc: Utils.translations[guilddata.lang].errors.cmdblacklist_desc,
+                footer: "VALORANT LABS [BLACKLIST]"
+            })]
         }).then(msg => {
             setTimeout(() => {
                 msg.delete()
@@ -193,16 +178,11 @@ client.on("message", async message => {
     console.log(client.ncommands, client.ncommands.has(cmd), cmd)
     if(!client.ncommands.has(cmd)) {
         return message.reply({
-            embeds: [{
-                color: 0xff4654,
+            embeds: [Utils.embedBuilder({
                 title: Utils.translations[guilddata.lang].errors.cmdundefined_title,
-                description: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
-                timestamp: new Date().toISOString(),
-                footer: {
-                    text: 'VALORANT LABS [UNKNOWN CMD]',
-                    icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
-                }
-            }],
+                desc: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
+                footer: "VALORANT LABS [COMMAND UNKNOWN]"
+            })],
             components: [{
                 type: "ACTION_ROW",
                 components: [{
@@ -214,7 +194,7 @@ client.on("message", async message => {
             }]
         })
     }
-    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [{title: Utils.translations[guilddata.lang].errors.deprecation_title, description: Utils.translations[guilddata.lang].errors.deprecation_desc, color: 0xff4654, timestamp: new Date().toISOString(), footer: {text: "VALORANT LABS [DEPRECATION]", icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"}}]})
+    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [Utils.embedBuilder({title: Utils.translations[guilddata.lang].errors.deprecation_title, desc: Utils.translations[guilddata.lang].errors.deprecation_desc, footer: "VALORANT LABS [DEPRECATED]"})]})
     client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata})
 })
 

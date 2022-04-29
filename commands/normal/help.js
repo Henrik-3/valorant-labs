@@ -1,23 +1,18 @@
 import {default as Utils} from "../../methods.js"
-export async function execute(data) {
-    return data.message.reply({
-        embeds: [{
-            color: 0xff4654,
-            title: Utils.translations[data.guilddata.lang].help_title,
-            description: Utils.translations[data.guilddata.lang].help_desc,
-            timestamp: new Date().toISOString(),
-            footer: {
-                text: 'VALORANT LABS [HELP]',
-                icon_url: "https://valorantlabs.xyz/css/valorant-logo.png"
-            }
-        }],
+export async function execute({message, guilddata} = {}) {
+    return message.reply({
+        embeds: [Utils.embedBuilder({
+            title: Utils.translations[guilddata.lang].help_title,
+            desc: Utils.translations[guilddata.lang].help_desc,
+            footer: 'VALORANT LABS [HELP]'
+        })],
         components: [{
             type: "ACTION_ROW",
             components: [{
                 type: "BUTTON",
-                url: Utils.translations[data.guilddata.lang].cmdurl,
+                url: Utils.translations[guilddata.lang].cmdurl,
                 style: "LINK",
-                label: Utils.translations[data.guilddata.lang].cmd
+                label: Utils.translations[guilddata.lang].cmd
             }]
         }]
     })

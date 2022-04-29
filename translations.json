@@ -10,62 +10,62 @@
         },
         "response": {
             "501": {
+                "title": "Status 501 | API Version nicht implementiert",
                 "account": {
-                    "title": "Status 501 | API Version nicht implementiert",
                     "description": "Bei einer Abfrage wurde eine Anfrage an eine API gesendet, welche nicht implementiert ist. Wahrscheinlich ist das Problem bekannt, trotzdessen kannst du es gerne auf dem Support Server melden"
                 }
             },
             "404": {
+                "title": "Status 404 | Nicht gefunden",
                 "account": {
-                    "title": "Status 404 | Nicht gefunden",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "503": {
+                "title": "Status 503 | Server temporär nicht verfügbar",
                 "account": {
-                    "title": "Status 503 | Server temporär nicht verfügbar",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "429": {
+                "title": "Status 429 | Bot Anfragelimit",
                 "account": {
-                    "title": "Status 429 | Bot Anfragelimit",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "1015": {
+                "title": "Status 1015 | Bot Anfragelimit",
                 "account": {
-                    "title": "Status 1015 | Bot Anfragelimit",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "403": {
+                "title": "Status 403 | Keine Berechtigung",
                 "account": {
-                    "title": "Status 403 | Keine Berechtigung",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "400": {
+                "title": "Status 400 | Anfragefehler",
                 "account": {
-                    "title": "Status 400 | Anfragefehler",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "410": {
+                "title": "Status 410 | API nicht mehr verfügbar",
                 "account": {
-                    "title": "Status 410 | API nicht mehr verfügbar",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "409": {
+                "title": "Status 409 | Konflikt",
                 "account": {
-                    "title": "Status 409 | Konflikt",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
             "408": {
+                "title": "Status 408 | Timeout",
                 "account": {
-                    "title": "Status 408 | Timeout",
                     "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
                 }
             },
@@ -75,6 +75,12 @@
                 "component_login": "Einloggen",
                 "component_update": "Aktualisieren",
                 "component_rank": "MMR"
+            },
+            "500": {
+                "title": "Status 500 | Internal Server Error",
+                "account": {
+                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                }
             }
         },
         "agent": {
@@ -121,6 +127,29 @@
             "postedat": "Erstellt am:",
             "platforms": "Platformen betroffen:",
             "type": "Problemtyp"
+        },
+        "stats": {
+            "missing_matches_title": "Einige Matches fehlen aktuell noch",
+            "missing_matches_desc": "Die fehlenden Matches werden im Hintergrund heruntergeladen und verarbeitet. Sobald dies abgeschlossen ist, wird das Bild aktualisiert",
+            "game_select": "Wähle ein Spiel aus"
+        },
+        "vote": {
+            "title": "Vote für uns auf top.gg",
+            "desc": "Durch das Voten erhältst du unter anderem Zugriff auf den `/mmr` Befehl und unterstützt den Bot mit deinem Vote"
+        },
+        "weapon": {
+            "name": "Waffen",
+            "cost": "Preis",
+            "magazinsize": "Magazingröße",
+            "penetration": "Durchschussstärke",
+            "firerate": "Feuerrate",
+            "firerate_zoom": "Feuerrate (Zoom)",
+            "zoom": "Zoom",
+            "head": "Kopfschuss",
+            "body": "Körperschuss",
+            "leg": "Beinschuss",
+            "rangedamage": "Kopfschuss: ${String(cweapon.weaponStats.damageRanges[i].headDamage)} | Körperschuss: ${String(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Beinschuss: ${String(cweapon.weaponStats.damageRanges[i].legDamage)}",
+            "mweapons": "Preis: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Free'}"
         },
         "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=de",
         "cmd": "Befehle",

@@ -14,6 +14,6 @@ export async function execute({interaction, guilddata} = {}) {
     for(let i = 0; sort_array.length > i; i++) {
         fields.push({name: String(i), value: `Locale: ${sort_array[i].preferredLocale} | Member: ${sort_array[i].memberCount} | Name: ${sort_array[i].name} | ID: ${sort_array[i].id}`})
     }
-    return interaction.editReply({embeds: [{title: "Guilds", fields: fields}]})
+    return interaction.editReply({embeds: [Utils.embedBuilder({title: "Guilds", additionalFields: fields})]})
 }
 export const name = "partner"
