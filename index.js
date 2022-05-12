@@ -1,33 +1,21 @@
-const {Client, Intents, Collection, Options} = require("discord.js")
-const {readFileSync, readdirSync, writeFileSync} = require("fs")
-let Utils;
-(async function () {
-    Utils = (await import("./methods.js")).default
-    for(let i = 0; normalcommands.length > i; i++) {
-        const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
-        client.ncommands.set(command.name, command);
-    }
-    for(let i = 0; slashcommands.length > i; i++) {
-        const command = await import(`./commands/slash/${slashcommands[i]}?update=${Date.now()}`);
-        console.log(command.name)
-        client.scommands.set(command.name, command);
-    }
-    for(let i = 0; buttonscommand.length > i; i++) {
-        const cmd = await import(`./commands/buttons/${buttonscommand[i]}?update=${Date.now()}`)
-        client.buttoncommands.set(cmd.name, cmd)
-    }
-})()
-const path = require("path")
+import {Client, GatewayIntentBits, Collection, Options} from "discord.js.dev"
+import {readFileSync, readdirSync, writeFileSync} from "fs"
+import Utils from "./methods.js"
+import path from "path"
+import {dirname} from 'path';
+import {fileURLToPath} from 'url';
+
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 const api = JSON.parse(readFileSync("./api.json"))
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const client = new Client({
-    http: {
-        version: 9
+    rest: {
+        version: 10
     },
     intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.DIRECT_MESSAGES,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.MessageContent
     ],
     makeCache: Options.cacheWithLimits({
         MessageManager: {
@@ -40,11 +28,38 @@ const client = new Client({
 client.ncommands = new Collection()
 client.scommands = new Collection()
 client.buttoncommands = new Collection()
+client.selectcommands = new Collection()
+client.modals = new Collection()
 const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
 const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
 const buttonscommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+const selectcommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+const modalcommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+
+for(let i = 0; normalcommands.length > i; i++) {
+    const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
+    console.log(command.name)
+    client.ncommands.set(command.name, command);
+}
+for(let i = 0; slashcommands.length > i; i++) {
+    const command = await import(`./commands/slash/${slashcommands[i]}?update=${Date.now()}`);
+    client.scommands.set(command.name, command);
+}
+for(let i = 0; buttonscommand.length > i; i++) {
+    const cmd = await import(`./commands/buttons/${buttonscommand[i]}?update=${Date.now()}`)
+    client.buttoncommands.set(cmd.name, cmd)
+}
+for(let i = 0; selectcommands.length > i; i++) {
+    const cmd = await import(`./commands/select/${selectcommands[i]}?update=${Date.now()}`)
+    client.selectcommands.set(cmd.name, cmd)
+}
+for(let i = 0; modalcommands.length > i; i++) {
+    const cmd = await import(`./commands/modals/${modalcommands[i]}?update=${Date.now()}`)
+    client.modals.set(cmd.name, cmd)
+}
 
 client.on("ready", async () => {
+    console.log("tes")
     let guildsize
     client.user.setPresence({activities: [{name: `Bot startup | Shard: ${client.shard.ids[0]}`}], status: 'dnd'})
     process.on("message", async message => {
@@ -70,11 +85,11 @@ client.on("guildCreate", async g => {
                 footer: "VALORANT LABS [SERVER JOINED]"
             })],
             components: [{
-                type: "ACTION_ROW",
+                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
                 components: [{
-                    type: "BUTTON",
+                    type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
                     url: "https://discord.gg/b5FmTqG",
-                    style: "LINK",
+                    style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
                     label: "Support Server"
                 }]
             }]
@@ -88,7 +103,9 @@ client.on("interactionCreate", async interaction => {
     await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})
     if(!interaction.isCommand()) {
         const args = interaction.customId.split(";")
-        if(interaction.isButton()) return client.buttoncommands.get(args[0]).execute(interaction, args, guilddata)
+        if(interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata})
+        if(interaction.isModalSubmit()) return client.modals.get(args[0]).execute({interaction, args, guilddata})
+        if(interaction.isSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata})
     }
     if(interaction.commandName == "shard-restart") {
         client.shard.send(`restart-${interaction.options.get("shard").value}`)
@@ -105,11 +122,11 @@ client.on("interactionCreate", async interaction => {
                 footer: "VALORANT LABS [COMMAND UNKNOWN]"
             })],
             components: [{
-                type: "ACTION_ROW",
+                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
                 components: [{
-                    type: "BUTTON",
+                    type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
                     url: Utils.translations[guilddata.lang].cmdurl,
-                    style: "LINK",
+                    style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
                     label: Utils.translations[guilddata.lang].cmd
                 }]
             }]
@@ -118,7 +135,8 @@ client.on("interactionCreate", async interaction => {
     client.scommands.get(interaction.commandName).execute({interaction: interaction, guilddata: guilddata})
 })
 
-client.on("message", async message => {
+client.on("messageCreate", async message => {
+    console.log(message)
     if(message.author.id == "346345363990380546" && message.content == "/reload" && message.channel.parent == "732290187090067476") {
         const normalcommand = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
         const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
@@ -132,7 +150,6 @@ client.on("message", async message => {
         for(let i = 0; buttonscommands.length > i; i++) {
             buttonscommands[i] = path.join("file:///", __dirname, `/commands/buttons/${buttonscommands[i]}?update=${Date.now()}`)
         }
-        console.log(normalcommand)
         await client.shard.broadcastEval(async (c, {normalcommands, slashcommands, buttoncommands}) => {
             c.ncommands.sweep(() => true)
             c.buttoncommands.sweep(() => true)
@@ -184,11 +201,11 @@ client.on("message", async message => {
                 footer: "VALORANT LABS [COMMAND UNKNOWN]"
             })],
             components: [{
-                type: "ACTION_ROW",
+                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
                 components: [{
-                    type: "BUTTON",
+                    type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
                     url: Utils.translations[guilddata.lang].cmdurl,
-                    style: "LINK",
+                    style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
                     label: Utils.translations[guilddata.lang].cmd
                 }]
             }]
@@ -200,6 +217,10 @@ client.on("message", async message => {
 
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error)
+})
+
+process.on("uncaughtException", error => {
+    console.error(error)
 })
 
 client.login(basedata.discordtoken)

@@ -1,4 +1,4 @@
-import {default as Utils} from "../../methods.js"
+import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     return interaction.editReply({
         embeds: [Utils.embedBuilder({
@@ -7,10 +7,10 @@ export async function execute({interaction, guilddata} = {}) {
             footer: 'VALORANT LABS [VOTES]',
         })],
         components: [{
-            type: "ACTION_ROW",
+            type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
             components: [{
-                type: "BUTTON",
-                style: "LINK",
+                type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
+                style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
                 url: "https://top.gg/bot/702201518329430117/vote",
                 label: "Vote"
             }]

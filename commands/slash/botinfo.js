@@ -1,4 +1,4 @@
-import {default as Utils} from "../../methods.js"
+import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     const sysdata = await Utils.sysinfo.get({mem: "total, free, used", osInfo: "distro", currentLoad: "currentLoad"})
     return interaction.editReply({

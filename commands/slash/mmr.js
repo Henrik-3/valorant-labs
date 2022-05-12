@@ -1,4 +1,4 @@
-import {default as Utils} from "../../methods.js"
+import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     const dbcheck = await Utils.valodb.collection("topggvote").findOne({userid: interaction.user.id})
     if(!dbcheck) {
@@ -11,9 +11,8 @@ export async function execute({interaction, guilddata} = {}) {
         await Utils.valodb.collection("topggvote").insertOne({userid: interaction.user.id, createdAt: new Date()})
     }
     const link = await Utils.getLink(interaction.user.id)
-    if(!link && !interaction.options.get("riot-id")) return interaction.editReply({embeds: [Utils.embedBuilder({title: Utils.translations[guilddata.lang].mmr.no_link_title, desc: Utils.translations[guilddata.lang].mmr.no_link_desc, additionalFields: [{name: `/mmr`, value: Utils.translations[guilddata.lang].mmr.base}, {name: `/mmr riot-id`, value: Utils.translations[guilddata.lang].mmr.options}], footer: 'VALORANT LABS [MMR TOP.GG ERROR]'})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: Utils.translations[guilddata.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
+    if(!link && !interaction.options.get("riot-id")) return interaction.editReply({embeds: [Utils.embedBuilder({title: Utils.translations[guilddata.lang].mmr.no_link_title, desc: Utils.translations[guilddata.lang].mmr.no_link_desc, additionalFields: [{name: `/mmr`, value: Utils.translations[guilddata.lang].mmr.base}, {name: `/mmr riot-id`, value: Utils.translations[guilddata.lang].mmr.options}], footer: 'VALORANT LABS [MMR TOP.GG ERROR]'})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: Utils.translations[guilddata.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
     const account_details = interaction.options.get("riot-id") == null ? link : {ingamename: interaction.options.get("riot-id").value.split("#")[0], ingametag: interaction.options.get("riot-id").value.split("#")[1]}
-    console.log(account_details)
     const puuid = await Utils.axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${account_details.ingamename}/${account_details.ingametag}?asia=true`).catch(error => {return error})
     if(puuid.response) return Utils.errorhandlerinteraction({interaction: interaction, status: puuid.response.status, type: "account", lang: guilddata.lang})
     const mmr = await Utils.axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${puuid.data.data.region}/${puuid.data.data.puuid}`).catch(error => {return error})

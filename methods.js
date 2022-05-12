@@ -4,10 +4,9 @@ import axios from "axios"
 import axiosRetry from "axios-retry"
 import system from "systeminformation"
 import pretty from "pretty-bytes"
-import {Message, Permissions, MessageAttachment} from 'discord.js'
+import {EnumResolvers, PermissionFlagsBits, Attachment} from 'discord.js.dev'
 import moment from "moment"
 import Canvas from "canvas"
-import {match} from 'assert'
 import randomize from 'randomatic'
 
 Canvas.registerFont('assets/product_sans.ttf', {family: 'product_sans'})
@@ -20,6 +19,13 @@ const basedata = JSON.parse(readFileSync("./basedata.json"))
 const mongoclient = new MongoClient(basedata.mongoaccess)
 mongoclient.connect()
 const translations = JSON.parse(readFileSync("./translations.json"))
+let valpapiagents = await axios.get("https://valorant-api.com/v1/agents?isPlayableCharacter=true").catch(error => {return error})
+let valpapigamemodes = await axios.get("https://valorant-api.com/v1/gamemodes").catch(error => {return error})
+
+setInterval(async () => {
+    valpapiagents = await axios.get("https://valorant-api.com/v1/agents?isPlayableCharacter=true").catch(error => {return error})
+    valpapigamemodes = await axios.get("https://valorant-api.com/v1/gamemodes").catch(error => {return error})
+}, 60000 * 5)
 
 axiosRetry(axios, {
     retries: 2,
@@ -30,17 +36,18 @@ axiosRetry(axios, {
 })
 
 export default {
-    perms: Permissions.FLAGS,
+    EnumResolvers,
+    perms: PermissionFlagsBits,
     sysinfo: system,
-    pretty: pretty,
-    axios: axios,
-    translations: translations,
+    pretty,
+    axios,
+    translations,
     topgg: basedata.dbltoken,
     riottoken: basedata.riottoken,
     valodb: mongoclient.db("VALORANT-LABS"),
-    moment: moment,
+    moment,
     canvas: Canvas,
-    attachment: MessageAttachment,
+    attachment: Attachment,
     clusters: {
         na: {
             status: "https://api.henrikdev.xyz/valorant/v1/status/na",
@@ -181,6 +188,7 @@ export default {
     gamemodes: {
         ggteam: {
             name: "Escalation",
+            path: "escalation.png",
             emoji: {
                 name: "escalation",
                 id: "958441833627787350",
@@ -189,6 +197,7 @@ export default {
         },
         spikerush: {
             name: "Spike Rush",
+            path: "spikerush.png",
             emoji: {
                 name: "spikerush",
                 id: "958441833627779202",
@@ -197,6 +206,7 @@ export default {
         },
         deathmatch: {
             name: "Deathmatch",
+            path: "deathmatch.png",
             emoji: {
                 name: "deathmatch",
                 id: "958441493612355704",
@@ -205,6 +215,7 @@ export default {
         },
         competitive: {
             name: "Competitive",
+            path: "competitive.png",
             emoji: {
                 name: "unrated",
                 id: "958441359126167613",
@@ -213,6 +224,7 @@ export default {
         },
         unrated: {
             name: "Unrated",
+            path: "unrated.png",
             emoji: {
                 name: "unrated",
                 id: "958441359126167613",
@@ -221,6 +233,7 @@ export default {
         },
         onefa: {
             name: "Replication",
+            path: "replication.png",
             emoji: {
                 name: "replication",
                 id: "958441833636192386",
@@ -229,6 +242,7 @@ export default {
         },
         "": {
             name: "Custom Game",
+            path: "unrated.png",
             emoji: {
                 name: "unrated",
                 id: "958441359126167613",
@@ -237,6 +251,7 @@ export default {
         },
         newmap: {
             name: "New Map",
+            path: "unrated.png",
             emoji: {
                 name: "unrated",
                 id: "958441359126167613",
@@ -245,6 +260,7 @@ export default {
         },
         snowball: {
             name: "Snowball Fight",
+            path: "snowball.png",
             emoji: {
                 name: "snowball",
                 id: "958441833661358131",
@@ -261,6 +277,108 @@ export default {
         "/Game/Maps/Foxtrot/Foxtrot": "Breeze",
         "/Game/Maps/Canyon/Canyon": "Fracture"
     },
+    ranks: {
+        0: {
+            image: "4.png",
+            discordid: "<:unrated:862004031248924693>"
+        },
+        1: {
+            image: "4.png",
+            discordid: "<:unrated:862004031248924693>"
+        },
+        2: {
+            image: "4.png",
+            discordid: "<:unrated:862004031248924693>"
+        },
+        3: {
+            image: "iron1.png",
+            discordid: "<:iron1:862004162098102272>"
+        },
+        4: {
+            image: "iron2.png",
+            discordid: "<:iron2:862004185036488715>"
+        },
+        5: {
+            image: "iron3.png",
+            discordid: "<:iron3:862004206718025738>"
+        },
+        6: {
+            image: "bronze1.png",
+            discordid: "<:bronze1:862004343054008331>"
+        },
+        7: {
+            image: "bronze2.png",
+            discordid: "<:bronze2:862004376272109608>"
+        },
+        8: {
+            image: "bronze3.png",
+            discordid: "<:bronze3:862004410775371777>"
+        },
+        9: {
+            image: "silver1.png",
+            discordid: "<:silver1:862004807896268832>"
+        },
+        10: {
+            image: "silver2.png",
+            discordid: "<:silver2:862004860655501342>"
+        },
+        11: {
+            image: "silver3.png",
+            discordid: "<:silver3:862004895708086302>"
+        },
+        12: {
+            image: "gold1.png",
+            discordid: "<:gold1:862004921763364874>"
+        },
+        13: {
+            image: "gold2.png",
+            discordid: "<:gold2:862004943708094525>"
+        },
+        14: {
+            image: "gold3.png",
+            discordid: "<:gold3:862004966636781608>"
+        },
+        15: {
+            image: "platin1.png",
+            discordid: "<:plat1:862005172687470622>"
+        },
+        16: {
+            image: "platin2.png",
+            discordid: "<:plat2:862005201301143573>"
+        },
+        17: {
+            image: "platin3.png",
+            discordid: "<:plat3:862005224645853185>"
+        },
+        18: {
+            image: "diamond1.png",
+            discordid: "<:dia1:862005255628652554>"
+        },
+        19: {
+            image: "diamond2.png",
+            discordid: "<:dia2:862005278207508551>"
+        },
+        20: {
+            image: "diamond3.png",
+            discordid: "<:dia3:862005298193891378>"
+        },
+        21: {
+            image: "immortal1.png",
+            discordid: "<:immortal1:862005437264429056>"
+        },
+        22: {
+            image: "immortal2.png",
+            discordid: "<:immortal2:862005462580985856>"
+        },
+        23: {
+            image: "immortal3.png",
+            discordid: "<:immortal3:862005493840478208>"
+        },
+        24: {
+            image: "radiant.png",
+            discordid: "<:radiant:862005538392506408>"
+        }
+    },
     guildSettings: async function (guild) {
         return (await this.valodb.collection("settings").findOneAndUpdate({gid: guild.id}, {$setOnInsert: {news: false, onews: false, serverstatus: false, lang: this.locales[guild.preferredLocale] ? this.locales[guild.preferredLocale] : "en-us", blacklist: false, prefix: "v?"}}, {upsert: true, returnDocument: "after"})).value
     },
@@ -273,6 +391,10 @@ export default {
         const request = await this.valodb.collection("link").findOne({user_id: id})
         return request ? request : null
     },
+    getGameKey: async function (id) {
+        const request = await this.valodb.collection("games").findOne({gamekey: id})
+        return request ? request : null
+    },
     getStatsDB: async function (account) {
         const puuid = await axios.get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURI(account.name)}/${encodeURI(account.tag)}`, {headers: {"X-Riot-Token": this.riottoken}}).catch(error => {return error})
         if(puuid.response) return {status: puuid.response.status}
@@ -281,7 +403,13 @@ export default {
         const stats = await this.valodb.collection("userstats").findOne({puuid: puuid.data.puuid})
         return {status: 200, stats: stats, puuid: puuid.data.puuid, name: puuid.data.gameName, tag: puuid.data.tagLine, ingamepuuid: link.ingamepuuid}
     },
-    embedBuilder: async function ({title, desc, user, additionalFields = [], color, thumbnail, image, footer} = {}) {
+    getGamemodes: async function () {
+        return valpapigamemodes.data.data
+    },
+    getAgents: function () {
+        return valpapiagents.data.data
+    },
+    embedBuilder: function ({title, desc, user, additionalFields = [], color, thumbnail, image, footer} = {}) {
         return {
             title: title,
             description: desc ? desc : null,
@@ -304,7 +432,7 @@ export default {
             }
         }
     },
-    buildImage: async function ({dbstats, agent, modes} = {}) {
+    buildStatsImage: async function ({dbstats, agent, modes} = {}) {
         const canvas = this.canvas.createCanvas(3840, 2160)
         const ctx = canvas.getContext("2d")
         const background = await this.canvas.loadImage("assets/VALORANT_stats.png")
@@ -571,7 +699,7 @@ export default {
         if(patchedmatches.length > 10) patchedmatches.length = 10
         stats.matches = patchedmatches
         //await this.valodb.collection("userstats").updateOne({puuid: stats.puuid}, {$set: stats})
-        const attachment = await this.buildImage({dbstats: {stats: stats, name: name, tag: tag}, agent: agent, modes: modes})
+        const attachment = await this.buildStatsImage({dbstats: {stats: stats, name: name, tag: tag}, agent: agent, modes: modes})
         const components = []
         for(let i = 0; stats.matches.length > i; i++) {
             components.push({
@@ -582,7 +710,100 @@ export default {
             })
         }
         console.log(components)
-        message.edit({embeds: [], files: [attachment], components: [{type: "ACTION_ROW", components: [{type: "SELECT_MENU", customId: `game`, maxValues: 1, minValues: 0, options: components, placeholder: this.translations[lang].stats.game_select}]}]})
+        message.edit({embeds: [], files: [attachment], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: "SELECT_MENU", customId: `game`, maxValues: 1, minValues: 0, options: components, placeholder: this.translations[lang].stats.game_select}]}]})
+    },
+    buildGameImage: async function ({id, guilddata} = {}) {
+        const gamekey = await this.getGameKey(id)
+        if(!gamekey) return {error: null, unknown: true, embed: null, image: null}
+        const match = await this.axios.get(`https://api.henrikdev.xyz/valorant/v2/match/${gamekey.matchid}`).catch(error => {return error})
+        if(match.response) return {error: match.response, unknown: null, embed: null, image: null}
+        switch(match.data.data.metadata.mode) {
+            case "Deathmatch":
+                const fields = []
+                const sorted_array = match.data.data.players.all_players.sort((player2, player1) => player2.stats.score - player1.stats.score)
+                for(let i = 0; sorted_array.length > i; i++) {
+                    const rank = await axios.get(`https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/eu/${sorted_array[i].puuid}`).catch(error => {return error})
+                    fields.push({name: `${sorted_array[i].name}#${sorted_array[i].tag}`, value: `${(rank.response != null || rank.data.data.currenttier == null) ? this.ranks[0].discordid : this.ranks[rank.data.data.currenttier].discordid} | Score: ${sorted_array[i].stats.score} | KDA: ${sorted_array[i].stats.kills}/${sorted_array[i].stats.deaths}/${sorted_array[i].stats.assists}`})
+                }
+                return {
+                    error: null,
+                    unknown: null,
+                    embed: [this.embedBuilder({
+                        title: `Game ${interaction.options.getString("gamekey")} | ID: ${match.data.data.metadata.matchid}`,
+                        desc: `Mode: Deathmatch | Map: ${match.data.data.metadata.map} | Length: ${moment.duration(match.data.data.metadata.game_length).minutes()}m ${moment.duration(match.data.data.metadata.game_length).seconds()}s | Started at: ${moment(match.data.data.metadata.game_start * 1000).format("LLLL")}`,
+                        thumbnail: "https://media.valorant-api.com/gamemodes/a8790ec5-4237-f2f0-e93b-08a8e89865b2/displayicon.png",
+                        additionalFields: fields.reverse(),
+                        footer: 'VALORANT LABS [GAME]'
+                    })],
+                    image: null
+                }
+            default:
+                const canvas = this.canvas.createCanvas(3840, 2160)
+                const ctx = canvas.getContext("2d")
+                const background = await this.canvas.loadImage("assets/VALORANT_game.png")
+                ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
+                moment.locale(this.translations[guilddata.lang].moment)
+                const mode_image = await this.canvas.loadImage(`./assets/${Object.values(this.gamemodes).find(item => item.name == match.data.data.metadata.mode).path}`)
+                ctx.drawImage(mode_image, 550, 975, 250, 250)
+                this.buildText({ctx: ctx, text: `${match.data.data.metadata.mode} | ${match.data.data.metadata.map} | ${match.data.data.metadata.cluster} | ${match.data.data.metadata.game_version.split("-")[0]} -${match.data.data.metadata.game_version.split("-")[1]}`, size: 100, x: 950, y: 1075})
+                this.buildText({ctx: ctx, text: `${moment.duration(match.data.data.metadata.game_length).minutes()}m ${moment.duration(match.data.data.metadata.game_length).seconds()}s | ${moment(match.data.data.metadata.game_start * 1000).format("LLLL")}`, size: 100, x: 950, y: 1200, color: "#ffffff"})
+                const red_players = match.data.data.players.red.sort((player2, player1) => player1.stats.score - player2.stats.score)
+                const blue_players = match.data.data.players.blue.sort((player2, player1) => player1.stats.score - player2.stats.score)
+                this.buildText({ctx: ctx, text: match.data.data.teams.blue.rounds_won, size: 90, x: 3450, y: 1050, color: '#00ffff', align: 'right'})
+                this.buildText({ctx: ctx, text: match.data.data.teams.red.rounds_won, size: 90, x: 3450, y: 1200, color: "#ff4654", align: 'right'})
+                let x_blue_name = 390
+                let x_blue_level = 382
+                let x_blue_score = 370
+                let x_blue_kills = 590
+                let x_blue_kd = 110
+                let x_blue_rank = 600
+                let x_blue_agent = 185
+                let x_red_name = 390
+                let x_red_level = 382
+                let x_red_score = 370
+                let x_red_kills = 590
+                let x_red_kd = 110
+                let x_red_rank = 600
+                let x_red_agent = 185
+                for(let i = 0; red_players.length > i; i++) {
+                    const player = await Canvas.loadImage(`https://media.valorant-api.com/competitivetiers/e4e9a692-288f-63ca-7835-16fbf6234fda/${red_players[i].currenttier}/largeicon.png`)
+                    ctx.drawImage(player, x_red_rank, 1320, 75, 75)
+                    const agent = await Canvas.loadImage(this.getAgents().find(item => item.displayName.toLowerCase() == red_players[i].character.toLowerCase()).fullPortraitV2)
+                    ctx.drawImage(agent, x_red_agent, 1480, 405, 405)
+                    this.buildText({ctx: ctx, text: `${red_players[i].name} #${red_players[i].tag}`, size: 40, x: x_red_name, y: 1450, color: "#fff", align: "center"})
+                    this.buildText({ctx: ctx, text: red_players[i].stats.score, size: 60, x: x_red_score, y: 2025, color: "#fff", align: "center"})
+                    this.buildText({ctx: ctx, text: red_players[i].stats.kills, size: 60, x: x_red_kills, y: 2025, color: "#fff", align: "center"})
+                    this.buildText({ctx: ctx, text: (red_players[i].stats.kills / red_players[i].stats.deaths).toFixed(2), size: 60, x: x_red_kd, y: 2025, color: "#fff", align: "left"})
+                    this.buildText({ctx: ctx, text: red_players[i].level, size: 30, x: x_red_level, y: 1385, color: "#fff", align: "center"})
+                    x_red_rank += 768
+                    x_red_name += 768
+                    x_red_score += 768
+                    x_red_kills += 768
+                    x_red_kd += 768
+                    x_red_level += 768
+                    x_red_agent += 768
+                }
+                for(let i = 0; blue_players.length > i; i++) {
+                    const player = await Canvas.loadImage(`https://media.valorant-api.com/competitivetiers/e4e9a692-288f-63ca-7835-16fbf6234fda/${blue_players[i].currenttier}/largeicon.png`)
+                    ctx.drawImage(player, x_blue_rank, 110, 75, 75)
+                    const agent = await Canvas.loadImage(this.getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortraitV2)
+                    ctx.drawImage(agent, x_blue_agent, 270, 405, 405)
+                    this.buildText({ctx: ctx, text: `${blue_players[i].name} #${blue_players[i].tag}`, size: 40, x: x_blue_name, y: 240, color: "#fff", align: "center"})
+                    this.buildText({ctx: ctx, text: blue_players[i].stats.score, size: 60, x: x_blue_score, y: 815, color: "#fff", align: "center"})
+                    this.buildText({ctx: ctx, text: blue_players[i].stats.kills, size: 60, x: x_blue_kills, y: 815, color: "#fff", align: "center"})
+                    this.buildText({ctx: ctx, text: (blue_players[i].stats.kills / blue_players[i].stats.deaths).toFixed(2), size: 60, x: x_blue_kd, y: 815, color: "#fff", align: "left"})
+                    this.buildText({ctx: ctx, text: blue_players[i].level, size: 30, x: x_blue_level, y: 170, color: "#fff", align: "center"})
+                    x_blue_rank += 768
+                    x_blue_name += 768
+                    x_blue_score += 768
+                    x_blue_kills += 768
+                    x_blue_kd += 768
+                    x_blue_level += 768
+                    x_blue_agent += 768
+                }
+                const attachment = new Attachment(canvas.toBuffer(), `valorant-game.png`)
+                return {error: null, unknown: null, embed: null, image: attachment}
+        }
     },
     getBlacklist: async function (guildId) {
         const request = await this.valodb.collection("blacklist").findOne({gid: guildId})
@@ -607,16 +828,16 @@ export default {
     },
     errorhandler: async function (error) {
         console.log(error)
-        if(error.status == 451) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].response[451].component_login, style: "LINK", url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: "BUTTON", label: this.translations[error.lang].response[451].component_update, style: "DANGER", customId: `update;${error.puuid}`}, {type: "BUTTON", label: this.translations[error.lang].response[451].component_rank, style: "DANGER", customId: `rank;${error.name};${error.tag}`}]}]})
-        if(!this.translations[error.lang].response[error.status]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
-        if(!this.translations[error.lang].response[error.status][error.type]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
-        return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(error.status == 451) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_login, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_update, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `update;${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_rank, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `rank;${error.name};${error.tag}`}]}]})
+        if(!this.translations[error.lang].response[error.status]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(!this.translations[error.lang].response[error.status][error.type]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
     },
     errorhandlerinteraction: async function (error) {
-        if(error.status == 451) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].response[451].component_login, style: "LINK", url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: "BUTTON", label: this.translations[error.lang].response[451].component_update, style: "DANGER", customId: `update;${error.puuid}`}, {type: "BUTTON", label: this.translations[error.lang].response[451].component_rank, style: "DANGER", customId: `rank;${error.name};${error.tag}`}]}]})
-        if(!this.translations[error.lang].response[error.status]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
-        if(!this.translations[error.lang].response[error.status][error.type]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
-        return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: "ACTION_ROW", components: [{type: "BUTTON", label: this.translations[error.lang].support, style: "LINK", url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(error.status == 451) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_login, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_update, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `update;${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_rank, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `rank;${error.name};${error.tag}`}]}]})
+        if(!this.translations[error.lang].response[error.status]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(!this.translations[error.lang].response[error.status][error.type]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
     },
     getGuild: async function (interaction) {
         const settings = await this.guildSettings(interaction.guild)

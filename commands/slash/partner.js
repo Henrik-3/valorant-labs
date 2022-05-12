@@ -1,4 +1,4 @@
-import {default as Utils} from "../../methods.js"
+import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     const fg = await interaction.client.shard.broadcastEval(c => {
         return c.guilds.cache.get()

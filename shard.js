@@ -5,7 +5,7 @@ import * as f from "fastify"
 const fastify = f.fastify()
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 
-const manager = new ShardingManager('./index.cjs', {
+const manager = new ShardingManager('./index.js', {
     token: basedata.discordtoken,
     totalShards: 2,
     respawn: true

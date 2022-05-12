@@ -1,4 +1,4 @@
-import {default as Utils} from "../../methods.js"
+import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     return interaction.editReply({
         embeds: [Utils.embedBuilder({
@@ -8,11 +8,11 @@ export async function execute({interaction, guilddata} = {}) {
             footer: 'VALORANT LABS [MMR]'
         })],
         components: [{
-            type: "ACTION_ROW",
+            type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
             components: [{
-                type: "BUTTON",
+                type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
                 url: "https://github.com/Henrik-3/unofficial-valorant-api",
-                style: "LINK",
+                style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
                 label: "GitHub"
             }]
         }]

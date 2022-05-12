@@ -1,4 +1,4 @@
-import {default as Utils} from "../../methods.js"
+import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     const embeds = []
     const status = await Utils.axios.get(Utils.clusters[interaction.options.get("region").value].status).catch(error => {return error})
@@ -30,6 +30,6 @@ export async function execute({interaction, guilddata} = {}) {
             footer: 'VALORANT LABS [STATUS INCIDENT]',
         }))
     }
-    return interaction.editReply({embeds: embeds, components: [{type: "ACTION_ROW", components: [{type: "BUTTON", style: "LINK", url: Utils.clusters[interaction.options.get("region").value].page, label: "Link"}]}]})
+    return interaction.editReply({embeds: embeds, components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: Utils.clusters[interaction.options.get("region").value].page, label: Utils.EnumResolvers.resolveButtonStyle("LINK")}]}]})
 }
 export const name = "status"

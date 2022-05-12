@@ -106,6 +106,21 @@
         "botinfo": {
             "title": "Bot Informationen zu VALORANT LABS"
         },
+        "game": {
+            "unknown_title": "Unbekanntes Spiel",
+            "unknown_desc": "Bitte stelle sicher das der Game Key existiert und richtig eingegeben wurde"
+        },
+        "link": {
+            "clink_title": "Deine Aktuelle Verlinkung",
+            "clink_desc": "Dein Verlinkter Account heißt wie folgt:",
+            "nolink_title": "Kein Verlinkter Account",
+            "nolink_desc": "Du hast aktuell noch keinen Verlinkten Account. Klicke auf den Button `Verknüpfen` unter dieser Nachricht, um deinen Discord Account mit einem VALORANT Account zu verlinken",
+            "addlink_title": "Verknüpfung erstellen",
+            "addlink_desc": "Um deinen Discord Account mit deinem VALORANT Account zu verknüpfen, klicke auf den Button `Verknüpfen`",
+            "removelink_title": "Verlinkung entfernt",
+            "removelink_desc": "Deine Verlinkung wurde erfolgreich entfernt",
+            "generate_link": "Verknüpfen"
+        },
         "mmr": {
             "429_title": "Top.gg Überprüfungslimit",
             "429_desc": "Das Limit zur Vote Überprüfung bei top.gg wurde erreicht, bitte warte eine bis zwei Minuten und versuche es nocheinmal",
@@ -131,6 +146,10 @@
         "stats": {
             "missing_matches_title": "Einige Matches fehlen aktuell noch",
             "missing_matches_desc": "Die fehlenden Matches werden im Hintergrund heruntergeladen und verarbeitet. Sobald dies abgeschlossen ist, wird das Bild aktualisiert",
+            "invalidriotid_title": "Fehlerhafte Riot ID",
+            "invalidriotid_desc": "Die angegebene Riot ID ist Fehlerhaft. Bitte stelle sicher das du ebenfalls deinen Tag und nicht nur den Namen angegeben hast.\n\nFehlerhafte Riot ID: Henrik3\nKorrekte Riot ID: Henrik3#VALO",
+            "noriotid_title": "Keine Riot ID angegeben",
+            "noriotid_desc": "Du hast sowohl keinen Verlinkten Account, als auch keinen namen angegeben. Bitte verlinke dich mit `/link add` oder gebe eine Riot ID an",
             "game_select": "Wähle ein Spiel aus"
         },
         "vote": {

@@ -1,4 +1,4 @@
-import {default as Utils} from "../../methods.js"
+import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     const request = await Utils.axios.get(`https://valorant-api.com/v1/maps`).catch(error => {return error})
     const cmap = request.data.data.find(item => item.displayName.toLowerCase() == interaction.options.get("map").value)
