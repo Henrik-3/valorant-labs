@@ -31,13 +31,13 @@ export async function execute({message, guilddata, args} = {}) {
         for(let i = 0; dbstats.matches.length > i; i++) {
             components.push({
                 label: dbstats.matches[i].gamekey,
-                value: dbstats.matches[i].id,
+                value: dbstats.matches[i].gamekey,
                 description: `${dbstats.matches[i].map} | ${dbstats.matches[i].mode} | ${dbstats.matches[i].agent} | ${moment(dbstats.matches[i].start).format("lll")}`,
                 emoji: Object.values(Utils.gamemodes).find(item => item.name == dbstats.matches[i].mode).emoji
             })
         }
     }
-    const newmessage = await message.reply({files: [attachment], embeds: missingmatches.length ? [Utils.embedBuilder({title: Utils.translations[guilddata.lang].stats.missing_matches_title, desc: Utils.translations[guilddata.lang].stats.missing_matches_desc, footer: 'VALORANT LABS [MMR]'})] : [], components: components.length ? [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: "SELECT_MENU", customId: `game`, maxValues: 1, minValues: 0, options: components, placeholder: Utils.translations[guilddata.lang].stats.game_select}]}] : []})
+    const newmessage = await message.reply({files: [attachment], embeds: missingmatches.length ? [Utils.embedBuilder({title: Utils.translations[guilddata.lang].stats.missing_matches_title, desc: Utils.translations[guilddata.lang].stats.missing_matches_desc, footer: 'VALORANT LABS [STATS]'})] : [], components: components.length ? [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("SELECT_MENU"), customId: `game`, maxValues: 1, minValues: 0, options: components, placeholder: Utils.translations[guilddata.lang].stats.game_select}]}] : []})
     console.timeEnd()
     if(missingmatches.length) Utils.patchStats({ingamepuuid: dbstats.stats.ingamepuuid, puuid: dbstats.puuid, name: dbstats.name, tag: dbstats.tag, matches: missingmatches, message: newmessage, region: dbstats.stats.region, stats: dbstats.stats, lang: guilddata.lang, agent: agent, modes: modes})
 }

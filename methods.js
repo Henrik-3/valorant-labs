@@ -403,7 +403,7 @@ export default {
         const stats = await this.valodb.collection("userstats").findOne({puuid: puuid.data.puuid})
         return {status: 200, stats: stats, puuid: puuid.data.puuid, name: puuid.data.gameName, tag: puuid.data.tagLine, ingamepuuid: link.ingamepuuid}
     },
-    getGamemodes: async function () {
+    getGamemodes: function () {
         return valpapigamemodes.data.data
     },
     getAgents: function () {
@@ -467,7 +467,7 @@ export default {
         const best_agent = dbstats.stats.agents.filter(item => item.agent != "").sort((agent1, agent2) => agent2.playtime - agent1.playtime)[0]
         if(best_agent) {
             if(!agent.response) {
-                const a_img = await this.canvas.loadImage(agent.data.data.find(item => item.displayName == best_agent.agent).fullPortrait)
+                const a_img = await this.canvas.loadImage(agent.find(item => item.displayName == best_agent.agent).fullPortrait)
                 ctx.drawImage(a_img, 2600, 525, 512, 512)
                 this.buildText({ctx: ctx, text: (best_agent.kills / best_agent.deaths).toFixed(2), size: 80, x: 3535, y: 690, align: "center", color: "#ff4654"})
                 this.buildText({ctx: ctx, text: best_agent.matches, size: 80, x: 3535, y: 865, align: "center", color: "#ff4654"})
@@ -486,12 +486,12 @@ export default {
         for(let i = 0; matches.length > i; i++) {
             this.buildText({ctx: ctx, text: matches[i].map, size: 110, x: 825, y: mapk[i]})
             this.buildText({ctx: ctx, text: matches[i].mode, size: 90, x: 825, y: modek[i]})
-            const mode_data = modes.data.data.find(item => item.displayName == matches[i].mode == "Competitive" || matches[i].mode == "Unrated" ? "Normal" : matches[i].mode)
+            const mode_data = modes.find(item => item.displayName == (matches[i].mode == "Competitive" || matches[i].mode == "Unrated" ? "Normal" : matches[i].mode))
             if(mode_data) {
                 const mode_img = await this.canvas.loadImage(mode_data.displayIcon)
                 ctx.drawImage(mode_img, 700, modeimgk[i], 100, 100)
             }
-            const agent_img = await this.canvas.loadImage(agent.data.data.find(item => item.displayName == matches[i].agent).displayIcon)
+            const agent_img = await this.canvas.loadImage(agent.find(item => item.displayName == matches[i].agent).displayIcon)
             ctx.drawImage(agent_img, 700, agentimgk[i], 100, 100)
             this.buildText({ctx: ctx, text: "Score", size: 110, x: 1525, y: mapk[i]})
             this.buildText({ctx: ctx, text: matches[i].teamblue_rounds, size: 90, x: 1595, y: modek[i], color: "#0088ff", align: "center"})
@@ -704,13 +704,13 @@ export default {
         for(let i = 0; stats.matches.length > i; i++) {
             components.push({
                 label: stats.matches[i].gamekey,
-                value: stats.matches[i].id,
+                value: stats.matches[i].gamekey,
                 description: `${stats.matches[i].map} | ${stats.matches[i].mode} | ${stats.matches[i].agent} | ${moment(stats.matches[i].start).format("lll")}`,
                 emoji: Object.values(this.gamemodes).find(item => item.name == stats.matches[i].mode).emoji
             })
         }
         console.log(components)
-        message.edit({embeds: [], files: [attachment], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: "SELECT_MENU", customId: `game`, maxValues: 1, minValues: 0, options: components, placeholder: this.translations[lang].stats.game_select}]}]})
+        message.edit({embeds: [], files: [attachment], components: [{type: this.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: this.EnumResolvers.resolveComponentType("SELECT_MENU"), customId: `game`, maxValues: 1, minValues: 0, options: components, placeholder: this.translations[lang].stats.game_select}]}]})
     },
     buildGameImage: async function ({id, guilddata} = {}) {
         const gamekey = await this.getGameKey(id)
@@ -729,7 +729,7 @@ export default {
                     error: null,
                     unknown: null,
                     embed: [this.embedBuilder({
-                        title: `Game ${interaction.options.getString("gamekey")} | ID: ${match.data.data.metadata.matchid}`,
+                        title: `Game ${id} | ID: ${match.data.data.metadata.matchid}`,
                         desc: `Mode: Deathmatch | Map: ${match.data.data.metadata.map} | Length: ${moment.duration(match.data.data.metadata.game_length).minutes()}m ${moment.duration(match.data.data.metadata.game_length).seconds()}s | Started at: ${moment(match.data.data.metadata.game_start * 1000).format("LLLL")}`,
                         thumbnail: "https://media.valorant-api.com/gamemodes/a8790ec5-4237-f2f0-e93b-08a8e89865b2/displayicon.png",
                         additionalFields: fields.reverse(),

@@ -106,9 +106,18 @@
         "botinfo": {
             "title": "Bot Informationen zu VALORANT LABS"
         },
+        "feedback": {
+            "title": "Give Feedback",
+            "label": "Feedback",
+            "placeholder": "Bitte gebe hier dein Feedback ein",
+            "send_title": "Feedback gesendet",
+            "send_desc": "Vielen Dank für dein Feedback, dieses wurde dem Entwickler zugestellt und schnellstmöglich angeschaut"
+        },
         "game": {
             "unknown_title": "Unbekanntes Spiel",
-            "unknown_desc": "Bitte stelle sicher das der Game Key existiert und richtig eingegeben wurde"
+            "unknown_desc": "Bitte stelle sicher das der Game Key existiert und richtig eingegeben wurde",
+            "loading_title": "Bitte warten...",
+            "loading_desc": "Dein Ausgewähltes Spiel wird generiert, bitte warte einen Moment"
         },
         "link": {
             "clink_title": "Deine Aktuelle Verlinkung",

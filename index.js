@@ -32,9 +32,9 @@ client.selectcommands = new Collection()
 client.modals = new Collection()
 const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
 const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
-const buttonscommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
-const selectcommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
-const modalcommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+const buttoncommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'))
+const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'))
 
 for(let i = 0; normalcommands.length > i; i++) {
     const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
@@ -45,8 +45,8 @@ for(let i = 0; slashcommands.length > i; i++) {
     const command = await import(`./commands/slash/${slashcommands[i]}?update=${Date.now()}`);
     client.scommands.set(command.name, command);
 }
-for(let i = 0; buttonscommand.length > i; i++) {
-    const cmd = await import(`./commands/buttons/${buttonscommand[i]}?update=${Date.now()}`)
+for(let i = 0; buttoncommand.length > i; i++) {
+    const cmd = await import(`./commands/buttons/${buttoncommand[i]}?update=${Date.now()}`)
     client.buttoncommands.set(cmd.name, cmd)
 }
 for(let i = 0; selectcommands.length > i; i++) {
@@ -100,7 +100,6 @@ client.on("guildCreate", async g => {
 client.on("interactionCreate", async interaction => {
     const guilddata = await Utils.guildSettings(interaction.guild)
     const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guild) : null
-    await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})
     if(!interaction.isCommand()) {
         const args = interaction.customId.split(";")
         if(interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata})
@@ -132,6 +131,7 @@ client.on("interactionCreate", async interaction => {
             }]
         })
     }
+    if(!["feedback"].some(item => item == interaction.commandName)) await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})
     client.scommands.get(interaction.commandName).execute({interaction: interaction, guilddata: guilddata})
 })
 
@@ -140,34 +140,52 @@ client.on("messageCreate", async message => {
     if(message.author.id == "346345363990380546" && message.content == "/reload" && message.channel.parent == "732290187090067476") {
         const normalcommand = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
         const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
-        const buttonscommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+        const buttoncommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
+        const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'))
+        const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'))
         for(let i = 0; normalcommand.length > i; i++) {
             normalcommand[i] = path.join("file:///", __dirname, `/commands/normal/${normalcommand[i]}?update=${Date.now()}`)
         }
         for(let i = 0; slashcommands.length > i; i++) {
             slashcommands[i] = path.join("file:///", __dirname, `/commands/slash/${slashcommands[i]}?update=${Date.now()}`)
         }
-        for(let i = 0; buttonscommands.length > i; i++) {
-            buttonscommands[i] = path.join("file:///", __dirname, `/commands/buttons/${buttonscommands[i]}?update=${Date.now()}`)
+        for(let i = 0; buttoncommands.length > i; i++) {
+            buttoncommands[i] = path.join("file:///", __dirname, `/commands/buttons/${buttoncommands[i]}?update=${Date.now()}`)
         }
-        await client.shard.broadcastEval(async (c, {normalcommands, slashcommands, buttoncommands}) => {
+        for(let i = 0; selectcommands.length > i; i++) {
+            selectcommands[i] = path.join("file:///", __dirname, `./commands/select/${selectcommands[i]}?update=${Date.now()}`)
+        }
+        for(let i = 0; modalcommands.length > i; i++) {
+            modalcommands[i] = path.join("file:///", __dirname, `./commands/modals/${modalcommands[i]}?update=${Date.now()}`)
+        }
+        console.log(normalcommand, slashcommands, buttoncommands, selectcommands, modalcommands)
+        await client.shard.broadcastEval(async (c, {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands}) => {
             c.ncommands.sweep(() => true)
             c.buttoncommands.sweep(() => true)
             c.scommands.sweep(() => true)
+            c.selectcommands.sweep(() => true)
+            c.modals.sweep(() => true)
             for(let i = 0; normalcommands.length > i; i++) {
                 const command = await import(normalcommands[i]);
                 c.ncommands.set(command.name, command);
             }
             for(let i = 0; slashcommands.length > i; i++) {
                 const command = await import(slashcommands[i]);
-                console.log(command)
                 c.scommands.set(command.name, command);
             }
             for(let i = 0; buttoncommands.length > i; i++) {
                 const cmd = await import(buttoncommands[i]);
                 c.buttoncommands.set(cmd.name, cmd)
             }
-        }, {context: {normalcommands: normalcommand, slashcommands: slashcommands, buttoncommands: buttonscommands}})
+            for(let i = 0; selectcommands.length > i; i++) {
+                const cmd = await import(selectcommands[i]);
+                c.selectcommands.set(cmd.name, cmd)
+            }
+            for(let i = 0; modalcommands.length > i; i++) {
+                const cmd = await import(modalcommands[i]);
+                c.modals.set(cmd.name, cmd)
+            }
+        }, {context: {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands}})
         return message.reply({content: "Reloaded"})
     }
     const guilddata = await Utils.guildSettings(message.guild)

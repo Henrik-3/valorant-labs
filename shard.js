@@ -9,7 +9,7 @@ const manager = new ShardingManager('./index.js', {
     token: basedata.discordtoken,
     totalShards: 2,
     respawn: true
-});
+})
 //const poster = AutoPoster(basedata.dbltoken, manager)
 
 let restart = false

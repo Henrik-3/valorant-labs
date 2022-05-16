@@ -1,6 +1,6 @@
 {
   "kek": null,
-  "all": 184,
+  "all": 204,
   "status": 10,
   "help": 8,
   "agent": 15,
@@ -10,8 +10,9 @@
   "settings": 4,
   "mmr": 10,
   "patch": null,
-  "stats": 78,
+  "stats": 92,
   "link": null,
   "undefined": null,
-  "game": 18
+  "game": 18,
+  "feedback": 5
 }
