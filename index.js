@@ -4,6 +4,7 @@ import Utils from "./methods.js"
 import path from "path"
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
+import axios from "axios";
 
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 const api = JSON.parse(readFileSync("./api.json"))
@@ -60,6 +61,18 @@ for(let i = 0; modalcommands.length > i; i++) {
 
 client.on("ready", async () => {
     console.log("tes")
+    /*if(client.shard.ids[0] == 0) {
+        const competitivetiers = await axios.get("https://valorant-api.com/v1/competitivetiers")
+        const tiers = competitivetiers.data.data.find(item => item.uuid == "e4e9a692-288f-63ca-7835-16fbf6234fda").tiers
+        for(let i = 0; tiers.length > i; i++) {
+            if(tiers[i].rankTriangleDownIcon) {
+                const down = await axios.get(tiers[i].rankTriangleDownIcon, {responseType: "arraybuffer"})
+                const up = await axios.get(tiers[i].rankTriangleUpIcon, {responseType: "arraybuffer"})
+                writeFileSync(`./assets/mmr/${i}_down.png`, down.data)
+                writeFileSync(`./assets/mmr/${i}_up.png`, up.data)
+            }
+        }
+    }*/
     let guildsize
     client.user.setPresence({activities: [{name: `Bot startup | Shard: ${client.shard.ids[0]}`}], status: 'dnd'})
     process.on("message", async message => {

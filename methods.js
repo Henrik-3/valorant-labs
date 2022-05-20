@@ -280,103 +280,78 @@ export default {
     },
     ranks: {
         0: {
-            images: "4.png",
             discordid: "<:unrated:862004031248924693>"
         },
         1: {
-            image: "4.png",
             discordid: "<:unrated:862004031248924693>"
         },
         2: {
-            image: "4.png",
             discordid: "<:unrated:862004031248924693>"
         },
         3: {
-            image: "iron1.png",
             discordid: "<:iron1:862004162098102272>"
         },
         4: {
-            image: "iron2.png",
             discordid: "<:iron2:862004185036488715>"
         },
         5: {
-            image: "iron3.png",
             discordid: "<:iron3:862004206718025738>"
         },
         6: {
-            image: "bronze1.png",
             discordid: "<:bronze1:862004343054008331>"
         },
         7: {
-            image: "bronze2.png",
             discordid: "<:bronze2:862004376272109608>"
         },
         8: {
-            image: "bronze3.png",
             discordid: "<:bronze3:862004410775371777>"
         },
         9: {
-            image: "silver1.png",
             discordid: "<:silver1:862004807896268832>"
         },
         10: {
-            image: "silver2.png",
             discordid: "<:silver2:862004860655501342>"
         },
         11: {
-            image: "silver3.png",
             discordid: "<:silver3:862004895708086302>"
         },
         12: {
-            image: "gold1.png",
             discordid: "<:gold1:862004921763364874>"
         },
         13: {
-            image: "gold2.png",
             discordid: "<:gold2:862004943708094525>"
         },
         14: {
-            image: "gold3.png",
             discordid: "<:gold3:862004966636781608>"
         },
         15: {
-            image: "platin1.png",
             discordid: "<:plat1:862005172687470622>"
         },
         16: {
-            image: "platin2.png",
             discordid: "<:plat2:862005201301143573>"
         },
         17: {
-            image: "platin3.png",
             discordid: "<:plat3:862005224645853185>"
         },
         18: {
-            image: "diamond1.png",
             discordid: "<:dia1:862005255628652554>"
         },
         19: {
-            image: "diamond2.png",
             discordid: "<:dia2:862005278207508551>"
         },
         20: {
-            image: "diamond3.png",
             discordid: "<:dia3:862005298193891378>"
         },
         21: {
-            image: "immortal1.png",
             discordid: "<:immortal1:862005437264429056>"
         },
         22: {
-            image: "immortal2.png",
             discordid: "<:immortal2:862005462580985856>"
         },
         23: {
-            image: "immortal3.png",
             discordid: "<:immortal3:862005493840478208>"
         },
         24: {
-            image: "radiant.png",
             discordid: "<:radiant:862005538392506408>"
         }
     },
@@ -843,15 +818,10 @@ export default {
             let tiers = season.slice(tierCount)
             tiers = tiers.splice(0, tierCount)
             for(let k = 0; tiers.length > k; k++) {
-                const triangle = k % 2 == 0 ? tiers.upwards : tiers.downwards
-                /*
-                let triangle = shouldPointUpwards ? tier.upwards : tier.downwards
-                guard let triangle = triangle else {continue }
-                
-                var context = context
-                context.translateBy(x: CGFloat(index - rowNumber - 1) * 0.5, y: 0)
-                
-                context.draw(triangle, in: CGRect(origin: .zero, size: .one))*/
+                const triangle = k % 2 == 0 ? this.ranks[tiers[k].tier].upwards : this.ranks[tiers[k].tier].downwards
+                const triangleimage = await canvas.loadImage(triangle)
+
+                ctx.drawImage(triangleimage, 0, 0, Number(k - rowNumber - 1) * 0.5, rowNumber * 20)
             }
         }
     },
