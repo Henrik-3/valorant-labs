@@ -1,13 +1,10 @@
 {
     "name": "valorant-labs-v4",
-    "version": "4.0.0",
-    "description": "Advanced VALORANT Bot",
+    "version": "4.1.0.alpha.0",
+    "description": "Advanced VALORANT Bot (Current State: Alpha Build)",
     "main": "shard.js",
     "type": "module",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
+    "author": "HenrikDev",
     "license": "ISC",
     "dependencies": {
         "axios": "^0.25.0",

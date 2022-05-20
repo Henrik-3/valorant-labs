@@ -24,49 +24,49 @@
             "503": {
                 "title": "Status 503 | Server temporär nicht verfügbar",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Der Ziel Server kann die Anfrage aktuell nicht verarbeiten, bitte versuche es später noch einmal"
                 }
             },
             "429": {
                 "title": "Status 429 | Bot Anfragelimit",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Der Bot wird aktuell zu stark genutzt und hat nun einen Cooldown, bitte warte ein wenig und versuche es erneut"
                 }
             },
             "1015": {
                 "title": "Status 1015 | Bot Anfragelimit",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Der Bot wird aktuell zu stark genutzt und hat nun einen Cooldown, bitte warte ein wenig und versuche es erneut"
                 }
             },
             "403": {
                 "title": "Status 403 | Keine Berechtigung",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Der Bot hat keine Zugriff auf diese Datenquelle. Meistens tritt dieser Fehler bei Spielupdates auf wenn die Server heruntergefahren sind"
                 }
             },
             "400": {
                 "title": "Status 400 | Anfragefehler",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Bei der Anfrage ist ein Fehler aufgetreten, meistens liegt dies an der Formatierung der Anfrage"
                 }
             },
             "410": {
                 "title": "Status 410 | API nicht mehr verfügbar",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Der angefragte API Pfad ist nicht mehr verfügbar, dies ist ein Entwicklerfehler, bitte melde diesen fehler auf dem Support Server"
                 }
             },
             "409": {
                 "title": "Status 409 | Konflikt",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Bei der Anfrage ist ein Fehler aufgetreten, bitte versuche es später nocheinmal"
                 }
             },
             "408": {
                 "title": "Status 408 | Timeout",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Die Anfrage hat zu lange gedauert, bitte versuche es später nocheinmal"
                 }
             },
             "451": {
@@ -79,7 +79,7 @@
             "500": {
                 "title": "Status 500 | Internal Server Error",
                 "account": {
-                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                    "description": "Es ist ein Interner Server Fehler aufgetreten, bitte versuche es später nocheinmal"
                 }
             }
         },
@@ -144,7 +144,211 @@
         },
         "settings": {
             "perms_title": "Keine Berechtigung",
-            "perms_desc": "Dir fehlt die `Manage Guild` Berechtigung. Falls du denkst dies ist ein Fehler kontaktiere den Server Administrator"
+            "perms_desc": "Dir fehlt die `Manage Guild` Berechtigung. Falls du denkst dies ist ein Fehler kontaktiere den Server Administrator",
+            "imggeneration_title": "Bitte warte einen Moment",
+            "imggeneration_desc": "Die Beispielbilder mit dem angegebenen Bild werden generiert, bitte warte einen Moment. Du kannst im Anschluss auswählen ob die Konfiguration gespeichert werden soll oder nicht.",
+            "imggenerated_title": "Bilder erfolgreich generiert",
+            "imggenerated_desc": "Hier siehst du die fertigen Bilder so wie sie beim Benutzen des Befehles aussehen würden. Sollten die Bilder wie in deiner Vorstellung aussehen, klicke unten auf den grünen Knopf. Sollten die Bilder nicht so aussehen wie du es möchtest, klicke auf den Roten Knopf und lade ein anderes Bild hoch",
+            "imggenerated_label_accept": "Speichern",
+            "imggenerated_label_deny": "Abbrechen"
+        },
+        "status": {
+            "noerrors": "Es wurden keine Fehler auf dem Cluster gefunden",
+            "postedat": "Erstellt am:",
+            "platforms": "Platformen betroffen:",
+            "type": "Problemtyp"
+        },
+        "stats": {
+            "missing_matches_title": "Einige Matches fehlen aktuell noch",
+            "missing_matches_desc": "Die fehlenden Matches werden im Hintergrund heruntergeladen und verarbeitet. Sobald dies abgeschlossen ist, wird das Bild aktualisiert",
+            "invalidriotid_title": "Fehlerhafte Riot ID",
+            "invalidriotid_desc": "Die angegebene Riot ID ist Fehlerhaft. Bitte stelle sicher das du ebenfalls deinen Tag und nicht nur den Namen angegeben hast.\n\nFehlerhafte Riot ID: Henrik3\nKorrekte Riot ID: Henrik3#VALO",
+            "noriotid_title": "Keine Riot ID angegeben",
+            "noriotid_desc": "Du hast sowohl keinen Verlinkten Account, als auch keinen namen angegeben. Bitte verlinke dich mit `/link add` oder gebe eine Riot ID an",
+            "game_select": "Wähle ein Spiel aus"
+        },
+        "vote": {
+            "title": "Vote für uns auf top.gg",
+            "desc": "Durch das Voten erhältst du unter anderem Zugriff auf den `/mmr` Befehl und unterstützt den Bot mit deinem Vote"
+        },
+        "weapon": {
+            "name": "Waffen",
+            "cost": "Preis",
+            "magazinsize": "Magazingröße",
+            "penetration": "Durchschussstärke",
+            "firerate": "Feuerrate",
+            "firerate_zoom": "Feuerrate (Zoom)",
+            "zoom": "Zoom",
+            "head": "Kopfschuss",
+            "body": "Körperschuss",
+            "leg": "Beinschuss",
+            "rangedamage": "Kopfschuss: ${String(cweapon.weaponStats.damageRanges[i].headDamage)} | Körperschuss: ${String(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Beinschuss: ${String(cweapon.weaponStats.damageRanges[i].legDamage)}",
+            "mweapons": "Preis: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Free'}"
+        },
+        "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=de",
+        "cmd": "Befehle",
+        "help_title": "Hilfe Übersicht",
+        "help_desc": "Auf unserer neuen Website findest du in allem verfügbaren Übersetzungen die Hilfsübersicht",
+        "locale": "de_DE",
+        "moment": "de",
+        "patchurl": "https://api.henrikdev.xyz/valorant/v1/website/de-de?filter=patch_notes",
+        "statusurl": "https://api.henrikdev.xyz/valorant/v1/status/eu",
+        "support": "Support",
+        "valorant_api_lang": "de-DE",
+        "websiteurl": "https://api.henrikdev.xyz/valorant/v1/website/de-de"
+    },
+    "en-gb": {
+        "errors": {
+            "cmdundefined_title": "Befehl existiert nicht",
+            "cmdundefined_desc": "Benutze **/help** um alle Befehle zu sehen oder klicke unten auf den Link um alle Befehle einzusehen",
+            "cmdblacklist_title": "Ich habe keine Berechtigung hier zu schreiben",
+            "cmdblacklist_desc": "Wenn du denkst dies ist ein Fehler, kontaktiere den Server Administrator. Diese Nachricht wird in **7.5** Sekunden gelöscht",
+            "deprecation_title": "Dieser Befehl wird nicht mehr unterstützt",
+            "deprecation_desc": "Durch eine Discord Änderung [Genauere Infos hier](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Access-Deprecation-for-Verified-Bots) wird <@702201518329430117> nach April 2022 keine Nachrichten mehr senden können. Um frühzeitig auf das Update vorbereitet zu sein, werden neue Features nur noch über die Slash Commands veröffentlich. Zudem wurden bereits einige Befehle auf Slash Commands limitiert, aktuell folgende:\n- v?agent\n- v?api\n- v?blacklist\n- v?botinfo\n- v?game\n- v?link\n- v?map\n- v?patch\n- v?status\n- v?settings\n- v?vote\n- v?weapon\n- v?weapons\n\nBitte nutze deswegen den Slash Command dieses Befehls"
+        },
+        "response": {
+            "501": {
+                "title": "Status 501 | API Version nicht implementiert",
+                "account": {
+                    "description": "Bei einer Abfrage wurde eine Anfrage an eine API gesendet, welche nicht implementiert ist. Wahrscheinlich ist das Problem bekannt, trotzdessen kannst du es gerne auf dem Support Server melden"
+                }
+            },
+            "404": {
+                "title": "Status 404 | Nicht gefunden",
+                "account": {
+                    "description": "Der angegebene Username und die angegebene Tagline wurden nicht gefunden. Solltest du deinen Account verlinkt haben, aktualisiere ihn mit /link add NAME#TAG, ansonsten überprüfe on die RiotID korrekt eingegeben wurde"
+                }
+            },
+            "503": {
+                "title": "Status 503 | Server temporär nicht verfügbar",
+                "account": {
+                    "description": "Der Ziel Server kann die Anfrage aktuell nicht verarbeiten, bitte versuche es später noch einmal"
+                }
+            },
+            "429": {
+                "title": "Status 429 | Bot Anfragelimit",
+                "account": {
+                    "description": "Der Bot wird aktuell zu stark genutzt und hat nun einen Cooldown, bitte warte ein wenig und versuche es erneut"
+                }
+            },
+            "1015": {
+                "title": "Status 1015 | Bot Anfragelimit",
+                "account": {
+                    "description": "Der Bot wird aktuell zu stark genutzt und hat nun einen Cooldown, bitte warte ein wenig und versuche es erneut"
+                }
+            },
+            "403": {
+                "title": "Status 403 | Keine Berechtigung",
+                "account": {
+                    "description": "Der Bot hat keine Zugriff auf diese Datenquelle. Meistens tritt dieser Fehler bei Spielupdates auf wenn die Server heruntergefahren sind"
+                }
+            },
+            "400": {
+                "title": "Status 400 | Anfragefehler",
+                "account": {
+                    "description": "Bei der Anfrage ist ein Fehler aufgetreten, meistens liegt dies an der Formatierung der Anfrage"
+                }
+            },
+            "410": {
+                "title": "Status 410 | API nicht mehr verfügbar",
+                "account": {
+                    "description": "Der angefragte API Pfad ist nicht mehr verfügbar, dies ist ein Entwicklerfehler, bitte melde diesen fehler auf dem Support Server"
+                }
+            },
+            "409": {
+                "title": "Status 409 | Konflikt",
+                "account": {
+                    "description": "Bei der Anfrage ist ein Fehler aufgetreten, bitte versuche es später nocheinmal"
+                }
+            },
+            "408": {
+                "title": "Status 408 | Timeout",
+                "account": {
+                    "description": "Die Anfrage hat zu lange gedauert, bitte versuche es später nocheinmal"
+                }
+            },
+            "451": {
+                "title": "Status: 451 | Dieser Account ist privat",
+                "description": "Insofern dies dein Account ist, drücke auf den 'Einloggen' Button unter dieser Nachricht um VALORANT LABS die Berechtigung zu geben Match Daten von dir sammeln, dafür musst du dich über RSO (Riot Sign On) einloggen. Nachdem du dich eingeloggt hast, sollte sich diese Nachricht automatisch aktualisieren. Insofern dies nicht der Fall ist, nutze einfach den 'Aktualisieren' Button unter dieser Nachricht. Insofern du bereits Stats bei tracker.gg hast und dort eingeloggt bist wird der Bot Versuchen diese zu übernehmen.",
+                "component_login": "Einloggen",
+                "component_update": "Aktualisieren",
+                "component_rank": "MMR"
+            },
+            "500": {
+                "title": "Status 500 | Internal Server Error",
+                "account": {
+                    "description": "Es ist ein Interner Server Fehler aufgetreten, bitte versuche es später nocheinmal"
+                }
+            }
+        },
+        "agent": {
+            "agentunknown_title": "Agent nicht gefunden",
+            "agentunknown_desc": "Bitte stelle sicher das der Agent existiert. Solltest du denken dies ist ein Bug, melde dich bitte auf dem Support Server",
+            "agentrole": "Rolle"
+        },
+        "blacklist": {
+            "blacklistinactive_title": "Blacklist ist nicht aktiv",
+            "blacklistinactive_desc": "Aktiviere die Blacklist mit: /settings blacklist true",
+            "blacklistperms_title": "Du darfst diesen Befehl nicht nutzen",
+            "blacklistperms_desc": "Bitte stelle sicher dass du die `MANAGE_GUILD` Berechtigungen hast",
+            "blacklistoverview_title": "Kanal Blacklist Übersicht",
+            "blacklistoverview_desc": "Benutze einer der folgenden Befehle \n\n/blacklist add #channel \n/blacklist remove #channel \n\nGeblacklistete Channel: \n${cchannel ? cchannel : 'Keine Kanäle'}",
+            "blacklistalreadyadded_title": "Bereits auf der Liste",
+            "blacklistalreadyadded_desc": "Der angegebene Channel ist bereits in der Liste, du kannst ihn nicht nochmal hinzufügen",
+            "blacklistalreadyremoved_title": "Nicht auf der Liste",
+            "blacklistalreadyremoved_desc": "Der angegebene Channel befindet sich nicht in der Liste, du kannst ihn nicht nochmal entfernen",
+            "blacklistadded_title": "Channel zur Liste hinzugefügt",
+            "blacklistchannels": "Geblacklistete Channel: \n${uchannel ? uchannel : 'Keine Kanäle'}",
+            "blacklistremoved_title": "Channel aus der Liste entfernt"
+        },
+        "botinfo": {
+            "title": "Bot Informationen zu VALORANT LABS"
+        },
+        "feedback": {
+            "title": "Give Feedback",
+            "label": "Feedback",
+            "placeholder": "Bitte gebe hier dein Feedback ein",
+            "send_title": "Feedback gesendet",
+            "send_desc": "Vielen Dank für dein Feedback, dieses wurde dem Entwickler zugestellt und schnellstmöglich angeschaut"
+        },
+        "game": {
+            "unknown_title": "Unbekanntes Spiel",
+            "unknown_desc": "Bitte stelle sicher das der Game Key existiert und richtig eingegeben wurde",
+            "loading_title": "Bitte warten...",
+            "loading_desc": "Dein Ausgewähltes Spiel wird generiert, bitte warte einen Moment"
+        },
+        "link": {
+            "clink_title": "Deine Aktuelle Verlinkung",
+            "clink_desc": "Dein Verlinkter Account heißt wie folgt:",
+            "nolink_title": "Kein Verlinkter Account",
+            "nolink_desc": "Du hast aktuell noch keinen Verlinkten Account. Klicke auf den Button `Verknüpfen` unter dieser Nachricht, um deinen Discord Account mit einem VALORANT Account zu verlinken",
+            "addlink_title": "Verknüpfung erstellen",
+            "addlink_desc": "Um deinen Discord Account mit deinem VALORANT Account zu verknüpfen, klicke auf den Button `Verknüpfen`",
+            "removelink_title": "Verlinkung entfernt",
+            "removelink_desc": "Deine Verlinkung wurde erfolgreich entfernt",
+            "generate_link": "Verknüpfen"
+        },
+        "mmr": {
+            "429_title": "Top.gg Überprüfungslimit",
+            "429_desc": "Das Limit zur Vote Überprüfung bei top.gg wurde erreicht, bitte warte eine bis zwei Minuten und versuche es nocheinmal",
+            "500_title": "Fehler bei der Vote Überprüfung",
+            "500_desc": "Bei der Überprüfung ob du gevoted hast ist ein Fehler aufgetreten, bitte versuche es in Kürze nochmal...",
+            "not_voted_title": "Du hast noch nicht gevoted",
+            "not_voted_desc": "Bitte vote für den Bot auf top.gg (Klicke auf den Button unter dieser Nachricht um zu top.gg zu gelangen) um diesen Befehl für die nächsten 24h nutzen zu können",
+            "no_link_title": "Keine Riot ID angegeben oder du kein verlinkter Account",
+            "no_link_desc": "Hier sind alle verfügbaren Commands",
+            "base": "Zeigt deine MMR Daten insofern du deinen Discord Account mit deinem Riot Account über den /link Befehl verknüpft hast",
+            "options": "Zeigt die MMR Daten des angegebenen Accounts"
+        },
+        "settings": {
+            "perms_title": "Keine Berechtigung",
+            "perms_desc": "Dir fehlt die `Manage Guild` Berechtigung. Falls du denkst dies ist ein Fehler kontaktiere den Server Administrator",
+            "imggeneration_title": "Bitte warte einen Moment",
+            "imggeneration_desc": "Die Beispielbilder mit dem angegebenen Bild werden generiert, bitte warte einen Moment. Du kannst im Anschluss auswählen ob die Konfiguration gespeichert werden soll oder nicht.",
+            "imggenerated_title": "Bilder erfolgreich generiert",
+            "imggenerated_desc": "Hier siehst du die fertigen Bilder so wie sie beim Benutzen des Befehles aussehen würden. Sollten die Bilder wie in deiner Vorstellung aussehen, klicke unten auf den grünen Knopf. Sollten die Bilder nicht so aussehen wie du es möchtest, klicke auf den Roten Knopf und lade ein anderes Bild hoch",
+            "imggenerated_label_accept": "Speichern",
+            "imggenerated_label_deny": "Abbrechen"
         },
         "status": {
             "noerrors": "Es wurden keine Fehler auf dem Cluster gefunden",

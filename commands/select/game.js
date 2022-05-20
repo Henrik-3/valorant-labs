@@ -13,7 +13,8 @@ export async function execute({interaction, args, guilddata} = {}) {
         attachments: [],
         components: []
     })
-    const image = await Utils.buildGameImage({id: interaction.values[0], guilddata: guilddata})
+    const bgcanvas = guilddata.background ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background), "game") : null
+    const image = await Utils.buildGameImage({id: interaction.values[0], guilddata, bgcanvas})
     if(image.unknown) return interaction.editReply({
         embeds: [
             Utils.embedBuilder({
