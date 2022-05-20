@@ -1,6 +1,6 @@
 {
   "kek": null,
-  "all": 255,
+  "all": 375,
   "status": 10,
   "help": 8,
   "agent": 15,
@@ -8,7 +8,7 @@
   "blacklist": 17,
   "botinfo": 7,
   "settings": 29,
-  "mmr": 10,
+  "mmr": 130,
   "patch": null,
   "stats": 118,
   "link": null,

@@ -808,7 +808,7 @@ export default {
     buildMMRImage: async function ({mmrdata, bgcanvas} = {}) {
         const canvas = this.canvas.createCanvas(3840, 2160)
         const ctx = canvas.getContext("2d")
-        const background = bgcanvas ? bgcanvas : await this.canvas.loadImage("assets/backgrounds/VALORANT_mmr.png")
+        const background = bgcanvas ? bgcanvas : await this.canvas.loadImage("assets/background/VALORANT_mmr.png")
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
         const season = Object.values(mmrdata.by_season).find(item => !item.error).act_rank_wins
         const squareroot = Math.ceil(Math.sqrt(season.length))
@@ -818,12 +818,20 @@ export default {
             let tiers = season.slice(tierCount)
             tiers = tiers.splice(0, tierCount)
             for(let k = 0; tiers.length > k; k++) {
-                const triangle = k % 2 == 0 ? this.ranks[tiers[k].tier].upwards : this.ranks[tiers[k].tier].downwards
-                const triangleimage = await canvas.loadImage(triangle)
-
-                ctx.drawImage(triangleimage, 0, 0, Number(k - rowNumber - 1) * 0.5, rowNumber * 20)
+                const triangle = k % 2 == 0 ? `assets/mmr/${tiers[k].tier}_up.png` : `assets/mmr/${tiers[k].tier}_down.png`
+                const triangleimage = await this.canvas.loadImage(triangle)
+                ctx.drawImage(triangleimage, (k * 80.875) + ((rowcount - i) * 80.875) + 1680, (i * 141.5) + 515, 156.25, 138.75)
             }
         }
+        let border
+        if(season.length < 9) border = await this.canvas.loadImage("assets/mmr/border0.png")
+        else if(9 <= season.length < 25) border = await this.canvas.loadImage("assets/mmr/border1.png")
+        else if(25 <= season.length < 50) border = await this.canvas.loadImage("assets/mmr/border2.png")
+        else if(50 <= season.length < 75) border = await this.canvas.loadImage("assets/mmr/border3.png")
+        else if(75 <= season.length < 100) border = await this.canvas.loadImage("assets/mmr/border4.png")
+        else border = await this.canvas.loadImage("assets/mmr/border5.png")
+        ctx.drawImage(border, 1280, 120, 1765, 1765)
+        return new this.attachment(canvas.toBuffer(), `valorant-mmr.png`, {description: "VALORANT LABS MMR"})
     },
     getBlacklist: async function (guildId) {
         const request = await this.getDB("blacklist").findOne({gid: guildId})

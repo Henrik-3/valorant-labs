@@ -21,6 +21,7 @@ export async function execute({interaction, guilddata} = {}) {
     const bgcanvas = guilddata.background ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background), "mmr") : null
     Utils.getDB("mmr").insertOne({puuid: puuid.data.data.puuid, data: mmr.data, createdAt: new Date()})
     const attachment = await Utils.buildMMRImage({mmrdata: mmr.data.data, bgcanvas})
+    return interaction.editReply({files: [attachment]})
     /*const fields = []
     for(let i = 0; Object.keys(mmr.data.data.by_season).length > i; i++) {
         const cdata = {name: Object.keys(mmr.data.data.by_season)[i], value: Object.values(mmr.data.data.by_season)[i]}
