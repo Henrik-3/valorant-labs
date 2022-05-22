@@ -280,78 +280,128 @@ export default {
     },
     ranks: {
         0: {
+            mmr: "assets/background/VALORANT_mmr.png",
+            color: "#c5c5c5",
             discordid: "<:unrated:862004031248924693>"
         },
         1: {
+            mmr: "assets/background/VALORANT_mmr.png",
+            color: "#c5c5c5",
             discordid: "<:unrated:862004031248924693>"
         },
         2: {
+            mmr: "assets/background/VALORANT_mmr.png",
+            color: "#c5c5c5",
             discordid: "<:unrated:862004031248924693>"
         },
         3: {
+            mmr: "assets/background/VALORANT_mmr_iron.png",
+            color: "#5a5959",
             discordid: "<:iron1:862004162098102272>"
         },
         4: {
+            mmr: "assets/background/VALORANT_mmr_iron.png",
+            color: "#5a5959",
             discordid: "<:iron2:862004185036488715>"
         },
         5: {
+            mmr: "assets/background/VALORANT_mmr_iron.png",
+            color: "#5a5959",
             discordid: "<:iron3:862004206718025738>"
         },
         6: {
+            mmr: "assets/background/VALORANT_mmr_bronze.png",
+            color: "#924e30",
             discordid: "<:bronze1:862004343054008331>"
         },
         7: {
+            mmr: "assets/background/VALORANT_mmr_bronze.png",
+            color: "#924e30",
             discordid: "<:bronze2:862004376272109608>"
         },
         8: {
+            mmr: "assets/background/VALORANT_mmr_bronze.png",
+            color: "#924e30",
             discordid: "<:bronze3:862004410775371777>"
         },
         9: {
+            mmr: "assets/background/VALORANT_mmr_silver.png",
+            color: "#c5c4c4",
             discordid: "<:silver1:862004807896268832>"
         },
         10: {
+            mmr: "assets/background/VALORANT_mmr_silver.png",
+            color: "#c5c4c4",
             discordid: "<:silver2:862004860655501342>"
         },
         11: {
+            mmr: "assets/background/VALORANT_mmr_silver.png",
+            color: "#c5c4c4",
             discordid: "<:silver3:862004895708086302>"
         },
         12: {
+            mmr: "assets/background/VALORANT_mmr_gold.png",
+            color: "#dbb815",
             discordid: "<:gold1:862004921763364874>"
         },
         13: {
+            mmr: "assets/background/VALORANT_mmr_gold.png",
+            color: "#dbb815",
             discordid: "<:gold2:862004943708094525>"
         },
         14: {
+            mmr: "assets/background/VALORANT_mmr_gold.png",
+            color: "#dbb815",
             discordid: "<:gold3:862004966636781608>"
         },
         15: {
+            mmr: "assets/background/VALORANT_mmr_platinum.png",
+            color: "#38abc2",
             discordid: "<:plat1:862005172687470622>"
         },
         16: {
+            mmr: "assets/background/VALORANT_mmr_platinum.png",
+            color: "#38abc2",
             discordid: "<:plat2:862005201301143573>"
         },
         17: {
+            mmr: "assets/background/VALORANT_mmr_platinum.png",
+            color: "#38abc2",
             discordid: "<:plat3:862005224645853185>"
         },
         18: {
+            mmr: "assets/background/VALORANT_mmr_diamond.png",
+            color: "#bb77f0",
             discordid: "<:dia1:862005255628652554>"
         },
         19: {
+            mmr: "assets/background/VALORANT_mmr_diamond.png",
+            color: "#bb77f0",
             discordid: "<:dia2:862005278207508551>"
         },
         20: {
+            mmr: "assets/background/VALORANT_mmr_diamond.png",
+            color: "#bb77f0",
             discordid: "<:dia3:862005298193891378>"
         },
         21: {
+            mmr: "assets/background/VALORANT_mmr_immortal.png",
+            color: "#da3f76",
             discordid: "<:immortal1:862005437264429056>"
         },
         22: {
+            mmr: "assets/background/VALORANT_mmr_immortal.png",
+            color: "#da3f76",
             discordid: "<:immortal2:862005462580985856>"
         },
         23: {
+            mmr: "assets/background/VALORANT_mmr_immortal.png",
+            color: "#da3f76",
             discordid: "<:immortal3:862005493840478208>"
         },
         24: {
+            mmr: "assets/background/VALORANT_mmr_radiant.png",
+            color: "#d3d058",
             discordid: "<:radiant:862005538392506408>"
         }
     },
@@ -423,7 +473,7 @@ export default {
     buildStatsImage: async function ({dbstats, agent, modes, bgcanvas} = {}) {
         const canvas = this.canvas.createCanvas(3840, 2160)
         const ctx = canvas.getContext("2d")
-        const background = bgcanvas ? bgcanvas : await this.canvas.loadImage("assets/backgrounds/VALORANT_stats.png")
+        const background = bgcanvas ? bgcanvas : await this.canvas.loadImage("assets/background/VALORANT_stats.png")
         const gradient = ctx.createLinearGradient(0, 0, 200, 0)
         gradient.addColorStop(0, "#D60808")
         gradient.addColorStop(1, "#FF6690")
@@ -500,7 +550,6 @@ export default {
         let fmatches = await Promise.allSettled(reqs)
         fmatches = fmatches.map(item => {return item.value})
         for(let i = 0; fmatches.length > i; i++) {
-            console.log(fmatches[i])
             if(!fmatches[i].response && !fmatches.code) {
                 if(dbstats.ingamepuuid) {
                     if(fmatches[i].data.data.metadata.mode != "Deathmatch") {
@@ -727,7 +776,7 @@ export default {
             default:
                 const canvas = this.canvas.createCanvas(3840, 2160)
                 const ctx = canvas.getContext("2d")
-                const background = bgcanvas ? bgcanvas : await this.canvas.loadImage("assets/backgrounds/VALORANT_game.png")
+                const background = bgcanvas ? bgcanvas : await this.canvas.loadImage("assets/background/VALORANT_game.png")
                 ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
                 moment.locale(this.translations[guilddata.lang].moment)
                 const mode_image = await this.canvas.loadImage(`./assets/modes/${Object.values(this.gamemodes).find(item => item.name == match.data.data.metadata.mode).path}`)
@@ -798,39 +847,73 @@ export default {
         console.log(data)
         const background = await this.canvas.loadImage(data)
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
-        const stats = await this.canvas.loadImage(`assets/backgrounds/VALORANT_${type}_template.png`)
+        const stats = await this.canvas.loadImage(`assets/background/VALORANT_${type}_template.png`)
         ctx.drawImage(stats, 0, 0, canvas.width, canvas.height)
         return canvas
     },
     getCustomBackground: function (uuid) {
         return brotliDecompressSync(readFileSync(`./settings/backgrounds/${uuid}.png`))
     },
-    buildMMRImage: async function ({mmrdata, bgcanvas} = {}) {
+    buildMMRImage: async function ({mmrdata, bgcanvas, seasonid} = {}) {
         const canvas = this.canvas.createCanvas(3840, 2160)
         const ctx = canvas.getContext("2d")
-        const background = bgcanvas ? bgcanvas : await this.canvas.loadImage("assets/background/VALORANT_mmr.png")
+        let seasonvalue
+        let seasonkey
+        let entries
+        if(!seasonid) {
+            entries = Object.entries(mmrdata.by_season).find(item => !item[1].error)
+            seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0)
+            seasonkey = entries[0]
+        } else {
+            entries = Object.entries(mmrdata.by_season).find(item => item[0] == seasonid)
+            seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0)
+            seasonkey = entries[0]
+        }
+        const multiplier = {
+            triangle: 1.25,
+            x: 1375.5,
+            y: 200
+        }
+        const background = bgcanvas ? bgcanvas : await this.canvas.loadImage(this.ranks[seasonvalue[0].tier].mmr)
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
-        const season = Object.values(mmrdata.by_season).find(item => !item.error).act_rank_wins
-        const squareroot = Math.ceil(Math.sqrt(season.length))
+        const wins = entries[1].wins
+        const color = this.ranks[seasonvalue[0].tier].color
+        let border
+        if(wins < 9) border = await this.canvas.loadImage("assets/mmr/border0.png")
+        else if(9 <= wins && wins < 25) border = await this.canvas.loadImage("assets/mmr/border1.png")
+        else if(25 <= wins && wins < 50) border = await this.canvas.loadImage("assets/mmr/border2.png")
+        else if(50 <= wins && wins < 75) border = await this.canvas.loadImage("assets/mmr/border3.png")
+        else if(75 <= wins && wins < 100) border = await this.canvas.loadImage("assets/mmr/border4.png")
+        else border = await this.canvas.loadImage("assets/mmr/border5.png")
+        ctx.drawImage(border, 1135, 200, 1765, 1765)
+
+        this.buildText({ctx: ctx, text: seasonkey.toUpperCase(), size: 200, x: (multiplier.x + (((125 * multiplier.triangle) / 2) * 8.25)), y: 325, color: color, align: "center", font: "anton"})
+        this.buildText({ctx: ctx, text: seasonvalue[0].patched_tier.toUpperCase(), size: 200, x: (multiplier.x + (((125 * multiplier.triangle) / 2) * 8.25)), y: 2025, color: color, align: "center", font: "anton"})
+        this.buildText({ctx: ctx, text: mmrdata.current_data.currenttierpatched, size: 125, x: 400, y: 1245, color: color, align: "left", font: "anton"})
+        this.buildText({ctx: ctx, text: mmrdata.current_data.ranking_in_tier + " RR", size: 125, x: 675, y: 1445, color: color, align: "left", font: "anton"})
+        this.buildText({ctx: ctx, text: mmrdata.current_data.mmr_change_to_last_game, size: 125, x: 800, y: 1645, color: color, align: "left", font: "anton"})
+        this.buildText({ctx: ctx, text: mmrdata.current_data.elo, size: 125, x: 325, y: 1845, color: color, align: "left", font: "anton"})
+
+        //TODO
+        this.buildText({ctx: ctx, text: entries[1].wins, size: 110, x: 3700, y: 437.5, color: color, align: "right", font: "anton"})
+        this.buildText({ctx: ctx, text: entries[1].number_of_games, size: 110, x: 3700, y: 737.5, color: color, align: "right", font: "anton"})
+        this.buildText({ctx: ctx, text: `${((entries[1].wins / entries[1].number_of_games) * 100).toFixed(2)}%`, size: 110, x: 3700, y: 1037.5, color: color, align: "right", font: "anton"})
+        this.buildText({ctx: ctx, text: seasonvalue[0].patched_tier, size: 110, x: 3700, y: 1337.5, color: color, align: "right", font: "anton"})
+        this.buildText({ctx: ctx, text: seasonvalue[seasonvalue.length - 1].patched_tier, size: 110, x: 3700, y: 1637.5, color: color, align: "right", font: "anton"})
+        this.buildText({ctx: ctx, text: entries[1].final_rank_patched, size: 110, x: 3700, y: 1937.5, color: color, align: "right", font: "anton"})
+
+        const squareroot = Math.ceil(Math.sqrt(wins))
         const rowcount = squareroot >= 8 ? 7 : squareroot
         for(let i = 0; rowcount > i; i++) {
             const tierCount = i * 2 + 1
-            let tiers = season.slice(tierCount)
-            tiers = tiers.splice(0, tierCount)
+            let tiers = seasonvalue.splice(0, tierCount)
             for(let k = 0; tiers.length > k; k++) {
                 const triangle = k % 2 == 0 ? `assets/mmr/${tiers[k].tier}_up.png` : `assets/mmr/${tiers[k].tier}_down.png`
                 const triangleimage = await this.canvas.loadImage(triangle)
-                ctx.drawImage(triangleimage, (k * 80.875) + ((rowcount - i) * 80.875) + 1680, (i * 141.5) + 515, 156.25, 138.75)
+                const x = (((125 * multiplier.triangle) / 2) + 2.75)
+                ctx.drawImage(triangleimage, (k * x) + ((rowcount - i) * x) + (multiplier.x + (((125 * multiplier.triangle) / 2) * (7 - rowcount))), (i * ((111 * multiplier.triangle) + 2.75)) + (multiplier.y + 400), 125 * multiplier.triangle, 111 * multiplier.triangle)
             }
         }
-        let border
-        if(season.length < 9) border = await this.canvas.loadImage("assets/mmr/border0.png")
-        else if(9 <= season.length < 25) border = await this.canvas.loadImage("assets/mmr/border1.png")
-        else if(25 <= season.length < 50) border = await this.canvas.loadImage("assets/mmr/border2.png")
-        else if(50 <= season.length < 75) border = await this.canvas.loadImage("assets/mmr/border3.png")
-        else if(75 <= season.length < 100) border = await this.canvas.loadImage("assets/mmr/border4.png")
-        else border = await this.canvas.loadImage("assets/mmr/border5.png")
-        ctx.drawImage(border, 1280, 120, 1765, 1765)
         return new this.attachment(canvas.toBuffer(), `valorant-mmr.png`, {description: "VALORANT LABS MMR"})
     },
     getBlacklist: async function (guildId) {
@@ -856,16 +939,16 @@ export default {
     },
     errorhandler: async function (error) {
         console.log(error)
-        if(error.status == 451) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_login, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_update, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `update;${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_rank, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `rank;${error.name};${error.tag}`}]}]})
-        if(!this.translations[error.lang].response[error.status]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
-        if(!this.translations[error.lang].response[error.status][error.type]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
-        return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(error.status == 451) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: this.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_login, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_update, style: this.EnumResolvers.resolveButtonStyle("DANGER"), customId: `update;${error.puuid}`}, {type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_rank, style: this.EnumResolvers.resolveButtonStyle("DANGER"), customId: `rank;${error.name};${error.tag}`}]}]})
+        if(!this.translations[error.lang].response[error.status]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: this.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(!this.translations[error.lang].response[error.status][error.type]) return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: this.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        return error.message.reply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: this.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
     },
     errorhandlerinteraction: async function (error) {
-        if(error.status == 451) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_login, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_update, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `update;${error.puuid}`}, {type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_rank, style: Utils.EnumResolvers.resolveButtonStyle("DANGER"), customId: `rank;${error.name};${error.tag}`}]}]})
-        if(!this.translations[error.lang].response[error.status]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
-        if(!this.translations[error.lang].response[error.status][error.type]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
-        return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: Utils.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(error.status == 451) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[451].title, desc: this.translations[error.lang].response[451][error.type].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_login, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: `https://valorantlabs.xyz/v1/login?puuid=${error.puuid}`}, {type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_update, style: this.EnumResolvers.resolveButtonStyle("DANGER"), customId: `update;${error.puuid}`}, {type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].response[451].component_rank, style: this.EnumResolvers.resolveButtonStyle("DANGER"), customId: `rank;${error.name};${error.tag}`}]}]})
+        if(!this.translations[error.lang].response[error.status]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[500].title, desc: this.translations[error.lang].response[500][error.type].description, footer: "VALORANT LABS [ERROR 500]"})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        if(!this.translations[error.lang].response[error.status][error.type]) return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status]["account"].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: this.EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
+        return error.interaction.editReply({embeds: [this.embedBuilder({title: this.translations[error.lang].response[error.status].title, desc: this.translations[error.lang].response[error.status][error.type].description, footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: EnumResolvers.resolveComponentType("BUTTON"), label: this.translations[error.lang].support, style: this.EnumResolvers.resolveButtonStyle("LINK"), url: "https://discord.gg/Zr5eF5D"}]}]})
     },
     getGuild: async function (interaction) {
         const settings = await this.guildSettings(interaction.guild)
@@ -880,14 +963,19 @@ export default {
                         {name: "Othernews", value: String(settings.onews)},
                         {name: "Serverstatus", value: String(settings.serverstatus)},
                         {name: "Language", value: String(settings.lang)},
-                        {name: "Blacklist", value: String(settings.blacklist)}
+                        {name: "Blacklist", value: String(settings.blacklist)},
+                        {name: "Background - Stats", value: String(settings.background_stats)},
+                        {name: "Background - Game", value: String(settings.background_game)},
+                        {name: "Background - MMR", value: String(settings.background_mmr)}
                     ],
                     footer: 'VALORANT LABS [SETTINGS]'
                 })
-            ]
+            ],
+            components: [],
+            attachments: []
         })
     },
-    patchGuild: async function ({interaction, key, value} = {}) {
+    patchGuild: async function ({interaction, key, value, additionaldata} = {}) {
         let doc
         let command = true
         switch(key) {
@@ -931,20 +1019,37 @@ export default {
                             })
                         ]
                     })
-                    const dbstats = await this.getDB("userstats").findOne({ingamepuuid: "54942ced-1967-5f66-8a16-1e0dae875641"})
-                    dbstats.name = "Henrik3"
-                    dbstats.tag = "VALO"
-                    const bgcanvas = await Promise.allSettled([this.buildBackground(interaction.options.getAttachment("image").url, "stats"), this.buildBackground(interaction.options.getAttachment("image").url, "game")])
-                    const images = await Promise.allSettled([this.buildStatsImage({dbstats, agent: this.getAgents(), modes: this.getGamemodes(), bgcanvas: bgcanvas[0].value}), this.buildGameImage({matchid: "d6007c31-b293-41c3-b1f6-0e797978447b", guilddata: doc, bgcanvas: bgcanvas[1].value})])
-                    console.log(images[0])
+                    let bgcanvas
+                    let image
+                    switch(interaction.options.get("type").value) {
+                        case "stats": {
+                            const dbstats = await this.getDB("userstats").findOne({ingamepuuid: "54942ced-1967-5f66-8a16-1e0dae875641"})
+                            dbstats.name = "Henrik3"
+                            dbstats.tag = "VALO"
+                            bgcanvas = await this.buildBackground(interaction.options.getAttachment("image").url, "stats")
+                            image = await this.buildStatsImage({dbstats, agent: this.getAgents(), modes: this.getGamemodes(), bgcanvas})
+                            break
+                        }
+                        case "game": {
+                            bgcanvas = await this.buildBackground(interaction.options.getAttachment("image").url, "game")
+                            image = (await this.buildGameImage({matchid: "d6007c31-b293-41c3-b1f6-0e797978447b", guilddata: doc, bgcanvas})).image
+                            break
+                        }
+                        case "stats": {
+                            const mmrdata = await this.getDB("mmr").findOne({puuid: "54942ced-1967-5f66-8a16-1e0dae875641"})
+                            bgcanvas = await this.buildBackground(interaction.options.getAttachment("image").url, "mmr")
+                            image = await this.buildMMRImage({mmrdata, bgcanvas, seasonid: "e1a2"})
+                            break
+                        }
+                    }
                     return interaction.editReply({
-                        files: [images[0].value, images[1].value.image],
+                        files: [image],
                         embeds: [this.embedBuilder({title: translations[doc.lang].settings.imggenerated_title, desc: translations[doc.lang].settings.imggenerated_desc, footer: interaction.options.getAttachment("image").url})],
                         components: [{
                             type: EnumResolvers.resolveComponentType("ACTION_ROW"),
                             components: [
-                                {type: EnumResolvers.resolveComponentType("BUTTON"), style: EnumResolvers.resolveButtonStyle("SUCCESS"), label: translations[doc.lang].settings.imggenerated_label_accept, customId: `settings;background;accept`},
-                                {type: EnumResolvers.resolveComponentType("BUTTON"), style: EnumResolvers.resolveButtonStyle("DANGER"), label: translations[doc.lang].settings.imggenerated_label_deny, customId: `settings;background;deny`}
+                                {type: EnumResolvers.resolveComponentType("BUTTON"), style: EnumResolvers.resolveButtonStyle("SUCCESS"), label: translations[doc.lang].settings.imggenerated_label_accept, customId: `settings;background;${interaction.options.get("type").value};accept`},
+                                {type: EnumResolvers.resolveComponentType("BUTTON"), style: EnumResolvers.resolveButtonStyle("DANGER"), label: translations[doc.lang].settings.imggenerated_label_deny, customId: `settings;background;${interaction.options.get("type").value};deny`}
                             ]
                         }]
                     })
@@ -967,20 +1072,13 @@ export default {
                 }
                 const compressed = brotliCompressSync(background.data, {params: {[constants.BROTLI_PARAM_QUALITY]: 6}})
                 writeFileSync(`./settings/backgrounds/${value}.png`, compressed)
-                doc = (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: {background: value}}, {upsert: false, returnDocument: "after"})).value
+                if(additionaldata == "stats") doc = (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: {background_stats: value}}, {upsert: false, returnDocument: "after"})).value
+                if(additionaldata == "game") doc = (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: {background_game: value}}, {upsert: false, returnDocument: "after"})).value
+                if(additionaldata == "mmr") doc = (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: {background_mmr: value}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
         }
-        if(command) return interaction.editReply({
-            embeds: [this.embedBuilder({
-                title: "VALORANT LABS Settings",
-                desc: `Settings for ${interaction.guild.name}`,
-                additionalFields: [{name: "Prefix", value: String(doc.prefix)}, {name: "Patchnotes", value: String(doc.news)}, {name: "Othernews", value: String(doc.onews)}, {name: "Serverstatus", value: String(doc.serverstatus)}, {name: "Language", value: String(doc.lang)}, {name: "Blacklist", value: String(doc.blacklist)}, {name: "Background", value: String(doc.background)}],
-                footer: 'VALORANT LABS [SETTINGS]'
-            })],
-            components: [],
-            attachments: []
-        })
+        if(command) this.getGuild(interaction)
     },
     buildText: async function ({ctx, text, size, x, y, color, align, font, rotate} = {}) {
         ctx.font = `${size}px ${font ? font : "DinNext"}`

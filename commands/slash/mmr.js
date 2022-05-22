@@ -18,23 +18,27 @@ export async function execute({interaction, guilddata} = {}) {
     const mmrdb = await Utils.getDB("mmr").findOne({puuid: puuid.data.data.puuid})
     const mmr = mmrdb ? mmrdb : await Utils.axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${puuid.data.data.region}/${puuid.data.data.puuid}`).catch(error => {return error})
     if(mmr.response) return Utils.errorhandlerinteraction({interaction: interaction, status: mmr.response.status, type: "stats", lang: guilddata.lang})
-    const bgcanvas = guilddata.background ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background), "mmr") : null
-    Utils.getDB("mmr").insertOne({puuid: puuid.data.data.puuid, data: mmr.data, createdAt: new Date()})
-    const attachment = await Utils.buildMMRImage({mmrdata: mmr.data.data, bgcanvas})
-    return interaction.editReply({files: [attachment]})
-    /*const fields = []
-    for(let i = 0; Object.keys(mmr.data.data.by_season).length > i; i++) {
-        const cdata = {name: Object.keys(mmr.data.data.by_season)[i], value: Object.values(mmr.data.data.by_season)[i]}
-        if(cdata.value.error) fields.push({name: cdata.name, value: "```There is no data for that episode/act```"})
-        if(!cdata.value.error) fields.push({name: cdata.name, value: "```Wins: " + cdata.value.wins + "\nNumber of games: " + cdata.value.number_of_games + "\nWinrate: " + ((cdata.value.wins / cdata.value.number_of_games) * 100).toFixed(2) + "%\nFinal rank: " + cdata.value.final_rank_patched + "\nHighest rank: " + (cdata.value.act_rank_wins.filter(item => item.tier != 0)[0] != undefined ? cdata.value.act_rank_wins.filter(item => item.tier != 0)[0].patched_tier : "Unrated") + "\nLowest rank: " + (cdata.value.act_rank_wins.filter(item => item.tier != 0)[cdata.value.act_rank_wins.filter(item => item.tier != 0).length - 1] != undefined ? cdata.value.act_rank_wins.filter(item => item.tier != 0)[cdata.value.act_rank_wins.filter(item => item.tier != 0).length - 1].patched_tier : "Unrated") + "```", inline: true})
+    const bgcanvas = guilddata.background_mmr ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background_mmr), "mmr") : null
+    if(!mmrdb) await Utils.getDB("mmr").insertOne({puuid: puuid.data.data.puuid, data: mmr.data, createdAt: new Date()})
+    const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error)
+    const seasonscomponents = []
+    for(let i = 0; seasonsvalues.length > i; i++) {
+        const emoji = Utils.ranks[seasonsvalues[i][1].final_rank].discordid.substring(2, Utils.ranks[seasonsvalues[i][1].final_rank].discordid.length - 1).split(":")
+        seasonscomponents.push({
+            label: seasonsvalues[i][0],
+            value: seasonsvalues[i][0],
+            description: `${seasonsvalues[i][1].act_rank_wins[seasonsvalues[i][1].act_rank_wins.length - 1].patched_tier} - ${seasonsvalues[i][1].act_rank_wins[0].patched_tier}`,
+            emoji: {
+                name: emoji[0],
+                id: emoji[1]
+            }
+        })
     }
-    return interaction.editReply({
-        embeds: [Utils.embedBuilder({
-            title: `MMR: ${puuid.data.data.name}#${puuid.data.data.tag}`,
-            desc: `**Tier:** ${mmr.data.data.current_data.currenttier == 0 ? "Unrated" : mmr.data.data.current_data.currenttierpatched}\n**Progress in tier:** ${mmr.data.data.current_data.currenttier == 0 ? "0" : mmr.data.data.current_data.ranking_in_tier}\n**Last MMR Change:** ${mmr.data.data.current_data.currenttier == 0 ? "None" : mmr.data.data.current_data.mmr_change_to_last_game}\n**Elo:** ${mmr.data.data.current_data.currenttier == 0 ? "0" : mmr.data.data.current_data.elo}\n**Games needed for rating:** ${mmr.data.data.current_data.games_needed_for_rating}`,
-            additionalFields: fields,
-            footer: 'VALORANT LABS [MMR]'
-        })]
-    })*/
+    const attachment = await Utils.buildMMRImage({mmrdata: mmr.data.data, bgcanvas})
+    interaction.editReply({
+        files: [attachment], components: [{
+            type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"), components: [{type: Utils.EnumResolvers.resolveComponentType("SELECT_MENU"), customId: `mmr;${puuid.data.data.region};${puuid.data.data.puuid}`, maxValues: 1, minValues: 0, options: seasonscomponents, placeholder: Utils.translations[guilddata.lang].mmr.season_select}]
+        }]
+    })
 }
 export const name = "mmr"

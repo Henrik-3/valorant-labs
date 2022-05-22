@@ -1,6 +1,6 @@
 import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
-    const bgcanvas = guilddata.background ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background), "game") : null
+    const bgcanvas = guilddata.background_game ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background_game), "game") : null
     const image = await Utils.buildGameImage({id: interaction.options.getString("gamekey"), guilddata: guilddata})
     if(image.unknown) return interaction.editReply({
         embeds: [

@@ -140,7 +140,10 @@
             "no_link_title": "Keine Riot ID angegeben oder du kein verlinkter Account",
             "no_link_desc": "Hier sind alle verfügbaren Commands",
             "base": "Zeigt deine MMR Daten insofern du deinen Discord Account mit deinem Riot Account über den /link Befehl verknüpft hast",
-            "options": "Zeigt die MMR Daten des angegebenen Accounts"
+            "options": "Zeigt die MMR Daten des angegebenen Accounts",
+            "season_select": "Wähle eine Season aus",
+            "loading_title": "Bitte warten...",
+            "loading_desc": "Die MMR Daten der ausgewählten Season werden geladen, bitte warte einen Moment"
         },
         "settings": {
             "perms_title": "Keine Berechtigung",
@@ -338,15 +341,17 @@
             "no_link_title": "Keine Riot ID angegeben oder du kein verlinkter Account",
             "no_link_desc": "Hier sind alle verfügbaren Commands",
             "base": "Zeigt deine MMR Daten insofern du deinen Discord Account mit deinem Riot Account über den /link Befehl verknüpft hast",
-            "options": "Zeigt die MMR Daten des angegebenen Accounts"
+            "options": "Zeigt die MMR Daten des angegebenen Accounts",
+            "loading_title": "Bitte warten...",
+            "loading_desc": "Die MMR Daten der ausgewählten Season werden geladen, bitte warte einen Moment"
         },
         "settings": {
             "perms_title": "Keine Berechtigung",
             "perms_desc": "Dir fehlt die `Manage Guild` Berechtigung. Falls du denkst dies ist ein Fehler kontaktiere den Server Administrator",
             "imggeneration_title": "Bitte warte einen Moment",
-            "imggeneration_desc": "Die Beispielbilder mit dem angegebenen Bild werden generiert, bitte warte einen Moment. Du kannst im Anschluss auswählen ob die Konfiguration gespeichert werden soll oder nicht.",
-            "imggenerated_title": "Bilder erfolgreich generiert",
-            "imggenerated_desc": "Hier siehst du die fertigen Bilder so wie sie beim Benutzen des Befehles aussehen würden. Sollten die Bilder wie in deiner Vorstellung aussehen, klicke unten auf den grünen Knopf. Sollten die Bilder nicht so aussehen wie du es möchtest, klicke auf den Roten Knopf und lade ein anderes Bild hoch",
+            "imggeneration_desc": "Das Beispielbild mit dem angegebenen Bild für den ausgewählten Bildtyp wird generiert, bitte warte einen Moment. Du kannst im Anschluss auswählen ob die Konfiguration gespeichert werden soll oder nicht.",
+            "imggenerated_title": "Bild erfolgreich generiert",
+            "imggenerated_desc": "Hier siehst du das fertige Bild so wie sie beim Benutzen des Befehles aussehen würde. Sollten das Bild wie in deiner Vorstellung aussehen, klicke unten auf den grünen Knopf. Sollten das Bild nicht so aussehen wie du es möchtest, klicke auf den Roten Knopf und lade ein anderes Bild hoch",
             "imggenerated_label_accept": "Speichern",
             "imggenerated_label_deny": "Abbrechen"
         },

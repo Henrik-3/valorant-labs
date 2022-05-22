@@ -26,7 +26,7 @@ export async function execute({message, guilddata, args} = {}) {
     if(matchlist.response) return Utils.errorhandler({type: "matchlist", status: matchlist.response.status, message: message, lang: guilddata.lang})
     const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update)
 
-    const bgcanvas = guilddata.background ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background), "stats") : null
+    const bgcanvas = guilddata.background_stats ? await Utils.buildBackground(Utils.getCustomBackground(guilddata.background_stats), "stats") : null
     const attachment = await Utils.buildStatsImage({dbstats, agent, modes, bgcanvas})
     if(!missingmatches.length) {
         for(let i = 0; dbstats.matches.length > i; i++) {
