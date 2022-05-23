@@ -31,11 +31,13 @@ client.scommands = new Collection()
 client.buttoncommands = new Collection()
 client.selectcommands = new Collection()
 client.modals = new Collection()
+client.context = new Collection()
 const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
 const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
 const buttoncommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
 const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'))
 const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'))
+const contextcommands = readdirSync('./commands/context').filter(file => file.endsWith('.js'))
 
 for(let i = 0; normalcommands.length > i; i++) {
     const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
@@ -57,6 +59,10 @@ for(let i = 0; selectcommands.length > i; i++) {
 for(let i = 0; modalcommands.length > i; i++) {
     const cmd = await import(`./commands/modals/${modalcommands[i]}?update=${Date.now()}`)
     client.modals.set(cmd.name, cmd)
+}
+for(let i = 0; contextcommands.length > i; i++) {
+    const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`)
+    client.context.set(cmd.name, cmd)
 }
 
 client.on("ready", async () => {
@@ -89,7 +95,7 @@ client.on("ready", async () => {
 
 client.on("guildCreate", async g => {
     const updatedGuild = await Utils.guildSettings(g)
-    const channels = g.channels.cache.filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has('SEND_MESSAGES')).sort((a, b) => a.position - b.position)
+    const channels = g.channels.cache.filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has(Utils.perms.SendMessages)).sort((a, b) => a.position - b.position)
     if(channels[0]) {
         channels[0].send({
             embeds: [Utils.embedBuilder({
@@ -113,11 +119,13 @@ client.on("guildCreate", async g => {
 client.on("interactionCreate", async interaction => {
     const guilddata = await Utils.guildSettings(interaction.guild)
     const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guild) : null
-    if(!interaction.isCommand()) {
-        const args = interaction.customId.split(";")
+    console.log(!interaction.isCommand())
+    if(!interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
+        const args = interaction.customId?.split(";")
         if(interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata})
         if(interaction.isModalSubmit()) return client.modals.get(args[0]).execute({interaction, args, guilddata})
         if(interaction.isSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata})
+        if(interaction.isMessageContextMenuCommand()) return client.context.get(interaction.commandId).execute({interaction, args, guilddata})
     }
     if(interaction.commandName == "shard-restart") {
         client.shard.send(`restart-${interaction.options.get("shard").value}`)
@@ -156,6 +164,7 @@ client.on("messageCreate", async message => {
         const buttoncommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'))
         const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'))
         const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'))
+        const contextcommands = readdirSync('./commands/context').filter(file => file.endsWith('.js'))
         for(let i = 0; normalcommand.length > i; i++) {
             normalcommand[i] = path.join("file:///", __dirname, `/commands/normal/${normalcommand[i]}?update=${Date.now()}`)
         }
@@ -171,8 +180,10 @@ client.on("messageCreate", async message => {
         for(let i = 0; modalcommands.length > i; i++) {
             modalcommands[i] = path.join("file:///", __dirname, `./commands/modals/${modalcommands[i]}?update=${Date.now()}`)
         }
-        console.log(normalcommand, slashcommands, buttoncommands, selectcommands, modalcommands)
-        await client.shard.broadcastEval(async (c, {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands}) => {
+        for(let i = 0; contextcommands.length > i; i++) {
+            contextcommands[i] = path.join("file:///", __dirname, `./commands/context/${contextcommands[i]}?update=${Date.now()}`)
+        }
+        await client.shard.broadcastEval(async (c, {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands, contextcommands}) => {
             c.ncommands.sweep(() => true)
             c.buttoncommands.sweep(() => true)
             c.scommands.sweep(() => true)
@@ -198,7 +209,11 @@ client.on("messageCreate", async message => {
                 const cmd = await import(modalcommands[i]);
                 c.modals.set(cmd.name, cmd)
             }
-        }, {context: {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands}})
+            for(let i = 0; contextcommands.length > i; i++) {
+                const cmd = await import(contextcommands[i]);
+                c.context.set(cmd.name, cmd)
+            }
+        }, {context: {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands, contextcommands}})
         return message.reply({content: "Reloaded"})
     }
     const guilddata = await Utils.guildSettings(message.guild)

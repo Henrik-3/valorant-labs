@@ -49,6 +49,7 @@ export default {
     moment,
     canvas: Canvas,
     attachment: Attachment,
+    roles: ["iron", "bronze", "silver", "gold", "platinum", "diamond", "immortal", "radiant"],
     clusters: {
         na: {
             status: "https://api.henrikdev.xyz/valorant/v1/status/na",
@@ -418,7 +419,7 @@ export default {
         return mongoclient.db("VALORANT-LABS").collection(name)
     },
     guildSettings: async function (guild) {
-        return (await this.getDB("settings").findOneAndUpdate({gid: guild.id}, {$setOnInsert: {news: false, onews: false, serverstatus: false, lang: this.locales[guild.preferredLocale] ? this.locales[guild.preferredLocale] : "en-us", blacklist: false, prefix: "v?", background: false}}, {upsert: true, returnDocument: "after"})).value
+        return (await this.getDB("settings").findOneAndUpdate({gid: guild.id}, {$setOnInsert: {news: false, onews: false, serverstatus: false, lang: this.locales[guild.preferredLocale] ? this.locales[guild.preferredLocale] : "en-us", blacklist: false, prefix: "v?", background_stats: false, background_game: false, background_mmr: false, autoroles: []}}, {upsert: true, returnDocument: "after"})).value
     },
     guildBlacklist: async function (guild) {
         const request = await this.getDB("blacklist").findOne({gid: guild.id})
@@ -975,9 +976,29 @@ export default {
             attachments: []
         })
     },
-    patchGuild: async function ({interaction, key, value, additionaldata} = {}) {
+    getAutoRoles: async function (interaction, guilddata) {
+        const settings = guilddata ? guilddata : await this.guildSettings(interaction.guild)
+        const formattedarray = settings.autoroles.map(item => {
+            return {
+                name: this.firstletter(item.name),
+                value: `<@&${item.id}>`
+            }
+        })
+        return interaction.editReply({
+            embeds: [
+                this.embedBuilder({
+                    title: "VALORANT LABS Auto Role System",
+                    desc: `Auto Role System Settings for ${interaction.guild.name}`,
+                    additionalFields: formattedarray,
+                    footer: 'VALORANT LABS [AUTO ROLE]'
+                })
+            ],
+            components: [],
+            attachments: []
+        })
+    },
+    patchGuild: async function ({interaction, key, value, additionaldata, guilddata} = {}) {
         let doc
-        let command = true
         switch(key) {
             case "prefix": {
                 doc = (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: {prefix: value}}, {upsert: false, returnDocument: "after"})).value
@@ -1007,9 +1028,8 @@ export default {
                 if(value == false) {
                     doc = (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: {background: value}}, {upsert: false, returnDocument: "before"})).value
                     unlinkSync(`./settings/backgrounds/${doc.background}.png`)
-                    doc.background = "false"
+                    doc.background = false
                 } else {
-                    command = false
                     doc = await this.getDB("settings").findOne({gid: interaction.guild.id})
                     await interaction.editReply({
                         embeds: [
@@ -1059,7 +1079,6 @@ export default {
             case "_background": {
                 const background = await this.axios.get(interaction.message.embeds[0].footer.text, {responseType: "arraybuffer"}).catch(error => {return error})
                 if(background.response) {
-                    command = false
                     doc = await this.getDB("settings").findOne({gid: interaction.guild.id})
                     return interaction.editReply({
                         embeds: [
@@ -1077,8 +1096,16 @@ export default {
                 if(additionaldata == "mmr") doc = (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: {background_mmr: value}}, {upsert: false, returnDocument: "after"})).value
                 break
             }
+            case "autoroles": {
+                const autoroleupdate = {}
+                autoroleupdate[`autoroles.${guilddata.autoroles?.findIndex(item => item.name == value)}`] = {id: additionaldata, name: value}
+                doc = guilddata.autoroles?.some(item => item.name == value)
+                    ? (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$set: autoroleupdate}, {upsert: false, returnDocument: "after"})).value
+                    : (await this.getDB("settings").findOneAndUpdate({gid: interaction.guild.id}, {$push: {autoroles: {id: additionaldata, name: value}}}, {upsert: false, returnDocument: "after"})).value
+                return this.getAutoRoles(interaction)
+            }
         }
-        if(command) this.getGuild(interaction)
+        this.getGuild(interaction)
     },
     buildText: async function ({ctx, text, size, x, y, color, align, font, rotate} = {}) {
         ctx.font = `${size}px ${font ? font : "DinNext"}`
@@ -1092,5 +1119,8 @@ export default {
         } else {
             ctx.fillText(text, x, y)
         }
+    },
+    firstletter: function (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1)
     }
 }

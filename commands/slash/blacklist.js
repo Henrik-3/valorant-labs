@@ -1,7 +1,7 @@
 import Utils from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     if(guilddata.blacklist) return interaction.editReply({embeds: [Utils.embedBuilder({title: Utils.translations[guilddata.lang].blacklist.blacklistinactive_title, desc: Utils.translations[guilddata.lang].blacklist.blacklistinactive_desc, footer: 'VALORANT LABS [SETTINGS]'})]})
-    if(!interaction.member.permissions.has("MANAGE_GUILD")) return interaction.editReply({embeds: [Utils.embedBuilder({title: Utils.translations[guilddata.lang].blacklist.blacklistperms_title, desc: Utils.translations[guilddata.lang].blacklist.blacklistperms_desc, footer: 'VALORANT LABS [SETTINGS]'})]})
+    if(!interaction.member.permissions.has(Utils.perms.ManageGuild)) return interaction.editReply({embeds: [Utils.embedBuilder({title: Utils.translations[guilddata.lang].blacklist.blacklistperms_title, desc: Utils.translations[guilddata.lang].blacklist.blacklistperms_desc, footer: 'VALORANT LABS [SETTINGS]'})]})
     switch(interaction.options._subcommand) {
         case "get": {
             const cchannel = await Utils.getBlacklist(interaction.guildId)
