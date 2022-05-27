@@ -57,10 +57,6 @@ fastify.get("/", async (req, res) => {
     res.type("text/html").send(usage)
 })
 
-fastify.addHook("onRequest", async (req, res) => {
-    res.headers({"content-type": "application/json"})
-})
-
 fastify.get("/v1/guild-available/:guild", async (req, res) => {
     /*const gcheck = await manager.broadcastEval((client, {guild}) => {
         try {
