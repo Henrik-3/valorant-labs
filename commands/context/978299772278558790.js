@@ -1,65 +1,66 @@
-import Utils from "../../methods.js"
+import {embedBuilder, translations, ComponentType, TextInputStyle, perms} from "../../methods.js"
 export async function execute({interaction, args, guilddata} = {}) {
-    if(interaction.targetMessage.author.id != interaction.client.id || interaction.targetMessage.embeds[0]?.footer.text != "VALORANT LABS [AUTOROLE SYSTEM]") return interaction.reply({
+    console.log(interaction.targetMessage.author.id)
+    if(interaction.targetMessage.author.id != interaction.client.id && interaction.targetMessage.embeds[0]?.footer.text != "VALORANT LABS [AUTOROLE SYSTEM]") return interaction.reply({
         embeds: [
-            Utils.embedBuilder({
-                title: Utils.translations[guilddata.lang].autorole.message_edit_error_title,
-                desc: Utils.translations[guilddata.lang].autorole.message_edit_error_desc,
+            embedBuilder({
+                title: translations[guilddata.lang].autorole.message_edit_error_title,
+                desc: translations[guilddata.lang].autorole.message_edit_error_desc,
                 footer: "VALORANT LABS [NO AUTOROLE MESSAGE]"
             })
         ],
         ephemeral: true
     })
-    if(!interaction.member.permissions.has(Utils.perms.ManageGuild)) return interaction.reply({
+    if(!interaction.member.permissions.has(perms.ManageGuild)) return interaction.reply({
         embeds: [
-            Utils.embedBuilder({
-                title: Utils.translations[guilddata.lang].blacklist.blacklistperms_title,
-                desc: Utils.translations[guilddata.lang].blacklist.blacklistperms_desc,
+            embedBuilder({
+                title: translations[guilddata.lang].blacklist.blacklistperms_title,
+                desc: translations[guilddata.lang].blacklist.blacklistperms_desc,
                 footer: "VALORANT LABS [NO PERMISSION]"
             })
         ],
         ephemeral: true
     })
     interaction.showModal({
-        title: Utils.translations[guilddata.lang].autorole.modal_edit_title,
-        customId: `editautorole;${interaction.channelId};${interaction.targetMesage.id}`,
+        title: translations[guilddata.lang].autorole.modal_edit_title,
+        customId: `editautorole;${interaction.channelId};${interaction.targetMessage.id}`,
         components: [
             {
-                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
+                type: ComponentType.ActionRow,
                 components: [
                     {
-                        type: 4,
+                        type: ComponentType.TextInput,
                         customId: "title",
-                        style: 1, //Short,
-                        label: Utils.translations[guilddata.lang].autorole.modal_title,
+                        style: TextInputStyle.Short,
+                        label: translations[guilddata.lang].autorole.modal_title,
                         required: false,
-                        value: interaction.targetMesage.embeds[0].title
+                        value: interaction.targetMessage.embeds[0].title
                     },
                 ]
             },
             {
-                type: EnumResolvers.resolveComponentType("ACTION_ROW"),
+                type: ComponentType.ActionRow,
                 components: [
                     {
-                        type: 4,
+                        type: ComponentType.TextInput,
                         customId: "desc",
-                        style: 2, //Long,
-                        label: Utils.translations[guilddata.lang].autorole.modal_desc,
+                        style: TextInputStyle.Paragraph,
+                        label: translations[guilddata.lang].autorole.modal_desc,
                         required: false,
-                        value: interaction.targetMesage.embeds[0].description
+                        value: interaction.targetMessage.embeds[0].description
                     },
                 ]
             },
             {
-                type: EnumResolvers.resolveComponentType("ACTION_ROW"),
+                type: ComponentType.ActionRow,
                 components: [
                     {
-                        type: 4,
+                        type: ComponentType.TextInput,
                         customId: "color",
-                        style: 1, //Long,
-                        label: Utils.translations[guilddata.lang].autorole.modal_color,
+                        style: TextInputStyle.Short,
+                        label: translations[guilddata.lang].autorole.modal_color,
                         required: false,
-                        placeholder: "#ff4654"
+                        placeholder: "#ff4654",
                     }
                 ]
             },

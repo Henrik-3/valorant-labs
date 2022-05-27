@@ -1,6 +1,6 @@
 import {Client, GatewayIntentBits, Collection, Options} from "discord.js.dev"
 import {readFileSync, readdirSync, writeFileSync} from "fs"
-import Utils from "./methods.js"
+import {perms, embedBuilder, guildBlacklist, guildSettings, translations, ActivityType} from "./methods.js"
 import path from "path"
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
@@ -84,31 +84,31 @@ client.on("ready", async () => {
     process.on("message", async message => {
         if(message == "startup") {
             guildsize = await client.shard.fetchClientValues('guilds.cache.size')
-            client.user.setPresence({activities: [{name: `VALORANT | ${guildsize.reduce((prev, val) => prev + val, 0)} Servers | Shard: ${client.shard.ids[0]} | /help`, type: "COMPETING"}], status: 'online'})
+            client.user.setPresence({activities: [{name: `VALORANT | ${guildsize.reduce((prev, val) => prev + val, 0)} Servers | Shard: ${client.shard.ids[0]} | /help`, type: ActivityType.Competing}], status: 'online'})
         }
     })
     setInterval(async () => {
         guildsize = await client.shard.fetchClientValues('guilds.cache.size')
-        client.user.setPresence({activities: [{name: `VALORANT | ${guildsize.reduce((prev, val) => prev + val, 0)} Servers | Shard: ${client.shard.ids[0]} | /help`, type: "COMPETING"}], status: 'online'})
+        client.user.setPresence({activities: [{name: `VALORANT | ${guildsize.reduce((prev, val) => prev + val, 0)} Servers | Shard: ${client.shard.ids[0]} | /help`, type: ActivityType.Competing}], status: 'online'})
     }, 300000)
 })
 
 client.on("guildCreate", async g => {
-    const updatedGuild = await Utils.guildSettings(g)
-    const channels = g.channels.cache.filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has(Utils.perms.SendMessages)).sort((a, b) => a.position - b.position)
+    const updatedGuild = await guildSettings(g)
+    const channels = g.channels.cache.filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has(perms.SendMessages)).sort((a, b) => a.position - b.position)
     if(channels[0]) {
         channels[0].send({
-            embeds: [Utils.embedBuilder({
+            embeds: [embedBuilder({
                 title: 'Language Selection',
                 desc: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
                 footer: "VALORANT LABS [SERVER JOINED]"
             })],
             components: [{
-                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
+                type: ComponentType.ActionRow,
                 components: [{
-                    type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
+                    type: ComponentType.Button,
                     url: "https://discord.gg/b5FmTqG",
-                    style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
+                    style: ButtonStyle.Link,
                     label: "Support Server"
                 }]
             }]
@@ -117,9 +117,8 @@ client.on("guildCreate", async g => {
 })
 
 client.on("interactionCreate", async interaction => {
-    const guilddata = await Utils.guildSettings(interaction.guild)
-    const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guild) : null
-    console.log(!interaction.isCommand())
+    const guilddata = await guildSettings(interaction.guild)
+    const blacklist = guilddata.blacklist ? await guildBlacklist(interaction.guild) : null
     if(!interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(";")
         if(interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata})
@@ -136,28 +135,27 @@ client.on("interactionCreate", async interaction => {
     writeFileSync('./api.json', JSON.stringify(api, null, 2))
     if(!client.scommands.has(interaction.commandName)) {
         return interaction.editReply({
-            embeds: [Utils.embedBuilder({
-                title: Utils.translations[guilddata.lang].errors.cmdundefined_title,
-                desc: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
+            embeds: [embedBuilder({
+                title: translations[guilddata.lang].errors.cmdundefined_title,
+                desc: translations[guilddata.lang].errors.cmdundefined_desc,
                 footer: "VALORANT LABS [COMMAND UNKNOWN]"
             })],
             components: [{
-                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
+                type: ComponentType.ActionRow,
                 components: [{
-                    type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
-                    url: Utils.translations[guilddata.lang].cmdurl,
-                    style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
-                    label: Utils.translations[guilddata.lang].cmd
+                    type: ComponentType.Button,
+                    url: translations[guilddata.lang].cmdurl,
+                    style: ButtonStyle.Link,
+                    label: translations[guilddata.lang].cmd
                 }]
             }]
         })
     }
-    if(!["feedback"].some(item => item == interaction.commandName)) await interaction.deferReply({ephemeral: blacklist && blacklist.includes(`<#${interaction.channelId}>`) ? true : false}).catch(error => {console.log(error)})
+    if(!["feedback"].some(item => item == interaction.commandName)) await interaction.deferReply({ephemeral: (blacklist && blacklist.includes(`<#${interaction.channelId}>`) || ["autoroles", "blacklist", "settings"].some(item => item == interaction.commandName)) ? true : false}).catch(error => {console.log(error)})
     client.scommands.get(interaction.commandName).execute({interaction: interaction, guilddata: guilddata})
 })
 
 client.on("messageCreate", async message => {
-    console.log(message)
     if(message.author.id == "346345363990380546" && message.content == "/reload" && message.channel.parent == "732290187090067476") {
         const normalcommand = readdirSync('./commands/normal').filter(file => file.endsWith('.js'))
         const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'))
@@ -216,17 +214,17 @@ client.on("messageCreate", async message => {
         }, {context: {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands, contextcommands}})
         return message.reply({content: "Reloaded"})
     }
-    const guilddata = await Utils.guildSettings(message.guild)
+    const guilddata = await guildSettings(message.guild)
     console.log(guilddata)
     if(!message.content.startsWith(guilddata.prefix)) return
-    const blacklist = guilddata.blacklist ? await Utils.guildBlacklist(interaction.guild) : null
+    const blacklist = guilddata.blacklist ? await guildBlacklist(interaction.guild) : null
     const args = message.content.substring(guilddata.prefix.length).split(' ')
     const cmd = args.shift()
     if(blacklist && blacklist.includes(`<#${message.channelId}>`)) {
         return message.reply({
-            embeds: [Utils.embedBuilder({
-                title: Utils.translations[guilddata.lang].errors.cmdblacklist_title,
-                desc: Utils.translations[guilddata.lang].errors.cmdblacklist_desc,
+            embeds: [embedBuilder({
+                title: translations[guilddata.lang].errors.cmdblacklist_title,
+                desc: translations[guilddata.lang].errors.cmdblacklist_desc,
                 footer: "VALORANT LABS [BLACKLIST]"
             })]
         }).then(msg => {
@@ -241,23 +239,23 @@ client.on("messageCreate", async message => {
     console.log(client.ncommands, client.ncommands.has(cmd), cmd)
     if(!client.ncommands.has(cmd)) {
         return message.reply({
-            embeds: [Utils.embedBuilder({
-                title: Utils.translations[guilddata.lang].errors.cmdundefined_title,
-                desc: Utils.translations[guilddata.lang].errors.cmdundefined_desc,
+            embeds: [embedBuilder({
+                title: translations[guilddata.lang].errors.cmdundefined_title,
+                desc: translations[guilddata.lang].errors.cmdundefined_desc,
                 footer: "VALORANT LABS [COMMAND UNKNOWN]"
             })],
             components: [{
-                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
+                type: ComponentType.ActionRow,
                 components: [{
-                    type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
-                    url: Utils.translations[guilddata.lang].cmdurl,
-                    style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
-                    label: Utils.translations[guilddata.lang].cmd
+                    type: ComponentType.Button,
+                    url: translations[guilddata.lang].cmdurl,
+                    style: ButtonStyle.Link,
+                    label: translations[guilddata.lang].cmd
                 }]
             }]
         })
     }
-    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [Utils.embedBuilder({title: Utils.translations[guilddata.lang].errors.deprecation_title, desc: Utils.translations[guilddata.lang].errors.deprecation_desc, footer: "VALORANT LABS [DEPRECATED]"})]})
+    if(!["help", "stats"].some(item => item == cmd)) return message.reply({embeds: [embedBuilder({title: translations[guilddata.lang].errors.deprecation_title, desc: translations[guilddata.lang].errors.deprecation_desc, footer: "VALORANT LABS [DEPRECATED]"})]})
     client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata})
 })
 

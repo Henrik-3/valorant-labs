@@ -1,19 +1,19 @@
-import Utils from "../../methods.js"
+import {embedBuilder, translations, ComponentType, ButtonStyle} from "../../methods.js"
 export async function execute({message, guilddata} = {}) {
     return message.reply({
-        embeds: [Utils.embedBuilder({
-            title: Utils.translations[guilddata.lang].help_title,
-            desc: Utils.translations[guilddata.lang].help_desc,
+        embeds: [embedBuilder({
+            title: translations[guilddata.lang].help_title,
+            desc: translations[guilddata.lang].help_desc,
             image: "https://valorantlabs.xyz/css/valorant-logo.png",
             footer: 'VALORANT LABS [HELP]'
         })],
         components: [{
-            type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
+            type: ComponentType.ActionRow,
             components: [{
-                type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
-                url: Utils.translations[guilddata.lang].cmdurl,
-                style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
-                label: Utils.translations[guilddata.lang].cmd
+                type: ComponentType.Button,
+                url: translations[guilddata.lang].cmdurl,
+                style: ButtonStyle.Link,
+                label: translations[guilddata.lang].cmd
             }]
         }]
     })

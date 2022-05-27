@@ -1,19 +1,19 @@
-import Utils from "../../methods.js"
+import {translations, ComponentType, TextInputStyle} from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     interaction.showModal({
-        title: Utils.translations[guilddata.lang].feedback.title,
+        title: translations[guilddata.lang].feedback.title,
         customId: `feedback;${interaction.user.id}`,
         components: [
             {
-                type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
+                type: ComponentType.ActionRow,
                 components: [
                     {
-                        type: 4,
+                        type: ComponentType.TextInput,
                         customId: "feedback",
-                        style: 2, //Long,
-                        label: Utils.translations[guilddata.lang].feedback.label,
+                        style: TextInputStyle.Paragraph,
+                        label: translations[guilddata.lang].feedback.label,
                         required: true,
-                        placeholder: Utils.translations[guilddata.lang].feedback.placeholder
+                        placeholder: translations[guilddata.lang].feedback.placeholder
                     },
                 ]
             },

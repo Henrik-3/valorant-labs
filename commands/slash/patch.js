@@ -1,17 +1,19 @@
-import Utils from "../../methods.js"
+import {ComponentType, ButtonStyle, axios, translations, errorhandlerinteraction, embedBuilder} from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
-    const website = await Utils.axios.get(Utils.translations[guilddata.lang].patchurl).catch(error => {return error})
+    const website = await axios.get(translations[guilddata.lang].patchurl).catch(error => {return error})
+    if(website.response) return errorhandlerinteraction({interaction, status: website.response.status, type: "patch", lang: guilddata.lang})
     interaction.editReply({
-        embeds: [Utils.embedBuilder({
+        embeds: [embedBuilder({
             title: website.data.data[0].title,
             image: website.data.data[0].banner_url,
             footer: "VALORANT LABS [PATCH NOTES]",
+            url: website.data.data[0].url
         })],
         components: [{
-            type: Utils.EnumResolvers.resolveComponentType("ACTION_ROW"),
+            type: ComponentType.ActionRow,
             components: [{
-                type: Utils.EnumResolvers.resolveComponentType("BUTTON"),
-                style: Utils.EnumResolvers.resolveButtonStyle("LINK"),
+                type: ComponentType.Button,
+                style: ButtonStyle.Link,
                 url: website.data.data[0].url,
                 label: website.data.data[0].title
             }]
