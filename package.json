@@ -1,6 +1,6 @@
 {
     "name": "valorant-labs-v4",
-    "version": "4.1.0.beta.1",
+    "version": "4.1.0.beta.2",
     "description": "Advanced VALORANT Bot (Current State: Beta Build)",
     "main": "shard.js",
     "type": "module",

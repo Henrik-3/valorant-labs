@@ -1,28 +1,26 @@
-import {ComponentType, ButtonStyle, moment, getAgents, getDB, getGamemodes, getStatsDB, errorhandlerinteraction, gamemodes, axios, embedBuilder, translations, riottoken, buildBackground, getCustomBackground, patchStats, buildStatsImage} from "../../methods.js"
+import {ComponentType, ButtonStyle, moment, getAgents, getLink, getGamemodes, getStatsDB, errorhandlerinteraction, gamemodes, axios, embedBuilder, translations, riottoken, buildBackground, getCustomBackground, patchStats, buildStatsImage} from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
-    const link = await getDB("linkv2").findOne({userid: interaction.user.id})
+    const link = await getLink({user: interaction.user})
     const agent = getAgents()
     const modes = getGamemodes()
     const components = []
     let dbstats;
     let matchlist
-    console.time()
+    if(link && link.error) return errorhandlerinteraction({interaction, status: link.error, lang: guilddata.lang, type: "account"})
     if(link && !interaction.options.get("riot-id")) {
-        dbstats = await getStatsDB({name: link.ingamename, tag: link.ingametag})
-        console.timeLog()
+        dbstats = await getStatsDB({name: link.name, tag: link.tag})
         if(dbstats.status != 200) return errorhandlerinteraction({status: dbstats.status, lang: guilddata.lang, type: "account", puuid: dbstats.puuid, name: dbstats.name, tag: dbstats.tag, interaction: interaction})
         matchlist = dbstats.type == "official" ? await axios.get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${dbstats.puuid}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error}) : await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/matches/${dbstats.region}/${dbstats.ingamepuuid}`).catch(error => {return error})
     }
-    if(!link && interaction.options.get("riot-id")) {
+    if((!link && interaction.options.get("riot-id")) || (link && interaction.options.get("riot-id"))) {
         if(!interaction.options.get("riot-id").value.includes("#")) return interaction.editReply({embeds: [embedBuilder({title: translations[guilddata.lang].stats.invalidriotid_title, desc: translations[guilddata.lang].stats.invalidriotid_desc, footer: "VALORANT LABS [INVALID RIOT ID]"})]})//TODO
         dbstats = await getStatsDB({name: interaction.options.get("riot-id").value.split("#")[0], tag: interaction.options.get("riot-id").value.split("#")[1]})
-        console.timeLog()
         if(dbstats.status != 200) return errorhandlerinteraction({status: dbstats.status, lang: guilddata.lang, type: "account", puuid: dbstats.puuid, name: dbstats.name, tag: dbstats.tag, interaction: interaction})
         matchlist = dbstats.type == "official" ? await axios.get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${dbstats.puuid}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error}) : await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/matches/${dbstats.region}/${dbstats.ingamepuuid}`).catch(error => {return error})
     }
     if(!link && !interaction.options.get("riot-id")) return interaction.editReply({embeds: [embedBuilder({title: translations[guilddata.lang].stats.noriotid_title, desc: translations[guilddata.lang].stats.noriotid_desc, footer: "VALORANT LABS [NO RIOT ID]"})]})
-    console.timeLog()
 
+    console.log(matchlist.response)
     if(matchlist.response) return errorhandlerinteraction({type: "matchlist", status: matchlist.response.status, interaction: interaction, lang: guilddata.lang})
     const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update)
 

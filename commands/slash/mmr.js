@@ -1,4 +1,4 @@
-import {ComponentType, ButtonStyle, getDB, axios, errorhandlerinteraction, embedBuilder, translations, topgg, buildBackground, getCustomBackground, ranks, buildMMRImage} from "../../methods.js"
+import {ComponentType, ButtonStyle, getDB, getLink, axios, errorhandlerinteraction, embedBuilder, translations, topgg, buildBackground, getCustomBackground, ranks, buildMMRImage} from "../../methods.js"
 export async function execute({interaction, guilddata} = {}) {
     const dbcheck = await getDB("topggvote").findOne({userid: interaction.user.id})
     if(!dbcheck) {
@@ -11,10 +11,10 @@ export async function execute({interaction, guilddata} = {}) {
         if(topggvote.data.voted != 1) return interaction.editReply({embeds: [embedBuilder({title: translations[guilddata.lang].mmr.not_voted_title, desc: translations[guilddata.lang].mmr.not_voted_desc, footer: 'VALORANT LABS [MMR NOT VOTED]'})], components: [{type: 1, components: [{type: 2, url: "https://top.gg/bot/702201518329430117/vote", style: 5, label: "top.gg"}]}]})
         await getDB("topggvote").insertOne({userid: interaction.user.id, createdAt: new Date()})
     }
-    const link = await getDB("linkv2").findOne({userid: interaction.user.id})
+    const link = await getLink({user: interaction.user})
     if(!link && !interaction.options.get("riot-id")) return interaction.editReply({embeds: [embedBuilder({title: translations[guilddata.lang].mmr.no_link_title, desc: translations[guilddata.lang].mmr.no_link_desc, additionalFields: [{name: `/mmr`, value: translations[guilddata.lang].mmr.base}, {name: `/mmr riot-id`, value: translations[guilddata.lang].mmr.options}], footer: 'VALORANT LABS [MMR TOP.GG ERROR]'})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[guilddata.lang].support, style: ButtonStyle.Link, url: "https://discord.gg/Zr5eF5D"}]}]})
-    const account_details = link ? link : {ingamename: interaction.options.get("riot-id").value.split("#")[0], ingametag: interaction.options.get("riot-id").value.split("#")[1]}
-    const puuid = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${account_details.ingamename}/${account_details.ingametag}?asia=true`).catch(error => {return error})
+    const account_details = link ? link : {name: interaction.options.get("riot-id").value.split("#")[0], tag: interaction.options.get("riot-id").value.split("#")[1]}
+    const puuid = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${account_details.name}/${account_details.tag}?asia=true`).catch(error => {return error})
     if(puuid.response) return errorhandlerinteraction({interaction: interaction, status: puuid.response.status, type: "account", lang: guilddata.lang})
     const mmrdb = await getDB("mmr").findOne({puuid: puuid.data.data.puuid})
     const mmr = mmrdb ? mmrdb : await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${puuid.data.data.region}/${puuid.data.data.puuid}`).catch(error => {return error})

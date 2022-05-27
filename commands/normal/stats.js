@@ -1,27 +1,25 @@
-import {patchStats, getAgents, getGamemodes, getStatsDB, errorhandler, axios, embedBuilder, gamemodes, buildBackground, getCustomBackground, translations, buildStatsImage, riottoken} from "../../methods.js"
+import {patchStats, ComponentType, getLink, ButtonStyle, getAgents, getGamemodes, getStatsDB, errorhandler, axios, moment, getDB, embedBuilder, gamemodes, buildBackground, getCustomBackground, translations, buildStatsImage, riottoken} from "../../methods.js"
 export async function execute({message, guilddata, args} = {}) {
-    const link = await getDB("linkv2").findOne({userid: message.author.id})
+    const link = await getLink({user: message.author})
     const agent = getAgents()
     const modes = getGamemodes()
     const components = []
     let dbstats;
     let matchlist
-    console.time()
+    if(link && link.error) return errorhandler({message, status: link.error, lang: guilddata.lang, type: "account"})
     if(link && !args.length) {
-        dbstats = await getStatsDB({name: link.ingamename, tag: link.ingametag})
-        console.timeLog()
+        dbstats = await getStatsDB({name: link.name, tag: link.tag})
         if(dbstats.status != 200) return errorhandler({status: dbstats.status, lang: guilddata.lang, type: "account", puuid: dbstats.puuid, name: dbstats.name, tag: dbstats.tag, message})
         matchlist = dbstats.type == "official" ? await axios.get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${dbstats.puuid}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error}) : await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/matches/${dbstats.region}/${dbstats.ingamepuuid}`).catch(error => {return error})
     }
-    if(!link && args.length) {
-        if(!args.some(item => item.includes("#"))) return interaction.editReply({embeds: [embedBuilder({title: translations[guilddata.lang].stats.invalidriotid_title, desc: Uts.translations[guilddata.lang].stats.invalidriotid_desc, footer: "VALORANT LABS [INVALID RIOT ID]"})]})//TODO
-        dbstats = await getStatsDB({name: args[0].split("#")[0], tag: args[0].split("#")[1]})
-        console.timeLog()
+    if((!link && args.length) || (link && args.length)) {
+        if(!message.content.includes("#")) return message.reply({embeds: [embedBuilder({title: translations[guilddata.lang].stats.invalidriotid_title, desc: Uts.translations[guilddata.lang].stats.invalidriotid_desc, footer: "VALORANT LABS [INVALID RIOT ID]"})]})//TODO
+        const name = message.content.substr(guilddata.prefix.length + 6).split("#")
+        dbstats = await getStatsDB({name: name[0], tag: name[1]})
         if(dbstats.status != 200) return errorhandler({status: dbstats.status, lang: guilddata.lang, type: "account", puuid: dbstats.puuid, name: dbstats.name, tag: dbstats.tag, message})
         matchlist = dbstats.type == "official" ? await axios.get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${dbstats.puuid}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error}) : await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/matches/${dbstats.region}/${dbstats.ingamepuuid}`).catch(error => {return error})
     }
-    if(!link && !args.length) return interaction.editReply({embeds: [embedBuilder({title: translations[guilddata.lang].stats.noriotid_title, desc: translations[guilddata.lang].stats.noriotid_desc, footer: "VALORANT LABS [NO RIOT ID]"})]})
-    console.timeLog()
+    if(!link && !args.length) return message.reply({embeds: [embedBuilder({title: translations[guilddata.lang].stats.noriotid_title, desc: translations[guilddata.lang].stats.noriotid_desc, footer: "VALORANT LABS [NO RIOT ID]"})]})
 
     if(matchlist.response) return errorhandler({type: "matchlist", status: matchlist.response.status, message, lang: guilddata.lang})
     const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update)
@@ -44,6 +42,6 @@ export async function execute({message, guilddata, args} = {}) {
         }] : []
     })
     console.timeEnd()
-    if(missingmatches.length) patchStats({...dbstats, matches: missingmatches, message: newmessage, lang: guilddata.lang, agent, modes})
+    if(missingmatches.length) patchStats({dbstats, mmatches: missingmatches, message: newmessage, lang: guilddata.lang, agent, modes, bgcanvas})
 }
 export const name = "stats"

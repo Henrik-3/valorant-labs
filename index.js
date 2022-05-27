@@ -1,6 +1,6 @@
 import {Client, GatewayIntentBits, Collection, Options} from "discord.js.dev"
 import {readFileSync, readdirSync, writeFileSync} from "fs"
-import {perms, embedBuilder, guildBlacklist, guildSettings, translations, ActivityType} from "./methods.js"
+import {perms, embedBuilder, guildBlacklist, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from "./methods.js"
 import path from "path"
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
@@ -215,9 +215,8 @@ client.on("messageCreate", async message => {
         return message.reply({content: "Reloaded"})
     }
     const guilddata = await guildSettings(message.guild)
-    console.log(guilddata)
     if(!message.content.startsWith(guilddata.prefix)) return
-    const blacklist = guilddata.blacklist ? await guildBlacklist(interaction.guild) : null
+    const blacklist = guilddata.blacklist ? await guildBlacklist(message.guild) : null
     const args = message.content.substring(guilddata.prefix.length).split(' ')
     const cmd = args.shift()
     if(blacklist && blacklist.includes(`<#${message.channelId}>`)) {

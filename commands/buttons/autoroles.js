@@ -26,7 +26,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                     })
                 ]
             })
-            const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${link.region}/${dbfetch.puuid}?asia=true`).catch(error => {return error})
+            const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${link.region}/${link.puuid}?asia=true`).catch(error => {return error})
             if(mmr.response) return errorhandlerinteraction({interaction, status: mmr.response, type: "mmr", lang: guilddata.lang})
             if(mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0) return interaction.editReply({
                 embeds: [
@@ -67,8 +67,8 @@ export async function execute({interaction, args, guilddata} = {}) {
             return interaction.editReply({
                 embeds: [
                     embedBuilder({
-                        title: translations[guilddata.lang].role_given_title,
-                        desc: translations[guilddata.lang].role_given_desc,
+                        title: translations[guilddata.lang].autorole.role_given_title,
+                        desc: translations[guilddata.lang].autorole.role_given_desc,
                     })
                 ]
             })
@@ -88,8 +88,8 @@ export async function execute({interaction, args, guilddata} = {}) {
             return interaction.editReply({
                 embeds: [
                     embedBuilder({
-                        title: translations[guilddata.lang].role_removed_title,
-                        desc: translations[guilddata.lang].role_removed_desc,
+                        title: translations[guilddata.lang].autorole.role_removed_title,
+                        desc: translations[guilddata.lang].autorole.role_removed_desc,
                     })
                 ]
             })

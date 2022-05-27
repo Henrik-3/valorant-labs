@@ -104,6 +104,11 @@ export const agents = [
         discord_id: "<:sentinel:868802869967597568>"
     },
     {
+        name: "Fade",
+        id: "dade69b4-4f5a-8528-247b-219e5a1facd6",
+        discord_id: "<:initiator:868802616732303362>"
+    },
+    {
         name: "Jett",
         id: "add6443a-41bd-e414-f6ad-e58d267f4e95",
         discord_id: "<:duelist:868802702258352178>"
@@ -569,6 +574,12 @@ export const guildBlacklist = async function (guild) {
     if(!request) return null
     return request.entrys.length ? request.entrys : null
 }
+export const getLink = async function ({user} = {}) {
+    const db = await getDB("linkv2").findOne({userid: user.id})
+    if(!db) return null
+    const riot = await axios.get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/${db.rpuuid}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error})
+    return riot.response ? {error: riot.response.status} : {error: false, name: riot.data.gameName, tag: riot.data.tagLine}
+}
 export const getGameKey = async function (id) {
     const request = await getDB("games").findOne({gamekey: id})
     return request ? request : null
@@ -576,10 +587,12 @@ export const getGameKey = async function (id) {
 export const getStatsDB = async function (account) {
     const puuid = await axios.get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURI(account.name)}/${encodeURI(account.tag)}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error})
     if(puuid.response) return {status: puuid.response.status}
+    const region = await axios.get(`https://europe.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/${puuid.data.puuid}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error})
+    if(region.response) return {status: region.response.status}
     const link = await getDB("rso").findOne({puuid: puuid.data.puuid})
     if(!link) return {status: 451, puuid: puuid.data.puuid, name: puuid.data.gameName, tag: puuid.data.tagLine}
     const stats = await getDB("userstats").findOne({puuid: puuid.data.puuid})
-    return {status: 200, ...stats, puuid: puuid.data.puuid, name: puuid.data.gameName, tag: puuid.data.tagLine}
+    return {status: 200, ...stats, region: region.data.activeShard, puuid: puuid.data.puuid, name: puuid.data.gameName, tag: puuid.data.tagLine}
 }
 export const getGamemodes = function () {
     return valpapigamemodes.data.data
@@ -696,11 +709,11 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                     if(fmatches[i].data.data.metadata.mode != "Custom Game") {
                         const player = fmatches[i].data.data.players.all_players.find(item => item.puuid == dbstats.ingamepuuid)
                         const team = fmatches[i].data.data.teams[player.team.toLowerCase()]
-                        dbstats.stats.matches += 1
-                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats.kills) : 0
-                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats.deaths) : 0
-                        dbstats.stats.assists = !isNaN(player.stats.assists) ? Number(player.stats.assists) + Number(dbstats.stats.assists) : 0
-                        dbstats.stats.headshots = !isNaN(player.stats.headshots) ? Number(player.stats.headshots) + Number(dbstats.stats.headshots) : 0
+                        dbstats.stats.matches = !dbstats.stats.matches ? 1 : dbstats.stats.matches + 1
+                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats.kills ? dbstats.stats.kills : 0) : 0
+                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats.deaths ? dbstats.stats.deaths : 0) : 0
+                        dbstats.stats.assists = !isNaN(player.stats.assists) ? Number(player.stats.assists) + Number(dbstats.stats.assists ? dbstats.stats.assists : 0) : 0
+                        dbstats.stats.headshots = !isNaN(player.stats.headshots) ? Number(player.stats.headshots) + Number(dbstats.stats.headshots ? dbstats.stats.headshots : 0) : 0
                         let aces = 0
                         let quadras = 0
                         let triples = 0
@@ -713,9 +726,9 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 }
                             }
                         }
-                        dbstats.stats.aces = !isNaN(dbstats.stats.aces) ? Number(aces) + Number(dbstats.stats.aces) : 0
-                        dbstats.stats.triples = !isNaN(dbstats.stats.triples) ? Number(triples) + Number(dbstats.stats.triples) : 0
-                        dbstats.stats.quadras = !isNaN(dbstats.stats.quadras) ? Number(quadras) + Number(dbstats.stats.quadras) : 0
+                        dbstats.stats.aces = Number(aces) + Number(dbstats.stats.aces ? dbstats.stats.aces : 0)
+                        dbstats.stats.triples = Number(triples) + Number(dbstats.stats.triples ? dbstats.stats.triples : 0)
+                        dbstats.stats.quadras = Number(quadras) + Number(dbstats.stats.quadras ? dbstats.stats.quadras : 0)
                         if(team.has_won) dbstats.stats.wins += 1
 
                         const dbagent = dbstats.agents.find(item => item.agent == player.character)
@@ -723,13 +736,15 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                         if(dbindex != -1) dbstats.agents.splice(dbindex, 1)
                         const agent = dbindex != -1 ? dbagent : {}
                         agent.agent = player.character
-                        agent.playtime = !isNaN(fmatches[i].data.data.metadata.game_length) ? Number(agent.playtime) + Number(fmatches[i].data.data.metadata.game_length) : 0
-                        agent.matches += 1
-                        agent.kills = !isNaN(player.stats.kills) ? Number(agent.kills) + Number(player.stats.kills) : 0
-                        agent.deaths = !isNaN(player.stats.deaths) ? Number(agent.deaths) + Number(player.stats.deaths) : 0
-                        agent.assists = !isNaN(player.stats.assists) ? Number(agent.assists) + Number(player.stats.assists) : 0
-                        agent.headshots = !isNaN(player.stats.headshots) ? Number(agent.headshots) + Number(player.stats.headshots) : 0
-                        agent.aces = !isNaN(aces) ? Number(agent.aces) + Number(aces) : 0
+                        agent.playtime = !isNaN(fmatches[i].data.data.metadata.game_length) ? Number(agent.playtime ? agent.playtime : 0) + Number(fmatches[i].data.data.metadata.game_length) : 0
+                        agent.matches = !agent.matches ? 1 : agent.matches + 1
+                        agent.kills = !isNaN(player.stats.kills) ? Number(agent.kills ? agent.kills : 0) + Number(player.stats.kills) : 0
+                        agent.deaths = !isNaN(player.stats.deaths) ? Number(agent.deaths ? agent.deaths : 0) + Number(player.stats.deaths) : 0
+                        agent.assists = !isNaN(player.stats.assists) ? Number(agent.assists ? agent.assists : 0) + Number(player.stats.assists) : 0
+                        agent.headshots = !isNaN(player.stats.headshots) ? Number(agent.headshots ? agent.headshots : 0) + Number(player.stats.headshots) : 0
+                        agent.aces = Number(agent.aces ? agent.aces : 0) + Number(aces)
+                        agent.triples = Number(agent.triples ? agent.triples : 0) + Number(triples)
+                        agent.quadras = Number(agent.quadras ? agent.quadras : 0) + Number(quadras)
                         if(team.has_won) agent.wins += 1
                         dbstats.agents.push(agent)
 
@@ -755,7 +770,6 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                     if(fmatches[i].data.data.metadata.mode != "Custom Game") {
                         const player = fmatches[i].data.data.players.all_players.find(item => item.puuid == dbstats.ingamepuuid)
                         const team = fmatches[i].data.data.players.all_players.sort((item2, item1) => item2.score - item1.score)[0]
-
                         const dbcheck = await getDB("games").findOne({matchid: fmatches[i].data.data.metadata.matchid})
                         if(dbcheck) dbstats.matches.push({won: team.puuid == dbstats.ingamepuuid ? true : false, gamekey: dbcheck.gamekey, id: fmatches[i].data.data.metadata.matchid, start: fmatches[i].data.data.metadata.game_start * 1000, agent: player.character, mode: fmatches[i].data.data.metadata.mode, map: fmatches[i].data.data.metadata.map, teamblue_won: team.puuid == dbstats.ingamepuuid ? true : false, teamblue_rounds: team.puuid == dbstats.ingamepuuid ? 1 : 0, teamred_won: team.puuid != dbstats.ingamepuuid ? true : false, teamred_rounds: team.puuid != dbstats.ingamepuuid ? 1 : 0, kills: player.stats.kills, deaths: player.stats.deaths, assists: player.stats.assists})
                         if(!dbcheck) {
@@ -781,10 +795,10 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                     if(fmatches[i].data.matchInfo.queueId != "") {
                         const player = fmatches[i].data.players.find(item => item.puuid == puuid)
                         const team = fmatches[i].data.teams.find(item => item.teamId == player.teamId)
-                        dbstats.stats.matches += 1
-                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats.kills) : 0
-                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats.deaths) : 0
-                        dbstats.stats.assists = !isNaN(player.stats.assists) ? Number(player.stats.assists) + Number(dbstats.stats.assists) : 0
+                        dbstats.stats.matches = !dbstats.stats.matches ? 1 : dbstats.stats.matches + 1
+                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats.kills ? dbstats.stats.kills : 0) : 0
+                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats.deaths ? dbstats.stats.deaths : 0) : 0
+                        dbstats.stats.assists = !isNaN(player.stats.assists) ? Number(player.stats.assists) + Number(dbstats.stats.assists ? dbstats.stats.assists : 0) : 0
                         let headshots = 0
                         let aces = 0
                         let quadras = 0
@@ -801,11 +815,11 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 }
                             }
                         }
-                        dbstats.stats.headshots = !isNaN(player.stats.headshots) ? Number(headshots) + Number(stats.headshots) : 0
-                        dbstats.stats.aces = !isNaN(dbstats.stats.aces) ? Number(aces) + Number(dbstats.stats.aces) : 0
-                        dbstats.stats.triples = !isNaN(dbstats.stats.triples) ? Number(triples) + Number(dbstats.stats.triples) : 0
-                        dbstats.stats.quadras = !isNaN(dbstats.stats.quadras) ? Number(quadras) + Number(dbstats.stats.quadras) : 0
-                        if(team.won) stats.wins += 1
+                        dbstats.stats.headshots = !isNaN(player.stats.headshots) ? Number(headshots) + Number(dbstats.stats.headshots ? dbstats.stats.headshots : 0) : 0
+                        dbstats.stats.aces = Number(aces) + Number(dbstats.stats.aces ? dbstats.stats.aces : 0)
+                        dbstats.stats.triples = Number(triples) + Number(dbstats.stats.triples ? dbstats.stats.triples : 0)
+                        dbstats.stats.quadras = Number(quadras) + Number(dbstats.stats.quadras ? dbstats.stats.quadras : 0)
+                        if(team.won) dbstats.stats.wins += 1
 
                         //TODO
                         const agentid = agents.find(item => item.id == player.characterId)
@@ -815,13 +829,15 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                         if(dbindex != -1) dbstats.agents.splice(dbindex, 1)
                         const agent = dbindex != -1 ? dbagent : {}
                         agent.agent = player.character
-                        agent.playtime = !isNaN(fmatches[i].data.data.metadata.game_length) ? Number(agent.playtime) + Number(fmatches[i].data.data.metadata.game_length) : 0
+                        agent.playtime = !isNaN(fmatches[i].data.data.metadata.game_length) ? Number(agent.playtime ? agent.playtime : 0) + Number(fmatches[i].data.data.metadata.game_length) : 0
                         agent.matches += 1
-                        agent.kills = !isNaN(player.stats.kills) ? Number(agent.kills) + Number(player.stats.kills) : 0
-                        agent.deaths = !isNaN(player.stats.deaths) ? Number(agent.deaths) + Number(player.stats.deaths) : 0
-                        agent.assists = !isNaN(player.stats.assists) ? Number(agent.assists) + Number(player.stats.assists) : 0
-                        agent.headshots = !isNaN(player.stats.headshots) ? Number(agent.headshots) + Number(player.stats.headshots) : 0
-                        agent.aces = !isNaN(aces) ? Number(agent.aces) + Number(aces) : 0
+                        agent.kills = !isNaN(player.stats.kills) ? Number(agent.kills ? agent.kills : 0) + Number(player.stats.kills) : 0
+                        agent.deaths = !isNaN(player.stats.deaths) ? Number(agent.deaths ? agent.deaths : 0) + Number(player.stats.deaths) : 0
+                        agent.assists = !isNaN(player.stats.assists) ? Number(agent.assists ? agent.assists : 0) + Number(player.stats.assists) : 0
+                        agent.headshots = !isNaN(player.stats.headshots) ? Number(agent.headshots ? agent.headshots : 0) + Number(player.stats.headshots) : 0
+                        agent.aces = Number(agent.aces ? agent.aces : 0) + Number(aces)
+                        agent.triples = Number(agent.triples ? agent.triples : 0) + Number(triples)
+                        agent.quadras = Number(agent.quadras ? agent.quadras : 0) + Number(quadras)
                         if(team.won) agent.wins += 1
                         dbstats.agents.push(agent)
 
@@ -875,7 +891,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
     const patchedmatches = dbstats.matches.filter(item => item != null).sort((match1, match2) => match2.start - match1.start)
     if(patchedmatches.length > 10) patchedmatches.length = 10
     dbstats.matches = patchedmatches
-    await getDB("userstats").updateOne({puuid: dbstats.puuid}, {$set: dbstats})
+    await getDB("userstats").updateOne({puuid: dbstats.puuid}, {$set: dbstats}, {upsert: true})
     if(message) {
         const attachment = await buildStatsImage({dbstats, agent, modes, bgcanvas})
         const components = []
@@ -1082,8 +1098,8 @@ export const removeBlacklist = async function (data) {
 export const errorhandler = async function (error) {
     if(error.status == 451) {
         const uuid = uuidv4()
-        await Utils.getDB("state").insertOne({userid: error.message.author.id, code: uuid, expireAt: new Date(), type: "stats"})
-        return error.message.editReply({embeds: [embedBuilder({title: translations[error.lang].response[451].title, desc: translations[error.lang].response[451][error.type], footer: "VALORANT LABS [ERROR 451]"})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].response[451].component_login, style: ButtonStyle.Link, url: `https://valorantlabs.xyz/v1/rso/redirect/${uuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_update, style: ButtonStyle.Danger, customId: `stats;update;${error.puuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_rank, style: ButtonStyle.Danger, customId: `mmr;${error.name};${error.tag}`}]}]})
+        await getDB("state").insertOne({userid: error.message.author.id, code: uuid, expireAt: new Date(), type: "stats"})
+        return error.message.reply({embeds: [embedBuilder({title: translations[error.lang].response[451].title, desc: translations[error.lang].response[451].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].response[451].component_login, style: ButtonStyle.Link, url: `https://valorantlabs.xyz/v1/rso/redirect/${uuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_update, style: ButtonStyle.Danger, customId: `stats;update;${error.puuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_rank, style: ButtonStyle.Danger, customId: `mmr;${error.name};${error.tag}`}]}]})
     }
     if(!translations[error.lang].response[error.status]) return error.message.reply({embeds: [embedBuilder({title: translations[error.lang].response[500].title, desc: translations[error.lang].response[500][error.type], footer: "VALORANT LABS [ERROR 500]"})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].support, style: ButtonStyle - Link, url: "https://discord.gg/Zr5eF5D"}]}]})
     if(!translations[error.lang].response[error.status][error.type]) return error.message.reply({embeds: [embedBuilder({title: translations[error.lang].response[error.status].title, desc: translations[error.lang].response[error.status]["default"], footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].support, style: ButtonStyle.Link, url: "https://discord.gg/Zr5eF5D"}]}]})
@@ -1092,8 +1108,8 @@ export const errorhandler = async function (error) {
 export const errorhandlerinteraction = async function (error) {
     if(error.status == 451) {
         const uuid = uuidv4()
-        await Utils.getDB("state").insertOne({userid: error.interaction.user.id, code: uuid, expireAt: new Date(), type: "stats"})
-        return error.interaction.editReply({embeds: [embedBuilder({title: translations[error.lang].response[451].title, desc: translations[error.lang].response[451][error.type], footer: "VALORANT LABS [ERROR 451]"})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].response[451].component_login, style: ButtonStyle.Link, url: `https://valorantlabs.xyz/v1/rso/redirect/${uuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_update, style: ButtonStyle.Danger, customId: `stats;update;${error.puuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_rank, style: ButtonStyle.Danger, customId: `mmr;${error.name};${error.tag}`}]}]})
+        await getDB("state").insertOne({userid: error.interaction.user.id, code: uuid, expireAt: new Date(), type: "stats"})
+        return error.interaction.editReply({embeds: [embedBuilder({title: translations[error.lang].response[451].title, desc: translations[error.lang].response[451].description, footer: "VALORANT LABS [ERROR 451]"})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].response[451].component_login, style: ButtonStyle.Link, url: `https://valorantlabs.xyz/v1/rso/redirect/${uuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_update, style: ButtonStyle.Danger, customId: `stats;update;${error.puuid}`}, {type: ComponentType.Button, label: translations[error.lang].response[451].component_rank, style: ButtonStyle.Danger, customId: `mmr;${error.name};${error.tag}`}]}]})
     }
     if(!translations[error.lang].response[error.status]) return error.interaction.editReply({embeds: [embedBuilder({title: translations[error.lang].response[500].title, desc: translations[error.lang].response[500][error.type], footer: "VALORANT LABS [ERROR 500]"})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].support, style: ButtonStyle.Link, url: "https://discord.gg/Zr5eF5D"}]}]})
     if(!translations[error.lang].response[error.status][error.type]) return error.interaction.editReply({embeds: [embedBuilder({title: translations[error.lang].response[error.status].title, desc: translations[error.lang].response[error.status]["default"], footer: `VALORANT LABS [ERROR ${error.status}]`})], components: [{type: ComponentType.ActionRow, components: [{type: ComponentType.Button, label: translations[error.lang].support, style: ButtonStyle.Link, url: "https://discord.gg/Zr5eF5D"}]}]})
@@ -1210,6 +1226,7 @@ export const patchGuild = async function ({interaction, key, value, additionalda
                         break
                     }
                 }
+                console.log(embedBuilder({title: translations[doc.lang].settings.imggenerated_title, desc: translations[doc.lang].settings.imggenerated_desc, footer: interaction.options.getAttachment("image").url}))
                 return interaction.editReply({
                     files: [image],
                     embeds: [embedBuilder({title: translations[doc.lang].settings.imggenerated_title, desc: translations[doc.lang].settings.imggenerated_desc, footer: interaction.options.getAttachment("image").url})],

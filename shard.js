@@ -1,11 +1,12 @@
 import {ShardingManager} from "discord.js"
 import {AutoPoster} from "topgg-autoposter"
 import {getDB, translations, patchStats, riottoken, getAgents, getGamemodes, shard_status_update, fetchWebsite} from "./methods.js"
-import {readFileSync} from "fs"
+import {readFileSync, writeFileSync} from "fs"
 import * as f from "fastify"
 import axios from "axios"
 import path from "path"
-const fastify = f.fastify()
+import {mem} from "systeminformation"
+const fastify = f.fastify({logger: {level: "error"}})
 const basedata = JSON.parse(readFileSync("./basedata.json"))
 const __dirname = path.resolve();
 
@@ -52,7 +53,7 @@ fastify.register(await import('fastify-static'), {
 })
 
 fastify.get("/", async (req, res) => {
-    const usage = fs.readFileSync("./website/build/index.html", {encoding: "utf-8"})
+    const usage = readFileSync("./website/build/index.html", {encoding: "utf-8"})
     res.type("text/html").send(usage)
 })
 
@@ -61,7 +62,7 @@ fastify.addHook("onRequest", async (req, res) => {
 })
 
 fastify.get("/v1/guild-available/:guild", async (req, res) => {
-    const gcheck = await manager.broadcastEval((client, {guild}) => {
+    /*const gcheck = await manager.broadcastEval((client, {guild}) => {
         try {
             const check = client.guilds.cache.has(guild)
             return check ? client.guilds.cache.get(guild) : false
@@ -70,21 +71,27 @@ fastify.get("/v1/guild-available/:guild", async (req, res) => {
         }
     }, {context: {guild: req.params.guild}})
     if(gcheck.some(item => typeof item == "object")) return res.code(200).send({status: 200, data: gcheck.find(item => typeof item == "object")})
-    res.code(404).send({status: 404, message: "Guild unavailable"})
+    res.code(404).send({status: 404, message: "Guild unavailable"})*/
+    const shard = await axios.get(`http://127.0.0.1:3000/v1/guild-available/${req.params.guild}`).catch(error => {return error})
+    if(shard.response) return res.code(500).send("Error while fetching")
+    res.send(shard.data)
 })
 
 fastify.get("/v1/shard-state", async (req, res) => {
-    const sharddata = await manager.broadcastEval(client => {
+    /*const sharddata = await manager.broadcastEval(client => {
         return {status: client.ws.status, ping: client.ws.ping, server: client.guilds.cache.size}
     })
-    res.send(sharddata)
+    res.send(sharddata)*/
+    const shard = await axios.get("http://127.0.0.1:3000/v1/shard-state").catch(error => {return error})
+    if(shard.response) return res.code(500).send("Error while fetching")
+    res.send(shard.data)
 })
 
 fastify.get("/v1/pagedata", async (req, res) => {
     if(req.query.type == "landingpage") {
         const guild = (await manager.fetchClientValues('guilds.cache.size')).reduce((prev, val) => prev + val, 0)
         const commands = JSON.parse(readFileSync("./api.json"))
-        const utils = JSON.parse(fs.readFileSync("./utils.json", {encoding: "utf-8"}))
+        const utils = JSON.parse(readFileSync("./utils.json", {encoding: "utf-8"}))
         const parselang = {
             "de": "German",
             "en": "English",
@@ -94,10 +101,10 @@ fastify.get("/v1/pagedata", async (req, res) => {
             "es": "Spanish",
             "vi": "Vietname"
         }
-        return res.code(200).send({guild: guild.count, cmds: commands.count, cmdlist: utils.cmds, langlist: utils.langlist, translations: utils.translations, clang: req.query.lang != undefined ? parselang[req.query.lang] != undefined ? parselang[req.query.lang] : "English" : "English"})
+        return res.code(200).send({guild: guild, cmds: commands.all, cmdlist: utils.cmds, langlist: utils.langlist, translations: utils.translations, clang: req.query.lang != undefined ? parselang[req.query.lang] != undefined ? parselang[req.query.lang] : "English" : "English"})
     } else if(req.query.type == "translation") {
-        const translations = JSON.parse(fs.readFileSync("./lang.json", {encoding: "utf-8"}))
-        const utils = JSON.parse(fs.readFileSync("./utils.json", {encoding: "utf-8"}))
+        const translations = JSON.parse(readFileSync("./lang.json", {encoding: "utf-8"}))
+        const utils = JSON.parse(readFileSync("./utils.json", {encoding: "utf-8"}))
         return res.code(200).send({langtranslations: translations, translations: utils.translations})
     } else if(req.query.type == "shards") {
         const sharddata = await manager.broadcastEval(client => {
@@ -111,11 +118,11 @@ fastify.get("/v1/pagedata", async (req, res) => {
 
 fastify.post("/v1/topgg/vote", async (req, res) => {
     const user = await manager.broadcastEval((c, {user}) => {
-        return client.users.fetch(user)
+        return c.users.fetch(user)
     }, {shard: 0, context: {user: req.body.user}})
     await manager.broadcastEval((c, {embed}) => {
         if(c.channels.cache.has("913842504611266560")) return c.channels.cache.get("913842504611266560").send({embeds: [embed]})
-    }, {context: {embed: {title: "New Vote", description: `ID: ${user.id} | Username: ${user.tag} | <t:${Math.round(+new Date() / 1000)}:F>`, color: 16777215, thumbnail: {url: user.data.avatar != null ? `https://cdn.discordapp.com/avatars/${user.data.id}/${user.data.avatar}.png` : null}}}})
+    }, {context: {embed: {title: "New Vote", description: `ID: ${user.id} | Username: ${user.tag} | <t:${Math.round(+new Date() / 1000)}:F>`, color: 16777215, thumbnail: {url: user.avatar != null ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : null}}}})
     res.send("ok")
 })
 
@@ -132,7 +139,7 @@ fastify.post("/v1/translations", async (req, res) => {
     for(let i = 0; req.body.length > i; i++) {
         newObject[req.body[i].name] = req.body[i].value
     }
-    fs.writeFileSync(`./translations/${randomize("Aa0", 6)}.json`, JSON.stringify(newObject, null, 2))
+    writeFileSync(`./translations/${randomize("Aa0", 6)}.json`, JSON.stringify(newObject, null, 2))
     res.code(200).send("ok")
 })
 
@@ -186,8 +193,9 @@ const maps = {
 }
 
 fastify.get("/oauth-finished.html", async (req, res) => {
+    console.log(req.query)
     if(req.query.state) {
-        const fstate = getDB("state").findOne({code: req.query.state})
+        const fstate = await getDB("state").findOne({code: req.query.state})
         if(!fstate) return res.code(400).send({error: "The Link is older than one hour, please generate a new one"})
         const formData = new URLSearchParams()
         formData.append('grant_type', "authorization_code")
@@ -201,20 +209,21 @@ fastify.get("/oauth-finished.html", async (req, res) => {
         const db = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${userinfo.data.gameName}/${userinfo.data.tagLine}?asia=true`).catch(error => {return error})
         if(db.response) return res.code(500).send({error: `There seems to be an error with the requested account | Status: ${db.response.status} | Message: ${db.response.message}`})
         if(fstate.type == "autorole") {
-            const member = await manager.broadcastEval(async (c, {user, guild}) => {
-                if(c.guilds.cache.has(guild)) return await c.guilds.cache.get(guild).members.fetch(user)
-            }, {context: {user: fstate.userid, guild: fstate.guild}})
             const guilddata = await getDB("settings").findOne({gid: fstate.guild})
             const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${region.data.activeShard}/${db.data.data.puuid}?asia=true`).catch(error => {return error})
             if(mmr.response) return res.code(500).send({error: `There seems to be an error with the mmr of that account | Status: ${mmr.response.status} | Message: ${mmr.response.message}`})
             if(mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0) return res.code(500).send({error: translations[guilddata.lang].mmr.no_rank_desc})
-            await member.roles.remove(guilddata.autoroles.filter(item => mmr.data.data.current_data.currenttierpatched.split(" ")[0].toLowerCase() != item.name).map(item => {return item.id})).catch(error => {
-                if(error.code == 50013) return res.code(500).send({error: translations[guilddata.lang].autorole_permission_desc})
-            })
-            await member.roles.add(guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(" ")[0].toLowerCase() == item.name).id)
+            await manager.broadcastEval(async (c, {user, guild, ra, rm}) => {
+                if(c.guilds.cache.has(guild)) {
+                    const member = await c.guilds.cache.get(guild).members.fetch(user)
+                    await member.roles.remove(rm)
+                    await member.roles.add(ra)
+                }
+            }, {context: {user: fstate.userid, guild: fstate.guild, ra: guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(" ")[0].toLowerCase() == item.name).id, rm: guilddata.autoroles.filter(item => mmr.data.data.current_data.currenttierpatched.split(" ")[0].toLowerCase() != item.name).map(item => {return item.id})}})
             getDB("rso").updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true})
             getDB("linkv2").updateOne({userid: fstate.userid}, {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}}, {upsert: true})
-            return getDB("state").deleteOne({code: req.query.state})
+            getDB("state").deleteOne({code: req.query.state})
+            return res.code(200).send({message: `Your account was successfully linked and your role was given`})
         }
         if(fstate.type == "link") {
             getDB("rso").updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true})
@@ -223,14 +232,20 @@ fastify.get("/oauth-finished.html", async (req, res) => {
             return res.code(200).send({message: `Your account was successfully linked`})
         }
         if(fstate.type == "stats") {
-            const matchlist = await axios.get(`https://${region.data.activeShard}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${userinfo.data.puuid}`, {headers: {"X-Riot-Token": Utils.riottoken}}).catch(error => {return error})
+            const matchlist = await axios.get(`https://${region.data.activeShard}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${userinfo.data.puuid}`, {headers: {"X-Riot-Token": riottoken}}).catch(error => {return error})
             if(matchlist.response) return res.code(500).send({error: `There seems to be an issue with your matchlist | Status: ${matchlist.response.status} | Message: ${db.data.data.puuid}`})
-            await patchStats({dbstats: {puuid: userinfo.data.puuid, ingamepuuid: db.data.data.puuid, region: region.data.activeShard, type: "unofficial", tracker: false, last_update: Date.now()}, mmatches: matchlist.data.history, agent: Utils.getAgents(), modes: Utils.getGamemodes()})
+            matchlist.data.history = [{
+                matchId: "b5c24052-273d-40a1-98b3-269e17930643",
+                gameStartTimeMillis: 1653607252593,
+                queueId: "competitive"
+            }]
+            patchStats({dbstats: {puuid: userinfo.data.puuid, ingamepuuid: "54942ced-1967-5f66-8a16-1e0dae875641"/*db.data.data.puuid*/, region: region.data.activeShard, type: "unofficial", tracker: false, last_update: Date.now(), agents: [], matches: [], stats: {}}, mmatches: matchlist.data.history, agent: getAgents(), modes: getGamemodes()})
             getDB("rso").updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true})
             getDB("linkv2").updateOne({userid: fstate.userid}, {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}}, {upsert: true})
             getDB("state").deleteOne({code: req.query.state})
             return res.redirect(301, "https://discord.com/channels/@me")
         }
+        return
     }
     //DEPRECATED
     var code = req.query.code
@@ -265,7 +280,7 @@ fastify.get("/oauth-finished.html", async (req, res) => {
             var matchlist = type == "official" ? await axios.get(`https://${region.data.activeShard}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${userinfo.data.puuid}`, {headers: {"X-Riot-Token": basedata.riottoken}}).catch(error => {return error}) : await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/matches/${region}/${ingamepuuid}`, {headers: {"X-Riot-Token": basedata.riottoken}}).catch(error => {return error})
             if(matchlist.status && matchlist.status == 200) {
                 matchlist.data.history.length = 5
-                for await(matchid of matchlist.data.history) {
+                for await(const matchid of matchlist.data.history) {
                     const cmatch = type == "unofficial" ? await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/match/${region}/${matchid.matchId}`).catch(error => {return error}) : await axios.get(`https://${region.data.activeShard}.api.riotgames.com/val/match/v1/matches/${matchid.matchId}`, {headers: {"X-Riot-Token": basedata.riottoken}}).catch(error => {return error})
                     if(!cmatch.response) {
                         if(type == "unofficial") {
@@ -384,7 +399,7 @@ fastify.get("/oauth-finished.html", async (req, res) => {
             var matches_array = []
             var userdata = {puuid: userinfo.data.puuid, ingamepuuid: ingamepuuid, region: type == "unofficial" ? region : region.data.activeShard, type: type, tracker: false, last_update: Date.now(), stats: {playtime: 0, matches: 0, kills: 0, deaths: 0, assists: 0, headshots: 0, wins: 0, firstbloods: 0, aces: 0, clutches: 0, flawless: 0}, agents: agent_array, matches: matches_array}
             if(matchlist.data.history.length) {
-                for await(matchid of matchlist.data.history) {
+                for await(const matchid of matchlist.data.history) {
                     const cmatch = type == "unofficial" ? await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/match/${region}/${matchid.matchId}`).catch(error => {return error}) : await axios.get(`https://${region.data.activeShard}.api.riotgames.com/val/match/v1/matches/${matchid.matchId}`, {headers: {"X-Riot-Token": basedata.riottoken}}).catch(error => {return error})
                     if(!cmatch.response) {
                         if(type == "unofficial") {
@@ -581,5 +596,5 @@ fastify.get("/v1/login", async (req, res) => {
     res.redirect("https://auth.riotgames.com/login#client_id=valorantlabs&redirect_uri=https%3A%2F%2Fvalorantlabs.xyz%2Foauth-finished.html&response_type=code&scope=openid%20offline_access&ui_locales=en")
 })
 
-fastify.listen(3000, () => {console.log("API Online")})
+fastify.listen(4200, "127.0.0.1", () => {console.log("API Online")})
 manager.spawn();
