@@ -1840,7 +1840,7 @@ export const patchGuild = async function ({interaction, key, value, additionalda
 						await getDB('settings').findOneAndUpdate(
 							{gid: interaction.guild.id},
 							{$push: {autoroles: {id: additionaldata, name: value}}},
-							{upsert: false, returnDocument: 'after'}
+						 	{upsert: false, returnDocument: 'after'}
 						)
 				  ).value;
 			return getAutoRoles(interaction);
