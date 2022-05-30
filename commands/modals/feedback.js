@@ -1,28 +1,30 @@
-import {embedBuilder, translations} from "../../methods.js"
+import {embedBuilder, translations} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
-    interaction.client.shard.broadcastEval((c, {embed}) => {
-        if(c.channels.cache.has("975850839040200763")) c.channels.cache.get("975850839040200763").send({
-            embeds: [embed]
-        })
-    }, {
-        context: {
-            embed: embedBuilder({
-                title: "Feedback",
-                desc: interaction.fields.getTextInputValue("feedback"),
-                additionalFields: [
-                    {name: "UserID", value: `<@${String(args[1])}> | ${String(args[1])}`}
-                ]
-            })
-        }
-    })
-    return interaction.reply({
-        embeds: [
-            embedBuilder({
-                title: translations[guilddata.lang].feedback.send_title,
-                desc: translations[guilddata.lang].feedback.send_desc,
-                footer: "VALORANT LABS [FEEDBACK SEND]"
-            })
-        ]
-    })
+	interaction.client.shard.broadcastEval(
+		(c, {embed}) => {
+			if (c.channels.cache.has('975850839040200763'))
+				c.channels.cache.get('975850839040200763').send({
+					embeds: [embed],
+				});
+		},
+		{
+			context: {
+				embed: embedBuilder({
+					title: 'Feedback',
+					desc: interaction.fields.getTextInputValue('feedback'),
+					additionalFields: [{name: 'UserID', value: `<@${String(args[1])}> | ${String(args[1])}`}],
+				}),
+			},
+		}
+	);
+	return interaction.reply({
+		embeds: [
+			embedBuilder({
+				title: translations[guilddata.lang].feedback.send_title,
+				desc: translations[guilddata.lang].feedback.send_desc,
+				footer: 'VALORANT LABS [FEEDBACK SEND]',
+			}),
+		],
+	});
 }
-export const name = "feedback"
+export const name = 'feedback';

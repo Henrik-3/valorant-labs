@@ -1,22 +1,22 @@
 {
-    "name": "valorant-labs-v4",
-    "version": "4.1.0.beta.2",
-    "description": "Advanced VALORANT Bot (Current State: Beta Build)",
-    "main": "shard.js",
-    "type": "module",
-    "author": "HenrikDev",
-    "license": "ISC",
-    "dependencies": {
-        "axios": "^0.25.0",
-        "axios-retry": "^3.2.5",
-        "canvas": "^2.9.1",
-        "discord.js": "^13.6.0",
-        "fastify": "^3.29.0",
-        "moment": "^2.29.3",
-        "mongodb": "^4.6.0",
-        "pretty-bytes": "^5.6.0",
-        "randomatic": "^3.1.1",
-        "systeminformation": "^5.11.15",
-        "topgg-autoposter": "^2.0.1"
-    }
+	"name": "valorant-labs-v4",
+	"version": "4.1.0.beta.3",
+	"description": "Advanced VALORANT Bot (Current State: Beta Build)",
+	"main": "shard.js",
+	"type": "module",
+	"author": "HenrikDev",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.25.0",
+		"axios-retry": "^3.2.5",
+		"canvas": "^2.9.1",
+		"discord.js": "^13.6.0",
+		"fastify": "^3.29.0",
+		"moment": "^2.29.3",
+		"mongodb": "^4.6.0",
+		"pretty-bytes": "^5.6.0",
+		"randomatic": "^3.1.1",
+		"systeminformation": "^5.11.15",
+		"topgg-autoposter": "^2.0.1"
+	}
 }
