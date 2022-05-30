@@ -32,6 +32,7 @@ export async function execute({message, guilddata, args} = {}) {
             status: link.error,
             lang: guilddata.lang,
             type: 'account',
+            data: link.data,
         });
     if (link && !args.length) {
         dbstats = await getStatsDB({name: link.name, tag: link.tag});
@@ -44,6 +45,7 @@ export async function execute({message, guilddata, args} = {}) {
                 name: dbstats.name,
                 tag: dbstats.tag,
                 message,
+                data: dbstats.data,
             });
         matchlist =
             dbstats.type == 'official'
@@ -80,6 +82,7 @@ export async function execute({message, guilddata, args} = {}) {
                 name: dbstats.name,
                 tag: dbstats.tag,
                 message,
+                data: dbstats.data,
             });
         matchlist =
             dbstats.type == 'official'
@@ -111,6 +114,7 @@ export async function execute({message, guilddata, args} = {}) {
             status: matchlist.response.status,
             message,
             lang: guilddata.lang,
+            data: matchlist.response.data,
         });
     const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update);
 

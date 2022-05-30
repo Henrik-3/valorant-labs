@@ -18,14 +18,14 @@ export async function execute({interaction, args, guilddata} = {}) {
     const puuid = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${args[1]}/${args[2]}?asia=true`).catch(error => {
         return error;
     });
-    if (puuid.response) return errorhandlerinteraction({interaction: interaction, status: puuid.response.status, type: 'account', lang: guilddata.lang});
+    if (puuid.response) return errorhandlerinteraction({interaction, status: puuid.response.status, type: 'account', lang: guilddata.lang, data: puuid.response.data});
     const mmrdb = await getDB('mmr').findOne({puuid: puuid.data.data.puuid});
     const mmr = mmrdb
         ? mmrdb
         : await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${puuid.data.data.region}/${puuid.data.data.puuid}`).catch(error => {
               return error;
           });
-    if (mmr.response) return Uts.errorhandlerinteraction({interaction: interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang});
+    if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang, data: mmr.response.data});
     const bgcanvas = guilddata.background_mmr ? await buildBackground(getCustomBackground(guilddata.background_mmr), 'mmr') : null;
     if (!mmrdb) await getDB('mmr').insertOne({puuid: puuid.data.data.puuid, data: mmr.data, createdAt: new Date()});
     const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error);

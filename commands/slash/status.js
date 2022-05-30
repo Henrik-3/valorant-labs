@@ -4,7 +4,7 @@ export async function execute({interaction, guilddata} = {}) {
     const status = await axios.get(clusters[interaction.options.get('region').value].status).catch(error => {
         return error;
     });
-    if (status.response) return errorhandlerinteraction({interaction, status: status.response.status, lang: guilddata.lang});
+    if (status.response) return errorhandlerinteraction({interaction, status: status.response.status, lang: guilddata.lang, data: status.response.data});
     const maintainance = status.data.data.maintenances;
     const incidents = status.data.data.incidents;
     if (!maintainance.length && !incidents.length)

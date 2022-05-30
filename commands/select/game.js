@@ -27,7 +27,7 @@ export async function execute({interaction, args, guilddata} = {}) {
             attachments: [],
             components: components,
         });
-    if (image.error) return errorhandlerinteraction({interaction: interaction, status: image.error.status, type: 'game', lang: guilddata.lang});
+    if (image.error) return errorhandlerinteraction({interaction, status: image.error.status, type: 'game', lang: guilddata.lang, data: image.error.data});
     if (image.embed) return interaction.editReply({embeds: [image.embed], components: components});
     if (image.image) return interaction.editReply({files: [image.image], embeds: [], components: components});
 }

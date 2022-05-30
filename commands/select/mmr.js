@@ -21,7 +21,7 @@ export async function execute({interaction, args, guilddata} = {}) {
         : await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${args[1]}/${args[2]}`).catch(error => {
               return error;
           });
-    if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang});
+    if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang, data: mmr.response.data});
     const image = await buildMMRImage({mmrdata: mmr.data.data, seasonid: interaction.values[0], guilddata, bgcanvas});
     return interaction.editReply({files: [image], embeds: [], components: components});
 }

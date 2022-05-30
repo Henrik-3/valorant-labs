@@ -31,7 +31,8 @@ export async function execute({interaction, args, guilddata} = {}) {
             puuid: dbstats.puuid,
             name: dbstats.name,
             tag: dbstats.tag,
-            interaction: interaction,
+            interaction,
+            data: dbstats.data,
         });
     const matchlist =
         dbstats.type == 'official'
@@ -44,7 +45,14 @@ export async function execute({interaction, args, guilddata} = {}) {
                   return error;
               });
     console.log(matchlist.response);
-    if (matchlist.response) return errorhandlerinteraction({type: 'matchlist', status: matchlist.response.status, interaction: interaction, lang: guilddata.lang});
+    if (matchlist.response)
+        return errorhandlerinteraction({
+            type: 'matchlist',
+            status: matchlist.response.status,
+            interaction,
+            lang: guilddata.lang,
+            data: matchlist.response.data,
+        });
     const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update);
 
     const bgcanvas = guilddata.background_stats ? await buildBackground(getCustomBackground(guilddata.background_stats), 'stats') : null;

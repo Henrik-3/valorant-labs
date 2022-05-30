@@ -3,7 +3,8 @@ export async function execute({interaction, guilddata} = {}) {
     const request = await axios.get(`https://valorant-api.com/v1/weapons?language=${translations[guilddata.lang].valorant_api_lang}`).catch(error => {
         return error;
     });
-    if (request.response) return errorhandlerinteraction({interaction, status: request.response.status, type: 'weapons', lang: guilddata.lang});
+    if (request.response)
+        return errorhandlerinteraction({interaction, status: request.response.status, type: 'weapons', lang: guilddata.lang, data: request.response.data});
     const fields = [];
     for (let i = 0; request.data.data.length > i; i++) {
         fields.push({

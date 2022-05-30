@@ -24,7 +24,7 @@ export async function execute({interaction, guilddata} = {}) {
     const components = [];
     let dbstats;
     let matchlist;
-    if (link && link.error) return errorhandlerinteraction({interaction, status: link.error, lang: guilddata.lang, type: 'account'});
+    if (link && link.error) return errorhandlerinteraction({interaction, status: link.error, lang: guilddata.lang, type: 'account', data: link.data});
     if (link && !interaction.options.get('riot-id')) {
         dbstats = await getStatsDB({name: link.name, tag: link.tag});
         if (dbstats.status != 200)
@@ -35,7 +35,8 @@ export async function execute({interaction, guilddata} = {}) {
                 puuid: dbstats.puuid,
                 name: dbstats.name,
                 tag: dbstats.tag,
-                interaction: interaction,
+                interaction,
+                data: dbstats.data,
             });
         matchlist =
             dbstats.type == 'official'
@@ -68,7 +69,8 @@ export async function execute({interaction, guilddata} = {}) {
                 puuid: dbstats.puuid,
                 name: dbstats.name,
                 tag: dbstats.tag,
-                interaction: interaction,
+                interaction,
+                data: dbstats.data,
             });
         matchlist =
             dbstats.type == 'official'
@@ -93,7 +95,14 @@ export async function execute({interaction, guilddata} = {}) {
         });
 
     console.log(matchlist.response);
-    if (matchlist.response) return errorhandlerinteraction({type: 'matchlist', status: matchlist.response.status, interaction: interaction, lang: guilddata.lang});
+    if (matchlist.response)
+        return errorhandlerinteraction({
+            type: 'matchlist',
+            status: matchlist.response.status,
+            interaction,
+            lang: guilddata.lang,
+            data: matchlist.response.data,
+        });
     const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update);
 
     const bgcanvas = guilddata.background_stats ? await buildBackground(getCustomBackground(guilddata.background_stats), 'stats') : null;

@@ -3,7 +3,8 @@ export async function execute({interaction, guilddata} = {}) {
     const website = await axios.get(translations[guilddata.lang].patchurl).catch(error => {
         return error;
     });
-    if (website.response) return errorhandlerinteraction({interaction, status: website.response.status, type: 'patch', lang: guilddata.lang});
+    if (website.response)
+        return errorhandlerinteraction({interaction, status: website.response.status, type: 'patch', lang: guilddata.lang, data: website.response.data});
     interaction.editReply({
         embeds: [
             embedBuilder({
