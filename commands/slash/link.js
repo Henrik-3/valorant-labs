@@ -1,9 +1,9 @@
-import {getDB, translations, embedBuilder, ButtonStyle, ComponentType} from '../../methods.js';
+import {getDB, translations, embedBuilder, ButtonStyle, ComponentType, getLink} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
     switch (interaction.options._subcommand) {
         case 'get':
-            const link = await getDB('linkv2').findOne({userid: interaction.user.id});
-            if (!link)
+            const link = await getLink({user: interaction.user});
+            if (link == null || typeof link.error == 'number')
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({
@@ -30,7 +30,7 @@ export async function execute({interaction, guilddata} = {}) {
                 embeds: [
                     embedBuilder({
                         title: translations[guilddata.lang].link.clink_title,
-                        desc: translations[guilddata.lang].link.clink_desc,
+                        desc: translations[guilddata.lang].link.clink_desc + `${link.name}#${link.tag}`,
                         footer: 'VALORANT LABS [LINK GET]',
                     }),
                 ],

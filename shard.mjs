@@ -11,16 +11,16 @@ const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
 
 const manager = new ShardingManager('./index.js', {
-    token: basedata.discordtoken,
-    totalShards: 2,
+    token: basedata.discordtokenreal,
+    totalShards: 10,
     respawn: true,
 });
-//const poster = AutoPoster(basedata.dbltoken, manager)
+const poster = AutoPoster(basedata.dbltoken, manager);
 
 let restart = false;
 setInterval(async () => {
-    //fetchWebsite(manager)
-    //shard_status_update(manager)
+    fetchWebsite(manager);
+    shard_status_update(manager);
 }, 150000);
 
 manager.on('shardCreate', async shard => {
@@ -36,8 +36,8 @@ manager.on('shardCreate', async shard => {
     shard.on('ready', async rshard => {
         console.log('Ready', shard.id);
         if (manager.shards.size == manager.totalShards && restart == false) {
-            //fetchWebsite(manager)
-            //shard_status_update(manager)
+            fetchWebsite(manager);
+            shard_status_update(manager);
             manager.shards.forEach(sshard => {
                 sshard.send('startup');
             });
@@ -58,33 +58,24 @@ fastify.get('/', async (req, res) => {
 });
 
 fastify.get('/v1/guild-available/:guild', async (req, res) => {
-    /*const gcheck = await manager.broadcastEval((client, {guild}) => {
-        try {
-            const check = client.guilds.cache.has(guild)
-            return check ? client.guilds.cache.get(guild) : false
-        } catch(e) {
-
-        }
-    }, {context: {guild: req.params.guild}})
-    if(gcheck.some(item => typeof item == "object")) return res.code(200).send({status: 200, data: gcheck.find(item => typeof item == "object")})
-    res.code(404).send({status: 404, message: "Guild unavailable"})*/
-    const shard = await axios.get(`http://127.0.0.1:3000/v1/guild-available/${req.params.guild}`).catch(error => {
-        return error;
-    });
-    if (shard.response) return res.code(500).send('Error while fetching');
-    res.send(shard.data);
+    const gcheck = await manager.broadcastEval(
+        (client, {guild}) => {
+            try {
+                const check = client.guilds.cache.has(guild);
+                return check ? client.guilds.cache.get(guild) : false;
+            } catch (e) {}
+        },
+        {context: {guild: req.params.guild}}
+    );
+    if (gcheck.some(item => typeof item == 'object')) return res.code(200).send({status: 200, data: gcheck.find(item => typeof item == 'object')});
+    res.code(404).send({status: 404, message: 'Guild unavailable'});
 });
 
 fastify.get('/v1/shard-state', async (req, res) => {
-    /*const sharddata = await manager.broadcastEval(client => {
-        return {status: client.ws.status, ping: client.ws.ping, server: client.guilds.cache.size}
-    })
-    res.send(sharddata)*/
-    const shard = await axios.get('http://127.0.0.1:3000/v1/shard-state').catch(error => {
-        return error;
+    const sharddata = await manager.broadcastEval(client => {
+        return {status: client.ws.status, ping: client.ws.ping, server: client.guilds.cache.size};
     });
-    if (shard.response) return res.code(500).send('Error while fetching');
-    res.send(shard.data);
+    res.send(sharddata);
 });
 
 fastify.get('/v1/pagedata', async (req, res) => {
@@ -125,8 +116,8 @@ fastify.get('/v1/pagedata', async (req, res) => {
 
 fastify.post('/v1/topgg/vote', async (req, res) => {
     const user = await manager.broadcastEval(
-        (c, {user}) => {
-            return c.users.fetch(user);
+        async (c, {user}) => {
+            return await c.users.fetch(user);
         },
         {shard: 0, context: {user: req.body.user}}
     );
@@ -328,17 +319,10 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 return res.code(500).send({
                     error: `There seems to be an issue with your matchlist | Status: ${matchlist.response.status} | Message: ${db.data.data.puuid}`,
                 });
-            matchlist.data.history = [
-                {
-                    matchId: 'b5c24052-273d-40a1-98b3-269e17930643',
-                    gameStartTimeMillis: 1653607252593,
-                    queueId: 'competitive',
-                },
-            ];
             patchStats({
                 dbstats: {
                     puuid: userinfo.data.puuid,
-                    ingamepuuid: '54942ced-1967-5f66-8a16-1e0dae875641' /*db.data.data.puuid*/,
+                    ingamepuuid: db.data.data.puuid,
                     region: region.data.activeShard,
                     type: 'unofficial',
                     tracker: false,
@@ -1148,4 +1132,4 @@ fastify.get('/v1/login', async (req, res) => {
 fastify.listen(4200, '127.0.0.1', () => {
     console.log('API Online');
 });
-manager.spawn();
+manager.spawn({timeout: -1});

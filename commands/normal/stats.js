@@ -48,7 +48,7 @@ export async function execute({message, guilddata, args} = {}) {
                 data: dbstats.data,
             });
         matchlist =
-            dbstats.type == 'official'
+            dbstats.type == 'official' || dbstats.type == null
                 ? await axios
                       .get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${dbstats.puuid}`, {
                           headers: {'X-Riot-Token': riottoken},
@@ -70,7 +70,7 @@ export async function execute({message, guilddata, args} = {}) {
                         footer: 'VALORANT LABS [INVALID RIOT ID]',
                     }),
                 ],
-            }); //TODO
+            });
         const name = message.content.substr(guilddata.prefix.length + 6).split('#');
         dbstats = await getStatsDB({name: name[0], tag: name[1]});
         if (dbstats.status != 200)
@@ -85,7 +85,7 @@ export async function execute({message, guilddata, args} = {}) {
                 data: dbstats.data,
             });
         matchlist =
-            dbstats.type == 'official'
+            dbstats.type == 'official' || dbstats.type == null
                 ? await axios
                       .get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${dbstats.puuid}`, {
                           headers: {'X-Riot-Token': riottoken},
@@ -116,10 +116,11 @@ export async function execute({message, guilddata, args} = {}) {
             lang: guilddata.lang,
             data: matchlist.response.data,
         });
-    const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update);
+
+    const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > (dbstats.last_update ? dbstats.last_update : 0));
 
     const bgcanvas = guilddata.background_stats ? await buildBackground(getCustomBackground(guilddata.background_stats), 'stats') : null;
-    const attachment = await buildStatsImage({dbstats, agent, modes, bgcanvas});
+    const attachment = dbstats.stats ? await buildStatsImage({dbstats, agent, modes, bgcanvas}) : null;
     if (!missingmatches.length) {
         for (let i = 0; dbstats.matches.length > i; i++) {
             components.push({
@@ -131,7 +132,7 @@ export async function execute({message, guilddata, args} = {}) {
         }
     }
     const newmessage = await message.reply({
-        files: [attachment],
+        files: attachment ? [attachment] : null,
         embeds: missingmatches.length
             ? [
                   embedBuilder({
@@ -160,7 +161,6 @@ export async function execute({message, guilddata, args} = {}) {
             : [],
     });
     console.timeEnd();
-    console.log(missingmatches);
     if (missingmatches.length)
         patchStats({
             dbstats,

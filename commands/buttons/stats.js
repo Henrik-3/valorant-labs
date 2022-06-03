@@ -35,7 +35,7 @@ export async function execute({interaction, args, guilddata} = {}) {
             data: dbstats.data,
         });
     const matchlist =
-        dbstats.type == 'official'
+        dbstats.type == 'official' || dbstats.type == null
             ? await axios
                   .get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${dbstats.puuid}`, {headers: {'X-Riot-Token': riottoken}})
                   .catch(error => {
@@ -44,7 +44,6 @@ export async function execute({interaction, args, guilddata} = {}) {
             : await axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/matches/${dbstats.region}/${dbstats.ingamepuuid}`).catch(error => {
                   return error;
               });
-    console.log(matchlist.response);
     if (matchlist.response)
         return errorhandlerinteraction({
             type: 'matchlist',
@@ -53,10 +52,10 @@ export async function execute({interaction, args, guilddata} = {}) {
             lang: guilddata.lang,
             data: matchlist.response.data,
         });
-    const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > dbstats.last_update);
+    const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > (dbstats.last_update ? dbstats.last_update : 0));
 
     const bgcanvas = guilddata.background_stats ? await buildBackground(getCustomBackground(guilddata.background_stats), 'stats') : null;
-    const attachment = await buildStatsImage({dbstats, agent, modes, bgcanvas});
+    const attachment = dbstats.stats ? await buildStatsImage({dbstats, agent, modes, bgcanvas}) : null;
     if (!missingmatches.length) {
         for (let i = 0; dbstats.matches.length > i; i++) {
             components.push({
@@ -68,7 +67,7 @@ export async function execute({interaction, args, guilddata} = {}) {
         }
     }
     const newmessage = await interaction.editReply({
-        files: [attachment],
+        files: attachment ? [attachment] : null,
         embeds: missingmatches.length
             ? [
                   embedBuilder({

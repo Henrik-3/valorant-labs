@@ -11,9 +11,12 @@ const api = JSON.parse(readFileSync('./api.json'));
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const client = new Client({
     rest: {
-        version: 10,
+        version: '9',
     },
-    intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent],
+    ws: {
+        version: '9',
+    },
+    intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds],
     makeCache: Options.cacheWithLimits({
         MessageManager: {
             sweepInterval: 1800,
@@ -60,6 +63,8 @@ for (let i = 0; contextcommands.length > i; i++) {
     const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
     client.context.set(cmd.name, cmd);
 }
+
+client.ws.on('');
 
 client.on('ready', async () => {
     console.log('tes');

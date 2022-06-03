@@ -40,7 +40,7 @@ axiosRetry(axios, {
     retries: 2,
     shouldResetTimeout: true,
     retryCondition: error => {
-        return code === 'ECONNABORTED' || code === 'ECONNRESET' || code === 'ERR_REQUEST_ABORTED';
+        return error.code === 'ECONNABORTED' || error.code === 'ECONNRESET' || error.code === 'ERR_REQUEST_ABORTED';
     },
 });
 
@@ -598,8 +598,8 @@ export const shard_status_update = async function (manager) {
     }
     manager.broadcastEval(
         (client, {efields}) => {
-            if (client.channels.cache.has('705516265749348382'))
-                client.channels.cache.get('705516265749348382').messages.edit('979466949782290472', {
+            if (client.channels.cache.has('911626508433506344'))
+                client.channels.cache.get('911626508433506344').messages.edit('911665315396587550', {
                     content: '',
                     embeds: [
                         {
@@ -740,29 +740,36 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
             `https://media.valorant-api.com/competitivetiers/e4e9a692-288f-63ca-7835-16fbf6234fda/${rank.data.data.currenttier}/largeicon.png`
         );
         buildText({
-            ctx: ctx,
+            ctx,
             text: rank.data.data.mmr_change_to_last_game > 0 ? `+${rank.data.data.mmr_change_to_last_game}` : rank.data.data.mmr_change_to_last_game,
             size: 50,
             x: 1200,
             y: 820,
         });
+        buildText({
+            ctx,
+            text: rank.data.data.elo,
+            size: 75,
+            x: 1085,
+            y: 575,
+        });
     }
 
     ctx.drawImage(rank_image, 1075, 600, 200, 200);
-    buildText({ctx: ctx, text: `${dbstats.name}#${dbstats.tag}`, size: 130, x: 1920, y: 255, color: gradient, align: 'center'});
-    buildText({ctx: ctx, text: dbstats.stats.kills, size: 80, x: 405, y: 610, color: '#ff4654'});
-    buildText({ctx: ctx, text: dbstats.stats.deaths, size: 80, x: 460, y: 740, color: '#ff4654'});
-    buildText({ctx: ctx, text: dbstats.stats.assists, size: 80, x: 490, y: 872, color: '#ff4654'});
-    buildText({ctx: ctx, text: (dbstats.stats.kills / dbstats.stats.deaths).toFixed(2), size: 80, x: 330, y: 1005, color: '#ff4654'});
-    buildText({ctx: ctx, text: ((dbstats.stats.kills + dbstats.stats.assists) / dbstats.stats.deaths).toFixed(2), size: 80, x: 420, y: 1135, color: '#ff4654'});
+    buildText({ctx, text: `${dbstats.name}#${dbstats.tag}`, size: 130, x: 1920, y: 255, color: gradient, align: 'center'});
+    buildText({ctx, text: dbstats.stats?.kills, size: 80, x: 405, y: 610, color: '#ff4654'});
+    buildText({ctx, text: dbstats.stats?.deaths, size: 80, x: 460, y: 740, color: '#ff4654'});
+    buildText({ctx, text: dbstats.stats?.assists, size: 80, x: 490, y: 872, color: '#ff4654'});
+    buildText({ctx, text: (dbstats.stats?.kills / dbstats.stats?.deaths).toFixed(2), size: 80, x: 330, y: 1005, color: '#ff4654'});
+    buildText({ctx, text: ((dbstats.stats?.kills + dbstats.stats?.assists) / dbstats.stats?.deaths).toFixed(2), size: 80, x: 420, y: 1135, color: '#ff4654'});
 
-    const est = dbstats.stats.matches * (35 * 60000);
-    buildText({ctx: ctx, text: dbstats.stats.matches, size: 80, x: 1750, y: 610, color: '#ff4654'});
-    buildText({ctx: ctx, text: dbstats.stats.wins, size: 80, x: 1600, y: 740, color: '#ff4654'});
-    buildText({ctx: ctx, text: `${((dbstats.stats.wins / dbstats.stats.matches) * 100).toFixed(2)}%`, size: 80, x: 1650, y: 872, color: '#ff4654'});
-    buildText({ctx: ctx, text: dbstats.stats.aces, size: 80, x: 1600, y: 1005, color: '#ff4654'});
+    const est = dbstats.stats?.matches * (35 * 60000);
+    buildText({ctx, text: dbstats.stats?.matches, size: 80, x: 1750, y: 610, color: '#ff4654'});
+    buildText({ctx, text: dbstats.stats?.wins, size: 80, x: 1600, y: 740, color: '#ff4654'});
+    buildText({ctx, text: `${((dbstats.stats?.wins / dbstats.stats?.matches) * 100).toFixed(2)}%`, size: 80, x: 1650, y: 872, color: '#ff4654'});
+    buildText({ctx, text: dbstats.stats?.aces, size: 80, x: 1600, y: 1005, color: '#ff4654'});
     buildText({
-        ctx: ctx,
+        ctx,
         text: `${moment.duration(est).days()}D ${moment.duration(est).hours()}H ${moment.duration(est).minutes()}M ${moment.duration(est).seconds()}S`,
         size: 80,
         x: 1375,
@@ -774,13 +781,13 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
     const best_agent = dbstats.agents.filter(item => item.agent != '').sort((agent1, agent2) => agent2.playtime - agent1.playtime)[0];
     if (best_agent) {
         if (!agent.response) {
-            const a_img = await Canvas.loadImage(agent.find(item => item.displayName == best_agent.agent).fullPortrait);
-            ctx.drawImage(a_img, 2600, 525, 512, 512);
-            buildText({ctx: ctx, text: (best_agent.kills / best_agent.deaths).toFixed(2), size: 80, x: 3535, y: 690, align: 'center', color: '#ff4654'});
-            buildText({ctx: ctx, text: best_agent.matches, size: 80, x: 3535, y: 865, align: 'center', color: '#ff4654'});
-            buildText({ctx: ctx, text: best_agent.wins, size: 80, x: 3535, y: 1040, align: 'center', color: '#ff4654'});
+            const a_img = await Canvas.loadImage(agent.find(item => item.displayName.toLowerCase() == best_agent.agent.toLowerCase()).fullPortrait);
+            ctx.drawImage(a_img, 2475, 475, 725, 725);
+            buildText({ctx, text: (best_agent.kills / best_agent.deaths).toFixed(2), size: 80, x: 3535, y: 690, align: 'center', color: '#ff4654'});
+            buildText({ctx, text: best_agent.matches, size: 80, x: 3535, y: 865, align: 'center', color: '#ff4654'});
+            buildText({ctx, text: best_agent.wins, size: 80, x: 3540, y: 1040, align: 'center', color: '#ff4654'});
             buildText({
-                ctx: ctx,
+                ctx,
                 text: `${moment.duration(best_agent.playtime).days()}D ${moment.duration(best_agent.playtime).hours()}H ${moment
                     .duration(best_agent.playtime)
                     .minutes()}M ${moment.duration(best_agent.playtime).seconds()}S`,
@@ -800,28 +807,39 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
     const matches = Array.from(dbstats.matches);
     matches.length = matches.length >= 3 ? 3 : matches.length;
     for (let i = 0; matches.length > i; i++) {
-        buildText({ctx: ctx, text: matches[i].map, size: 110, x: 825, y: mapk[i]});
-        buildText({ctx: ctx, text: matches[i].mode, size: 90, x: 825, y: modek[i]});
-        const mode_data = modes.find(item => item.displayName == (matches[i].mode == 'Competitive' || matches[i].mode == 'Unrated' ? 'Normal' : matches[i].mode));
+        buildText({ctx, text: matches[i].map, size: 110, x: 825, y: mapk[i]});
+        buildText({ctx, text: matches[i].mode, size: 90, x: 825, y: modek[i]});
+        const mode_data = modes.find(
+            item => item.displayName.toLowerCase() == (matches[i].mode == 'Competitive' || matches[i].mode == 'Unrated' ? 'Standard' : matches[i].mode).toLowerCase()
+        );
         if (mode_data) {
             const mode_img = await Canvas.loadImage(mode_data.displayIcon);
             ctx.drawImage(mode_img, 700, modeimgk[i], 100, 100);
         }
-        const agent_img = await Canvas.loadImage(agent.find(item => item.displayName == matches[i].agent).displayIcon);
+        console.log(matches[i]);
+        const agent_img = await Canvas.loadImage(agent.find(item => item.displayName.toLowerCase() == matches[i].agent.toLowerCase()).displayIcon);
         ctx.drawImage(agent_img, 700, agentimgk[i], 100, 100);
-        buildText({ctx: ctx, text: 'Score', size: 110, x: 1525, y: mapk[i]});
-        buildText({ctx: ctx, text: matches[i].teamblue_rounds, size: 90, x: 1595, y: modek[i], color: '#0088ff', align: 'center'});
-        buildText({ctx: ctx, text: ':', size: 90, x: 1675, y: modek[i], align: 'center'});
-        buildText({ctx: ctx, text: matches[i].teamred_rounds, size: 90, x: 1750, y: modek[i], color: '#ff4654', align: 'center'});
-        buildText({ctx: ctx, text: 'K/D/A', size: 110, x: 2050, y: mapk[i]});
-        buildText({ctx: ctx, text: `${matches[i].kills}/${matches[i].deaths}/${matches[i].assists}`, size: 90, x: 2200, y: modek[i], align: 'center'});
-        buildText({ctx: ctx, text: `/game ${matches[i].gamekey}`, size: 80, x: 2600, y: keyk});
+        buildText({ctx, text: 'Score', size: 110, x: 1525, y: mapk[i]});
+        buildText({ctx, text: matches[i].teamblue_rounds, size: 90, x: 1595, y: modek[i], color: '#0088ff', align: 'center'});
+        buildText({ctx, text: ':', size: 90, x: 1675, y: modek[i], align: 'center'});
+        buildText({ctx, text: matches[i].teamred_rounds, size: 90, x: 1750, y: modek[i], color: '#ff4654', align: 'center'});
+        buildText({ctx, text: 'K/D/A', size: 110, x: 2050, y: mapk[i]});
+        buildText({ctx, text: `${matches[i].kills}/${matches[i].deaths}/${matches[i].assists}`, size: 90, x: 2200, y: modek[i], align: 'center'});
+        buildText({ctx, text: `/game ${matches[i].gamekey}`, size: 80, x: 2500, y: keyk});
         keyk += 266.6;
     }
     return new Attachment(canvas.toBuffer(), `valorant-stats-${dbstats.name}-${dbstats.tag}.png`, {description: 'VALORANT LABS Stats'});
 };
 export const patchStats = async function ({dbstats, mmatches, message, lang, agent, modes, bgcanvas} = {}) {
     const reqs = [];
+    if (!dbstats.stats) {
+        dbstats.false;
+        dbstats.last_update = Date.now();
+        dbstats.agents = [];
+        dbstats.matches = [];
+        dbstats.stats = {};
+    }
+    !dbstats.ingamepuuid ? (mmatches.length = mmatches.length > 15 ? 15 : mmatches.length) : null;
     for (let i = 0; mmatches.length > i; i++) {
         reqs.push(
             dbstats.ingamepuuid
@@ -842,22 +860,35 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
     fmatches = fmatches.map(item => {
         return item.value;
     });
-    console.log(fmatches);
     for (let i = 0; fmatches.length > i; i++) {
         if (!fmatches[i].response && !fmatches.code) {
             if (dbstats.ingamepuuid) {
+                if (!fmatches[i].data.data) console.error(fmatches[i], mmatches[i].matchId);
                 if (fmatches[i].data.data.metadata.mode != 'Deathmatch') {
                     if (fmatches[i].data.data.metadata.mode != 'Custom Game') {
                         const player = fmatches[i].data.data.players.all_players.find(item => item.puuid == dbstats.ingamepuuid);
-                        const team = fmatches[i].data.data.teams[player.team.toLowerCase()];
-                        dbstats.stats.matches = !dbstats.stats.matches ? 1 : dbstats.stats.matches + 1;
-                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats.kills ? dbstats.stats.kills : 0) : 0;
-                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats.deaths ? dbstats.stats.deaths : 0) : 0;
+                        let team;
+                        try {
+                            team = fmatches[i].data.data.teams[player.team.toLowerCase()];
+                        } catch (e) {
+                            console.error(
+                                dbstats.ingamepuuid,
+                                dbstats.puuid,
+                                fmatches[i].data.data.players.all_players.map(i => {
+                                    return i.puuid;
+                                }),
+                                fmatches[i].data.data.metadata.matchid,
+                                e
+                            );
+                        }
+                        dbstats.stats.matches = !dbstats.stats?.matches ? 1 : dbstats.stats?.matches + 1;
+                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats?.kills ? dbstats.stats?.kills : 0) : 0;
+                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats?.deaths ? dbstats.stats?.deaths : 0) : 0;
                         dbstats.stats.assists = !isNaN(player.stats.assists)
-                            ? Number(player.stats.assists) + Number(dbstats.stats.assists ? dbstats.stats.assists : 0)
+                            ? Number(player.stats.assists) + Number(dbstats.stats?.assists ? dbstats.stats?.assists : 0)
                             : 0;
                         dbstats.stats.headshots = !isNaN(player.stats.headshots)
-                            ? Number(player.stats.headshots) + Number(dbstats.stats.headshots ? dbstats.stats.headshots : 0)
+                            ? Number(player.stats.headshots) + Number(dbstats.stats?.headshots ? dbstats.stats?.headshots : 0)
                             : 0;
                         let aces = 0;
                         let quadras = 0;
@@ -871,11 +902,11 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 }
                             }
                         }
-                        dbstats.stats.aces = Number(aces) + Number(dbstats.stats.aces ? dbstats.stats.aces : 0);
-                        dbstats.stats.triples = Number(triples) + Number(dbstats.stats.triples ? dbstats.stats.triples : 0);
-                        dbstats.stats.quadras = Number(quadras) + Number(dbstats.stats.quadras ? dbstats.stats.quadras : 0);
-                        if (team.has_won) dbstats.stats.wins = !dbstats.stats.wins ? 1 : dbstats.stats.wins + 1;
-                        if (!team.has_won) dbstats.stats.wins = !dbstats.stats.wins ? 0 : dbstats.stats.wins + 0;
+                        dbstats.stats.aces = Number(aces) + Number(dbstats.stats?.aces ? dbstats.stats?.aces : 0);
+                        dbstats.stats.triples = Number(triples) + Number(dbstats.stats?.triples ? dbstats.stats?.triples : 0);
+                        dbstats.stats.quadras = Number(quadras) + Number(dbstats.stats?.quadras ? dbstats.stats?.quadras : 0);
+                        if (team.has_won) dbstats.stats.wins = !dbstats.stats?.wins ? 1 : dbstats.stats?.wins + 1;
+                        if (!team.has_won) dbstats.stats.wins = !dbstats.stats?.wins ? 0 : dbstats.stats?.wins + 0;
 
                         const dbagent = dbstats.agents.find(item => item.agent == player.character);
                         const dbindex = dbstats.agents.findIndex(item => item.agent == player.character);
@@ -922,7 +953,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                             while (!available) {
                                 const ridcheck = await getDB('games').findOne({gamekey: rid});
                                 if (!ridcheck) {
-                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.data.metadata.matchid});
+                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.data.metadata.matchid, createdAt: new Date()});
                                     dbstats.matches.push({
                                         won: team.has_won,
                                         gamekey: rid,
@@ -975,7 +1006,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                             while (!available) {
                                 const ridcheck = await getDB('games').findOne({gamekey: rid});
                                 if (!ridcheck) {
-                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.data.metadata.matchid});
+                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.data.metadata.matchid, createdAt: new Date()});
                                     dbstats.matches.push({
                                         won: team.puuid == dbstats.ingamepuuid ? true : false,
                                         gamekey: rid,
@@ -1004,13 +1035,13 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
             if (!dbstats.ingamepuuid) {
                 if (fmatches[i].data.matchInfo.queueId != 'deathmatch') {
                     if (fmatches[i].data.matchInfo.queueId != '') {
-                        const player = fmatches[i].data.players.find(item => item.puuid == puuid);
+                        const player = fmatches[i].data.players.find(item => item.puuid == dbstats.puuid);
                         const team = fmatches[i].data.teams.find(item => item.teamId == player.teamId);
-                        dbstats.stats.matches = !dbstats.stats.matches ? 1 : dbstats.stats.matches + 1;
-                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats.kills ? dbstats.stats.kills : 0) : 0;
-                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats.deaths ? dbstats.stats.deaths : 0) : 0;
+                        dbstats.stats.matches = !dbstats.stats?.matches ? 1 : dbstats.stats?.matches + 1;
+                        dbstats.stats.kills = !isNaN(player.stats.kills) ? Number(player.stats.kills) + Number(dbstats.stats?.kills ? dbstats.stats?.kills : 0) : 0;
+                        dbstats.stats.deaths = !isNaN(player.stats.deaths) ? Number(player.stats.deaths) + Number(dbstats.stats?.deaths ? dbstats.stats?.deaths : 0) : 0;
                         dbstats.stats.assists = !isNaN(player.stats.assists)
-                            ? Number(player.stats.assists) + Number(dbstats.stats.assists ? dbstats.stats.assists : 0)
+                            ? Number(player.stats.assists) + Number(dbstats.stats?.assists ? dbstats.stats?.assists : 0)
                             : 0;
                         let headshots = 0;
                         let aces = 0;
@@ -1018,7 +1049,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                         let triples = 0;
                         for (let j = 0; fmatches[i].data.roundResults.length > j; j++) {
                             for (let k = 0; fmatches[i].data.roundResults[j].playerStats.length > k; k++) {
-                                if (fmatches[i].data.roundResults[j].playerStats[k].puuid == puuid) {
+                                if (fmatches[i].data.roundResults[j].playerStats[k].puuid == dbstats.puuid) {
                                     for (let f = 0; fmatches[i].data.roundResults[j].playerStats[k].damage.length > f; f++) {
                                         headshots += fmatches[i].data.roundResults[j].playerStats[k].damage[f].headshots;
                                     }
@@ -1028,24 +1059,25 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 }
                             }
                         }
-                        dbstats.stats.headshots = !isNaN(player.stats.headshots) ? Number(headshots) + Number(dbstats.stats.headshots ? dbstats.stats.headshots : 0) : 0;
-                        dbstats.stats.aces = Number(aces) + Number(dbstats.stats.aces ? dbstats.stats.aces : 0);
-                        dbstats.stats.triples = Number(triples) + Number(dbstats.stats.triples ? dbstats.stats.triples : 0);
-                        dbstats.stats.quadras = Number(quadras) + Number(dbstats.stats.quadras ? dbstats.stats.quadras : 0);
-                        if (team.won) dbstats.stats.wins = !dbstats.stats.wins ? 1 : dbstats.stats.wins + 1;
-                        if (!team.won) dbstats.stats.wins = !dbstats.stats.wins ? 0 : dbstats.stats.wins + 0;
+                        dbstats.stats.headshots = !isNaN(player.stats.headshots)
+                            ? Number(headshots) + Number(dbstats.stats?.headshots ? dbstats.stats?.headshots : 0)
+                            : 0;
+                        dbstats.stats.aces = Number(aces) + Number(dbstats.stats?.aces ? dbstats.stats?.aces : 0);
+                        dbstats.stats.triples = Number(triples) + Number(dbstats.stats?.triples ? dbstats.stats?.triples : 0);
+                        dbstats.stats.quadras = Number(quadras) + Number(dbstats.stats?.quadras ? dbstats.stats?.quadras : 0);
+                        if (team.won) dbstats.stats.wins = !dbstats.stats?.wins ? 1 : dbstats.stats?.wins + 1;
+                        if (!team.won) dbstats.stats.wins = !dbstats.stats?.wins ? 0 : dbstats.stats?.wins + 0;
 
                         const agentid = agents.find(item => item.id == player.characterId);
-                        console.log(player.character, puuid, dbstats.stats);
                         const dbagent = dbstats.agents.find(item => item.agent == agentid.name);
                         const dbindex = dbstats.agents.findIndex(item => item.agent == agentid.name);
                         if (dbindex != -1) dbstats.agents.splice(dbindex, 1);
                         const agent = dbindex != -1 ? dbagent : {};
-                        agent.agent = player.character;
-                        agent.playtime = !isNaN(fmatches[i].data.data.metadata.game_length)
-                            ? Number(agent.playtime ? agent.playtime : 0) + Number(fmatches[i].data.data.metadata.game_length)
+                        agent.agent = agentid.name;
+                        agent.playtime = !isNaN(fmatches[i].data.matchInfo.gameLengthMillis)
+                            ? Number(agent.playtime ? agent.playtime : 0) + Number(fmatches[i].data.matchInfo.gameLengthMillis)
                             : 0;
-                        agent.matches += 1;
+                        agent.matches = !agent.matches ? 1 : agent.matches + 1;
                         agent.kills = !isNaN(player.stats.kills) ? Number(agent.kills ? agent.kills : 0) + Number(player.stats.kills) : 0;
                         agent.deaths = !isNaN(player.stats.deaths) ? Number(agent.deaths ? agent.deaths : 0) + Number(player.stats.deaths) : 0;
                         agent.assists = !isNaN(player.stats.assists) ? Number(agent.assists ? agent.assists : 0) + Number(player.stats.assists) : 0;
@@ -1065,8 +1097,8 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 id: fmatches[i].data.matchInfo.matchId,
                                 start: fmatches[i].data.matchInfo.gameStartMillis,
                                 agent: agentid.name,
-                                mode: gamemodes[fmatches[i].data.data.metadata.mode].name,
-                                map: maps[fmatches[i].data.data.metadata.map],
+                                mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
+                                map: maps[fmatches[i].data.matchInfo.mapId],
                                 teamblue_won: team.won,
                                 teamblue_rounds: team.roundsWon,
                                 teamred_won: !team.won,
@@ -1082,15 +1114,15 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                             while (!available) {
                                 const ridcheck = await getDB('games').findOne({gamekey: rid});
                                 if (!ridcheck) {
-                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.matchInfo.matchId});
+                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.matchInfo.matchId, createdAt: new Date()});
                                     dbstats.matches.push({
                                         won: team.won,
                                         gamekey: rid,
                                         id: fmatches[i].data.matchInfo.matchId,
                                         start: fmatches[i].data.matchInfo.gameStartMillis,
                                         agent: agentid.name,
-                                        mode: gamemodes[fmatches[i].data.data.metadata.mode].name,
-                                        map: maps[fmatches[i].data.data.metadata.map],
+                                        mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
+                                        map: maps[fmatches[i].data.matchInfo.mapId],
                                         teamblue_won: team.won,
                                         teamblue_rounds: team.roundsWon,
                                         teamred_won: !team.won,
@@ -1108,8 +1140,9 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                     }
                 } else {
                     if (fmatches[i].data.matchInfo.queueId != '') {
-                        const player = fmatches[i].data.players.find(item => item.puuid == puuid);
-                        const team = fmatches[i].data.teams.player.find(item => item.teamId == puuid);
+                        const player = fmatches[i].data.players.find(item => item.puuid == dbstats.puuid);
+                        const agentid = agents.find(item => item.id == player.characterId);
+                        const team = fmatches[i].data.teams.find(item => item.teamId == dbstats.puuid);
 
                         const dbcheck = await getDB('games').findOne({matchid: fmatches[i].data.matchInfo.matchId});
                         if (dbcheck)
@@ -1119,8 +1152,8 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 id: fmatches[i].data.matchInfo.matchId,
                                 start: fmatches[i].data.matchInfo.gameStartMillis,
                                 agent: agentid.name,
-                                mode: gamemodes[fmatches[i].data.data.metadata.mode].name,
-                                map: maps[fmatches[i].data.data.metadata.map],
+                                mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
+                                map: maps[fmatches[i].data.matchInfo.mapId],
                                 teamblue_won: team.won,
                                 teamblue_rounds: team.roundsWon,
                                 teamred_won: !team.won,
@@ -1136,15 +1169,15 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                             while (!available) {
                                 const ridcheck = await getDB('games').findOne({gamekey: rid});
                                 if (!ridcheck) {
-                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.matchInfo.matchId});
+                                    getDB('games').insertOne({gamekey: rid, matchid: fmatches[i].data.matchInfo.matchId, createdAt: new Date()});
                                     dbstats.matches.push({
                                         won: team.won,
                                         gamekey: rid,
                                         id: fmatches[i].data.matchInfo.matchId,
                                         start: fmatches[i].data.matchInfo.gameStartMillis,
                                         agent: agentid.name,
-                                        mode: gamemodes[fmatches[i].data.data.metadata.mode].name,
-                                        map: maps[fmatches[i].data.data.metadata.map],
+                                        mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
+                                        map: maps[fmatches[i].data.matchInfo.mapId],
                                         teamblue_won: team.won,
                                         teamblue_rounds: team.roundsWon,
                                         teamred_won: !team.won,
@@ -1181,7 +1214,6 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                 emoji: Object.values(gamemodes).find(item => item.name == dbstats.matches[i].mode).emoji,
             });
         }
-        console.log(components, [...new Set(components)]);
         message.edit({
             embeds: [],
             files: [attachment],
@@ -1252,7 +1284,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
             const mode_image = await Canvas.loadImage(`./assets/modes/${Object.values(gamemodes).find(item => item.name == match.data.data.metadata.mode).path}`);
             ctx.drawImage(mode_image, 550, 975, 250, 250);
             buildText({
-                ctx: ctx,
+                ctx,
                 text: `${match.data.data.metadata.mode} | ${match.data.data.metadata.map} | ${match.data.data.metadata.cluster} | ${
                     match.data.data.metadata.game_version.split('-')[0]
                 } -${match.data.data.metadata.game_version.split('-')[1]}`,
@@ -1261,7 +1293,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                 y: 1075,
             });
             buildText({
-                ctx: ctx,
+                ctx,
                 text: `${moment.duration(match.data.data.metadata.game_length).minutes()}m ${moment.duration(match.data.data.metadata.game_length).seconds()}s | ${moment(
                     match.data.data.metadata.game_start * 1000
                 ).format('LLLL')}`,
@@ -1272,8 +1304,8 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
             });
             const red_players = match.data.data.players.red.sort((player2, player1) => player1.stats.score - player2.stats.score);
             const blue_players = match.data.data.players.blue.sort((player2, player1) => player1.stats.score - player2.stats.score);
-            buildText({ctx: ctx, text: match.data.data.teams.blue.rounds_won, size: 90, x: 3450, y: 1050, color: '#00ffff', align: 'right'});
-            buildText({ctx: ctx, text: match.data.data.teams.red.rounds_won, size: 90, x: 3450, y: 1200, color: '#ff4654', align: 'right'});
+            buildText({ctx, text: match.data.data.teams.blue.rounds_won, size: 90, x: 3450, y: 1050, color: '#00ffff', align: 'right'});
+            buildText({ctx, text: match.data.data.teams.red.rounds_won, size: 90, x: 3450, y: 1200, color: '#ff4654', align: 'right'});
             let x_blue_name = 390;
             let x_blue_level = 382;
             let x_blue_score = 370;
@@ -1295,11 +1327,11 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                 ctx.drawImage(player, x_red_rank, 1320, 75, 75);
                 const agent = await Canvas.loadImage(getAgents().find(item => item.displayName.toLowerCase() == red_players[i].character.toLowerCase()).fullPortraitV2);
                 ctx.drawImage(agent, x_red_agent, 1480, 405, 405);
-                buildText({ctx: ctx, text: `${red_players[i].name} #${red_players[i].tag}`, size: 40, x: x_red_name, y: 1450, color: '#fff', align: 'center'});
-                buildText({ctx: ctx, text: red_players[i].stats.score, size: 60, x: x_red_score, y: 2025, color: '#fff', align: 'center'});
-                buildText({ctx: ctx, text: red_players[i].stats.kills, size: 60, x: x_red_kills, y: 2025, color: '#fff', align: 'center'});
+                buildText({ctx, text: `${red_players[i].name} #${red_players[i].tag}`, size: 40, x: x_red_name, y: 1450, color: '#fff', align: 'center'});
+                buildText({ctx, text: red_players[i].stats.score, size: 60, x: x_red_score, y: 2025, color: '#fff', align: 'center'});
+                buildText({ctx, text: red_players[i].stats.kills, size: 60, x: x_red_kills, y: 2025, color: '#fff', align: 'center'});
                 buildText({
-                    ctx: ctx,
+                    ctx,
                     text: (red_players[i].stats.kills / red_players[i].stats.deaths).toFixed(2),
                     size: 60,
                     x: x_red_kd,
@@ -1307,7 +1339,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                     color: '#fff',
                     align: 'left',
                 });
-                buildText({ctx: ctx, text: red_players[i].level, size: 30, x: x_red_level, y: 1385, color: '#fff', align: 'center'});
+                buildText({ctx, text: red_players[i].level, size: 30, x: x_red_level, y: 1385, color: '#fff', align: 'center'});
                 x_red_rank += 768;
                 x_red_name += 768;
                 x_red_score += 768;
@@ -1323,11 +1355,11 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                 ctx.drawImage(player, x_blue_rank, 110, 75, 75);
                 const agent = await Canvas.loadImage(getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortraitV2);
                 ctx.drawImage(agent, x_blue_agent, 270, 405, 405);
-                buildText({ctx: ctx, text: `${blue_players[i].name} #${blue_players[i].tag}`, size: 40, x: x_blue_name, y: 240, color: '#fff', align: 'center'});
-                buildText({ctx: ctx, text: blue_players[i].stats.score, size: 60, x: x_blue_score, y: 815, color: '#fff', align: 'center'});
-                buildText({ctx: ctx, text: blue_players[i].stats.kills, size: 60, x: x_blue_kills, y: 815, color: '#fff', align: 'center'});
+                buildText({ctx, text: `${blue_players[i].name} #${blue_players[i].tag}`, size: 40, x: x_blue_name, y: 240, color: '#fff', align: 'center'});
+                buildText({ctx, text: blue_players[i].stats.score, size: 60, x: x_blue_score, y: 815, color: '#fff', align: 'center'});
+                buildText({ctx, text: blue_players[i].stats.kills, size: 60, x: x_blue_kills, y: 815, color: '#fff', align: 'center'});
                 buildText({
-                    ctx: ctx,
+                    ctx,
                     text: (blue_players[i].stats.kills / blue_players[i].stats.deaths).toFixed(2),
                     size: 60,
                     x: x_blue_kd,
@@ -1335,7 +1367,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                     color: '#fff',
                     align: 'left',
                 });
-                buildText({ctx: ctx, text: blue_players[i].level, size: 30, x: x_blue_level, y: 170, color: '#fff', align: 'center'});
+                buildText({ctx, text: blue_players[i].level, size: 30, x: x_blue_level, y: 170, color: '#fff', align: 'center'});
                 x_blue_rank += 768;
                 x_blue_name += 768;
                 x_blue_score += 768;
@@ -1351,7 +1383,6 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
 export const buildBackground = async function (data, type) {
     const canvas = Canvas.createCanvas(3840, 2160);
     const ctx = canvas.getContext('2d');
-    console.log(data);
     const background = await Canvas.loadImage(data);
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
     const stats = await Canvas.loadImage(`assets/background/VALORANT_${type}_template.png`);
@@ -1368,11 +1399,13 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
     let seasonkey;
     let entries;
     if (!seasonid) {
-        entries = Object.entries(mmrdata.by_season).find(item => !item[1].error);
+        entries = Object.entries(mmrdata.by_season).find(item => !item[1].error && item[1].wins != 0);
+        if (entries[1] == undefined) console.error(mmrdata);
         seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0);
         seasonkey = entries[0];
     } else {
-        entries = Object.entries(mmrdata.by_season).find(item => item[0] == seasonid);
+        entries = Object.entries(mmrdata.by_season).find(item => item[0] == seasonid && item[1].wins != 0);
+        if (entries[1] == undefined) console.error(mmrdata);
         seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0);
         seasonkey = entries[0];
     }
@@ -1381,7 +1414,7 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
         x: 1375.5,
         y: 200,
     };
-    const background = bgcanvas ? bgcanvas : await Canvas.loadImage(ranks[seasonvalue[0].tier].mmr);
+    const background = bgcanvas ? bgcanvas : await Canvas.loadImage(ranks[seasonvalue[0].tier ? seasonvalue[0].tier : 0].mmr);
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
     const wins = entries[1].wins;
     const color = ranks[seasonvalue[0].tier].color;
@@ -1395,7 +1428,7 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
     ctx.drawImage(border, 1135, 200, 1765, 1765);
 
     buildText({
-        ctx: ctx,
+        ctx,
         text: seasonkey.toUpperCase(),
         size: 200,
         x: multiplier.x + ((125 * multiplier.triangle) / 2) * 8.25,
@@ -1405,7 +1438,7 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
         font: 'anton',
     });
     buildText({
-        ctx: ctx,
+        ctx,
         text: seasonvalue[0].patched_tier.toUpperCase(),
         size: 200,
         x: multiplier.x + ((125 * multiplier.triangle) / 2) * 8.25,
@@ -1414,16 +1447,16 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
         align: 'center',
         font: 'anton',
     });
-    buildText({ctx: ctx, text: mmrdata.current_data.currenttierpatched, size: 125, x: 400, y: 1245, color: color, align: 'left', font: 'anton'});
-    buildText({ctx: ctx, text: mmrdata.current_data.ranking_in_tier + ' RR', size: 125, x: 675, y: 1445, color: color, align: 'left', font: 'anton'});
-    buildText({ctx: ctx, text: mmrdata.current_data.mmr_change_to_last_game, size: 125, x: 800, y: 1645, color: color, align: 'left', font: 'anton'});
-    buildText({ctx: ctx, text: mmrdata.current_data.elo, size: 125, x: 325, y: 1845, color: color, align: 'left', font: 'anton'});
+    buildText({ctx, text: mmrdata.current_data.currenttierpatched, size: 125, x: 400, y: 1245, color: color, align: 'left', font: 'anton'});
+    buildText({ctx, text: mmrdata.current_data.ranking_in_tier + ' RR', size: 125, x: 675, y: 1445, color: color, align: 'left', font: 'anton'});
+    buildText({ctx, text: mmrdata.current_data.mmr_change_to_last_game, size: 125, x: 800, y: 1645, color: color, align: 'left', font: 'anton'});
+    buildText({ctx, text: mmrdata.current_data.elo, size: 125, x: 325, y: 1845, color: color, align: 'left', font: 'anton'});
 
     //TODO
-    buildText({ctx: ctx, text: entries[1].wins, size: 110, x: 3700, y: 437.5, color: color, align: 'right', font: 'anton'});
-    buildText({ctx: ctx, text: entries[1].number_of_games, size: 110, x: 3700, y: 737.5, color: color, align: 'right', font: 'anton'});
+    buildText({ctx, text: entries[1].wins, size: 110, x: 3700, y: 437.5, color: color, align: 'right', font: 'anton'});
+    buildText({ctx, text: entries[1].number_of_games, size: 110, x: 3700, y: 737.5, color: color, align: 'right', font: 'anton'});
     buildText({
-        ctx: ctx,
+        ctx,
         text: `${((entries[1].wins / entries[1].number_of_games) * 100).toFixed(2)}%`,
         size: 110,
         x: 3700,
@@ -1432,9 +1465,9 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
         align: 'right',
         font: 'anton',
     });
-    buildText({ctx: ctx, text: seasonvalue[0].patched_tier, size: 110, x: 3700, y: 1337.5, color: color, align: 'right', font: 'anton'});
-    buildText({ctx: ctx, text: seasonvalue[seasonvalue.length - 1].patched_tier, size: 110, x: 3700, y: 1637.5, color: color, align: 'right', font: 'anton'});
-    buildText({ctx: ctx, text: entries[1].final_rank_patched, size: 110, x: 3700, y: 1937.5, color: color, align: 'right', font: 'anton'});
+    buildText({ctx, text: seasonvalue[0].patched_tier, size: 110, x: 3700, y: 1337.5, color: color, align: 'right', font: 'anton'});
+    buildText({ctx, text: seasonvalue[seasonvalue.length - 1].patched_tier, size: 110, x: 3700, y: 1637.5, color: color, align: 'right', font: 'anton'});
+    buildText({ctx, text: entries[1].final_rank_patched, size: 110, x: 3700, y: 1937.5, color: color, align: 'right', font: 'anton'});
 
     const squareroot = Math.ceil(Math.sqrt(wins));
     const rowcount = squareroot >= 8 ? 7 : squareroot;
@@ -1477,7 +1510,7 @@ export const removeBlacklist = async function (data) {
     await getDB('blacklist').updateOne({gid: data.guild}, {$set: {entrys: res.entrys}}, {upsert: false});
     return res.entrys.length == 0 ? undefined : res.entrys;
 };
-export const errorhandler = async function ({interaction, status, type, lang, data} = {}) {
+export const errorhandler = async function ({message, status, type, lang, data, name, tag} = {}) {
     if (status == 451) {
         const uuid = uuidv4();
         await getDB('state').insertOne({userid: message.author.id, code: uuid, expireAt: new Date(), type: 'stats'});
@@ -1521,7 +1554,7 @@ export const errorhandler = async function ({interaction, status, type, lang, da
             embeds: [
                 embedBuilder({
                     title: translations[lang].response[500].title,
-                    desc: translations[lang].response[500][type] + `\`\`\`${data}\`\`\``,
+                    desc: translations[lang].response[500][type] + `\`\`\`${JSON.stringify(data, null, 2)}\`\`\``,
                     footer: 'VALORANT LABS [ERROR 500]',
                 }),
             ],
@@ -1537,7 +1570,7 @@ export const errorhandler = async function ({interaction, status, type, lang, da
             embeds: [
                 embedBuilder({
                     title: translations[lang].response[status].title,
-                    desc: translations[lang].response[status]['default'] + `\`\`\`${data}\`\`\``,
+                    desc: translations[lang].response[status]['default'] + `\`\`\`${JSON.stringify(data, null, 2)}\`\`\``,
                     footer: `VALORANT LABS [ERROR ${status}]`,
                 }),
             ],
@@ -1552,7 +1585,7 @@ export const errorhandler = async function ({interaction, status, type, lang, da
         embeds: [
             embedBuilder({
                 title: translations[lang].response[status].title,
-                desc: translations[lang].response[status][type] + `\`\`\`${data}\`\`\``,
+                desc: translations[lang].response[status][type] + `\`\`\`${JSON.stringify(data, null, 2)}\`\`\``,
                 footer: `VALORANT LABS [ERROR ${status}]`,
             }),
         ],
@@ -1564,7 +1597,7 @@ export const errorhandler = async function ({interaction, status, type, lang, da
         ],
     });
 };
-export const errorhandlerinteraction = async function ({interaction, status, type, lang, data} = {}) {
+export const errorhandlerinteraction = async function ({interaction, status, type, lang, data, name, tag} = {}) {
     if (status == 451) {
         const uuid = uuidv4();
         await getDB('state').insertOne({userid: interaction.user.id, code: uuid, expireAt: new Date(), type: 'stats'});
@@ -1608,7 +1641,7 @@ export const errorhandlerinteraction = async function ({interaction, status, typ
             embeds: [
                 embedBuilder({
                     title: translations[lang].response[500].title,
-                    desc: translations[lang].response[500][type] + `\`\`\`${data}\`\`\``,
+                    desc: translations[lang].response[500][type] + `\`\`\`${JSON.stringify(data, null, 2)}\`\`\``,
                     footer: 'VALORANT LABS [ERROR 500]',
                 }),
             ],
@@ -1624,7 +1657,7 @@ export const errorhandlerinteraction = async function ({interaction, status, typ
             embeds: [
                 embedBuilder({
                     title: translations[lang].response[status].title,
-                    desc: translations[lang].response[status]['default'] + `\`\`\`${data}\`\`\``,
+                    desc: translations[lang].response[status]['default'] + `\`\`\`${JSON.stringify(data, null, 2)}\`\`\``,
                     footer: `VALORANT LABS [ERROR ${status}]`,
                 }),
             ],
@@ -1639,7 +1672,7 @@ export const errorhandlerinteraction = async function ({interaction, status, typ
         embeds: [
             embedBuilder({
                 title: translations[lang].response[status].title,
-                desc: translations[lang].response[status][type] + `\`\`\`${data}\`\`\``,
+                desc: translations[lang].response[status][type] + `\`\`\`${JSON.stringify(data, null, 2)}\`\`\``,
                 footer: `VALORANT LABS [ERROR ${status}]`,
             }),
         ],
@@ -1757,20 +1790,13 @@ export const patchGuild = async function ({interaction, key, value, additionalda
                         image = (await buildGameImage({matchid: 'd6007c31-b293-41c3-b1f6-0e797978447b', guilddata: doc, bgcanvas})).image;
                         break;
                     }
-                    case 'stats': {
+                    case 'mmr': {
                         const mmrdata = await getDB('mmr').findOne({puuid: '54942ced-1967-5f66-8a16-1e0dae875641'});
                         bgcanvas = await buildBackground(interaction.options.getAttachment('image').url, 'mmr');
                         image = await buildMMRImage({mmrdata, bgcanvas, seasonid: 'e1a2'});
                         break;
                     }
                 }
-                console.log(
-                    embedBuilder({
-                        title: translations[doc.lang].settings.imggenerated_title,
-                        desc: translations[doc.lang].settings.imggenerated_desc,
-                        footer: interaction.options.getAttachment('image').url,
-                    })
-                );
                 return interaction.editReply({
                     files: [image],
                     embeds: [

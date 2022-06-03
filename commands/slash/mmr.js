@@ -34,7 +34,7 @@ export async function execute({interaction, guilddata} = {}) {
             });
         if (topggvote.response)
             return errorhandlerinteraction({interaction, status: topggvote.response.status, type: 'mmr', lang: guilddata.lang, data: topggvote.respnse.data});
-        await getDB('rate-limit-key').updateOne({key: 'topgg'}, {$inc: {current: 1}});
+        await getDB('rate-limit-key').updateOne({key: 'topgg'}, {$inc: {current: 1}, $setOnInsert: {createdAt: new Date()}}, {upsert: true});
         if (topggvote.response)
             return interaction.editReply({
                 embeds: [
@@ -79,11 +79,16 @@ export async function execute({interaction, guilddata} = {}) {
                 },
             ],
         });
-    const account_details = link ? link : {name: interaction.options.get('riot-id').value.split('#')[0], tag: interaction.options.get('riot-id').value.split('#')[1]};
-    const puuid = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${account_details.name}/${account_details.tag}?asia=true`).catch(error => {
-        return error;
-    });
-    if (puuid.response) return errorhandlerinteraction({interaction, status: puuid.response.status, type: 'account', lang: guilddata.lang, data: puuid.respnse.data});
+    const account_details =
+        link && !interaction.options.get('riot-id')
+            ? link
+            : {name: interaction.options.get('riot-id').value.split('#')[0], tag: interaction.options.get('riot-id').value.split('#')[1]};
+    const puuid = await axios
+        .get(`https://api.henrikdev.xyz/valorant/v1/account/${encodeURI(account_details.name)}/${encodeURI(account_details.tag)}?asia=true`)
+        .catch(error => {
+            return error;
+        });
+    if (puuid.response) return errorhandlerinteraction({interaction, status: puuid.response.status, type: 'account', lang: guilddata.lang, data: puuid.response.data});
     const mmrdb = await getDB('mmr').findOne({puuid: puuid.data.data.puuid});
     const mmr = mmrdb
         ? mmrdb
@@ -93,7 +98,7 @@ export async function execute({interaction, guilddata} = {}) {
     if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang, data: mmr.respnse.data});
     const bgcanvas = guilddata.background_mmr ? await buildBackground(getCustomBackground(guilddata.background_mmr), 'mmr') : null;
     if (!mmrdb) await getDB('mmr').insertOne({puuid: puuid.data.data.puuid, data: mmr.data, createdAt: new Date()});
-    const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error);
+    const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error && item[1].wins != 0);
     const seasonscomponents = [];
     for (let i = 0; seasonsvalues.length > i; i++) {
         const emoji = ranks[seasonsvalues[i][1].final_rank].discordid.substring(2, ranks[seasonsvalues[i][1].final_rank].discordid.length - 1).split(':');

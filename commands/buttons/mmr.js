@@ -28,7 +28,7 @@ export async function execute({interaction, args, guilddata} = {}) {
     if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang, data: mmr.response.data});
     const bgcanvas = guilddata.background_mmr ? await buildBackground(getCustomBackground(guilddata.background_mmr), 'mmr') : null;
     if (!mmrdb) await getDB('mmr').insertOne({puuid: puuid.data.data.puuid, data: mmr.data, createdAt: new Date()});
-    const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error);
+    const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error && item[1].wins != 0);
     const seasonscomponents = [];
     for (let i = 0; seasonsvalues.length > i; i++) {
         const emoji = ranks[seasonsvalues[i][1].final_rank].discordid.substring(2, ranks[seasonsvalues[i][1].final_rank].discordid.length - 1).split(':');
@@ -46,6 +46,7 @@ export async function execute({interaction, args, guilddata} = {}) {
     }
     const attachment = await buildMMRImage({mmrdata: mmr.data.data, bgcanvas});
     interaction.editReply({
+        embeds: [],
         files: [attachment],
         components: [
             {

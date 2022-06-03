@@ -9,7 +9,7 @@ export async function execute({interaction, guilddata} = {}) {
     for (let i = 0; request.data.data.length > i; i++) {
         fields.push({
             name: request.data.data[i].displayName,
-            value: `${translations[guilddata.lang].weapon.cost}: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Free'}`,
+            value: `${translations[guilddata.lang].weapon.cost}: ${request.data.data[i].shopData != null ? String(request.data.data[i].shopData.cost) : 'Free'}`,
         });
     }
     return interaction.editReply({
