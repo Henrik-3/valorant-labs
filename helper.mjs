@@ -1,4 +1,5 @@
 import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options} from 'discord.js.dev';
+import {readFileSync} from 'fs';
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
