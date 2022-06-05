@@ -1,4 +1,5 @@
 import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options} from 'discord.js.dev';
+const basedata = JSON.parse(readFileSync('./basedata.json'));
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
     makeCache: Options.cacheWithLimits({
@@ -195,4 +196,4 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-client.login('NzM3NzA0NDUwNDc4ODMzNzM1.XyBOzg.uoSHu6STEVJehdF2ghDD9cMB-Nc');
+client.login(basedata.henrikdevsystem);
