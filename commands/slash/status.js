@@ -1,4 +1,4 @@
-import {axios, clusters, errorhandlerinteraction, moment, translations, embedBuilder} from '../../methods.js';
+import {axios, clusters, errorhandlerinteraction, moment, translations, embedBuilder, ComponentType, ButtonStyle} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
     const embeds = [];
     const status = await axios.get(clusters[interaction.options.get('region').value].status).catch(error => {

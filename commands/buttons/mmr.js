@@ -15,10 +15,11 @@ import {
 } from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate();
-    const puuid = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${args[1]}/${args[2]}?asia=true`).catch(error => {
+    const puuid = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${encodeURI(args[1])}/${encodeURI(args[2])}?asia=true`).catch(error => {
         return error;
     });
     if (puuid.response) return errorhandlerinteraction({interaction, status: puuid.response.status, type: 'account', lang: guilddata.lang, data: puuid.response.data});
+    if (!puuid.data) console.error(puuid);
     const mmrdb = await getDB('mmr').findOne({puuid: puuid.data.data.puuid});
     const mmr = mmrdb
         ? mmrdb

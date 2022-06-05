@@ -843,13 +843,13 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
     for (let i = 0; mmatches.length > i; i++) {
         reqs.push(
             dbstats.ingamepuuid
-                ? axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/match/${dbstats.region}/${mmatches[i].matchId}`, {timeout: 2000}).catch(error => {
+                ? axios.get(`https://api.henrikdev.xyz/valorantlabs/v1/match/${dbstats.region}/${mmatches[i].matchId}`, {timeout: 4000}).catch(error => {
                       return error;
                   })
                 : axios
                       .get(`https://${dbstats.region}.api.riotgames.com/val/match/v1/matches/${mmatches[i].matchId}`, {
                           headers: {'X-Riot-Token': riottoken},
-                          timeout: 2000,
+                          timeout: 4000,
                       })
                       .catch(error => {
                           return error;
@@ -861,9 +861,9 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
         return item.value;
     });
     for (let i = 0; fmatches.length > i; i++) {
-        if (!fmatches[i].response && !fmatches.code) {
+        if (!fmatches[i].response && (!fmatches.code || fmatches.code == 'ECONNABORTED')) {
             if (dbstats.ingamepuuid) {
-                if (!fmatches[i].data.data) console.error(fmatches[i], mmatches[i].matchId);
+                if (!fmatches[i].data) console.error(fmatches[i], mmatches[i].matchId);
                 if (fmatches[i].data.data.metadata.mode != 'Deathmatch') {
                     if (fmatches[i].data.data.metadata.mode != 'Custom Game') {
                         const player = fmatches[i].data.data.players.all_players.find(item => item.puuid == dbstats.ingamepuuid);
@@ -1400,12 +1400,12 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
     let entries;
     if (!seasonid) {
         entries = Object.entries(mmrdata.by_season).find(item => !item[1].error && item[1].wins != 0);
-        if (entries[1] == undefined) console.error(mmrdata);
+        if (entries == undefined) console.error(entries);
         seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0);
         seasonkey = entries[0];
     } else {
         entries = Object.entries(mmrdata.by_season).find(item => item[0] == seasonid && item[1].wins != 0);
-        if (entries[1] == undefined) console.error(mmrdata);
+        if (entries == undefined) console.error(entries);
         seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0);
         seasonkey = entries[0];
     }

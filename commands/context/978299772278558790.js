@@ -1,7 +1,7 @@
 import {embedBuilder, translations, ComponentType, TextInputStyle, perms} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
     console.log(interaction.targetMessage.author.id);
-    if (interaction.targetMessage.author.id != interaction.client.id && interaction.targetMessage.embeds[0]?.footer.text != 'VALORANT LABS [AUTOROLE SYSTEM]')
+    if (interaction.targetMessage.author.id != interaction.client.id && interaction.targetMessage.embeds[0]?.footer?.text != 'VALORANT LABS [AUTOROLE SYSTEM]')
         return interaction.reply({
             embeds: [
                 embedBuilder({
