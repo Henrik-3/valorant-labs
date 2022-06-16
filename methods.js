@@ -44,7 +44,7 @@ axiosRetry(axios, {
     },
 });
 
-export {pretty, axios, translations, moment, ComponentType, ButtonStyle, TextInputStyle, ActivityType};
+export {pretty, axios, translations, moment, ComponentType, ButtonStyle, TextInputStyle, ActivityType, mongoclient};
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;
 export const topgg = basedata.dbltoken;
@@ -283,6 +283,7 @@ export const maps = {
     '/Game/Maps/Ascent/Ascent': 'Ascent',
     '/Game/Maps/Foxtrot/Foxtrot': 'Breeze',
     '/Game/Maps/Canyon/Canyon': 'Fracture',
+    '/Game/Maps/Pitt/Pitt': 'Pearl',
 };
 export const ranks = {
     0: {
