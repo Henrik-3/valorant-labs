@@ -1,0 +1,671 @@
+[
+    {
+        "type": 1,
+        "name": "agent",
+        "description": "Shows information about a specific agent in VALORANT",
+        "options": [
+            {
+                "type": 3,
+                "name": "agent",
+                "description": "Agent from who you want to receive information",
+                "required": true,
+                "choices": [
+                    {
+                        "name": "Astra",
+                        "value": "astra"
+                    },
+                    {
+                        "name": "Breach",
+                        "value": "breach"
+                    },
+                    {
+                        "name": "Brimstone",
+                        "value": "brimstone"
+                    },
+                    {
+                        "name": "Chamber",
+                        "value": "chamber"
+                    },
+                    {
+                        "name": "Cypher",
+                        "value": "cypher"
+                    },
+                    {
+                        "name": "Fade",
+                        "value": "fade"
+                    },
+                    {
+                        "name": "Jett",
+                        "value": "jett"
+                    },
+                    {
+                        "name": "KAY/O",
+                        "value": "kay/o"
+                    },
+                    {
+                        "name": "Killjoy",
+                        "value": "killjoy"
+                    },
+                    {
+                        "name": "Neon",
+                        "value": "neon"
+                    },
+                    {
+                        "name": "Omen",
+                        "value": "omen"
+                    },
+                    {
+                        "name": "Phoenix",
+                        "value": "phoenix"
+                    },
+                    {
+                        "name": "Raze",
+                        "value": "raze"
+                    },
+                    {
+                        "name": "Reyna",
+                        "value": "reyna"
+                    },
+                    {
+                        "name": "Sage",
+                        "value": "sage"
+                    },
+                    {
+                        "name": "Skye",
+                        "value": "skye"
+                    },
+                    {
+                        "name": "Sova",
+                        "value": "sova"
+                    },
+                    {
+                        "name": "Viper",
+                        "value": "viper"
+                    },
+                    {
+                        "name": "Yoru",
+                        "value": "yoru"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "api",
+        "description": "Get information about the backend API that is used"
+    },
+    {
+        "type": 1,
+        "name": "blacklist",
+        "description": "Blacklist VALORANT LABS for specific channels",
+        "options": [
+            {
+                "type": 1,
+                "name": "get",
+                "description": "Shows all channel that are on the blacklist"
+            },
+            {
+                "type": 1,
+                "name": "add",
+                "description": "Adds a new channel to the blacklist",
+                "options": [
+                    {
+                        "type": 7,
+                        "name": "channel",
+                        "description": "Channel which should be added to the list",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "type": 1,
+                "name": "remove",
+                "description": "Removes a new channel from the blacklist",
+                "options": [
+                    {
+                        "type": 7,
+                        "name": "channel",
+                        "description": "Channel which should be added to the list",
+                        "required": true,
+                        "channel_types": [0]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "botinfo",
+        "description": "Return basic information about the Bot and it's host system"
+    },
+    {
+        "type": 1,
+        "name": "game",
+        "description": "Returns information about a specific match",
+        "options": [
+            {
+                "type": 3,
+                "name": "gamekey",
+                "description": "Gamekey of the match",
+                "required": true
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "help",
+        "description": "Returns an overview with all bot commands available"
+    },
+    {
+        "type": 1,
+        "name": "link",
+        "description": "Link your discord account with your Riot Games account",
+        "options": [
+            {
+                "type": 1,
+                "name": "get",
+                "description": "Shows the linked account"
+            },
+            {
+                "type": 1,
+                "name": "add",
+                "description": "Link this Discord account with a Riot Games account"
+            },
+            {
+                "type": 1,
+                "name": "remove",
+                "description": "Removes a link between this Discord account and a Riot Games Account"
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "map",
+        "description": "Shows information about a specific map in VALORANT",
+        "options": [
+            {
+                "type": 3,
+                "name": "map",
+                "description": "Map from which you want to receive information",
+                "required": true,
+                "choices": [
+                    {
+                        "name": "Ascent",
+                        "value": "ascent"
+                    },
+                    {
+                        "name": "Bind",
+                        "value": "bind"
+                    },
+                    {
+                        "name": "Breeze",
+                        "value": "breeze"
+                    },
+                    {
+                        "name": "Fracture",
+                        "value": "fracture"
+                    },
+                    {
+                        "name": "Haven",
+                        "value": "haven"
+                    },
+                    {
+                        "name": "Icebox",
+                        "value": "icebox"
+                    },
+                    {
+                        "name": "Split",
+                        "value": "split"
+                    },
+                    {
+                        "name": "The Range",
+                        "value": "the range"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "patch",
+        "description": "Shows the latest patchnotes"
+    },
+    {
+        "type": 1,
+        "name": "stats",
+        "description": "Returns stats for a given user",
+        "options": [
+            {
+                "type": 3,
+                "name": "riot-id",
+                "description": "Riot ID of the user (leave out if you are linked)"
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "status",
+        "description": "Returns the status of the given game cluster",
+        "options": [
+            {
+                "type": 3,
+                "name": "region",
+                "description": "Cluster you want to check",
+                "required": true,
+                "choices": [
+                    {
+                        "name": "North America",
+                        "value": "na"
+                    },
+                    {
+                        "name": "Europe",
+                        "value": "eu"
+                    },
+                    {
+                        "name": "Asia Pacific",
+                        "value": "ap"
+                    },
+                    {
+                        "name": "Oceania",
+                        "value": "ap"
+                    },
+                    {
+                        "name": "Brazil",
+                        "value": "na"
+                    },
+                    {
+                        "name": "Korea",
+                        "value": "kr"
+                    },
+                    {
+                        "name": "Latin America",
+                        "value": "na"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "vote",
+        "description": "Returns the link to top.gg"
+    },
+    {
+        "type": 1,
+        "name": "weapon",
+        "description": "Returns all data for the requested weapon",
+        "options": [
+            {
+                "type": 3,
+                "name": "name",
+                "description": "Name of the weapon",
+                "required": true,
+                "choices": [
+                    {
+                        "name": "Ares",
+                        "value": "ares"
+                    },
+                    {
+                        "name": "Bucky",
+                        "value": "bucky"
+                    },
+                    {
+                        "name": "Bulldog",
+                        "value": "bulldog"
+                    },
+                    {
+                        "name": "Classic",
+                        "value": "classic"
+                    },
+                    {
+                        "name": "Frenzy",
+                        "value": "frenzy"
+                    },
+                    {
+                        "name": "Ghost",
+                        "value": "ghost"
+                    },
+                    {
+                        "name": "Guardian",
+                        "value": "guardian"
+                    },
+                    {
+                        "name": "Judge",
+                        "value": "judge"
+                    },
+                    {
+                        "name": "Marshal",
+                        "value": "marshal"
+                    },
+                    {
+                        "name": "Odin",
+                        "value": "odin"
+                    },
+                    {
+                        "name": "Operator",
+                        "value": "operator"
+                    },
+                    {
+                        "name": "Phantom",
+                        "value": "phantom"
+                    },
+                    {
+                        "name": "Sheriff",
+                        "value": "sheriff"
+                    },
+                    {
+                        "name": "Shorty",
+                        "value": "shorty"
+                    },
+                    {
+                        "name": "Spectre",
+                        "value": "spectre"
+                    },
+                    {
+                        "name": "Stinger",
+                        "value": "stinger"
+                    },
+                    {
+                        "name": "Vandal",
+                        "value": "vandal"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "weapons",
+        "description": "Returns all available weapons"
+    },
+    {
+        "type": 1,
+        "name": "settings",
+        "description": "VALORANT LABS Settings Handler",
+        "options": [
+            {
+                "type": 1,
+                "name": "get",
+                "description": "Get current guild settings"
+            },
+            {
+                "type": 1,
+                "name": "deactivate",
+                "description": "Deactivate a setting",
+                "options": [
+                    {
+                        "type": 3,
+                        "name": "value",
+                        "description": "Deactive setting",
+                        "required": true,
+                        "choices": [
+                            {
+                                "name": "PatchNotes",
+                                "value": "patchnotes"
+                            },
+                            {
+                                "name": "Other News",
+                                "value": "othernews"
+                            },
+                            {
+                                "name": "Server Status",
+                                "value": "serverstatus"
+                            },
+                            {
+                                "name": "Background Stats",
+                                "value": "background_stats"
+                            },
+                            {
+                                "name": "Background Game",
+                                "value": "background_game"
+                            },
+                            {
+                                "name": "Background MMR",
+                                "value": "background_mmr"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": 2,
+                "name": "set",
+                "description": "Change current guild settings",
+                "options": [
+                    {
+                        "type": 1,
+                        "name": "prefix",
+                        "description": "Changes the prefix of the Bot",
+                        "options": [
+                            {
+                                "type": 3,
+                                "name": "value",
+                                "description": "Enter the new prefix here",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "type": 1,
+                        "name": "patchnotes",
+                        "description": "Changes the patchnotes channel",
+                        "options": [
+                            {
+                                "type": 7,
+                                "name": "value",
+                                "description": "Select the new patchnotes channel here",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "type": 1,
+                        "name": "othernews",
+                        "description": "Changes the othernews channel",
+                        "options": [
+                            {
+                                "type": 7,
+                                "name": "value",
+                                "description": "Select the new othernews channel here",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "type": 1,
+                        "name": "serverstatus",
+                        "description": "Changes the serverstatus channel",
+                        "options": [
+                            {
+                                "type": 7,
+                                "name": "value",
+                                "description": "Select the new serverstatus channel here",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "type": 1,
+                        "name": "language",
+                        "description": "Changes the language of the Bot",
+                        "options": [
+                            {
+                                "type": 3,
+                                "name": "value",
+                                "description": "Select the new language here",
+                                "required": true,
+                                "choices": [
+                                    {
+                                        "name": "German",
+                                        "value": "de"
+                                    },
+                                    {
+                                        "name": "English (NA)",
+                                        "value": "en-us"
+                                    },
+                                    {
+                                        "name": "English (EUW)",
+                                        "value": "en-gb"
+                                    },
+                                    {
+                                        "name": "French",
+                                        "value": "fr"
+                                    },
+                                    {
+                                        "name": "Japanese",
+                                        "value": "jp"
+                                    },
+                                    {
+                                        "name": "Portuguese (Brazil)",
+                                        "value": "pt-br"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": 1,
+                        "name": "blacklist",
+                        "description": "Set the blacklist on or off",
+                        "options": [
+                            {
+                                "type": 5,
+                                "name": "value",
+                                "description": "Set the blacklist on or off",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "type": 1,
+                        "name": "background",
+                        "description": "Set the background image of the /stats, /game and /mmr command",
+                        "options": [
+                            {
+                                "type": 3,
+                                "name": "type",
+                                "description": "For which type you want to change the background",
+                                "required": true,
+                                "choices": [
+                                    {
+                                        "name": "Stats",
+                                        "value": "stats"
+                                    },
+                                    {
+                                        "name": "Game",
+                                        "value": "game"
+                                    },
+                                    {
+                                        "name": "MMR",
+                                        "value": "mmr"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": 11,
+                                "name": "image",
+                                "description": "Image you want to use",
+                                "required": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "mmr",
+        "description": "Returns mmr for a given user",
+        "options": [
+            {
+                "type": 3,
+                "name": "riot-id",
+                "description": "Riot ID of the user (leave out if you are linked)"
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "feedback",
+        "description": "Send feeback and issues to the bot coder"
+    },
+    {
+        "type": 1,
+        "name": "autoroles",
+        "description": "Give roles on a server based on the ingame rank",
+        "options": [
+            {
+                "type": 1,
+                "name": "setup",
+                "description": "Setup the roles for the autoroles system",
+                "options": [
+                    {
+                        "type": 3,
+                        "name": "rank",
+                        "description": "Select for which rank you want to set a role",
+                        "required": true,
+                        "choices": [
+                            {
+                                "name": "Iron",
+                                "value": "iron"
+                            },
+                            {
+                                "name": "Bronze",
+                                "value": "bronze"
+                            },
+                            {
+                                "name": "Silver",
+                                "value": "silver"
+                            },
+                            {
+                                "name": "Gold",
+                                "value": "gold"
+                            },
+                            {
+                                "name": "Platinum",
+                                "value": "platinum"
+                            },
+                            {
+                                "name": "Diamond",
+                                "value": "diamond"
+                            },
+                            {
+                                "name": "Ascendant",
+                                "value": "ascendant"
+                            },
+                            {
+                                "name": "Immortal",
+                                "value": "immortal"
+                            },
+                            {
+                                "name": "Radiant",
+                                "value": "radiant"
+                            }
+                        ]
+                    },
+                    {
+                        "type": 8,
+                        "name": "role",
+                        "description": "Select role that should be given",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "type": 1,
+                "name": "send",
+                "description": "Create the autorole embed"
+            },
+            {
+                "type": 1,
+                "name": "get",
+                "description": "Show the current configuration"
+            }
+        ]
+    },
+    {
+        "type": 3,
+        "name": "Edit AutoRole"
+    }
+]

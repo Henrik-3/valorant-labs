@@ -222,6 +222,15 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 });
             if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0)
                 return res.code(500).send({error: translations[guilddata.lang].mmr.no_rank_desc});
+            if (
+                mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == 'ascendant' &&
+                !guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)
+            )
+                return res
+                    .code(404)
+                    .send({
+                        message: "The new rank ASCENDANT isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
+                    });
             await manager.broadcastEval(
                 async (c, {user, guild, ra, rm}) => {
                     if (c.guilds.cache.has(guild)) {

@@ -392,21 +392,36 @@ export const ranks = {
         discordid: '<:dia3:862005298193891378>',
     },
     21: {
+        mmr: 'assets/background/VALORANT_mmr_ascendant.png',
+        color: '#6ae2af',
+        discordid: '<:ascendant1:987519801868025886>',
+    },
+    22: {
+        mmr: 'assets/background/VALORANT_mmr_ascendant.png',
+        color: '#6ae2af',
+        discordid: '<:ascendant2:987519799590522920>',
+    },
+    23: {
+        mmr: 'assets/background/VALORANT_mmr_ascendant.png',
+        color: '#6ae2af',
+        discordid: '<:ascendant3:987519800521662525>',
+    },
+    24: {
         mmr: 'assets/background/VALORANT_mmr_immortal.png',
         color: '#da3f76',
         discordid: '<:immortal1:862005437264429056>',
     },
-    22: {
+    25: {
         mmr: 'assets/background/VALORANT_mmr_immortal.png',
         color: '#da3f76',
         discordid: '<:immortal2:862005462580985856>',
     },
-    23: {
+    26: {
         mmr: 'assets/background/VALORANT_mmr_immortal.png',
         color: '#da3f76',
         discordid: '<:immortal3:862005493840478208>',
     },
-    24: {
+    27: {
         mmr: 'assets/background/VALORANT_mmr_radiant.png',
         color: '#d3d058',
         discordid: '<:radiant:862005538392506408>',
