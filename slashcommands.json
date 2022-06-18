@@ -215,6 +215,10 @@
                         "value": "icebox"
                     },
                     {
+                        "name": "Pearl",
+                        "value": "pearl"
+                    },
+                    {
                         "name": "Split",
                         "value": "split"
                     },
@@ -509,6 +513,10 @@
                                         "value": "en-gb"
                                     },
                                     {
+                                        "name": "Español",
+                                        "value": "es"
+                                    },
+                                    {
                                         "name": "French",
                                         "value": "fr"
                                     },
@@ -519,6 +527,10 @@
                                     {
                                         "name": "Portuguese (Brazil)",
                                         "value": "pt-br"
+                                    },
+                                    {
+                                        "name": "Vietnamese",
+                                        "value": "vi"
                                     }
                                 ]
                             }
