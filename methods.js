@@ -535,14 +535,8 @@ export const fetchWebsite = async function (manager) {
                                 : moment(article.updates[0].created_at).unix() > db.datestatusincidents
                         ) {
                             i == 2
-                                ? bot
-                                      .db('VALORANT-LABS')
-                                      .collection('websitecheck')
-                                      .updateOne({code: ccodes[k]}, {$set: {datestatusmaintenance: moment(article.updates[0].created_at).unix()}})
-                                : bot
-                                      .db('VALORANT-LABS')
-                                      .collection('websitecheck')
-                                      .updateOne({code: ccodes[k]}, {$set: {datestatusincidents: moment(article.updates[0].created_at).unix()}});
+                                ? getDB('websitecheck').updateOne({code: ccodes[k]}, {$set: {datestatusmaintenance: moment(article.updates[0].created_at).unix()}})
+                                : getDB('websitecheck').updateOne({code: ccodes[k]}, {$set: {datestatusincidents: moment(article.updates[0].created_at).unix()}});
                             const fetch = await getDB('settings').find({lang: ccodes[k]}, {gid: 1, lang: 1, serverstatus: 1}).toArray();
                             fetch.forEach(guild => {
                                 if (guild.serverstatus) {

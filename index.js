@@ -64,8 +64,6 @@ for (let i = 0; contextcommands.length > i; i++) {
     client.context.set(cmd.name, cmd);
 }
 
-client.ws.on('');
-
 client.on('ready', async () => {
     console.log('tes');
     /*if(client.shard.ids[0] == 0) {

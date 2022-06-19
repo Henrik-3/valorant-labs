@@ -226,11 +226,9 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == 'ascendant' &&
                 !guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)
             )
-                return res
-                    .code(404)
-                    .send({
-                        message: "The new rank ASCENDANT isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
-                    });
+                return res.code(404).send({
+                    message: "The new rank ASCENDANT isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
+                });
             await manager.broadcastEval(
                 async (c, {user, guild, ra, rm}) => {
                     if (c.guilds.cache.has(guild)) {
