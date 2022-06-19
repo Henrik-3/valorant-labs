@@ -520,14 +520,8 @@ export const fetchWebsite = async function (manager) {
                                 : moment(article.updates[0].created_at).unix() > db.datestatusincidents
                         ) {
                             i == 2
-                                ? bot
-                                      .db('VALORANT-LABS')
-                                      .collection('websitecheck')
-                                      .updateOne({code: ccodes[k]}, {$set: {datestatusmaintenance: moment(article.updates[0].created_at).unix()}})
-                                : bot
-                                      .db('VALORANT-LABS')
-                                      .collection('websitecheck')
-                                      .updateOne({code: ccodes[k]}, {$set: {datestatusincidents: moment(article.updates[0].created_at).unix()}});
+                                ? getDB('websitecheck').updateOne({code: ccodes[k]}, {$set: {datestatusmaintenance: moment(article.updates[0].created_at).unix()}})
+                                : getDB('websitecheck').updateOne({code: ccodes[k]}, {$set: {datestatusincidents: moment(article.updates[0].created_at).unix()}});
                             const fetch = await getDB('settings').find({lang: ccodes[k]}, {gid: 1, lang: 1, serverstatus: 1}).toArray();
                             fetch.forEach(guild => {
                                 if (guild.serverstatus) {
@@ -563,12 +557,12 @@ export const fetchWebsite = async function (manager) {
                                             context: {
                                                 channelid: guild.serverstatus.replace(/[^0-9]/g, ''),
                                                 desc:
-                                                    article.updates[0].translations.find(c => c.locale == websites[ccodes[k]].locale).content != undefined
-                                                        ? article.updates[0].translations.find(c => c.locale == websites[ccodes[k]].locale).content
+                                                    article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content != undefined
+                                                        ? article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content
                                                         : article.updates[0].translations.find(c => c.locale == 'en_US').content,
                                                 t:
-                                                    article.titles.find(c => c.locale == websites[ccodes[k]].locale).content != undefined
-                                                        ? article.titles.find(c => c.locale == websites[ccodes[k]].locale).content
+                                                    article.titles.find(c => c.locale == translations[ccodes[k]].locale).content != undefined
+                                                        ? article.titles.find(c => c.locale == translations[ccodes[k]].locale).content
                                                         : article.titles.find(c => c.locale == 'en_US').content,
                                                 create: moment(article.created_at).format('LLLL'),
                                                 platform: article.platforms[0],

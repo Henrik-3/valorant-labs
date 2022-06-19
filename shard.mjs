@@ -11,11 +11,11 @@ const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
 
 const manager = new ShardingManager('./index.js', {
-    token: basedata.discordtokenreal,
-    totalShards: 10,
+    token: basedata.discordtoken,
+    totalShards: 2,
     respawn: true,
 });
-const poster = AutoPoster(basedata.dbltoken, manager);
+//const poster = AutoPoster(basedata.dbltoken, manager);
 
 let restart = false;
 setInterval(async () => {
@@ -36,8 +36,8 @@ manager.on('shardCreate', async shard => {
     shard.on('ready', async rshard => {
         console.log('Ready', shard.id);
         if (manager.shards.size == manager.totalShards && restart == false) {
-            fetchWebsite(manager);
-            shard_status_update(manager);
+            //fetchWebsite(manager);
+            //shard_status_update(manager);
             manager.shards.forEach(sshard => {
                 sshard.send('startup');
             });

@@ -40,7 +40,6 @@ const contextcommands = readdirSync('./commands/context').filter(file => file.en
 
 for (let i = 0; normalcommands.length > i; i++) {
     const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
-    console.log(command.name);
     client.ncommands.set(command.name, command);
 }
 for (let i = 0; slashcommands.length > i; i++) {
@@ -63,8 +62,6 @@ for (let i = 0; contextcommands.length > i; i++) {
     const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
     client.context.set(cmd.name, cmd);
 }
-
-client.ws.on('');
 
 client.on('ready', async () => {
     console.log('tes');
@@ -192,15 +189,16 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
+    console.log(normalcommands);
     if (message.author.id == '346345363990380546' && message.content == '/reload' && message.channel.parent == '732290187090067476') {
-        const normalcommand = readdirSync('./commands/normal').filter(file => file.endsWith('.js'));
+        const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'));
         const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
         const buttoncommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
         const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'));
         const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'));
         const contextcommands = readdirSync('./commands/context').filter(file => file.endsWith('.js'));
-        for (let i = 0; normalcommand.length > i; i++) {
-            normalcommand[i] = path.join('file:///', __dirname, `/commands/normal/${normalcommand[i]}?update=${Date.now()}`);
+        for (let i = 0; normalcommands.length > i; i++) {
+            normalcommands[i] = path.join('file:///', __dirname, `/commands/normal/${normalcommands[i]}?update=${Date.now()}`);
         }
         for (let i = 0; slashcommands.length > i; i++) {
             slashcommands[i] = path.join('file:///', __dirname, `/commands/slash/${slashcommands[i]}?update=${Date.now()}`);
@@ -217,6 +215,7 @@ client.on('messageCreate', async message => {
         for (let i = 0; contextcommands.length > i; i++) {
             contextcommands[i] = path.join('file:///', __dirname, `./commands/context/${contextcommands[i]}?update=${Date.now()}`);
         }
+        console.log(normalcommands);
         await client.shard.broadcastEval(
             async (c, {normalcommands, slashcommands, buttoncommands, selectcommands, modalcommands, contextcommands}) => {
                 c.ncommands.sweep(() => true);
@@ -278,7 +277,6 @@ client.on('messageCreate', async message => {
     api[cmd]++;
     api['all']++;
     writeFileSync('./api.json', JSON.stringify(api, null, 2));
-    console.log(client.ncommands, client.ncommands.has(cmd), cmd);
     if (!client.ncommands.has(cmd)) {
         return message.reply({
             embeds: [
