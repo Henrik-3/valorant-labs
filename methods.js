@@ -1721,10 +1721,12 @@ export const getGuild = async function (interaction) {
 };
 export const getAutoRoles = async function (interaction, guilddata) {
     const settings = guilddata ? guilddata : await guildSettings(interaction.guild);
-    const formattedarray = settings.autoroles.map(item => {
+    const formattedarray = roles.map(item => {
         return {
-            name: firstletter(item.name),
-            value: `<@&${item.id}>`,
+            name: firstletter(item),
+            value: settings.autoroles.some(item1 => item1.name == item)
+                ? `<@&${settings.autoroles.some(item1 => item1.name == item).id}>`
+                : translations[settings.lang].autorole.wrong,
         };
     });
     return interaction.editReply({
