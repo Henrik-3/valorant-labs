@@ -48,7 +48,7 @@ export {pretty, axios, translations, moment, ComponentType, ButtonStyle, TextInp
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;
 export const topgg = basedata.dbltoken;
-export const roles = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'immortal', 'radiant'];
+export const roles = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ascendant', 'immortal', 'radiant'];
 export const riottoken = basedata.riottoken;
 export const clusters = {
     na: {
