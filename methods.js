@@ -1725,7 +1725,7 @@ export const getAutoRoles = async function (interaction, guilddata) {
         return {
             name: firstletter(item),
             value: settings.autoroles.some(item1 => item1.name == item)
-                ? `<@&${settings.autoroles.some(item1 => item1.name == item).id}>`
+                ? `<@&${settings.autoroles.find(item1 => item1.name == item).id}>`
                 : translations[settings.lang].autorole.wrong,
         };
     });
