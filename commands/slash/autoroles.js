@@ -14,7 +14,7 @@ export async function execute({interaction, guilddata} = {}) {
             return getAutoRoles(interaction, guilddata);
         }
         case 'send': {
-            if (guilddata.autoroles?.length != 8) {
+            if (guilddata.autoroles?.length != 9) {
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({

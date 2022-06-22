@@ -48,7 +48,7 @@ export {pretty, axios, translations, moment, ComponentType, ButtonStyle, TextInp
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;
 export const topgg = basedata.dbltoken;
-export const roles = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'immortal', 'radiant'];
+export const roles = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ascendant', 'immortal', 'radiant'];
 export const riottoken = basedata.riottoken;
 export const clusters = {
     na: {
@@ -392,21 +392,36 @@ export const ranks = {
         discordid: '<:dia3:862005298193891378>',
     },
     21: {
+        mmr: 'assets/background/VALORANT_mmr_ascendant.png',
+        color: '#6ae2af',
+        discordid: '<:ascendant1:987519801868025886>',
+    },
+    22: {
+        mmr: 'assets/background/VALORANT_mmr_ascendant.png',
+        color: '#6ae2af',
+        discordid: '<:ascendant2:987519799590522920>',
+    },
+    23: {
+        mmr: 'assets/background/VALORANT_mmr_ascendant.png',
+        color: '#6ae2af',
+        discordid: '<:ascendant3:987519800521662525>',
+    },
+    24: {
         mmr: 'assets/background/VALORANT_mmr_immortal.png',
         color: '#da3f76',
         discordid: '<:immortal1:862005437264429056>',
     },
-    22: {
+    25: {
         mmr: 'assets/background/VALORANT_mmr_immortal.png',
         color: '#da3f76',
         discordid: '<:immortal2:862005462580985856>',
     },
-    23: {
+    26: {
         mmr: 'assets/background/VALORANT_mmr_immortal.png',
         color: '#da3f76',
         discordid: '<:immortal3:862005493840478208>',
     },
-    24: {
+    27: {
         mmr: 'assets/background/VALORANT_mmr_radiant.png',
         color: '#d3d058',
         discordid: '<:radiant:862005538392506408>',
@@ -1706,10 +1721,12 @@ export const getGuild = async function (interaction) {
 };
 export const getAutoRoles = async function (interaction, guilddata) {
     const settings = guilddata ? guilddata : await guildSettings(interaction.guild);
-    const formattedarray = settings.autoroles.map(item => {
+    const formattedarray = roles.map(item => {
         return {
-            name: firstletter(item.name),
-            value: `<@&${item.id}>`,
+            name: firstletter(item),
+            value: settings.autoroles.some(item1 => item1.name == item)
+                ? `<@&${settings.autoroles.find(item1 => item1.name == item).id}>`
+                : translations[settings.lang].autorole.wrong,
         };
     });
     return interaction.editReply({
