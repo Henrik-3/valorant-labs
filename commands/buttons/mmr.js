@@ -11,6 +11,7 @@ import {
     buildBackground,
     getCustomBackground,
     ranks,
+    old_ranks,
     buildMMRImage,
 } from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
@@ -32,7 +33,8 @@ export async function execute({interaction, args, guilddata} = {}) {
     const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error && item[1].wins != 0);
     const seasonscomponents = [];
     for (let i = 0; seasonsvalues.length > i; i++) {
-        const emoji = ranks[seasonsvalues[i][1].final_rank].discordid.substring(2, ranks[seasonsvalues[i][1].final_rank].discordid.length - 1).split(':');
+        const crank = seasonsvalues[i][1].old ? old_ranks[seasonsvalues[i][1].final_rank] : ranks[seasonsvalues[i][1].final_rank];
+        const emoji = crank.discordid.substring(2, crank.discordid.length - 1).split(':');
         seasonscomponents.push({
             label: seasonsvalues[i][0],
             value: seasonsvalues[i][0],

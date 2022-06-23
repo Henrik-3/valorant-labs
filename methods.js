@@ -427,6 +427,133 @@ export const ranks = {
         discordid: '<:radiant:862005538392506408>',
     },
 };
+export const old_ranks = {
+    0: {
+        mmr: 'assets/background/VALORANT_mmr.png',
+        color: '#c5c5c5',
+        discordid: '<:unrated:862004031248924693>',
+    },
+    1: {
+        mmr: 'assets/background/VALORANT_mmr.png',
+        color: '#c5c5c5',
+        discordid: '<:unrated:862004031248924693>',
+    },
+    2: {
+        mmr: 'assets/background/VALORANT_mmr.png',
+        color: '#c5c5c5',
+        discordid: '<:unrated:862004031248924693>',
+    },
+    3: {
+        mmr: 'assets/background/VALORANT_mmr_iron.png',
+        color: '#5a5959',
+        discordid: '<:iron1:862004162098102272>',
+    },
+    4: {
+        mmr: 'assets/background/VALORANT_mmr_iron.png',
+        color: '#5a5959',
+        discordid: '<:iron2:862004185036488715>',
+    },
+    5: {
+        mmr: 'assets/background/VALORANT_mmr_iron.png',
+        color: '#5a5959',
+        discordid: '<:iron3:862004206718025738>',
+    },
+    6: {
+        mmr: 'assets/background/VALORANT_mmr_bronze.png',
+        color: '#924e30',
+        discordid: '<:bronze1:862004343054008331>',
+    },
+    7: {
+        mmr: 'assets/background/VALORANT_mmr_bronze.png',
+        color: '#924e30',
+        discordid: '<:bronze2:862004376272109608>',
+    },
+    8: {
+        mmr: 'assets/background/VALORANT_mmr_bronze.png',
+        color: '#924e30',
+        discordid: '<:bronze3:862004410775371777>',
+    },
+    9: {
+        mmr: 'assets/background/VALORANT_mmr_silver.png',
+        color: '#c5c4c4',
+        discordid: '<:silver1:862004807896268832>',
+    },
+    10: {
+        mmr: 'assets/background/VALORANT_mmr_silver.png',
+        color: '#c5c4c4',
+        discordid: '<:silver2:862004860655501342>',
+    },
+    11: {
+        mmr: 'assets/background/VALORANT_mmr_silver.png',
+        color: '#c5c4c4',
+        discordid: '<:silver3:862004895708086302>',
+    },
+    12: {
+        mmr: 'assets/background/VALORANT_mmr_gold.png',
+        color: '#dbb815',
+        discordid: '<:gold1:862004921763364874>',
+    },
+    13: {
+        mmr: 'assets/background/VALORANT_mmr_gold.png',
+        color: '#dbb815',
+        discordid: '<:gold2:862004943708094525>',
+    },
+    14: {
+        mmr: 'assets/background/VALORANT_mmr_gold.png',
+        color: '#dbb815',
+        discordid: '<:gold3:862004966636781608>',
+    },
+    15: {
+        mmr: 'assets/background/VALORANT_mmr_platinum.png',
+        color: '#38abc2',
+        discordid: '<:plat1:862005172687470622>',
+    },
+    16: {
+        mmr: 'assets/background/VALORANT_mmr_platinum.png',
+        color: '#38abc2',
+        discordid: '<:plat2:862005201301143573>',
+    },
+    17: {
+        mmr: 'assets/background/VALORANT_mmr_platinum.png',
+        color: '#38abc2',
+        discordid: '<:plat3:862005224645853185>',
+    },
+    18: {
+        mmr: 'assets/background/VALORANT_mmr_diamond.png',
+        color: '#bb77f0',
+        discordid: '<:dia1:862005255628652554>',
+    },
+    19: {
+        mmr: 'assets/background/VALORANT_mmr_diamond.png',
+        color: '#bb77f0',
+        discordid: '<:dia2:862005278207508551>',
+    },
+    20: {
+        mmr: 'assets/background/VALORANT_mmr_diamond.png',
+        color: '#bb77f0',
+        discordid: '<:dia3:862005298193891378>',
+    },
+    21: {
+        mmr: 'assets/background/VALORANT_mmr_immortal.png',
+        color: '#da3f76',
+        discordid: '<:immortal1:862005437264429056>',
+    },
+    22: {
+        mmr: 'assets/background/VALORANT_mmr_immortal.png',
+        color: '#da3f76',
+        discordid: '<:immortal2:862005462580985856>',
+    },
+    23: {
+        mmr: 'assets/background/VALORANT_mmr_immortal.png',
+        color: '#da3f76',
+        discordid: '<:immortal3:862005493840478208>',
+    },
+    24: {
+        mmr: 'assets/background/VALORANT_mmr_radiant.png',
+        color: '#d3d058',
+        discordid: '<:radiant:862005538392506408>',
+    },
+};
 export const shard_status_codes = {
     0: 'ONLINE',
     1: 'CONNECTING',
@@ -1262,9 +1389,11 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                 });
                 fields.push({
                     name: `${sorted_array[i].name}#${sorted_array[i].tag}`,
-                    value: `${rank.response != null || rank.data.data.currenttier == null ? ranks[0].discordid : ranks[rank.data.data.currenttier].discordid} | Score: ${
-                        sorted_array[i].stats.score
-                    } | KDA: ${sorted_array[i].stats.kills}/${sorted_array[i].stats.deaths}/${sorted_array[i].stats.assists}`,
+                    value: `${
+                        rank.response != null || rank.data.data.currenttier == null
+                            ? ranks[0].discordid
+                            : (rank.data.data.old ? old_ranks[rank.data.data.currenttier] : ranks[rank.data.data.currenttier]).discordid
+                    } | Score: ${sorted_array[i].stats.score} | KDA: ${sorted_array[i].stats.kills}/${sorted_array[i].stats.deaths}/${sorted_array[i].stats.assists}`,
                 });
             }
             return {
@@ -1424,10 +1553,12 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
         x: 1375.5,
         y: 200,
     };
-    const background = bgcanvas ? bgcanvas : await Canvas.loadImage(ranks[seasonvalue[0].tier ? seasonvalue[0].tier : 0].mmr);
+    const background = bgcanvas
+        ? bgcanvas
+        : await Canvas.loadImage((entries[1].old ? old_ranks[seasonvalue[0].tier ? seasonvalue[0].tier : 0] : ranks[seasonvalue[0].tier ? seasonvalue[0].tier : 0]).mmr);
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
     const wins = entries[1].wins;
-    const color = ranks[seasonvalue[0].tier].color;
+    const color = (entries[1].old ? old_ranks[seasonvalue[0].tier] : ranks[seasonvalue[0].tier]).color;
     let border;
     if (wins < 9) border = await Canvas.loadImage('assets/mmr/border0.png');
     else if (9 <= wins && wins < 25) border = await Canvas.loadImage('assets/mmr/border1.png');
