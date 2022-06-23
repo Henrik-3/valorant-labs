@@ -1616,7 +1616,10 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
         const tierCount = i * 2 + 1;
         let tiers = seasonvalue.splice(0, tierCount);
         for (let k = 0; tiers.length > k; k++) {
-            const triangle = k % 2 == 0 ? `assets/mmr/${tiers[k].tier}_up.png` : `assets/mmr/${tiers[k].tier}_down.png`;
+            const triangle =
+                k % 2 == 0
+                    ? `assets/mmr/${tiers[k].tier >= 21 && entries[1].old ? tiers[k].tier + 3 : tiers[k].tier}_up.png`
+                    : `assets/mmr/${tiers[k].tier >= 21 && entries[1].old ? tiers[k].tier + 3 : tiers[k].tier}_down.png`;
             const triangleimage = await Canvas.loadImage(triangle);
             const x = (125 * multiplier.triangle) / 2 + 2.75;
             ctx.drawImage(
