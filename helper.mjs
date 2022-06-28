@@ -1,4 +1,4 @@
-import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle} from 'discord.js.dev';
+import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle, EmbedBuilder} from 'discord.js.dev';
 import {readFileSync} from 'fs';
 import {MongoClient} from 'mongodb';
 
@@ -12,6 +12,19 @@ const client = new Client({
         PresenceManager: 0,
     }),
 });
+
+const uuidv4 = function () {
+    let dt = new Date().getTime();
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
+    return uuid;
+};
+const getDB = function ({db, col}) {
+    return mongoclient.db(db).collection(col);
+};
 
 client.once('ready', async () => {
     console.log('ready');
@@ -107,7 +120,7 @@ client.on('messageCreate', async message => {
 });
 
 client.on('interactionCreate', async interaction => {
-    if (!['upgrade', 'generate'].some(item => interaction.customId.startsWith(item))) await interaction.deferReply({ephemeral: true});
+    if (!['upgrade', 'generate', 'applicationaccept', 'applicationdeny'].some(item => interaction.customId == item)) await interaction.deferReply({ephemeral: true});
     if (interaction.isButton()) {
         switch (interaction.customId) {
             case 'val_api': {
@@ -248,7 +261,7 @@ client.on('interactionCreate', async interaction => {
                     });
                 return interaction.showModal({
                     title: 'Upgrade API Key',
-                    customId: `upgradekey;${interaction.user.id}`,
+                    customId: `upgradekey;${interaction.user.id};${interaction.message.id}`,
                     components: [
                         {
                             type: ComponentType.ActionRow,
@@ -291,13 +304,52 @@ client.on('interactionCreate', async interaction => {
                     ],
                 });
             }
+            case 'applicationaccept': {
+                return interaction.showModal({
+                    title: 'Accept Key',
+                    customId: `applicationacceptconfirm;${interaction.message.embeds[0].title.split(' ')[2].trim()};${interaction.message.id}`,
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'info',
+                                    style: TextInputStyle.Paragraph,
+                                    label: 'Additional Information',
+                                    required: false,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            }
+            case 'applicationdeny': {
+                return interaction.showModal({
+                    title: 'Deny Key',
+                    customId: `applicationdenyconfirm;${interaction.message.embeds[0].title.split(' ')[2].trim()};${interaction.message.id}`,
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'info',
+                                    style: TextInputStyle.Paragraph,
+                                    label: 'Additional Information',
+                                    required: true,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            }
         }
     }
     if (interaction.isModalSubmit()) {
         const args = interaction.customId.split(';');
         switch (args[0]) {
             case 'genkey': {
-                console.log(interaction.fields.fields);
                 client.channels.cache.get('983100719840256090').send({
                     embeds: [
                         {
@@ -404,6 +456,75 @@ client.on('interactionCreate', async interaction => {
                         },
                     ],
                 });
+            }
+            case 'applicationdenyconfirm': {
+                const user = await client.users.fetch(interaction.customId.split(';')[1]);
+                const message = await client.channels.cache.get('983100719840256090').messages.fetch(interaction.customId.split(';')[2]);
+                user.send({
+                    embeds: [
+                        {
+                            title: 'Application declined',
+                            description: `Your application for the VALORANT API got declined`,
+                            fields: [
+                                {
+                                    name: 'Reason',
+                                    value: interaction.fields.getTextInputValue('info'),
+                                },
+                            ],
+                            color: 0xff4654,
+                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
+                        },
+                    ],
+                });
+                console.log(interaction.customId.split(';')[2]);
+                message.edit({
+                    embeds: [
+                        EmbedBuilder.from(message.embeds[0])
+                            .setColor(0xff4654)
+                            .addFields([{name: 'Reason', value: interaction.fields.getTextInputValue('info')}]),
+                    ],
+                    components: [],
+                });
+                return interaction.editReply({content: 'Deny'});
+            }
+            case 'applicationacceptconfirm': {
+                const user = await client.users.fetch(interaction.customId.split(';')[1]);
+                const message = await client.channels.cache.get('983100719840256090').messages.fetch(interaction.customId.split(';')[2]);
+                const tokens = `HDEV-${uuidv4()}`;
+                getDB({db: 'API', col: 'tokens'}).insertOne({
+                    userid: user.id,
+                    token: tokens,
+                    name: message.embeds[0].fields.find(i => i.name == 'Product Name').value,
+                    details: message.embeds[0].fields.find(i => i.name == 'Details').value,
+                    info: message.embeds[0].fields.find(i => i.name == 'Additional Information').value,
+                });
+                user.send({
+                    embeds: [
+                        {
+                            title: 'Application accepted',
+                            description: 'Your application for the VALORANT API got accepted',
+                            fields: [
+                                {name: 'Key', value: tokens},
+                                {name: 'Rate Limit', value: '90req/min'},
+                                {
+                                    name: 'Additional Information',
+                                    value: interaction.fields.getTextInputValue('info') ? interaction.fields.getTextInputValue('info') : 'None',
+                                },
+                            ],
+                            color: 0x00ff93,
+                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
+                        },
+                    ],
+                });
+                message.edit({
+                    embeds: [
+                        EmbedBuilder.from(message.embeds[0])
+                            .setColor(0x00ff93)
+                            .addFields([{name: 'Reason', value: interaction.fields.getTextInputValue('info') ? interaction.fields.getTextInputValue('info') : 'None'}]),
+                    ],
+                    components: [],
+                });
+                return interaction.editReply({content: 'Accept'});
             }
         }
     }

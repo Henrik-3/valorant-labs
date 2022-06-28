@@ -67,7 +67,7 @@ client.on('ready', async () => {
     console.log('tes');
     /*if(client.shard.ids[0] == 0) {
         const competitivetiers = await axios.get("https://valorant-api.com/v1/competitivetiers")
-        const tiers = competitivetiers.data.data.find(item => item.uuid == "e4e9a692-288f-63ca-7835-16fbf6234fda").tiers
+        const tiers = competitivetiers.data.data.find(item => item.uuid == "03621f52-342b-cf4e-4f86-9350a49c6d04").tiers
         for(let i = 0; tiers.length > i; i++) {
             if(tiers[i].rankTriangleDownIcon) {
                 const down = await axios.get(tiers[i].rankTriangleDownIcon, {responseType: "arraybuffer"})

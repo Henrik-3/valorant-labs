@@ -31,7 +31,8 @@ export async function execute({interaction, args, guilddata} = {}) {
                 return error;
             });
             if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response, type: 'mmr', lang: guilddata.lang, data: mmr.response.data});
-            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0)
+            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0 || mmr.data.data.current_data.old) {
+                await interaction.member.roles.remove(guilddata.autoroles.map(item => item.id));
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({
@@ -41,6 +42,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                         }),
                     ],
                 });
+            }
             const uneditableroles = [];
             roles.forEach(item => {
                 const role = interaction.guild.roles.cache.get(guilddata.autoroles.find(item1 => item1.name == item).id);

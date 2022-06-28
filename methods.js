@@ -871,10 +871,10 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
         : null;
     let rank_image;
     if (rank == null || rank.response || (rank.data && rank.data.data.currenttier == null)) {
-        rank_image = await Canvas.loadImage('https://media.valorant-api.com/competitivetiers/e4e9a692-288f-63ca-7835-16fbf6234fda/0/largeicon.png');
+        rank_image = await Canvas.loadImage('https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/0/largeicon.png');
     } else {
         rank_image = await Canvas.loadImage(
-            `https://media.valorant-api.com/competitivetiers/e4e9a692-288f-63ca-7835-16fbf6234fda/${rank.data.data.currenttier}/largeicon.png`
+            `https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/${rank.data.data.currenttier}/largeicon.png`
         );
         buildText({
             ctx,
@@ -1461,7 +1461,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
             let x_red_agent = 185;
             for (let i = 0; red_players.length > i; i++) {
                 const player = await Canvas.loadImage(
-                    `https://media.valorant-api.com/competitivetiers/e4e9a692-288f-63ca-7835-16fbf6234fda/${red_players[i].currenttier}/largeicon.png`
+                    `https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/${red_players[i].currenttier}/largeicon.png`
                 );
                 ctx.drawImage(player, x_red_rank, 1320, 75, 75);
                 const agent = await Canvas.loadImage(getAgents().find(item => item.displayName.toLowerCase() == red_players[i].character.toLowerCase()).fullPortraitV2);
@@ -1489,7 +1489,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
             }
             for (let i = 0; blue_players.length > i; i++) {
                 const player = await Canvas.loadImage(
-                    `https://media.valorant-api.com/competitivetiers/e4e9a692-288f-63ca-7835-16fbf6234fda/${blue_players[i].currenttier}/largeicon.png`
+                    `https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/${blue_players[i].currenttier}/largeicon.png`
                 );
                 ctx.drawImage(player, x_blue_rank, 110, 75, 75);
                 const agent = await Canvas.loadImage(getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortraitV2);
@@ -2006,15 +2006,16 @@ export const patchGuild = async function ({interaction, key, value, additionalda
         case 'autoroles': {
             const autoroleupdate = {};
             autoroleupdate[`autoroles.${guilddata.autoroles?.findIndex(item => item.name == value)}`] = {id: additionaldata, name: value};
-            doc = guilddata.autoroles?.some(item => item.name == value)
-                ? (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: autoroleupdate}, {upsert: false, returnDocument: 'after'})).value
-                : (
-                      await getDB('settings').findOneAndUpdate(
-                          {gid: interaction.guild.id},
-                          {$push: {autoroles: {id: additionaldata, name: value}}},
-                          {upsert: false, returnDocument: 'after'}
-                      )
-                  ).value;
+            doc =
+                guilddata.autoroles && guilddata.autoroles.some(item => item.name == value)
+                    ? (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: autoroleupdate}, {upsert: false, returnDocument: 'after'})).value
+                    : (
+                          await getDB('settings').findOneAndUpdate(
+                              {gid: interaction.guild.id},
+                              {$push: {autoroles: {id: additionaldata, name: value}}},
+                              {upsert: false, returnDocument: 'after'}
+                          )
+                      ).value;
             return getAutoRoles(interaction);
         }
     }
