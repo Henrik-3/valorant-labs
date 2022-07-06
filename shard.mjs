@@ -211,8 +211,6 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 return res.code(500).send({
                     error: `There seems to be an error with the mmr of that account | Status: ${mmr.response.status} | Message: ${mmr.response.data.message}`,
                 });
-            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0)
-                return res.code(500).send({error: translations[guilddata.lang].mmr.no_rank_desc});
             if (
                 mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == 'ascendant' &&
                 !guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)
@@ -228,13 +226,13 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                                 .get(guild)
                                 .members.fetch(user)
                                 .catch(e => {
-                                    console.log(e);
+                                    console.error(e);
                                 });
                             await member.roles.remove(rm).catch(e => {
-                                console.log(e);
+                                console.error(e);
                             });
                             await member.roles.add(ra).catch(e => {
-                                console.log(e);
+                                console.error(e);
                             });
                         }
                     },
@@ -242,9 +240,15 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                         context: {
                             user: fstate.userid,
                             guild: fstate.guild,
-                            ra: guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id,
+                            ra: guilddata.autoroles.some(i => i.name == 'verify')
+                                ? guilddata.autoroles
+                                      .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name || item.name == 'verify')
+                                      .map(item => {
+                                          return item.id;
+                                      })
+                                : guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id,
                             rm: guilddata.autoroles
-                                .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name)
+                                .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name && item.name != 'verify')
                                 .map(item => {
                                     return item.id;
                                 }),
@@ -274,6 +278,12 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 {upsert: true}
             );
             getDB('state').deleteOne({code: req.query.state});
+            if (
+                (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0) &&
+                guilddata.autoroles.some(i => i.name == 'verify' || i.name == 'unrated')
+            ) {
+                return res.code(500).send({error: translations[guilddata.lang].mmr.no_rank_desc});
+            }
             return res.code(200).send({message: `Your account was successfully linked and your role was given`});
         }
         if (fstate.type == 'link') {

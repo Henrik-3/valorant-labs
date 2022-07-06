@@ -48,7 +48,7 @@ export {pretty, axios, translations, moment, ComponentType, ButtonStyle, TextInp
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;
 export const topgg = basedata.dbltoken;
-export const roles = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ascendant', 'immortal', 'radiant'];
+export const roles = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ascendant', 'immortal', 'radiant', 'unrated'];
 export const riottoken = basedata.riottoken;
 export const clusters = {
     na: {
@@ -780,6 +780,7 @@ export const guildSettings = async function (guild) {
                     background_game: false,
                     background_mmr: false,
                     autoroles: [],
+                    autoroleslog: false,
                 },
             },
             {upsert: true, returnDocument: 'after'}
@@ -1855,9 +1856,11 @@ export const getGuild = async function (interaction) {
 };
 export const getAutoRoles = async function (interaction, guilddata) {
     const settings = guilddata ? guilddata : await guildSettings(interaction.guild);
-    const formattedarray = roles.map(item => {
+    const roles2 = [...roles];
+    roles2.push('verify');
+    const formattedarray = roles2.map(item => {
         return {
-            name: firstletter(item),
+            name: ['verify', 'unrated'].some(i => i == item) ? `${firstletter(item)} (${translations[settings.lang].autorole.optional})` : firstletter(item),
             value: settings.autoroles.some(item1 => item1.name == item)
                 ? `<@&${settings.autoroles.find(item1 => item1.name == item).id}>`
                 : translations[settings.lang].autorole.wrong,
@@ -2017,6 +2020,10 @@ export const patchGuild = async function ({interaction, key, value, additionalda
                           )
                       ).value;
             return getAutoRoles(interaction);
+        }
+        case 'autoroleslog': {
+            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {autoroleslog: value}}, {upsert: false, returnDocument: 'after'})).value;
+            break;
         }
     }
     getGuild(interaction);

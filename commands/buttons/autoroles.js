@@ -32,8 +32,12 @@ export async function execute({interaction, args, guilddata} = {}) {
                 return error;
             });
             if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response, type: 'mmr', lang: guilddata.lang, data: mmr.response.data});
-            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0 || mmr.data.data.current_data.old) {
-                await interaction.member.roles.remove(guilddata.autoroles.map(item => item.id));
+            if (
+                (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0) &&
+                guilddata.autoroles.some(i => i.name == 'verify' || i.name == 'unrated')
+            ) {
+                await interaction.member.roles.remove(guilddata.autoroles.filter(i => i.name != 'verify' && i.name != 'unrated').map(item => item.id));
+                if (guilddata.autoroles.some(i => i.name == 'unrated')) await interaction.member.roles.add(guilddata.autoroles.find(i => i.name == 'unrated').id);
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({
@@ -46,8 +50,10 @@ export async function execute({interaction, args, guilddata} = {}) {
             }
             const uneditableroles = [];
             roles.forEach(item => {
-                const role = interaction.guild.roles.cache.get(guilddata.autoroles.find(item1 => item1.name == item).id);
-                if (!role.editable) uneditableroles.push({name: firstletter(item), value: `<@&${role.id}>`});
+                if (guilddata.autoroles.some(i => i.name == item)) {
+                    const role = interaction.guild.roles.cache.get(guilddata.autoroles.find(item1 => item1.name == item).id);
+                    if (!role.editable) uneditableroles.push({name: firstletter(item), value: `<@&${role.id}>`});
+                } else if (item != 'unrated') uneditableroles.push({name: firstletter(item), value: translations[guilddata.lang].autorole.wrong});
             });
             if (uneditableroles.length)
                 return interaction.editReply({
@@ -63,7 +69,7 @@ export async function execute({interaction, args, guilddata} = {}) {
             await interaction.member.roles
                 .remove(
                     guilddata.autoroles
-                        .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name)
+                        .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name && item.name != 'verify')
                         .map(item => {
                             return item.id;
                         })
@@ -80,8 +86,15 @@ export async function execute({interaction, args, guilddata} = {}) {
                             ],
                         });
                 });
+
             await interaction.member.roles.add(
-                guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id
+                guilddata.autoroles.some(i => i.name == 'verify')
+                    ? guilddata.autoroles
+                          .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name || item.name == 'verify')
+                          .map(item => {
+                              return item.id;
+                          })
+                    : guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id
             );
             return interaction.editReply({
                 embeds: [
@@ -95,9 +108,11 @@ export async function execute({interaction, args, guilddata} = {}) {
         case 'remove': {
             await interaction.member.roles
                 .remove(
-                    guilddata.autoroles.map(item => {
-                        return item.id;
-                    })
+                    guilddata.autoroles
+                        .filter(item => item.name != 'verify')
+                        .map(item => {
+                            return item.id;
+                        })
                 )
                 .catch(error => {
                     if (error.code == 50013)

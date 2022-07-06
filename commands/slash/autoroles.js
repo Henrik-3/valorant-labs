@@ -10,11 +10,20 @@ export async function execute({interaction, guilddata} = {}) {
                 guilddata,
             });
         }
+        case 'verify': {
+            return patchGuild({
+                interaction,
+                key: 'autoroles',
+                value: 'verify',
+                additionaldata: interaction.options.get('role').value,
+                guilddata,
+            });
+        }
         case 'get': {
             return getAutoRoles(interaction, guilddata);
         }
         case 'send': {
-            if (guilddata.autoroles?.length != 9) {
+            if (roles.every(i => guilddata.autoroles.some(k => k.id == i))) {
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({
@@ -35,8 +44,10 @@ export async function execute({interaction, guilddata} = {}) {
             } else {
                 const uneditableroles = [];
                 roles.forEach(item => {
-                    const role = interaction.guild.roles.cache.get(guilddata.autoroles.find(item1 => item1.name == item).id);
-                    if (!role.editable) uneditableroles.push({name: firstletter(item), value: `<@&${role.id}>`});
+                    if (guilddata.autoroles.some(i => i.name == item)) {
+                        const role = interaction.guild.roles.cache.get(guilddata.autoroles.find(item1 => item1.name == item).id);
+                        if (!role.editable) uneditableroles.push({name: firstletter(item), value: `<@&${role.id}>`});
+                    } else if (item != 'unrated') uneditableroles.push({name: firstletter(item), value: translations[guilddata.lang].autorole.wrong});
                 });
                 if (uneditableroles.length)
                     return interaction.editReply({
