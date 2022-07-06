@@ -87,9 +87,22 @@ client.on('messageCreate', async message => {
             embeds: [
                 {
                     title: 'API Key Generation',
-                    description:
-                        'Klick on the `Generate` Button below beginn the process of the key generation. If you need a higher Rate Limit klick on `Upgrade RL`.\n\nBase Ratelimit: TBD',
+                    description: `Klick on the \`Generate\` Button below beginn the process of the key generation. If you need a higher Rate Limit klick on \`Upgrade RL\`.`,
                     color: 0xffffff,
+                    fields: [
+                        {
+                            name: 'No Key',
+                            value: `\`\`\`- 30req/min (2 uncached accounts/hour)\n- Suitable for: Twitch Bots | Educational purposes (How do i code etc)\`\`\``,
+                        },
+                        {
+                            name: 'Basic Key',
+                            value: `\`\`\`- 90req/min (unlimited uncached accounts/hour)\n- Suitable for: Private Discord Bots (Servers) / Websites\`\`\``,
+                        },
+                        {
+                            name: 'Production Key',
+                            value: `\`\`\`- Rate Limit you requested\n- Suitable for: Production Discord Bots / Websites\n- PLEASE MAKE SURE THAT YOU ALSO REQUEST AN OFFICIAL VALORANT API KEY AT RIOT TO GET RSO IF YOU HAVE A STATS FEATURE FOR EXAMPLE\`\`\``,
+                        },
+                    ],
                     footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
                 },
             ],
@@ -109,7 +122,16 @@ client.on('messageCreate', async message => {
                             style: ButtonStyle.Secondary,
                             label: 'Upgrade RL',
                             customId: 'upgrade',
+                            disabled: true,
                             emoji: {name: 'icons_upvote', id: '909715386843430933'},
+                        },
+                        {
+                            type: ComponentType.Button,
+                            style: ButtonStyle.Secondary,
+                            label: 'Show keys',
+                            customId: 'showkeys',
+                            disabled: true,
+                            emoji: {name: 'icons_settings', id: '859388128040976384'},
                         },
                     ],
                 },
@@ -494,6 +516,7 @@ client.on('interactionCreate', async interaction => {
                 getDB({db: 'API', col: 'tokens'}).insertOne({
                     userid: user.id,
                     token: tokens,
+                    limit: 90,
                     name: message.embeds[0].fields.find(i => i.name == 'Product Name').value,
                     details: message.embeds[0].fields.find(i => i.name == 'Details').value,
                     info: message.embeds[0].fields.find(i => i.name == 'Additional Information').value,

@@ -1,10 +1,9 @@
-import {Client, GatewayIntentBits, Collection, Options} from 'discord.js.dev';
+import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js.dev';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
 import {perms, embedBuilder, guildBlacklist, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
 import path from 'path';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
-import axios from 'axios';
 
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const api = JSON.parse(readFileSync('./api.json'));
@@ -135,10 +134,10 @@ client.on('guildCreate', async g => {
 client.on('interactionCreate', async interaction => {
     const guilddata = await guildSettings(interaction.guild);
     const blacklist = guilddata.blacklist ? await guildBlacklist(interaction.guild) : null;
-    if (!interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
+    if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isModalSubmit()) return client.modals.get(args[0]).execute({interaction, args, guilddata});
+        if (interaction instanceof ModalSubmitInteraction) return client.modals.get(args[0]).execute({interaction, args, guilddata});
         if (interaction.isSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
         if (interaction.isMessageContextMenuCommand()) return client.context.get(interaction.commandId).execute({interaction, args, guilddata});
     }

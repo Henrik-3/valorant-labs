@@ -11,11 +11,11 @@ const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
 
 const manager = new ShardingManager('./index.js', {
-    token: basedata.discordtoken,
-    totalShards: 2,
+    token: basedata.discordtokenreal,
+    totalShards: 10,
     respawn: true,
 });
-//const poster = AutoPoster(basedata.dbltoken, manager);
+const poster = AutoPoster(basedata.dbltoken, manager);
 
 let restart = false;
 setInterval(async () => {
@@ -36,8 +36,8 @@ manager.on('shardCreate', async shard => {
     shard.on('ready', async rshard => {
         console.log('Ready', shard.id);
         if (manager.shards.size == manager.totalShards && restart == false) {
-            //fetchWebsite(manager);
-            //shard_status_update(manager);
+            fetchWebsite(manager);
+            shard_status_update(manager);
             manager.shards.forEach(sshard => {
                 sshard.send('startup');
             });
@@ -151,15 +151,6 @@ fastify.get('/invite/guilded', async (req, res) => {
     res.redirect('https://www.guilded.gg/b/5f089b0d-fa2c-4335-91c6-54df79f5d6e1');
 });
 
-fastify.post('/v1/translations', async (req, res) => {
-    const newObject = {};
-    for (let i = 0; req.body.length > i; i++) {
-        newObject[req.body[i].name] = req.body[i].value;
-    }
-    writeFileSync(`./translations/${randomize('Aa0', 6)}.json`, JSON.stringify(newObject, null, 2));
-    res.code(200).send('ok');
-});
-
 fastify.get('/v1/rso/redirect/:state', async (req, res) => {
     res.redirect(
         301,
@@ -229,27 +220,53 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 return res.code(404).send({
                     message: "The new rank ASCENDANT isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
                 });
-            await manager.broadcastEval(
-                async (c, {user, guild, ra, rm}) => {
-                    if (c.guilds.cache.has(guild)) {
-                        const member = await c.guilds.cache.get(guild).members.fetch(user);
-                        await member.roles.remove(rm);
-                        await member.roles.add(ra);
-                    }
-                },
-                {
-                    context: {
-                        user: fstate.userid,
-                        guild: fstate.guild,
-                        ra: guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id,
-                        rm: guilddata.autoroles
-                            .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name)
-                            .map(item => {
-                                return item.id;
-                            }),
+            await manager
+                .broadcastEval(
+                    async (c, {user, guild, ra, rm}) => {
+                        if (c.guilds.cache.has(guild)) {
+                            const member = await c.guilds.cache
+                                .get(guild)
+                                .members.fetch(user)
+                                .catch(e => {
+                                    console.log(e);
+                                });
+                            await member.roles.remove(rm).catch(e => {
+                                console.log(e);
+                            });
+                            await member.roles.add(ra).catch(e => {
+                                console.log(e);
+                            });
+                        }
                     },
-                }
-            );
+                    {
+                        context: {
+                            user: fstate.userid,
+                            guild: fstate.guild,
+                            ra: guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id,
+                            rm: guilddata.autoroles
+                                .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name)
+                                .map(item => {
+                                    return item.id;
+                                }),
+                        },
+                    }
+                )
+                .catch(async e => {
+                    await manager.broadcastEval(
+                        (c, {embed}) => {
+                            if (c.channels.cache.has('992792200918347876')) return c.channels.cache.get('992792200918347876').send({embeds: [embed]});
+                        },
+                        {
+                            context: {
+                                embed: {
+                                    title: 'Error',
+                                    description: `\`\`\`${JSON.stringify(e)}\`\`\``,
+                                    color: 16777215,
+                                },
+                            },
+                        }
+                    );
+                });
             getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
             getDB('linkv2').updateOne(
                 {userid: fstate.userid},

@@ -5,7 +5,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import system from 'systeminformation';
 import pretty from 'pretty-bytes';
-import {PermissionFlagsBits, Attachment, ComponentType, ButtonStyle, TextInputStyle, ActivityType} from 'discord.js.dev';
+import {PermissionFlagsBits, ComponentType, ButtonStyle, TextInputStyle, ActivityType, AttachmentBuilder} from 'discord.js.dev';
 import moment from 'moment';
 import Canvas from 'canvas';
 import randomize from 'randomatic';
@@ -965,7 +965,7 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
         buildText({ctx, text: `/game ${matches[i].gamekey}`, size: 80, x: 2500, y: keyk});
         keyk += 266.6;
     }
-    return new Attachment(canvas.toBuffer(), `valorant-stats-${dbstats.name}-${dbstats.tag}.png`, {description: 'VALORANT LABS Stats'});
+    return new AttachmentBuilder(canvas.toBuffer(), `valorant-stats-${dbstats.name}-${dbstats.tag}.png`, {description: 'VALORANT LABS Stats'});
 };
 export const patchStats = async function ({dbstats, mmatches, message, lang, agent, modes, bgcanvas} = {}) {
     const reqs = [];
@@ -1515,7 +1515,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                 x_blue_level += 768;
                 x_blue_agent += 768;
             }
-            const attachment = new Attachment(canvas.toBuffer(), `valorant-game.png`, {description: 'VALORANT LABS Game'});
+            const attachment = new AttachmentBuilder(canvas.toBuffer(), `valorant-game.png`, {description: 'VALORANT LABS Game'});
             return {error: null, unknown: null, embed: null, image: attachment};
     }
 };
@@ -1631,7 +1631,7 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
             );
         }
     }
-    return new Attachment(canvas.toBuffer(), `valorant-mmr.png`, {description: 'VALORANT LABS MMR'});
+    return new AttachmentBuilder(canvas.toBuffer(), `valorant-mmr.png`, {description: 'VALORANT LABS MMR'});
 };
 export const getBlacklist = async function (guildId) {
     const request = await getDB('blacklist').findOne({gid: guildId});
