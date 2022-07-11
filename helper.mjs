@@ -1,4 +1,4 @@
-import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle, EmbedBuilder} from 'discord.js.dev';
+import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle, EmbedBuilder, ModalSubmitInteraction} from 'discord.js.dev';
 import {readFileSync} from 'fs';
 import {MongoClient} from 'mongodb';
 
@@ -368,7 +368,7 @@ client.on('interactionCreate', async interaction => {
             }
         }
     }
-    if (interaction.isModalSubmit()) {
+    if (interaction instanceof ModalSubmitInteraction) {
         const args = interaction.customId.split(';');
         switch (args[0]) {
             case 'genkey': {
@@ -527,7 +527,7 @@ client.on('interactionCreate', async interaction => {
                             title: 'Application accepted',
                             description: 'Your application for the VALORANT API got accepted',
                             fields: [
-                                {name: 'Key', value: tokens},
+                                {name: 'Key', value: `||${tokens}||`},
                                 {name: 'Rate Limit', value: '90req/min'},
                                 {
                                     name: 'Additional Information',

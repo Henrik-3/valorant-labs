@@ -220,7 +220,7 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 });
             await manager
                 .broadcastEval(
-                    async (c, {user, guild, ra, rm}) => {
+                    async (c, {user, guild, ra, rm, logs, embeddata}) => {
                         if (c.guilds.cache.has(guild)) {
                             const member = await c.guilds.cache
                                 .get(guild)
@@ -234,6 +234,10 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                             await member.roles.add(ra).catch(e => {
                                 console.error(e);
                             });
+                            if (logs)
+                                c.channels.cache.get(logs).send({
+                                    embeds: [embeddata],
+                                });
                         }
                     },
                     {
@@ -252,6 +256,21 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                                 .map(item => {
                                     return item.id;
                                 }),
+                            logs: guilddata.autoroleslog,
+                            embeddata: {
+                                title: translations[guilddata.lang].autoroles.logs_title,
+                                fields: [
+                                    {name: translations[guilddata.lang].autoroles.logs_user, value: `<@${fstate.userid}> | ${fstate.userid}`},
+                                    {name: translations[guilddata.lang].autoroles.logs_new_rank, value: mmr.data.data.current_data.currenttierpatched},
+                                    {name: 'PUUID', value: db.data.data.puuid},
+                                    {name: 'Riot ID', value: `${mmr.data.data.name}#${mmr.data.data.tag}`},
+                                ],
+                                color: 0x00ff00,
+                                footer: {
+                                    text: 'VALORANT LABS [AUTOROLE LOGS]',
+                                    icon_url: 'https://valorantlabs.xyz/css/valorant-logo.png',
+                                },
+                            },
                         },
                     }
                 )

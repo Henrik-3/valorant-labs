@@ -102,7 +102,12 @@
             "modal_color": "Farbe",
             "modal_edit_title": "Nachricht bearbeiten",
             "message_edit_title": "Nachricht bearbeitet",
-            "message_edit_desc": "Die Nachricht wurde erfolgreich geändert"
+            "message_edit_desc": "Die Nachricht wurde erfolgreich geändert",
+            "logs_title": "Rollen Update",
+            "logs_user": "Mitglied",
+            "logs_old_rank": "Alter Rang",
+            "logs_new_rank": "Neuer Rang",
+            "logs_no_role": "Keinen Rang"
         },
         "blacklist": {
             "blacklistinactive_title": "Blacklist ist nicht aktiv",
@@ -155,7 +160,7 @@
             "500_desc": "Bei der Überprüfung ob du gevoted hast ist ein Fehler aufgetreten, bitte versuche es in Kürze nochmal...",
             "not_voted_title": "Du hast noch nicht gevoted",
             "not_voted_desc": "Bitte vote für den Bot auf top.gg (Klicke auf den Button unter dieser Nachricht um zu top.gg zu gelangen) um diesen Befehl für die nächsten 24h nutzen zu können",
-            "no_link_title": "Keine Riot ID angegeben oder du kein verlinkter Account",
+            "no_link_title": "Keine Riot ID angegeben oder du hast keinen verlinkten Account",
             "no_link_desc": "Hier sind alle verfügbaren Commands",
             "base": "Zeigt deine MMR Daten insofern du deinen Discord Account mit deinem Riot Account über den /link Befehl verknüpft hast",
             "options": "Zeigt die MMR Daten des angegebenen Accounts",
@@ -186,7 +191,7 @@
             "invalidriotid_title": "Fehlerhafte Riot ID",
             "invalidriotid_desc": "Die angegebene Riot ID ist Fehlerhaft. Bitte stelle sicher das du ebenfalls deinen Tag und nicht nur den Namen angegeben hast.\n\nFehlerhafte Riot ID: Henrik3\nKorrekte Riot ID: Henrik3#VALO",
             "noriotid_title": "Keine Riot ID angegeben",
-            "noriotid_desc": "Du hast sowohl keinen Verlinkten Account, als auch keinen namen angegeben. Bitte verlinke dich mit `/link add` oder gebe eine Riot ID an",
+            "noriotid_desc": "Du hast sowohl keinen Verlinkten Account, als auch keinen Namen angegeben. Bitte verlinke dich mit `/link add` oder gebe eine Riot ID an",
             "game_select": "Wähle ein Spiel aus"
         },
         "vote": {
