@@ -1,4 +1,4 @@
-import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle, EmbedBuilder} from 'discord.js.dev';
+import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle, EmbedBuilder, InteractionType} from 'discord.js.dev';
 import {readFileSync} from 'fs';
 import {MongoClient} from 'mongodb';
 
@@ -24,6 +24,16 @@ const uuidv4 = function () {
 };
 const getDB = function ({db, col}) {
     return mongoclient.db(db).collection(col);
+};
+const select_icon = {
+    valorant: {
+        id: '722028690053136434',
+        name: 'VALORANT',
+    },
+    multiversus: {
+        id: '1002656740736782436',
+        name: 'MVS2',
+    },
 };
 
 client.once('ready', async () => {
@@ -122,7 +132,7 @@ client.on('messageCreate', async message => {
                             style: ButtonStyle.Secondary,
                             label: 'Upgrade RL',
                             customId: 'upgrade',
-                            disabled: true,
+                            disabled: false,
                             emoji: {name: 'icons_upvote', id: '909715386843430933'},
                         },
                         {
@@ -130,7 +140,7 @@ client.on('messageCreate', async message => {
                             style: ButtonStyle.Secondary,
                             label: 'Show keys',
                             customId: 'showkeys',
-                            disabled: true,
+                            disabled: false,
                             emoji: {name: 'icons_settings', id: '859388128040976384'},
                         },
                     ],
@@ -139,10 +149,12 @@ client.on('messageCreate', async message => {
         });
         message.delete();
     }
+    if (message.crosspostable) message.crosspost();
 });
 
 client.on('interactionCreate', async interaction => {
-    if (!['upgrade', 'generate', 'applicationaccept', 'applicationdeny'].some(item => interaction.customId == item)) await interaction.deferReply({ephemeral: true});
+    if (!['upgrade', 'generate', 'generate;', 'upgrade;', 'applicationaccept', 'applicationdeny'].some(item => interaction.customId == item))
+        await interaction.deferReply({ephemeral: true});
     if (interaction.isButton()) {
         switch (interaction.customId) {
             case 'val_api': {
@@ -209,58 +221,42 @@ client.on('interactionCreate', async interaction => {
                 return interaction.editReply({content: 'Role given'});
             }
             case 'generate': {
-                const key = await mongoclient.db('API').collection('tokens').findOne({userid: interaction.user.id});
-                if (key)
-                    return interaction.reply({
-                        ephemeral: true,
-                        embeds: [
-                            {
-                                title: 'You already have an application',
-                                description: "You already have an application, you can't create a second one",
-                                color: 0xff4654,
-                                footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                            },
-                        ],
-                    });
-                return interaction.showModal({
-                    title: 'Generate API Key',
-                    customId: `genkey;${interaction.user.id}`,
+                return interaction.reply({
+                    ephemeral: true,
+                    embeds: [
+                        {
+                            title: 'Please select the API Key type',
+                            description: 'Please select the API Key type u like to apply for',
+                            color: 0xffffff,
+                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
+                        },
+                    ],
                     components: [
                         {
                             type: ComponentType.ActionRow,
                             components: [
                                 {
-                                    type: ComponentType.TextInput,
-                                    customId: 'title',
-                                    style: TextInputStyle.Short,
-                                    label: 'Product Name',
-                                    required: true,
-                                },
-                            ],
-                        },
-                        {
-                            type: ComponentType.ActionRow,
-                            components: [
-                                {
-                                    type: ComponentType.TextInput,
-                                    customId: 'desc',
-                                    style: TextInputStyle.Paragraph,
-                                    label: 'Product Description',
-                                    max_length: 1000,
-                                    required: true,
-                                },
-                            ],
-                        },
-                        {
-                            type: ComponentType.ActionRow,
-                            components: [
-                                {
-                                    type: ComponentType.TextInput,
-                                    customId: 'addinfo',
-                                    style: TextInputStyle.Paragraph,
-                                    label: 'Additional information you want to provide',
-                                    max_length: 1000,
-                                    required: false,
+                                    type: ComponentType.SelectMenu,
+                                    customId: `generate;`,
+                                    maxValues: 1,
+                                    options: [
+                                        {
+                                            value: 'valorant',
+                                            label: 'VALORANT',
+                                            emoji: {
+                                                id: '722028690053136434',
+                                                name: 'VALORANT',
+                                            },
+                                        },
+                                        {
+                                            value: 'multiversus',
+                                            label: 'MultiVersus',
+                                            emoji: {
+                                                id: '1002656740736782436',
+                                                name: 'MVS2',
+                                            },
+                                        },
+                                    ],
                                 },
                             ],
                         },
@@ -268,8 +264,8 @@ client.on('interactionCreate', async interaction => {
                 });
             }
             case 'upgrade': {
-                const key = await mongoclient.db('API').collection('tokens').findOne({userid: interaction.user.id});
-                if (!key)
+                const key = await getDB({db: 'API', col: 'tokens'}).find({userid: interaction.user.id}).toArray();
+                if (!key || !key.length)
                     return interaction.reply({
                         ephemeral: true,
                         embeds: [
@@ -281,45 +277,31 @@ client.on('interactionCreate', async interaction => {
                             },
                         ],
                     });
-                return interaction.showModal({
-                    title: 'Upgrade API Key',
-                    customId: `upgradekey;${interaction.user.id};${interaction.message.id}`,
+                return interaction.reply({
+                    ephemeral: true,
+                    embeds: [
+                        {
+                            title: 'Please select the API Key',
+                            description: 'Please select the API Key you want to upgrade',
+                            color: 0xffffff,
+                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
+                        },
+                    ],
                     components: [
                         {
                             type: ComponentType.ActionRow,
                             components: [
                                 {
-                                    type: ComponentType.TextInput,
-                                    customId: 'limit',
-                                    style: TextInputStyle.Short,
-                                    label: 'Request limit you want (enter a request count in a 2min interval)',
-                                    required: true,
-                                },
-                            ],
-                        },
-                        {
-                            type: ComponentType.ActionRow,
-                            components: [
-                                {
-                                    type: ComponentType.TextInput,
-                                    customId: 'why',
-                                    style: TextInputStyle.Paragraph,
-                                    max_length: 1000,
-                                    label: 'Why do you need a higher rate limit?',
-                                    required: true,
-                                },
-                            ],
-                        },
-                        {
-                            type: ComponentType.ActionRow,
-                            components: [
-                                {
-                                    type: ComponentType.TextInput,
-                                    customId: 'addinfo',
-                                    style: TextInputStyle.Paragraph,
-                                    max_length: 1000,
-                                    label: 'Additional information you want to provide',
-                                    required: false,
+                                    type: ComponentType.SelectMenu,
+                                    customId: `upgrade;`,
+                                    maxValues: 1,
+                                    options: key.map(i => {
+                                        return {
+                                            value: i.token,
+                                            label: i.name,
+                                            emoji: select_icon[i.type],
+                                        };
+                                    }),
                                 },
                             ],
                         },
@@ -366,9 +348,29 @@ client.on('interactionCreate', async interaction => {
                     ],
                 });
             }
+            case 'showkeys': {
+                const keys = await getDB({db: 'API', col: 'tokens'}).find({userid: interaction.user.id}).toArray();
+                return interaction.editReply({
+                    embeds: [
+                        {
+                            title: 'Key Overview',
+                            description: 'Overviews over all keys you have',
+                            fields: keys.map(i => {
+                                return {
+                                    name: i.name,
+                                    value: `__Type__: ${i.type}\n__Limit__: ${i.limit}req/min\n__Token__: ||${i.token}||`,
+                                    inline: true,
+                                };
+                            }),
+                            color: 0x00ff93,
+                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
+                        },
+                    ],
+                });
+            }
         }
     }
-    if (interaction.isModalSubmit()) {
+    if (interaction.type == InteractionType.ModalSubmit) {
         const args = interaction.customId.split(';');
         switch (args[0]) {
             case 'genkey': {
@@ -378,6 +380,7 @@ client.on('interactionCreate', async interaction => {
                             title: `New Application ${args[1]}`,
                             fields: [
                                 {name: 'Product Name', value: interaction.fields.getTextInputValue('title')},
+                                {name: 'Type', value: args[2]},
                                 {name: 'Details', value: interaction.fields.getTextInputValue('desc')},
                                 {
                                     name: 'Additional Information',
@@ -420,8 +423,8 @@ client.on('interactionCreate', async interaction => {
                     ],
                 });
             }
-            case 'upgradekey': {
-                const key = await mongoclient.db('API').collection('tokens').findOne({userid: args[1]});
+            case 'upkey': {
+                const key = await mongoclient.db('API').collection('tokens').findOne({token: args[2]});
                 client.channels.cache.get('983100719840256090').send({
                     embeds: [
                         {
@@ -429,6 +432,7 @@ client.on('interactionCreate', async interaction => {
                             fields: [
                                 {name: 'Product Name', value: key.name},
                                 {name: 'Details', value: key.details},
+                                {name: 'Type', value: key.type},
                                 {name: 'Current limit', value: key.limit},
                                 {
                                     name: 'Requested limit',
@@ -440,7 +444,7 @@ client.on('interactionCreate', async interaction => {
                                 },
                                 {
                                     name: 'Additional Information',
-                                    value: interaction.fields.fields.has('addinfo') ? interaction.fields.getTextInputValue('addinfo') : 'Not available',
+                                    value: interaction.fields.getTextInputValue('addinfo') ? interaction.fields.getTextInputValue('addinfo') : 'Not available',
                                 },
                             ],
                             color: 0xffffff,
@@ -455,13 +459,13 @@ client.on('interactionCreate', async interaction => {
                                     type: ComponentType.Button,
                                     style: ButtonStyle.Success,
                                     label: 'Accept',
-                                    customId: 'applicationaccept',
+                                    customId: 'applicationupgradeaccept',
                                 },
                                 {
                                     type: ComponentType.Button,
                                     style: ButtonStyle.Danger,
                                     label: 'Deny',
-                                    customId: 'applicationdeny',
+                                    customId: 'applicationupgradedeny',
                                 },
                             ],
                         },
@@ -520,6 +524,8 @@ client.on('interactionCreate', async interaction => {
                     name: message.embeds[0].fields.find(i => i.name == 'Product Name').value,
                     details: message.embeds[0].fields.find(i => i.name == 'Details').value,
                     info: message.embeds[0].fields.find(i => i.name == 'Additional Information').value,
+                    type: message.embeds[0].fields.find(i => i.name == 'Type') ? message.embeds[0].fields.find(i => i.name == 'Type').value : 'valorant',
+                    admin: false,
                 });
                 user.send({
                     embeds: [
@@ -548,6 +554,118 @@ client.on('interactionCreate', async interaction => {
                     components: [],
                 });
                 return interaction.editReply({content: 'Accept'});
+            }
+        }
+    }
+    if (interaction.isSelectMenu()) {
+        const args = interaction.customId.split(';');
+        switch (args[0]) {
+            case 'generate': {
+                const key = await getDB({db: 'API', col: 'tokens'}).findOne({userid: interaction.user.id, type: interaction.values[0]});
+                if (key)
+                    return interaction.reply({
+                        ephemeral: true,
+                        embeds: [
+                            {
+                                title: 'You already have an application',
+                                description: "You already have an application for that API type, you can't create a second one",
+                                color: 0xff4654,
+                                footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
+                            },
+                        ],
+                    });
+                return interaction.showModal({
+                    title: 'Generate API Key',
+                    customId: `genkey;${interaction.user.id};${interaction.values[0]}`,
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'title',
+                                    style: TextInputStyle.Short,
+                                    label: 'Product Name',
+                                    required: true,
+                                },
+                            ],
+                        },
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'desc',
+                                    style: TextInputStyle.Paragraph,
+                                    label: 'Product Description',
+                                    max_length: 1000,
+                                    required: true,
+                                },
+                            ],
+                        },
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'addinfo',
+                                    style: TextInputStyle.Paragraph,
+                                    label: 'Additional information you want to provide',
+                                    max_length: 1000,
+                                    required: false,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            }
+            case 'upgrade': {
+                const key = await getDB({db: 'API', col: 'tokens'}).findOne({token: interaction.values[0]});
+                return interaction.showModal({
+                    title: 'Upgrade API Key',
+                    customId: `upkey;${interaction.user.id};${interaction.values[0]}`,
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'limit',
+                                    style: TextInputStyle.Short,
+                                    label: 'Request limit you want (req/min)',
+                                    required: true,
+                                    value: key.limit,
+                                },
+                            ],
+                        },
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'why',
+                                    style: TextInputStyle.Paragraph,
+                                    max_length: 1000,
+                                    label: 'Why do you need a higher rate limit?',
+                                    required: true,
+                                },
+                            ],
+                        },
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'addinfo',
+                                    style: TextInputStyle.Paragraph,
+                                    max_length: 1000,
+                                    label: 'Additional information you want to provide',
+                                    required: false,
+                                },
+                            ],
+                        },
+                    ],
+                });
             }
         }
     }

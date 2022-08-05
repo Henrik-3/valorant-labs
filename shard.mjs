@@ -182,6 +182,11 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 return error;
             });
         if (userinfo.response) return res.code(500).send({error: `There seems to be an error with the riot server | Status: ${userinfo.response.status}`});
+        if (fstate.type == 'delete') {
+            getDB('rso').deleteMany({puuid: userinfo.data.puuid});
+            getDB('state').deleteOne({code: req.query.state});
+            return res.code(200).send({message: `Your account was successfully set to a private state`});
+        }
         const region = await axios
             .get(`https://europe.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/${userinfo.data.puuid}`, {
                 headers: {'X-Riot-Token': basedata.riottoken},

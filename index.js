@@ -177,7 +177,7 @@ client.on('interactionCreate', async interaction => {
             .deferReply({
                 ephemeral:
                     (blacklist && blacklist.includes(`<#${interaction.channelId}>`)) ||
-                    ['autoroles', 'blacklist', 'settings'].some(item => item == interaction.commandName)
+                    ['autoroles', 'blacklist', 'settings', 'private'].some(item => item == interaction.commandName)
                         ? true
                         : false,
             })
