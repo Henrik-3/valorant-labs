@@ -9,13 +9,7 @@ const basedata = JSON.parse(readFileSync('./basedata.json'));
 const api = JSON.parse(readFileSync('./api.json'));
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const client = new Client({
-    rest: {
-        version: '9',
-    },
-    ws: {
-        version: '9',
-    },
-    intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds],
+    intents: [GatewayIntentBits.Guilds],
     makeCache: Options.cacheWithLimits({
         MessageManager: {
             sweepInterval: 1800,

@@ -125,7 +125,7 @@ export async function execute({message, guilddata, args} = {}) {
         for (let i = 0; dbstats.matches.length > i; i++) {
             components.push({
                 label: dbstats.matches[i].gamekey,
-                value: dbstats.matches[i].gamekey,
+                value: dbstats.matches[i].id,
                 description: `${dbstats.matches[i].map} | ${dbstats.matches[i].mode} | ${dbstats.matches[i].agent} | ${moment(dbstats.matches[i].start).format('lll')}`,
                 emoji: Object.values(gamemodes).find(item => item.name == dbstats.matches[i].mode).emoji,
             });

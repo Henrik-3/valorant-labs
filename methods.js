@@ -1341,7 +1341,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
         for (let i = 0; dbstats.matches.length > i; i++) {
             components.push({
                 label: dbstats.matches[i].gamekey,
-                value: dbstats.matches[i].gamekey,
+                value: dbstats.matches[i].id,
                 description: `${dbstats.matches[i].map} | ${dbstats.matches[i].mode} | ${dbstats.matches[i].agent} | ${moment(dbstats.matches[i].start).format('lll')}`,
                 emoji: Object.values(gamemodes).find(item => item.name == dbstats.matches[i].mode).emoji,
             });
@@ -1370,7 +1370,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
 export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas} = {}) {
     const gamekey = matchid ? true : await getGameKey(id);
     if (!gamekey) return {error: null, unknown: true, embed: null, image: null};
-    const match = await axios.get(`https://api.henrikdev.xyz/valorant/v2/match/${matchid ? matchid : gamekey.matchid}`).catch(error => {
+    const match = await axios.get(`https://api.henrikdev.xyz/valorant/v2/match/${matchid ?? gamekey.matchid}`).catch(error => {
         return error;
     });
     if (match.response) return {error: match.response, unknown: null, embed: null, image: null};
@@ -1810,7 +1810,6 @@ export const getGuild = async function (interaction) {
                 title: 'VALORANT LABS Settings',
                 desc: `Settings for ${interaction.guild.name}`,
                 additionalFields: [
-                    {name: 'Prefix', value: String(settings.prefix)},
                     {name: 'Patchnotes', value: settings.news == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.news.replace(/<|#|>/g, '')}>`},
                     {name: 'Othernews', value: settings.onews == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.onews.replace(/<|#|>/g, '')}>`},
                     {

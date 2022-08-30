@@ -84,6 +84,16 @@ export async function execute({interaction, guilddata} = {}) {
         link && !interaction.options.get('riot-id')
             ? link
             : {name: interaction.options.get('riot-id').value.split('#')[0], tag: interaction.options.get('riot-id').value.split('#')[1]};
+    if (!account_details.name || !account_details.tag)
+        return interaction.editReply({
+            embeds: [
+                embedBuilder({
+                    title: translations[guilddata.lang].stats.invalidriotid_title,
+                    desc: translations[guilddata.lang].stats.invalidriotid_desc,
+                    footer: 'VALORANT LABS [INVALID RIOT ID]',
+                }),
+            ],
+        });
     const puuid = await axios
         .get(`https://api.henrikdev.xyz/valorant/v1/account/${encodeURI(account_details.name)}/${encodeURI(account_details.tag)}?asia=true`)
         .catch(error => {

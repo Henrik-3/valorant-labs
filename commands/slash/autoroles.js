@@ -1,4 +1,4 @@
-import {patchGuild, getAutoRoles, embedBuilder, translations, roles, firstletter, ButtonStyle, ComponentType} from '../../methods.js';
+import {patchGuild, getAutoRoles, embedBuilder, translations, roles, firstletter, ButtonStyle, ComponentType, perms} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
     switch (interaction.options._subcommand) {
         case 'setup': {
@@ -50,6 +50,17 @@ export async function execute({interaction, guilddata} = {}) {
                         ],
                     });
             }
+            if (!interaction.channel.permissionsFor(interaction.client.user.id).has(perms.SendMessages))
+                return interaction.editReply({
+                    embeds: [
+                        embedBuilder({
+                            title: translations[guilddata.lang].autorole.message_send_error_title,
+                            desc: translations[guilddata.lang].autorole.message_send_error_desc,
+                            additionalFields: uneditableroles,
+                            footer: 'VALORANT LABS [ROLE PERMISSION ERROR]',
+                        }),
+                    ],
+                });
             interaction.channel.send({
                 embeds: [
                     embedBuilder({

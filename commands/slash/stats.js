@@ -59,7 +59,7 @@ export async function execute({interaction, guilddata} = {}) {
                         footer: 'VALORANT LABS [INVALID RIOT ID]',
                     }),
                 ],
-            }); //TODO
+            });
         dbstats = await getStatsDB({name: interaction.options.get('riot-id').value.split('#')[0], tag: interaction.options.get('riot-id').value.split('#')[1]});
         if (dbstats.status != 200)
             return errorhandlerinteraction({
