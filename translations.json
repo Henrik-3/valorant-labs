@@ -171,7 +171,8 @@
             "imggenerated_title": "Bild erfolgreich generiert",
             "imggenerated_desc": "Hier siehst du das fertige Bild so wie sie beim Benutzen des Befehles aussehen würde. Sollten das Bild wie in deiner Vorstellung aussehen, klicke unten auf den grünen Knopf. Sollten das Bild nicht so aussehen wie du es möchtest, klicke auf den Roten Knopf und lade ein anderes Bild hoch",
             "imggenerated_label_accept": "Speichern",
-            "imggenerated_label_deny": "Abbrechen"
+            "imggenerated_label_deny": "Abbrechen",
+            "not_set": "Nicht Konfiguriert"
         },
         "status": {
             "noerrors": "Es wurden keine Fehler auf dem Cluster gefunden",

@@ -1,6 +1,6 @@
 import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js.dev';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
-import {perms, embedBuilder, guildBlacklist, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
+import {perms, embedBuilder, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
 import path from 'path';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
@@ -133,7 +133,6 @@ client.on('guildCreate', async g => {
 
 client.on('interactionCreate', async interaction => {
     const guilddata = await guildSettings(interaction.guild);
-    const blacklist = guilddata.blacklist ? await guildBlacklist(interaction.guild) : null;
     if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
@@ -175,11 +174,7 @@ client.on('interactionCreate', async interaction => {
     if (!['feedback'].some(item => item == interaction.commandName))
         await interaction
             .deferReply({
-                ephemeral:
-                    (blacklist && blacklist.includes(`<#${interaction.channelId}>`)) ||
-                    ['autoroles', 'blacklist', 'settings', 'private'].some(item => item == interaction.commandName)
-                        ? true
-                        : false,
+                ephemeral: ['autoroles', 'settings', 'private'].some(item => item == interaction.commandName) ? true : false,
             })
             .catch(error => {
                 console.log(error);
@@ -253,26 +248,8 @@ client.on('messageCreate', async message => {
     }
     const guilddata = await guildSettings(message.guild);
     if (!message.content.startsWith(guilddata.prefix)) return;
-    const blacklist = guilddata.blacklist ? await guildBlacklist(message.guild) : null;
     const args = message.content.substring(guilddata.prefix.length).split(' ');
     const cmd = args.shift();
-    if (blacklist && blacklist.includes(`<#${message.channelId}>`)) {
-        return message
-            .reply({
-                embeds: [
-                    embedBuilder({
-                        title: translations[guilddata.lang].errors.cmdblacklist_title,
-                        desc: translations[guilddata.lang].errors.cmdblacklist_desc,
-                        footer: 'VALORANT LABS [BLACKLIST]',
-                    }),
-                ],
-            })
-            .then(msg => {
-                setTimeout(() => {
-                    msg.delete();
-                }, 7500);
-            });
-    }
     api[cmd]++;
     api['all']++;
     writeFileSync('./api.json', JSON.stringify(api, null, 2));
