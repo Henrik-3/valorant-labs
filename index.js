@@ -177,8 +177,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
-    console.log(normalcommands);
-    if (message.author.id == '346345363990380546' && message.content == '/reload' && message.channel.parent == '732290187090067476') {
+    /*if (message.author.id == '346345363990380546' && message.content == '/reload' && message.channel.parent == '732290187090067476') {
         const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'));
         const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
         const buttoncommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
@@ -281,7 +280,7 @@ client.on('messageCreate', async message => {
                 }),
             ],
         });
-    client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata});
+    client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata});*/
 });
 
 process.on('unhandledRejection', error => {
