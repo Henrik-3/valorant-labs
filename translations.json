@@ -391,7 +391,8 @@
             "imggenerated_title": "Image successfully generated",
             "imggenerated_desc": "Here you can see the finished image as it would look when using the command. If the image looks like you imagined, click on the green button below. If the image does not look the way you want it to, click the red button and upload another image.",
             "imggenerated_label_accept": "Save",
-            "imggenerated_label_deny": "Cancel"
+            "imggenerated_label_deny": "Cancel",
+            "not_set": "Not set"
         },
         "status": {
             "noerrors": "No errors were found on the cluster",
@@ -610,7 +611,8 @@
             "imggenerated_title": "Image successfully generated",
             "imggenerated_desc": "Here you can see the finished image as it would look when using the command. If the image looks like you imagined, click on the green button below. If the image does not look the way you want it to, click the red button and upload another image.",
             "imggenerated_label_accept": "Save",
-            "imggenerated_label_deny": "Cancel"
+            "imggenerated_label_deny": "Cancel",
+            "not_set": "Not set"
         },
         "status": {
             "noerrors": "No errors were found on the cluster",
@@ -829,7 +831,8 @@
             "imggenerated_title": "画像の生成に成功",
             "imggenerated_desc": "ここでは、コマンドを使用したときの完成イメージを見ることができます。イメージ通りであれば、下の緑色のボタンをクリックしてください。イメージと違う場合は、赤のボタンをクリックして、別の画像をアップロードしてください。",
             "imggenerated_label_accept": "セーブ",
-            "imggenerated_label_deny": "キャンセル"
+            "imggenerated_label_deny": "キャンセル",
+            "not_set": "設定なし"
         },
         "status": {
             "noerrors": "クラスタ上でエラーは見つかりませんでした",
@@ -1048,7 +1051,8 @@
             "imggenerated_title": "Imagem gerada com sucesso",
             "imggenerated_desc": "Aqui pode ver a imagem acabada tal como ela seria quando se usasse o comando. Se a imagem se parecer com a que imaginou, clique no botão verde abaixo. Se a imagem não tiver o aspecto que deseja, clique no botão vermelho e carregue outra imagem.",
             "imggenerated_label_accept": "Guardar",
-            "imggenerated_label_deny": "Cancelar"
+            "imggenerated_label_deny": "Cancelar",
+            "not_set": "Não definido"
         },
         "status": {
             "noerrors": "Não foram encontrados erros no agrupamento",
@@ -1267,7 +1271,8 @@
             "imggenerated_title": "Image générée avec succès",
             "imggenerated_desc": "Vous pouvez voir ici l'image finie telle qu'elle apparaîtrait en utilisant la commande. Si l'image ressemble à ce que vous avez imaginé, cliquez sur le bouton vert ci-dessous. Si l'image ne ressemble pas à ce que vous souhaitez, cliquez sur le bouton rouge et téléchargez une autre image.",
             "imggenerated_label_accept": "Sauvez",
-            "imggenerated_label_deny": "Annuler"
+            "imggenerated_label_deny": "Annuler",
+            "not_set": "Non défini"
         },
         "status": {
             "noerrors": "Aucune erreur n'a été trouvée sur le cluster",
@@ -1486,7 +1491,8 @@
             "imggenerated_title": "Imagen generada con éxito",
             "imggenerated_desc": "Aquí puedes ver la imagen terminada como se vería al usar el comando. Si la imagen se ve como la imaginaste, haz clic en el botón verde de abajo. Si la imagen no se ve como quieres, haz clic en el botón rojo y sube otra imagen.",
             "imggenerated_label_accept": "Guardar",
-            "imggenerated_label_deny": "Cancelar"
+            "imggenerated_label_deny": "Cancelar",
+            "not_set": "No se ha fijado"
         },
         "status": {
             "noerrors": "No se han encontrado errores en el cluster",
@@ -1705,7 +1711,8 @@
             "imggenerated_title": "Hình ảnh được tạo thành công",
             "imggenerated_desc": "Tại đây, bạn có thể thấy hình ảnh đã hoàn thành như khi sử dụng lệnh. Nếu hình ảnh giống như bạn tưởng tượng, hãy nhấp vào nút màu xanh lá cây bên dưới. Nếu hình ảnh không giống như bạn muốn, hãy nhấp vào nút màu đỏ và tải lên một hình ảnh khác.",
             "imggenerated_label_accept": "Cứu",
-            "imggenerated_label_deny": "Hủy bỏ"
+            "imggenerated_label_deny": "Hủy bỏ",
+            "not_set": "Không được thiết lập"
         },
         "status": {
             "noerrors": "Không có lỗi nào được tìm thấy trên cụm",
