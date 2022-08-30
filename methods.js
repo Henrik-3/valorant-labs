@@ -1567,14 +1567,14 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
     else if (50 <= wins && wins < 75) border = await Canvas.loadImage('assets/mmr/border3.png');
     else if (75 <= wins && wins < 100) border = await Canvas.loadImage('assets/mmr/border4.png');
     else border = await Canvas.loadImage('assets/mmr/border5.png');
-    ctx.drawImage(border, 1135, 200, 1765, 1765);
+    ctx.drawImage(border, 1135, 175, 1765, 1765);
 
     buildText({
         ctx,
         text: seasonkey.toUpperCase(),
-        size: 200,
+        size: 180,
         x: multiplier.x + ((125 * multiplier.triangle) / 2) * 8.25,
-        y: 325,
+        y: 250,
         color: color,
         align: 'center',
         font: 'anton',
@@ -1582,9 +1582,9 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
     buildText({
         ctx,
         text: seasonvalue[0].patched_tier.toUpperCase(),
-        size: 200,
+        size: 180,
         x: multiplier.x + ((125 * multiplier.triangle) / 2) * 8.25,
-        y: 2025,
+        y: 2075,
         color: color,
         align: 'center',
         font: 'anton',
@@ -1626,7 +1626,7 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
             ctx.drawImage(
                 triangleimage,
                 k * x + (rowcount - i) * x + (multiplier.x + ((125 * multiplier.triangle) / 2) * (7 - rowcount)),
-                i * (111 * multiplier.triangle + 2.75) + (multiplier.y + 400),
+                i * (111 * multiplier.triangle + 2.75) + (multiplier.y + 375),
                 125 * multiplier.triangle,
                 111 * multiplier.triangle
             );
