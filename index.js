@@ -1,6 +1,6 @@
 import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js.dev';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
-import {perms, embedBuilder, guildBlacklist, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
+import {perms, embedBuilder, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
 import path from 'path';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
@@ -9,13 +9,7 @@ const basedata = JSON.parse(readFileSync('./basedata.json'));
 const api = JSON.parse(readFileSync('./api.json'));
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const client = new Client({
-    rest: {
-        version: '9',
-    },
-    ws: {
-        version: '9',
-    },
-    intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds],
+    intents: [GatewayIntentBits.Guilds],
     makeCache: Options.cacheWithLimits({
         MessageManager: {
             sweepInterval: 1800,
@@ -133,7 +127,6 @@ client.on('guildCreate', async g => {
 
 client.on('interactionCreate', async interaction => {
     const guilddata = await guildSettings(interaction.guild);
-    const blacklist = guilddata.blacklist ? await guildBlacklist(interaction.guild) : null;
     if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
@@ -175,11 +168,7 @@ client.on('interactionCreate', async interaction => {
     if (!['feedback'].some(item => item == interaction.commandName))
         await interaction
             .deferReply({
-                ephemeral:
-                    (blacklist && blacklist.includes(`<#${interaction.channelId}>`)) ||
-                    ['autoroles', 'blacklist', 'settings', 'private'].some(item => item == interaction.commandName)
-                        ? true
-                        : false,
+                ephemeral: ['autoroles', 'settings', 'private'].some(item => item == interaction.commandName) ? true : false,
             })
             .catch(error => {
                 console.log(error);
@@ -188,8 +177,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
-    console.log(normalcommands);
-    if (message.author.id == '346345363990380546' && message.content == '/reload' && message.channel.parent == '732290187090067476') {
+    /*if (message.author.id == '346345363990380546' && message.content == '/reload' && message.channel.parent == '732290187090067476') {
         const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'));
         const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
         const buttoncommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
@@ -253,26 +241,8 @@ client.on('messageCreate', async message => {
     }
     const guilddata = await guildSettings(message.guild);
     if (!message.content.startsWith(guilddata.prefix)) return;
-    const blacklist = guilddata.blacklist ? await guildBlacklist(message.guild) : null;
     const args = message.content.substring(guilddata.prefix.length).split(' ');
     const cmd = args.shift();
-    if (blacklist && blacklist.includes(`<#${message.channelId}>`)) {
-        return message
-            .reply({
-                embeds: [
-                    embedBuilder({
-                        title: translations[guilddata.lang].errors.cmdblacklist_title,
-                        desc: translations[guilddata.lang].errors.cmdblacklist_desc,
-                        footer: 'VALORANT LABS [BLACKLIST]',
-                    }),
-                ],
-            })
-            .then(msg => {
-                setTimeout(() => {
-                    msg.delete();
-                }, 7500);
-            });
-    }
     api[cmd]++;
     api['all']++;
     writeFileSync('./api.json', JSON.stringify(api, null, 2));
@@ -310,7 +280,7 @@ client.on('messageCreate', async message => {
                 }),
             ],
         });
-    client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata});
+    client.ncommands.get(cmd).execute({message: message, args: args, guilddata: guilddata});*/
 });
 
 process.on('unhandledRejection', error => {

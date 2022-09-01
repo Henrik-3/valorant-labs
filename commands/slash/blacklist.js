@@ -1,6 +1,6 @@
-import {embedBuilder, translations, perms, removeBlacklist, addBlacklist, getBlacklist} from '../../methods.js';
+import {embedBuilder, translations, perms} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
-    if (guilddata.blacklist)
+    /*if (guilddata.blacklist)
         return interaction.editReply({
             embeds: [
                 embedBuilder({
@@ -78,6 +78,6 @@ export async function execute({interaction, guilddata} = {}) {
                 ],
             });
         }
-    }
+    }*/
 }
 export const name = 'blacklist';

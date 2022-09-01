@@ -14,7 +14,7 @@ export async function execute({interaction, args, guilddata} = {}) {
         components: [],
     });
     const bgcanvas = guilddata.background_game ? await buildBackground(getCustomBackground(guilddata.background_game), 'game') : null;
-    const image = await buildGameImage({id: interaction.values[0], guilddata, bgcanvas});
+    const image = await buildGameImage({matchid: interaction.values[0], guilddata, bgcanvas});
     if (image.unknown)
         return interaction.editReply({
             embeds: [
@@ -28,7 +28,7 @@ export async function execute({interaction, args, guilddata} = {}) {
             components: components,
         });
     if (image.error) return errorhandlerinteraction({interaction, status: image.error.status, type: 'game', lang: guilddata.lang, data: image.error.data});
-    if (image.embed) return interaction.editReply({embeds: [image.embed], components: components});
-    if (image.image) return interaction.editReply({files: [image.image], embeds: [], components: components});
+    if (image.embed) return interaction.editReply({embeds: [image.embed], components});
+    if (image.image) return interaction.editReply({files: [image.image], embeds: [], components});
 }
 export const name = 'game';

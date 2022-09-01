@@ -1,0 +1,667 @@
+{
+    "cmds": {
+        "translations": [
+            {
+                "slash": "/agent [AGENT]",
+                "docs": "https://docs.valorantlabs.xyz/commands/agent"
+            },
+            {
+                "slash": "/api",
+                "docs": "https://docs.valorantlabs.xyz/commands/api"
+            },
+            {
+                "slash": "/autoroles get",
+                "docs": "https://docs.valorantlabs.xyz/commands-admin/autoroles"
+            },
+            {
+                "slash": "/autoroles send",
+                "docs": "https://docs.valorantlabs.xyz/commands-admin/autoroles"
+            },
+            {
+                "slash": "/autoroles setup [RANK] [@ROLE]",
+                "docs": "https://docs.valorantlabs.xyz/commands-admin/autoroles"
+            },
+            {
+                "slash": "/botinfo",
+                "docs": "https://docs.valorantlabs.xyz/commands/botinfo"
+            },
+            {
+                "slash": "/feedback",
+                "docs": "https://docs.valorantlabs.xyz/commands/feedback"
+            },
+            {
+                "slash": "/game [GAMEKEY]",
+                "docs": "https://docs.valorantlabs.xyz/commands/game"
+            },
+            {
+                "slash": "/help",
+                "docs": "https://docs.valorantlabs.xyz/commands/help"
+            },
+            {
+                "slash": "/link get"
+            },
+            {
+                "slash": "/link add"
+            },
+            {
+                "slash": "/link remove"
+            },
+            {
+                "slash": "/map [MAP]"
+            },
+            {
+                "slash": "/mmr [NAME#TAG]"
+            },
+            {
+                "slash": "/patch"
+            },
+            {
+                "slash": "/private"
+            },
+            {
+                "slash": "/settings get"
+            },
+            {
+                "slash": "/settings set patchnotes [#CHANNEL]"
+            },
+            {
+                "slash": "/settings set othernews [#CHANNEL]"
+            },
+            {
+                "slash": "/settings set serverstatus [#CHANNEL]"
+            },
+            {
+                "slash": "/settings set language [VALUE]"
+            },
+            {
+                "slash": "/settings set background [TYPE] [IMAGE]"
+            },
+            {
+                "slash": "/stats [NAME#TAG]"
+            },
+            {
+                "slash": "/status [CLUSTER]"
+            },
+            {
+                "slash": "/vote"
+            },
+            {
+                "slash": "/weapon [WEAPON]"
+            },
+            {
+                "slash": "/weapons"
+            }
+        ],
+        "en": [
+            "Shows information about an agent",
+            "Shows the link to the open backend API",
+            "Shows information about all blacklisted channels if blacklist system is enabled",
+            "Adds a channel to the blacklist if blacklist system is enabled",
+            "Removes a channel from the blacklist if blacklist system is enabled",
+            "Shows information about the bot itself (resource usage etc.)",
+            "Shows data about a played match",
+            "Shows help page",
+            "Shows linked account if you have one",
+            "Links a new riot account with your discord account",
+            "Removes a linked account",
+            "Shows information about a map",
+            "Shows MMR Data per Episode/Act and current data",
+            "Shows link to the latest patch notes",
+            "Shows guild settings",
+            "Set guild prefix",
+            "Set autonews channel for patchnotes ",
+            "Set autonews channel for website articles that are not patchnotes",
+            "Set autonews channel for server issues",
+            "Set guild language",
+            "Enables/disables the blacklist system",
+            "Shows your own stats if you are linked or returns a help message",
+            "Shows stats of another player if he is logged in via RSO",
+            "Shows server status for the requested server cluster",
+            "Shows link to the top.gg vote page",
+            "Shows information about a weapon",
+            "Shows information about all weapons ingame"
+        ],
+        "de": [
+            "Zeigt Informationen über einen Agenten",
+            "Zeigt Informationen über die Backend API des Bots",
+            "Zeigt alle Channel für welche die Blacklist aktiviert sind wenn das Blacklist System aktiviert ist",
+            "Fügt einen Channel zur Blacklist hinzu",
+            "Entfernt einen Channel aus der Blacklist",
+            "Zeigt Informationen über den Bot und dessen Host System (Server Auslastung etc...)",
+            "Zeigt detaillierte Information zu einem vergangenen Match",
+            "Zeigt die Hilfe Nachricht",
+            "Zeigt den Verlinkten Account insofern du einen verlinkt hast",
+            "Verlinkt einen Riot Account mit deinem Discord Account",
+            "Entfernt den verlinkten Account",
+            "Zeigt Informationen über eine Map",
+            "Zeigt MMR Data per Episode/Act und aktuelle Daten",
+            "Zeigt die aktuellen Patchnotes",
+            "Zeigt die Server Einstellungen",
+            "Ändert den Prefix für den Bot",
+            "Ändert den Autonews Channel für die Patchnotes",
+            "Ändert den Autonews Channel für die Website Artikel welche keine Patchnotes sind",
+            "Ändert den Autonews Channel für Server Ausfälle und Probleme",
+            "Ändert die Sprache für den Bot",
+            "Aktiviert/Deaktiviert das Blacklist System",
+            "Zeigt deine eigenen Statistiken wenn du mit einem Riot Account verlinkt bist oder zeigt die Hilfsübersicht falls kein Account verlinkt ist",
+            "Zeigt Statistiken eines anderen Spielers insofern er über RSO eingeloggt ist",
+            "Zeigt aktuellen Server Status für das angegebene Server Cluster",
+            "Zeigt den Link zu der top.gg Seite",
+            "Zeigt Informationen über eine Waffe",
+            "Zeigt Informationen über alle Waffen Ingame"
+        ],
+        "jp": [
+            "「エージェントに関する情報を表示します」",
+            "「ボットのバックエンドAPIに関する情報を表示します」",
+            "「ブラックリストシステムがアクティブ化されている場合、ブラックリストがアクティブ化されているすべてのチャネルを表示します」",
+            "「ブラックリストにチャンネルを追加します」",
+            "「ブラックリストからチャンネルを削除します」",
+            "「ボットとそのホストシステムに関する情報（サーバーの負荷など）を表示します」",
+            "「過去の試合の詳細情報を表示します」",
+            "「ヘルプメッセージを表示します」",
+            "「リンクされているアカウントを表示します」",
+            "「RiotアカウントをDiscordアカウントにリンクする」",
+            "「リンクされたアカウントを削除します」",
+            "地図に関する情報を表示します」",
+            "エピソード/行為ごとのMMRデータと現在のデータを表示します",
+            "「現在のパッチノートを表示します」",
+            "「サーバー設定を表示します」",
+            "「ボットのプレフィックスを変更します」",
+            "「パッチノートのAutonewsチャネルを変更します」",
+            "「パッチノートではないWebサイト記事のAutonewsChannelを変更します」",
+            "「サーバーの障害と問題のためにAutonewsチャネルを変更します」",
+            "「ボットの言語を変更する」",
+            "「ブラックリストシステムをアクティブ化/非アクティブ化」",
+            "「Riotアカウントにリンクされている場合は独自の統計を表示し、アカウントがリンクされていない場合はヘルプの概要を表示します」",
+            "「他のプレイヤーがRSO経由でログインしている場合、そのプレイヤーの統計を表示します」",
+            "「指定したサーバークラスターの現在のサーバーステータスを表示します」",
+            "top.ggページへのリンクを表示します",
+            "「武器に関する情報を表示します」",
+            "「ゲーム内のすべての武器に関する情報を表示します」"
+        ],
+        "pt-br": [
+            "Mostra informações sobre um agente",
+            "Mostra informações sobre a API de back-end do bot",
+            "Mostra todos os canais para os quais a lista negra está ativada se o sistema de lista negra estiver ativado",
+            "Adiciona um canal à lista negra",
+            "Remove um canal da lista negra",
+            "Mostra informações sobre o bot e seu sistema host (carga do servidor etc ...)",
+            "Mostra informações detalhadas sobre uma partida anterior",
+            "Mostra a mensagem de ajuda",
+            "Mostra a conta vinculada se você tiver vinculado uma",
+            "Vincula uma conta Riot à sua conta Discord",
+            "Remove a conta vinculada",
+            "Mostra informações sobre um mapa",
+            "Mostra dados MMR por episódio / ato e dados atuais",
+            "Mostra as notas do patch atual",
+            "Mostra as configurações do servidor",
+            "Muda o prefixo do bot",
+            "Muda o canal Autonews para as notas do patch",
+            "Altera o canal Autonews para os artigos do site que não são notas de patch",
+            "Altera o canal Autonews para falhas e problemas do servidor",
+            "Mudar o idioma do bot",
+            "Ativa / desativa o sistema de lista negra",
+            "Mostra suas próprias estatísticas se você estiver vinculado a uma conta da Riot ou mostra a visão geral da ajuda se nenhuma conta estiver vinculada",
+            "Mostra estatísticas de outro jogador se ele estiver logado via RSO",
+            "Mostra o status atual do servidor para o cluster de servidor especificado",
+            "Mostra o link para a página top.gg",
+            "Mostra informações sobre uma arma",
+            "Mostra informações sobre todas as armas do jogo"
+        ],
+        "fr": [
+            "Affiche des informations sur un agent",
+            "Affiche des informations sur l'API backend du bot",
+            "Affiche toutes les chaînes pour lesquelles la liste noire est activée si le système de liste noire est activé",
+            "Ajoute une chaîne à la liste noire",
+            "Supprime une chaîne de la liste noire",
+            "Affiche des informations sur le bot et son système hôte (charge du serveur etc...)",
+            "Affiche des informations détaillées sur un match passé",
+            "Affiche le message d'aide",
+            "Affiche le compte lié si vous en avez lié un",
+            "Lie un compte Riot à votre compte Discord",
+            "Supprime le compte lié",
+            "Affiche des informations sur une carte",
+            "Affiche les données MMR par épisode/acte et les données actuelles",
+            "Affiche les notes de patch actuelles",
+            "Affiche les paramètres du serveur",
+            "Modifie le préfixe du bot",
+            "Modifie le canal Autonews pour les notes de patch",
+            "Modifie la canal Autonews pour les articles du site Web qui ne sont pas des notes de mise à jour",
+            "Modifie le canal Autonews pour les pannes et problèmes de serveur",
+            "Changer la langue du bot",
+            "Active / désactive le système de liste noire",
+            "Affiche vos propres statistiques si vous êtes lié à un compte Riot ou affiche l'aperçu de l'aide si aucun compte n'est lié",
+            "Affiche les statistiques d'un autre joueur s'il est connecté via RSO",
+            "Affiche l'état actuel du serveur pour le cluster de serveurs spécifié",
+            "Affiche le lien vers la page top.gg",
+            "Affiche des informations sur une arme",
+            "Affiche des informations sur toutes les armes du jeu"
+        ],
+        "es": [
+            "Muestra la información sobre un agente",
+            "Muestra el link para la API del backend",
+            "Muestra información sobre todos los canales en lista negra si el sistema de blacklist está habilitado",
+            "Añade un canal a la lista negra si el sistema de blacklist está habilitado",
+            "Elimina un canal a la lista negra si el sistema de blacklist está habilitado",
+            "Muestra información sobre el propio bot. (Utilización de recursos, etc.)",
+            "Muestra datos sobre la partida jugada",
+            "Muestra la página de ayuda",
+            "Muestra tu cuenta vinculada si tienes una",
+            "Vincula una nueva cuenta de Riot con tu cuenta de Discord",
+            "Elimina una cuenta vinculada",
+            "Muestra información sobre un mapa",
+            "Muestra datos de MMR por episodio / acto y datos actuales",
+            "Muestra el enlace a las notas del último parche",
+            "Muestra los ajustes de guild",
+            "Establece un prefijo de guild",
+            "Establece un canal de noticias automáticas para las notas de parche",
+            "Establece un canal de noticias automáticas para los artículos de la página web que no son notas de parche",
+            "Establece un canal de noticias automáticas para problemas del servidor",
+            "Establece idioma de guild",
+            "Activa/desactiva el sistema de blacklist",
+            "Muestra tus propias estadísticas si tienes una cuenta vinculada o devuelve un mensaje de ayuda",
+            "Muestra las estadísticas de otro jugador si está logueado via RSO",
+            "Muestra el estado de los servidores del cluster especificado",
+            "Muestra un link a la página de votación top.gg",
+            "Muestra información sobre un arma",
+            "Muestra información sobre todas las armas del juego"
+        ],
+        "vi": [
+            "Hiển thị thông tin về một đại lý",
+            "Hiển thị liên kết đến API phụ trợ mở",
+            "Hiển thị thông tin về tất cả các kênh trong danh sách cấm nếu hệ thống danh sách cấm được bật",
+            "Thêm kênh vào danh sách cấm nếu hệ thống danh sách cấm được bật",
+            "Xóa kênh khỏi danh sách cấm nếu hệ thống danh sách cấm được bật",
+            "Hiển thị thông tin về chính bot (sử dụng tài nguyên, v.v.)",
+            "Hiển thị dữ liệu về một trận đấu đã chơi",
+            "Hiển thị trang trợ giúp",
+            "Hiển thị tài khoản được liên kết nếu bạn có",
+            "Liên kết tài khoản bạo loạn mới với tài khoản bất hòa của bạn",
+            "Xóa tài khoản được liên kết",
+            "Hiển thị thông tin về bản đồ",
+            "Hiển thị Dữ liệu MMR trên mỗi Tập / Hành động và dữ liệu hiện tại",
+            "Hiển thị liên kết đến các ghi chú vá mới nhất",
+            "Hiển thị cài đặt bang hội",
+            "Đặt tiền tố guild",
+            "Đặt kênh tự động chạy cho các bản vá lỗi",
+            "Đặt kênh autonews cho các bài viết trên trang web không phải là patchnotes",
+            "Đặt kênh tự động chạy cho các sự cố máy chủ",
+            "Đặt ngôn ngữ bang hội",
+            "Bật / tắt hệ thống danh sách đen",
+            "Hiển thị số liệu thống kê của riêng bạn nếu bạn được liên kết hoặc trả lại thông báo trợ giúp",
+            "Hiển thị số liệu thống kê của người chơi khác nếu anh ta đăng nhập qua RSO",
+            "Hiển thị trạng thái máy chủ cho cụm máy chủ được yêu cầu",
+            "Hiển thị liên kết đến trang bình chọn top.gg",
+            "Hiển thị thông tin về vũ khí",
+            "Hiển thị thông tin về tất cả vũ khí trong trò chơi"
+        ]
+    },
+    "langlist": [
+        {
+            "name": "German",
+            "value": "de"
+        },
+        {
+            "name": "English",
+            "value": "en"
+        },
+        {
+            "name": "Japanese",
+            "value": "jp"
+        },
+        {
+            "name": "Portuguese",
+            "value": "pt-br"
+        },
+        {
+            "name": "French",
+            "value": "fr"
+        },
+        {
+            "name": "Spanish",
+            "value": "es"
+        },
+        {
+            "name": "Vietname",
+            "value": "vi"
+        }
+    ],
+    "translations": {
+        "de": {
+            "mainsentence": "Mehrsprachiger VALORANT Discord Bot. Statistiken, Autonews und Serverstatus aus erster Hand, mit viel Liebe gemacht",
+            "buttons": {
+                "invite": "Einladen",
+                "dashboard": "Gelange zum Dashboard",
+                "command": "Zeige Befehle"
+            },
+            "nav": {
+                "command": "Befehle",
+                "support": "Hilfe",
+                "invite": "Einladen"
+            },
+            "numbers": {
+                "title": "Zahlen",
+                "description": "Ein paar Statistiken über den Bot",
+                "server_count": "Server Anzahl",
+                "commands_used": "Anzahl genutzter Befehle"
+            },
+            "servers": {
+                "title": "Der VALORANT Bot deines Vertrauens",
+                "description": "Auf uns setzen viele der offiziellen regionalen VALORANT Discord Server",
+                "membercount": "Mitglieder",
+                "join": "Beitreten"
+            },
+            "status": {
+                "title": "Bot Status",
+                "description": "Ausführlicher Bot Status für jede einzelne Instanz",
+                "status": "Status",
+                "server": "Server",
+                "ping": "Ping",
+                "uptime": "Online seit"
+            },
+            "commands": {
+                "title": "Befehle",
+                "description": "Befehlsübersicht mit einigen Beispielen"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Übersetzungen"
+                },
+                "information": {
+                    "updates": "Aktualisierungen",
+                    "status": "Status",
+                    "tos": "Allgemeine Geschäftsbedingungen",
+                    "privacy": "Datenschutzbestimmungen"
+                }
+            }
+        },
+        "en": {
+            "mainsentence": "Multilanguage VALORANT Discord Bot. Stats, Autonews and Server Status from first hand, made with much love",
+            "buttons": {
+                "invite": "Invite",
+                "dashboard": "Go to Dashboard",
+                "command": "Show Commands"
+            },
+            "nav": {
+                "command": "Commands",
+                "support": "Support",
+                "invite": "Invite"
+            },
+            "numbers": {
+                "title": "Numbers",
+                "description": "Some statistics about the Bot",
+                "server_count": "Server Count",
+                "commands_used": "Commands Used"
+            },
+            "servers": {
+                "title": "The VALORANT Bot you can trust",
+                "description": "Many of the official regional VALORANT Discord servers rely on us",
+                "membercount": "Members",
+                "join": "Join"
+            },
+            "status": {
+                "title": "Bot Status",
+                "description": "Detailed bot status for each individual instance",
+                "status": "Status",
+                "server": "Server",
+                "ping": "Ping",
+                "uptime": "Uptime"
+            },
+            "commands": {
+                "title": "Commands",
+                "description": "Command Overview with examples"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Translation"
+                },
+                "information": {
+                    "updates": "Updates",
+                    "status": "Status",
+                    "tos": "Terms and conditions",
+                    "privacy": "Privacy Policy"
+                }
+            }
+        },
+        "jp": {
+            "mainsentence": "多言語VALORANT不和ボット。統計、オートニュース、サーバーステータスを直接、愛情を込めて作成",
+            "buttons": {
+                "invite": "招待",
+                "dashboard": "ダッシュボードに進め",
+                "command": "コマンドを表示"
+            },
+            "nav": {
+                "command": "コマンド",
+                "support": "サポート",
+                "invite": "招待"
+            },
+            "numbers": {
+                "title": "数字",
+                "description": "ボットに関するいくつかの統計",
+                "server_count": "サーバー数",
+                "commands_used": "使用したコマンド"
+            },
+            "servers": {
+                "title": "信頼できるVALORANTボット",
+                "description": "公式の地域のVALORANTDiscordサーバーの多くは私たちに依存しています",
+                "membercount": "メンバー",
+                "join": "加入"
+            },
+            "status": {
+                "title": "ボットステータス",
+                "description": "個々のインスタンスの詳細なボットステータス",
+                "status": "状態",
+                "server": "サーバ",
+                "ping": "Ping",
+                "uptime": "稼働時間"
+            },
+            "commands": {
+                "title": "コマンド",
+                "description": "例を含むコマンドの概要"
+            },
+            "footer": {
+                "help": {
+                    "translations": "翻訳"
+                },
+                "information": {
+                    "updates": "更新",
+                    "status": "状態",
+                    "tos": "ご利用条件",
+                    "privacy": "プライバシーポリシー"
+                }
+            }
+        },
+        "pt-br": {
+            "mainsentence": "VALORANT Discord Bot multilíngue. Stats, Autonews e Server Status em primeira mão, feitos com muito amor",
+            "buttons": {
+                "invite": "Convidar",
+                "dashboard": "Ir para a dashboard",
+                "command": "Mostrar comandos"
+            },
+            "nav": {
+                "command": "Comandos",
+                "support": "suportar",
+                "invite": "Convidar"
+            },
+            "numbers": {
+                "title": "Números",
+                "description": "Algumas estatísticas sobre o bot",
+                "server_count": "Contagem de servidores",
+                "commands_used": "Comandos Usados"
+            },
+            "servers": {
+                "title": "O VALORANT Bot em que você pode confiar",
+                "description": "Muitos dos servidores regionais oficiais de VALORANT Discord confiam em nós",
+                "membercount": "Membros",
+                "join": "Juntar"
+            },
+            "status": {
+                "title": "Status do bot",
+                "description": "Status detalhado do bot para cada instância individual",
+                "status": "Status",
+                "server": "Servidor",
+                "ping": "Ping",
+                "uptime": "Tempo de atividade"
+            },
+            "commands": {
+                "title": "Comandos",
+                "description": "Visão geral do comando com exemplos"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Tradução"
+                },
+                "information": {
+                    "updates": "Atualizações",
+                    "status": "Status",
+                    "tos": "Termos e condições",
+                    "privacy": "Política de Privacidade"
+                }
+            }
+        },
+        "fr": {
+            "mainsentence": "VALORANT Discord Bot multilingue. Statistiques, Autonews et État du serveur de première main, réalisés avec beaucoup d'amour",
+            "buttons": {
+                "invite": "Inviter",
+                "dashboard": "Aller au tableau de bord",
+                "command": "Afficher les commandes"
+            },
+            "nav": {
+                "command": "Commandes",
+                "support": "Soutien",
+                "invite": "Inviter"
+            },
+            "numbers": {
+                "title": "Nombres",
+                "description": "Quelques statistiques sur le Bot",
+                "server_count": "Nombre de serveurs",
+                "commands_used": "Commandes utilisées"
+            },
+            "servers": {
+                "title": "Le VALORANT Bot auquel vous pouvez faire confiance",
+                "description": "De nombreux serveurs Discord régionaux officiels de VALORANT comptent sur nous",
+                "membercount": "Membres",
+                "join": "Rejoindre"
+            },
+            "status": {
+                "title": "Statut du robot",
+                "description": "Statut détaillé du bot pour chaque instance individuelle",
+                "status": "Statut",
+                "server": "Serveur",
+                "ping": "Ping",
+                "uptime": "La durée de fonctionnent"
+            },
+            "commands": {
+                "title": "Commandes",
+                "description": "Présentation des commandes avec exemples"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Traduction"
+                },
+                "information": {
+                    "updates": "Mises à jour",
+                    "status": "Statut",
+                    "tos": "Modalités et conditions",
+                    "privacy": "Politique de confidentialité"
+                }
+            }
+        },
+        "es": {
+            "mainsentence": "Bot de Discord Multilenguaje VALORANT. Estadísticas, Novedades y Estado de servidor de primera mano, hecho con mucho amor",
+            "buttons": {
+                "invite": "Invitar",
+                "dashboard": "Ir al panel de control",
+                "command": "Mostrar Comandos"
+            },
+            "nav": {
+                "command": "Comandos",
+                "support": "Soporte",
+                "invite": "Invitar"
+            },
+            "numbers": {
+                "title": "Números",
+                "description": "Algunas estadísticas sobre el Bot",
+                "server_count": "Contador de Servidores",
+                "commands_used": "Comandos Usados"
+            },
+            "servers": {
+                "title": "El bot de VALORANT en el que puedes confiar",
+                "description": "Muchos de los servidores regionales oficiales de Discord de VALORANT confían en nosotros",
+                "membercount": "Miembros",
+                "join": "Entrar"
+            },
+            "status": {
+                "title": "Estado del bot",
+                "description": "Estado detallado del bot para cada instancia individual",
+                "status": "Estado",
+                "server": "Servidor",
+                "ping": "Silbido",
+                "uptime": "Tiempo de actividad"
+            },
+            "commands": {
+                "title": "Comandos",
+                "description": "Resumen de comandos con ejemplos"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Traducciones"
+                },
+                "information": {
+                    "updates": "Actualizaciones",
+                    "status": "Estado",
+                    "tos": "Términos y condiciones",
+                    "privacy": "Política de privacidad"
+                }
+            }
+        },
+        "vi": {
+            "mainsentence": "Bot bất hòa đa ngôn ngữ VALORANT. Số liệu thống kê, tự động chạy và Trạng thái máy chủ từ lần đầu tiên, được thực hiện với rất nhiều tình cảm",
+            "buttons": {
+                "invite": "Mời gọi",
+                "dashboard": "Đi tới bảng điều khiển",
+                "command": "Hiển thị lệnh"
+            },
+            "nav": {
+                "command": "Lệnh",
+                "support": "Trung bình",
+                "invite": "Mời gọi"
+            },
+            "numbers": {
+                "title": "Con số",
+                "description": "Một số thống kê về Bot",
+                "server_count": "Bộ đếm máy chủ",
+                "commands_used": "Các lệnh đã sử dụng"
+            },
+            "servers": {
+                "title": "Bot VALORANT mà bạn có thể tin tưởng",
+                "description": "Nhiều máy chủ VALORANT Discord khu vực chính thức dựa vào chúng tôi",
+                "membercount": "Các thành viên",
+                "join": "Tham gia"
+            },
+            "status": {
+                "title": "Trạng thái bot",
+                "description": "Trạng thái bot chi tiết cho từng phiên bản riêng lẻ",
+                "status": "Trạng thái",
+                "server": "Máy chủ",
+                "ping": "Ping",
+                "uptime": "Thời gian hoạt động"
+            },
+            "commands": {
+                "title": "Lệnh",
+                "description": "Tóm tắt lệnh với các ví dụ"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Bản dịch"
+                },
+                "information": {
+                    "updates": "Bản nâng cấp",
+                    "status": "Tiểu bang",
+                    "tos": "Các điều khoản và điều kiện",
+                    "privacy": "Chính sách bảo mật"
+                }
+            }
+        }
+    }
+}

@@ -774,7 +774,6 @@ export const guildSettings = async function (guild) {
                     onews: false,
                     serverstatus: false,
                     lang: locales[guild.preferredLocale] ? locales[guild.preferredLocale] : 'en-us',
-                    blacklist: false,
                     prefix: 'v?',
                     background_stats: false,
                     background_game: false,
@@ -786,11 +785,7 @@ export const guildSettings = async function (guild) {
         )
     ).value;
 };
-export const guildBlacklist = async function (guild) {
-    const request = await getDB('blacklist').findOne({gid: guild.id});
-    if (!request) return null;
-    return request.entrys.length ? request.entrys : null;
-};
+
 export const getLink = async function ({user} = {}) {
     const db = await getDB('linkv2').findOne({userid: user.id});
     if (!db) return null;
@@ -1346,7 +1341,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
         for (let i = 0; dbstats.matches.length > i; i++) {
             components.push({
                 label: dbstats.matches[i].gamekey,
-                value: dbstats.matches[i].gamekey,
+                value: dbstats.matches[i].id,
                 description: `${dbstats.matches[i].map} | ${dbstats.matches[i].mode} | ${dbstats.matches[i].agent} | ${moment(dbstats.matches[i].start).format('lll')}`,
                 emoji: Object.values(gamemodes).find(item => item.name == dbstats.matches[i].mode).emoji,
             });
@@ -1375,7 +1370,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
 export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas} = {}) {
     const gamekey = matchid ? true : await getGameKey(id);
     if (!gamekey) return {error: null, unknown: true, embed: null, image: null};
-    const match = await axios.get(`https://api.henrikdev.xyz/valorant/v2/match/${matchid ? matchid : gamekey.matchid}`).catch(error => {
+    const match = await axios.get(`https://api.henrikdev.xyz/valorant/v2/match/${matchid ?? gamekey.matchid}`).catch(error => {
         return error;
     });
     if (match.response) return {error: match.response, unknown: null, embed: null, image: null};
@@ -1633,27 +1628,6 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
     }
     return new AttachmentBuilder(canvas.toBuffer(), `valorant-mmr.png`, {description: 'VALORANT LABS MMR'});
 };
-export const getBlacklist = async function (guildId) {
-    const request = await getDB('blacklist').findOne({gid: guildId});
-    return request ? request.entrys : null;
-};
-export const addBlacklist = async function (data) {
-    const res = await getDB('blacklist').findOne({gid: data.guild});
-    const newarray = res ? res.entrys : [];
-    if (newarray.includes(data.channel)) return null;
-    newarray.push(data.channel);
-    await getDB('blacklist').updateOne({gid: data.guild}, {$set: {entrys: newarray}}, {upsert: true});
-    return newarray;
-};
-export const removeBlacklist = async function (data) {
-    const res = await getDB('blacklist').findOne({gid: data.guild});
-    if (!res) return undefined;
-    if (!res.entrys.includes(data.channel)) return null;
-    const indexnum = res.entrys.findIndex(item => item == data.channel);
-    res.entrys.splice(indexnum, 1);
-    await getDB('blacklist').updateOne({gid: data.guild}, {$set: {entrys: res.entrys}}, {upsert: false});
-    return res.entrys.length == 0 ? undefined : res.entrys;
-};
 export const errorhandler = async function ({message, status, type, lang, data, name, tag} = {}) {
     if (status == 451) {
         const uuid = uuidv4();
@@ -1836,15 +1810,25 @@ export const getGuild = async function (interaction) {
                 title: 'VALORANT LABS Settings',
                 desc: `Settings for ${interaction.guild.name}`,
                 additionalFields: [
-                    {name: 'Prefix', value: String(settings.prefix)},
-                    {name: 'Patchnotes', value: String(settings.news)},
-                    {name: 'Othernews', value: String(settings.onews)},
-                    {name: 'Serverstatus', value: String(settings.serverstatus)},
+                    {name: 'Patchnotes', value: settings.news == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.news.replace(/<|#|>/g, '')}>`},
+                    {name: 'Othernews', value: settings.onews == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.onews.replace(/<|#|>/g, '')}>`},
+                    {
+                        name: 'Serverstatus',
+                        value: settings.serverstatus == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.serverstatus.replace(/<|#|>/g, 'dd')}>`,
+                    },
                     {name: 'Language', value: String(settings.lang)},
-                    {name: 'Blacklist', value: String(settings.blacklist)},
-                    {name: 'Background - Stats', value: String(settings.background_stats)},
-                    {name: 'Background - Game', value: String(settings.background_game)},
-                    {name: 'Background - MMR', value: String(settings.background_mmr)},
+                    {
+                        name: 'Background - Stats',
+                        value: settings.background_stats == 'false' ? translations[settings.lang].settings.not_set : String(settings.background_stats),
+                    },
+                    {
+                        name: 'Background - Game',
+                        value: settings.background_game == 'false' ? translations[settings.lang].settings.not_set : String(settings.background_game),
+                    },
+                    {
+                        name: 'Background - MMR',
+                        value: settings.background_mmr == 'false' ? translations[settings.lang].settings.not_set : String(settings.background_mmr),
+                    },
                 ],
                 footer: 'VALORANT LABS [SETTINGS]',
             }),
@@ -1897,11 +1881,6 @@ export const patchGuild = async function ({interaction, key, value, additionalda
         }
         case 'serverstatus': {
             doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {serverstatus: value}}, {upsert: false, returnDocument: 'after'})).value;
-            break;
-        }
-        case 'blacklist': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {blacklist: Boolean(value)}}, {upsert: false, returnDocument: 'after'}))
-                .value;
             break;
         }
         case 'background': {
