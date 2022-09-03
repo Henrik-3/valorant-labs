@@ -7,7 +7,7 @@ export async function execute({interaction, guilddata} = {}) {
         return errorhandlerinteraction({interaction, status: request.response.status, type: 'weapon', lang: guilddata.lang, data: request.response.data});
     const cweapon = request.data.data.find(item => item.displayName.toLowerCase() == interaction.options.get('name').value.toLowerCase());
     const fields = [
-        {name: translations[guilddata.lang].weapon.costs, value: String(cweapon.shopData.cost), inline: true},
+        {name: translations[guilddata.lang].weapon.cost, value: String(cweapon.shopData.cost), inline: true},
         {name: translations[guilddata.lang].weapon.magazinsize, value: String(cweapon.weaponStats.magazineSize), inline: true},
         {name: translations[guilddata.lang].weapon.penetration, value: weapons[cweapon.weaponStats.wallPenetration], inline: true},
         {name: translations[guilddata.lang].weapon.firerate, value: String(cweapon.weaponStats.fireRate), inline: true},

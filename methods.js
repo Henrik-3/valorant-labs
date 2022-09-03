@@ -948,7 +948,6 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
             const mode_img = await Canvas.loadImage(mode_data.displayIcon);
             ctx.drawImage(mode_img, 700, modeimgk[i], 100, 100);
         }
-        console.log(matches[i]);
         const agent_img = await Canvas.loadImage(agent.find(item => item.displayName.toLowerCase() == matches[i].agent.toLowerCase()).displayIcon);
         ctx.drawImage(agent_img, 700, agentimgk[i], 100, 100);
         buildText({ctx, text: 'Score', size: 110, x: 1525, y: mapk[i]});
@@ -1459,7 +1458,10 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                     `https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/${red_players[i].currenttier}/largeicon.png`
                 );
                 ctx.drawImage(player, x_red_rank, 1320, 75, 75);
-                const agent = await Canvas.loadImage(getAgents().find(item => item.displayName.toLowerCase() == red_players[i].character.toLowerCase()).fullPortraitV2);
+                const agent = await Canvas.loadImage(
+                    getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortraitV2 ??
+                        getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortrait
+                );
                 ctx.drawImage(agent, x_red_agent, 1480, 405, 405);
                 buildText({ctx, text: `${red_players[i].name} #${red_players[i].tag}`, size: 40, x: x_red_name, y: 1450, color: '#fff', align: 'center'});
                 buildText({ctx, text: red_players[i].stats.score, size: 60, x: x_red_score, y: 2025, color: '#fff', align: 'center'});
@@ -1487,7 +1489,10 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                     `https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/${blue_players[i].currenttier}/largeicon.png`
                 );
                 ctx.drawImage(player, x_blue_rank, 110, 75, 75);
-                const agent = await Canvas.loadImage(getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortraitV2);
+                const agent = await Canvas.loadImage(
+                    getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortraitV2 ??
+                        getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortrait
+                );
                 ctx.drawImage(agent, x_blue_agent, 270, 405, 405);
                 buildText({ctx, text: `${blue_players[i].name} #${blue_players[i].tag}`, size: 40, x: x_blue_name, y: 240, color: '#fff', align: 'center'});
                 buildText({ctx, text: blue_players[i].stats.score, size: 60, x: x_blue_score, y: 815, color: '#fff', align: 'center'});
@@ -1810,24 +1815,40 @@ export const getGuild = async function (interaction) {
                 title: 'VALORANT LABS Settings',
                 desc: `Settings for ${interaction.guild.name}`,
                 additionalFields: [
-                    {name: 'Patchnotes', value: settings.news == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.news.replace(/<|#|>/g, '')}>`},
-                    {name: 'Othernews', value: settings.onews == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.onews.replace(/<|#|>/g, '')}>`},
+                    {
+                        name: 'Patchnotes',
+                        value: ['false', false].some(i => i == settings.news)
+                            ? translations[settings.lang].settings.not_set
+                            : `<#${settings.news.replace(/<|#|>/g, '')}>`,
+                    },
+                    {
+                        name: 'Othernews',
+                        value: ['false', false].some(i => i == settings.onews)
+                            ? translations[settings.lang].settings.not_set
+                            : `<#${settings.onews.replace(/<|#|>/g, '')}>`,
+                    },
                     {
                         name: 'Serverstatus',
-                        value: settings.serverstatus == 'false' ? translations[settings.lang].settings.not_set : `<#${settings.serverstatus.replace(/<|#|>/g, 'dd')}>`,
+                        value: ['false', false].some(i => i == settings.serverstatus)
+                            ? translations[settings.lang].settings.not_set
+                            : `<#${settings.serverstatus.replace(/<|#|>/g, '')}>`,
                     },
                     {name: 'Language', value: String(settings.lang)},
                     {
                         name: 'Background - Stats',
-                        value: settings.background_stats == 'false' ? translations[settings.lang].settings.not_set : String(settings.background_stats),
+                        value: ['false', false].some(i => i == settings.background_stats)
+                            ? translations[settings.lang].settings.not_set
+                            : String(settings.background_stats),
                     },
                     {
                         name: 'Background - Game',
-                        value: settings.background_game == 'false' ? translations[settings.lang].settings.not_set : String(settings.background_game),
+                        value: ['false', false].some(i => i == settings.background_game)
+                            ? translations[settings.lang].settings.not_set
+                            : String(settings.background_game),
                     },
                     {
                         name: 'Background - MMR',
-                        value: settings.background_mmr == 'false' ? translations[settings.lang].settings.not_set : String(settings.background_mmr),
+                        value: ['false', false].some(i => i == settings.background_mmr) ? translations[settings.lang].settings.not_set : String(settings.background_mmr),
                     },
                 ],
                 footer: 'VALORANT LABS [SETTINGS]',

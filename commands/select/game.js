@@ -15,6 +15,7 @@ export async function execute({interaction, args, guilddata} = {}) {
     });
     const bgcanvas = guilddata.background_game ? await buildBackground(getCustomBackground(guilddata.background_game), 'game') : null;
     const image = await buildGameImage({matchid: interaction.values[0], guilddata, bgcanvas});
+    console.log(image);
     if (image.unknown)
         return interaction.editReply({
             embeds: [

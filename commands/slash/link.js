@@ -30,7 +30,7 @@ export async function execute({interaction, guilddata} = {}) {
                 embeds: [
                     embedBuilder({
                         title: translations[guilddata.lang].link.clink_title,
-                        desc: translations[guilddata.lang].link.clink_desc + `${link.name}#${link.tag}`,
+                        desc: translations[guilddata.lang].link.clink_desc + ` \`${link.name}#${link.tag}\``,
                         footer: 'VALORANT LABS [LINK GET]',
                     }),
                 ],

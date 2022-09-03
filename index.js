@@ -168,7 +168,7 @@ client.on('interactionCreate', async interaction => {
     if (!['feedback'].some(item => item == interaction.commandName))
         await interaction
             .deferReply({
-                ephemeral: ['autoroles', 'settings', 'private'].some(item => item == interaction.commandName) ? true : false,
+                ephemeral: ['autoroles', 'settings', 'private', 'link'].some(item => item == interaction.commandName) ? true : false,
             })
             .catch(error => {
                 console.log(error);
