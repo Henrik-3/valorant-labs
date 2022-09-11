@@ -89,6 +89,7 @@ export const locales = {
     'pt-BR': 'pt-br',
     'es-ES': 'es',
     vi: 'vi',
+    pl: 'pl',
 };
 export const agents = [
     {
@@ -567,7 +568,7 @@ export const shard_status_codes = {
 };
 export const fetchWebsite = async function (manager) {
     const types = ['patchnotes', 'othernews', 'maintenance', 'incidents'];
-    const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi'];
+    const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi', 'pl'];
     const nstatus = ['news', 'onews', 'serverstatus', 'serverstatus'];
     for (let i = 0; types.length > i; i++) {
         if (i == 0 || i == 1) {
@@ -1539,12 +1540,12 @@ export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {})
     let entries;
     if (!seasonid) {
         entries = Object.entries(mmrdata.by_season).find(item => !item[1].error && item[1].wins != 0);
-        if (entries == undefined) console.error(entries);
+        if (entries == undefined) console.error(mmrdata.by_season);
         seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0);
         seasonkey = entries[0];
     } else {
         entries = Object.entries(mmrdata.by_season).find(item => item[0] == seasonid && item[1].wins != 0);
-        if (entries == undefined) console.error(entries);
+        if (entries == undefined) console.error(mmrdata.by_season);
         seasonvalue = entries[1].act_rank_wins.filter(item => item.tier != 0);
         seasonkey = entries[0];
     }

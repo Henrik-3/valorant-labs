@@ -525,12 +525,20 @@
                                         "value": "jp"
                                     },
                                     {
+                                        "name": "Polski",
+                                        "value": "pl"
+                                    },
+                                    {
                                         "name": "Portuguese (Brazil)",
                                         "value": "pt-br"
                                     },
                                     {
                                         "name": "Vietnamese",
                                         "value": "vi"
+                                    },
+                                    {
+                                        "name": "Polish",
+                                        "value": "pl"
                                     }
                                 ]
                             }

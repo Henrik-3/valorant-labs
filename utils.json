@@ -312,6 +312,35 @@
             "Hiển thị liên kết đến trang bình chọn top.gg",
             "Hiển thị thông tin về một loại vũ khí cụ thể",
             "Hiển thị thông tin về tất cả vũ khí trong trò chơi"
+        ],
+        "pl": [
+            "Pokazuje informacje o agencie",
+            "Pokazuje link do otwartego backendowego API",
+            "Pokazuje aktualne ustawienia autoroli",
+            "Wysyła wiadomość autoroli z jej przyciskami",
+            "Skonfiguruj system autoroli, mapując rangę w grze z rolą na niezgodę",
+            "Pokazuje informacje o samym bocie (wykorzystaniu zasobów itp.)",
+            "Otwiera moduł, za pomocą którego możesz wysłać informację zwrotną do dewelopera",
+            "Pokazuje szczegółowe dane o rozegranym meczu",
+            "Pokazuje stronę pomocy",
+            "Pokazuje Twoje połączone konto",
+            "Tworzy link, za pomocą którego możesz połączyć swoje konto Riot z kontem Discord",
+            "Usuwa połączenie między twoim kontem Riot a kontem Discord",
+            "Pokazuje informacje o mapie",
+            "Pokazuje dane MMR na odcinek/czyn i aktualne dane",
+            "Pokazuje najnowsze informacje o poprawkach",
+            "Ustaw połączone konto w stan prywatny",
+            "Pokazuje ustawienia gildii",
+            "Ustaw kanał autonews dla patchnotes",
+            "Ustaw kanał autonews dla artykułów na stronie, które nie są notatkami do aktualizacji",
+            "Ustaw kanał autonews dla problemów z serwerem",
+            "Ustaw język gildii",
+            "Dodaje niestandardowe tło dla danego typu obrazu",
+            "Pokazuje twoje własne statystyki lub statystyki innego gracza, jeśli jest on zalogowany przez RSO",
+            "Pokazuje stan serwera dla żądanego klastra serwerów",
+            "Pokazuje link do strony głosowania top.gg",
+            "Pokazuje informacje o konkretnej broni",
+            "Pokazuje informacje o wszystkich broniach w grze"
         ]
     },
     "langlist": [
@@ -342,6 +371,10 @@
         {
             "name": "Vietname",
             "value": "vi"
+        },
+        {
+            "name": "Polski",
+            "value": "pl"
         }
     ],
     "translations": {
@@ -678,6 +711,54 @@
                     "status": "Tiểu bang",
                     "tos": "Các điều khoản và điều kiện",
                     "privacy": "Chính sách bảo mật"
+                }
+            }
+        },
+        "pl": {
+            "mainsentence": "Wielojęzyczny VALORANT Discord Bot. Statystyki, Autonews i Status Serwera z pierwszej ręki, wykonane z wielką miłością",
+            "buttons": {
+                "invite": "Zaproś",
+                "dashboard": "Przejdź do pulpitu nawigacyjnego",
+                "command": "Pokaż polecenia"
+            },
+            "nav": {
+                "command": "Polecenia",
+                "support": "Wsparcie",
+                "invite": "Zaproś"
+            },
+            "numbers": {
+                "title": "Numery",
+                "description": "Niektóre statystyki dotyczące Bota",
+                "server_count": "Liczba serwerów",
+                "commands_used": "Używane komendy"
+            },
+            "servers": {
+                "title": "Bot VALORANT, któremu możesz zaufać",
+                "description": "Wiele z oficjalnych regionalnych serwerów VALORANT Discord polega na nas.",
+                "membercount": "Członkowie",
+                "join": "Dołącz do"
+            },
+            "status": {
+                "title": "Status bota",
+                "description": "Szczegółowy status bota dla każdej pojedynczej instancji",
+                "status": "Status",
+                "server": "Serwer",
+                "ping": "Ping",
+                "uptime": "Uptime"
+            },
+            "commands": {
+                "title": "Polecenia",
+                "description": "Przegląd poleceń z przykładami"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Tłumaczenie"
+                },
+                "information": {
+                    "updates": "Aktualizacje",
+                    "status": "Status",
+                    "tos": "Zasady i warunki",
+                    "privacy": "Polityka prywatności"
                 }
             }
         }

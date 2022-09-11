@@ -104,7 +104,7 @@ client.on('guildCreate', async g => {
             embeds: [
                 embedBuilder({
                     title: 'Language Selection',
-                    desc: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
+                    desc: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi/pl\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
                     footer: 'VALORANT LABS [SERVER JOINED]',
                 }),
             ],
