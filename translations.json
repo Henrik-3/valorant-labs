@@ -884,99 +884,99 @@
             "cmdundefined_title": "O comando não existe",
             "cmdundefined_desc": "Use **/help*** para ver todos os comandos ou clique no link abaixo para ver todos os comandos",
             "cmdblacklist_title": "Não tenho permissão para escrever aqui",
-            "cmdblacklist_desc": "Se achar que se trata de um erro, contacte o administrador do servidor. Esta mensagem será apagada em **7,5*** segundos.",
-            "deprecation_title": "Este comando já não é suportado",
-            "deprecation_desc": "Devido a uma alteração da Discord [Mais informação aqui](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Access-Deprecation-for-Verified-Bots), <@702201518329430117> deixará de poder enviar mensagens depois de Agosto de 2022. Para serem preparadas com antecedência para a actualização, as novas funcionalidades só serão lançadas através de Comandos Slash. Além disso, alguns comandos já foram limitados a comandos slash, actualmente os seguintes:\n- v?agent\n- v?api\n- v?blacklist\n- v?botinfo\n- v?game\n- v?link\n- v?map\n- v?patch\n- v?status\n- v?settings\n- v?vote\n- v?weapon\n- v?weapons\nPor favor, use o comando slash deste comando"
+            "cmdblacklist_desc": "Se achar que se trata de um erro, contate o administrador do servidor. Esta mensagem será apagada em **7,5*** segundos.",
+            "deprecation_title": "Este comando não é mais suportado",
+            "deprecation_desc": "Devido a uma alteração do Discord [Mais informações aqui](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Access-Deprecation-for-Verified-Bots), <@702201518329430117> deixará de poder enviar mensagens depois de Agosto de 2022. Para serem preparadas com antecedência para a atualização, as novas funcionalidades só serão lançadas através de Comandos Slash. Além disso, alguns comandos já foram limitados a comandos slash, atualmente os seguintes:\n- v?agent\n- v?api\n- v?blacklist\n- v?botinfo\n- v?game\n- v?link\n- v?map\n- v?patch\n- v?status\n- v?settings\n- v?vote\n- v?weapon\n- v?weapons\nPor favor, use o comando slash deste comando"
         },
         "response": {
             "501": {
-                "title": "Estado 501 | Versão API não implementada",
+                "title": "Status 501 | Versão API não implementada",
                 "default": "Foi enviada uma consulta a uma API que não foi implementada. Provavelmente o problema é conhecido, mas é bem-vindo para o reportar no servidor de suporte."
             },
             "404": {
-                "title": "Estado 404 | Não encontrado",
-                "default": "O nome de utilizador e o slogan especificados não foram encontrados. Se tiver ligado a sua conta, actualize-a com `/link add`, caso contrário verifique se o RiotID foi introduzido correctamente.",
-                "game": "O jogo solicitado não foi encontrado",
+                "title": "Status 404 | Não encontrado",
+                "default": "O nome de usuário e a TAG especificados não foram encontrados. Se tiver vinculado a sua conta, atualize-a com `/link add`, caso contrário verifique se o RiotID foi introduzido corretamente.",
+                "game": "A partida solicitada não foi encontrada",
                 "map": "O mapa solicitado não foi encontrado",
                 "agent": "O agente solicitado não foi encontrado",
-                "patch": "O adesivo solicitado não foi encontrado",
-                "weapon": "O arma solicitado não foi encontrado"
+                "patch": "A atualização solicitada não foi encontrada",
+                "weapon": "A arma solicitada não foi encontrada"
             },
             "503": {
-                "title": "Estado 503 | Servidor temporário não disponível",
-                "default": "O servidor de destino não pode processar o pedido neste momento, por favor tente novamente mais tarde"
+                "title": "Status 503 | Servidor temporariamente não disponível",
+                "default": "O servidor de destino não pode processar a solicitação neste momento, por favor tente novamente mais tarde"
             },
             "504": {
-                "title": "Estado 504 | Servidor temporário não disponível",
-                "default": "O servidor de destino não pode processar o pedido neste momento, por favor tente novamente mais tarde"
+                "title": "Status 504 | Servidor temporariamente não disponível",
+                "default": "O servidor de destino não pode processar a solicitação neste momento, por favor tente novamente mais tarde"
             },
             "429": {
-                "title": "Estado 429 | Limite da taxa do frasco",
-                "default": "O robot está actualmente demasiado utilizado e tem agora um arrefecimento, por favor aguarde um pouco e tente novamente"
+                "title": "Status 429 | Limite de utilização do BOT",
+                "default": "O bot está atualmente sobrecarregado e precisa de um tempo, por favor aguarde um pouco e tente novamente"
             },
             "1015": {
-                "title": "Estado 1015 | Limite da taxa do frasco",
-                "default": "O robot está actualmente demasiado utilizado e tem agora um arrefecimento, por favor aguarde um pouco e tente novamente"
+                "title": "Status 1015 | Limite de utilização do BOT",
+                "default": "O bot está atualmente sobrecarregado e precisa de um tempo, por favor aguarde um pouco e tente novamente"
             },
             "403": {
-                "title": "Estado 403 | Permissão de Falta",
-                "default": "O bot não tem acesso a esta fonte de dados. Na maioria das vezes este erro ocorre durante as actualizações do jogo, quando os servidores estão em baixo"
+                "title": "Status 403 | Falta de permissões",
+                "default": "O bot não tem acesso a esta fonte de dados. Na maioria das vezes este erro ocorre durante as atualizações do jogo, quando os servidores estão fora do ar"
             },
             "400": {
-                "title": "Estado 400 | Pedido de erro",
-                "default": "Ocorreu um erro durante o pedido, geralmente devido à formatação do pedido"
+                "title": "Status 400 | Falha na solicitação",
+                "default": "Ocorreu um erro durante a solicitação, geralmente ocorre devido à formatação da solicitação"
             },
             "410": {
-                "title": "Estado 410 | API não disponível",
-                "default": "O caminho API pedido já não está disponível, isto é um erro do desenvolvedor, por favor, informe este erro no servidor de suporte"
+                "title": "Status 410 | API não disponível",
+                "default": "O caminho API solicitado não está mais disponível, isto é um erro do desenvolvedor, por favor, informe este erro no servidor de suporte"
             },
             "409": {
-                "title": "Estado 409 | Conflito",
-                "default": "Ocorreu um erro durante o pedido, por favor tente novamente mais tarde"
+                "title": "Status 409 | Conflito",
+                "default": "Ocorreu um erro durante a solicitação, por favor tente novamente mais tarde"
             },
             "408": {
-                "title": "Estado 408 | Desconto de tempo",
-                "default": "O pedido demorou demasiado tempo, por favor tente novamente mais tarde"
+                "title": "Status 408 | Limite de tempo",
+                "default": "A solicitação levou muito tempo, por favor tente novamente mais tarde"
             },
             "451": {
-                "title": "Estado: 451 | Esta conta é privada",
-                "description": "Se esta é a sua conta, prima o botão `Log In` abaixo desta mensagem para dar permissão ao VALORANT LABS para recolher os seus dados de correspondência, para os quais terá de iniciar sessão via RSO (Riot Sign On). Depois de ter iniciado sessão, esta mensagem deverá ser actualizada automaticamente. Se não o fizer, basta usar o botão `Refresh` abaixo desta mensagem. Se já tiver estatísticas no tracker.gg e estiver ligado, o bot tentará assumi-las.",
+                "title": "Status: 451 | Esta conta é privada",
+                "description": "Se esta é a sua conta, aperte o botão `Log In` abaixo desta mensagem para dar permissão ao VALORANT LABS para recolher os seus dados de partidas, para os quais terá de iniciar sessão via RSO (Riot Sign On). Depois de ter iniciado sessão, esta mensagem deverá ser atualizada automaticamente. Se não atualziar, basta usar o botão `Refresh` abaixo desta mensagem. Se já tiver estatísticas no tracker.gg e estiver ligado, o bot tentará utiliza-las.",
                 "component_login": "Iniciar Sessão",
-                "component_update": "Actualizar",
+                "component_update": "Atualizar",
                 "component_rank": "MMR"
             },
             "500": {
-                "title": "Estado 500 | Erro do Servidor Interno",
+                "title": "Status 500 | Erro do Servidor Interno",
                 "default": "Ocorreu um erro interno no servidor, por favor tente novamente mais tarde."
             }
         },
         "agent": {
             "agentunknown_title": "Agente não encontrado",
-            "agentunknown_desc": "Por favor, certifique-se de que o agente existe. Se achar que se trata de um bug, por favor informe o servidor de apoio",
-            "agentrole": "Papel"
+            "agentunknown_desc": "Por favor, certifique-se de que o agente existe. Se achar que se trata de um bug, por favor informe no servidor de suporte",
+            "agentrole": "Cargo"
         },
         "autorole": {
-            "send_desc": "Para obter o seu papel no jogo, clique no botão `Adicionar`. Ser-lhe-á mostrado um link, clique sobre ele. Será redireccionado para a página de início de sessão dos Jogos de Motim. \n\n**Importante:** <@702201518329430117> não vê os seus dados de login, no servidor apenas obtemos os seguintes dados de exemplo:\n```{puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'}```\nCom o botão `Actualizar` pode actualizar o seu papel se, por exemplo, deve ser promovido.\nUtilizar o botão `Remover` para remover o seu papel novamente.",
+            "send_desc": "Para obter o seu cargo no jogo, clique no botão `Adicionar`. Será mostrado um link, clique sobre ele. Você será redirecionado para a página de login da Riot Games. \n\n**Importante:** <@702201518329430117> não vê os seus dados de login, no servidor apenas obtemos os seguintes dados de exemplo:\n```{puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'}```\nCom o botão `Atualizar` pode atualizar o seu cargo se, por exemplo, deve ser promovido.\nUtilizar o botão `Remover` para remover o seu cargo novamente.",
             "created_title": "A sua mensagem AutoRole foi criada",
-            "created_desc": "Pode editar esta mensagem como desejar, clicando com o botão direito do rato na mensagem, seleccionando Apps e depois clicando em 'Editar AutoRole'. Abre-se então uma janela onde pode editar a mensagem",
-            "correct": "✅ Correctamente configurado",
+            "created_desc": "Pode editar esta mensagem como desejar, clicando com o botão direito do mouse na mensagem, selecionando Apps e depois clicando em 'Editar AutoRole'. Abre-se então uma janela onde pode editar a mensagem",
+            "correct": "✅ Corretamente configurado",
             "wrong": "⛔ Ainda não configurado",
             "member_error_title": "Nenhuma permissão de membro",
-            "member_error_desc": "O bot não tem permissão para lhe dar estes papéis, por favor certifique-se de que o bot tem permissões suficientes para lhe dar o papel.",
-            "roles_error_title": "Sem permissão de papéis",
-            "roles_error_desc": "O bot não tem direitos suficientes para atribuir os seguintes papéis aos utilizadores. Por favor, certifique-se de que os papéis são organizados sob os papéis do bot",
-            "message_send_error_title": "Sem permissão de canal",
-            "message_send_error_desc": "Por favor certifique-se que <@702201518329430117> tem a permissão de `SEND MESSAGES`.",
+            "member_error_desc": "O bot não tem permissão para lhe dar estes cargos, por favor certifique-se de que o bot tem permissões suficientes para lhe dar o cargo.",
+            "roles_error_title": "Sem permissão de cargos",
+            "roles_error_desc": "O bot não tem permissões suficientes para atribuir os seguintes cargos aos utilizadores. Por favor, certifique-se de que os cargos são organizados abaixo dos cargos do bot",
+            "message_send_error_title": "Sem permissão no canal",
+            "message_send_error_desc": "Por favor certifique-se que <@702201518329430117> tem a permissão de `ENVIAR MENSAGENS`.",
             "message_edit_error_title": "Nenhuma mensagem AutoRole",
             "message_edit_error_desc": "Esta não é uma mensagem AutoRole, por isso não pode ser editada",
             "autorole_permission_title": "Sem permissão",
-            "autorole_permission_desc": "Por favor certifique-se que <@702201518329430117> tem a permissão de `MANAGE ROLES`",
-            "role_given_title": "Papel dado",
-            "role_given_desc": "O seu papel no jogo foi-lhe atribuído, pode demorar até um minuto a receber o seu papel devido a limitações do API da Discord.",
-            "role_removed_title": "Rolos removidos",
-            "role_removed_desc": "O seu papel no jogo foi novamente retirado. Se quiser adicioná-lo novamente, basta clicar em `Actualizar`",
-            "add": "Acrescentar",
-            "update": "Actualização",
+            "autorole_permission_desc": "Por favor certifique-se que <@702201518329430117> tem a permissão de `GERENCIAR CARGOS`",
+            "role_given_title": "Cargo atribuído",
+            "role_given_desc": "O seu cargo no jogo foi atribuído, pode demorar até um minuto para receber o seu cargo devido a limitações da API do Discord.",
+            "role_removed_title": "Cargo removido",
+            "role_removed_desc": "O seu cargo no jogo foi novamente retirado. Se quiser adicioná-lo novamente, basta clicar em `Atualizar`",
+            "add": "Adicionar",
+            "update": "Atualizar",
             "remove": "Remover",
             "modal_title": "Título",
             "modal_desc": "Descrição",
@@ -986,9 +986,9 @@
             "message_edit_desc": "A mensagem foi modificada com sucesso"
         },
         "blacklist": {
-            "blacklistinactive_title": "Lista negra não activa",
-            "blacklistinactive_desc": "Activar a lista negra com: /settings blacklist true",
-            "blacklistperms_title": "Não está autorizado a utilizar este comando",
+            "blacklistinactive_title": "Lista negra não ativa",
+            "blacklistinactive_desc": "Ative a lista negra com: /settings blacklist true",
+            "blacklistperms_title": "Você não tem permissão para utilizar esse comando",
             "blacklistperms_desc": "Por favor, certifique-se de que tem a permissão `MANAGE_GUILD`",
             "blacklistoverview_title": "Visão geral da lista negra de canais",
             "blacklistoverview_desc": "Use um dos seguintes comandos:\n\n/blacklist add #channel \n/blacklist remove #channel \n\nCanal na lista negra: \n${cchannel ? cchannel : 'Nenhum canal'}",
@@ -1006,86 +1006,86 @@
         "feedback": {
             "title": "Dar Feedback",
             "label": "Feedback",
-            "placeholder": "Por favor introduza aqui o seu feedback",
-            "send_title": "Feedback enviar",
-            "send_desc": "Obrigado pelo seu feedback, este foi enviado ao promotor e analisado o mais rapidamente possível"
+            "placeholder": "Por favor insira aqui o seu feedback",
+            "send_title": "Enviar feedback",
+            "send_desc": "Obrigado pelo seu feedback, ele foi enviado ao desenvolvedor e será verificado o mais rapidamente possível"
         },
         "game": {
-            "unknown_title": "Jogo desconhecido",
-            "unknown_desc": "Certifique-se por favor de que a chave do jogo existe e foi introduzida correctamente",
+            "unknown_title": "Partida desconhecida",
+            "unknown_desc": "Certifique-se por favor de que a chave da partida existe e foi inserida corretamente",
             "loading_title": "Por favor aguarde...",
-            "loading_desc": "O seu jogo seleccionado é gerado, por favor aguarde um momento"
+            "loading_desc": "A sua partida selecionada foi gerada, por favor aguarde um momento"
         },
         "link": {
-            "clink_title": "A sua ligação actual",
-            "clink_desc": "A sua conta ligada é nomeada da seguinte forma:",
+            "clink_title": "Vínculo atual",
+            "clink_desc": "A sua conta vinculada tem o seguinte nome:",
             "nolink_title": "Sem conta vinculada",
-            "nolink_desc": "Não tem actualmente uma conta vinculada. Clique no botão `Link` abaixo desta mensagem para ligar a sua conta Discord a uma conta VALORANT.",
-            "removelink_title": "Ligação removida",
-            "removelink_desc": "A sua ligação foi removida com sucesso",
+            "nolink_desc": "Você não tem atualmente uma conta vinculada. Clique no botão `Link` abaixo desta mensagem para ligar a sua conta Discord a uma conta VALORANT.",
+            "removelink_title": "Vínculo removido",
+            "removelink_desc": "Seu vínculo foi removido com sucesso",
             "generate_link": "Link",
             "link_generated_title": "O seu link de login foi gerado",
-            "link_generated_desc": "Por favor, clique no seguinte link para iniciar o processo. Nota: Esta ligação só é válida por uma hora..\n\n"
+            "link_generated_desc": "Por favor, clique no seguinte link para iniciar o processo. Nota: Esse link é válido por apenas uma hora.\n\n"
         },
         "mmr": {
-            "429_title": "Top.gg limite de verificação de votos",
-            "429_desc": "O limite para verificar votos no topo.gg foi atingido, por favor aguarde um ou dois minutos e tente novamente.",
+            "429_title": "Top.gg atingiu o limite de verificação de votos",
+            "429_desc": "O limite para validação dos votos no top.gg foi atingido, por favor aguarde um ou dois minutos e tente novamente.",
             "500_title": "Erro de verificação de votos",
-            "500_desc": "Ocorreu um erro ao verificar se votou, por favor tente novamente em breve....",
+            "500_desc": "Ocorreu um erro ao verificar se você votou, por favor tente novamente em breve....",
             "not_voted_title": "Ainda não votou",
-            "not_voted_desc": "Por favor vote no bot em top.gg (clique no botão abaixo desta mensagem para ir para top.gg) para usar este comando para as próximas 24h",
-            "no_link_title": "Não foi especificado nenhum ID de motim ou não tem uma conta vinculada",
+            "not_voted_desc": "Por favor vote no bot em top.gg (clique no botão abaixo desta mensagem para ir para top.gg) para usar este comando nas próximas 24h",
+            "no_link_title": "Não foi especificado nenhum RIOT ID ou não tem uma conta vinculada",
             "no_link_desc": "Aqui estão todos os comandos disponíveis",
             "base": "Mostra os seus dados MMR se tiver ligado a sua conta Discord à sua conta Riot usando o comando /link.",
-            "options": "Mostra os dados do MMR da conta especificada",
+            "options": "Mostra os dados do MMR da conta específica",
             "loading_title": "Por favor aguarde...",
-            "loading_desc": "Os dados MMR da estação seleccionada serão carregados, por favor aguarde um momento",
-            "no_rank_title": "Actualmente, não tem nenhuma patente",
-            "no_rank_desc": "Actualmente não tem classificação ou o seu último jogo foi há demasiado tempo. Por favor, jogue um jogo classificado e depois tente novamente."
+            "loading_desc": "Os dados MMR do ato selecionado serão carregados, por favor aguarde um momento",
+            "no_rank_title": "Atualmente, você não tem nenhum rank",
+            "no_rank_desc": "Atualmente você não tem rank ou o seu último jogo foi há muito tempo. Por favor, jogue uma partida competitiva e depois tente novamente."
         },
         "settings": {
             "perms_title": "Sem permissão",
-            "perms_desc": "Falta-lhe a permissão `Manage Guild`. Se achar que isto é um erro, contacte o administrador do servidor",
+            "perms_desc": "Você não tem a permissão `Manage Guild`. Se achar que isto é um erro, contate o administrador do servidor",
             "imggeneration_title": "Por favor aguarde um momento",
-            "imggeneration_desc": "A imagem de amostra com a imagem especificada para o tipo de imagem seleccionado é gerada, por favor aguarde um momento. Pode então seleccionar se a configuração deve ou não ser guardada.",
+            "imggeneration_desc": "A imagem de amostra com a imagem escolhida para o tipo de imagem selecionado foi gerada, por favor aguarde um momento. Pode então selecionar se a configuração deve ou não ser guardada.",
             "imggenerated_title": "Imagem gerada com sucesso",
-            "imggenerated_desc": "Aqui pode ver a imagem acabada tal como ela seria quando se usasse o comando. Se a imagem se parecer com a que imaginou, clique no botão verde abaixo. Se a imagem não tiver o aspecto que deseja, clique no botão vermelho e carregue outra imagem.",
-            "imggenerated_label_accept": "Guardar",
+            "imggenerated_desc": "Aqui pode ver a imagem finalizada tal como ela seria quando se usasse o comando. Se a imagem se parecer com a que imaginou, clique no botão verde abaixo. Se a imagem não tiver o aspecto que deseja, clique no botão vermelho e carregue outra imagem.",
+            "imggenerated_label_accept": "Salvar",
             "imggenerated_label_deny": "Cancelar",
             "not_set": "Não definido"
         },
         "status": {
-            "noerrors": "Não foram encontrados erros no agrupamento",
+            "noerrors": "Não foram encontrados erros no cluster",
             "postedat": "Criado em:",
             "platforms": "Plataformas afectadas:",
             "type": "Tipo de problema:"
         },
         "stats": {
-            "missing_matches_title": "Ainda faltam alguns jogos",
-            "missing_matches_desc": "Os resultados em falta são descarregados e processados em segundo plano. Uma vez concluída esta operação, a imagem é actualizada",
-            "invalidriotid_title": "Identificação incorrecta do motim",
-            "invalidriotid_desc": "O ID de motim dado está incorrecto. Por favor, certifique-se de que também introduziu a sua etiqueta e não apenas o nome.\nWrong Riot ID: Henrik3\nCorrecto ID de motim: Henrik3#VALO",
-            "noriotid_title": "Não foi especificada nenhuma identificação de motim",
-            "noriotid_desc": "Não tem nem uma conta vinculada, nem um nome especificado. Por favor, ligue-se com `/link add` ou introduza um ID de motim",
-            "game_select": "Seleccione um jogo"
+            "missing_matches_title": "Ainda faltam algumas partidas",
+            "missing_matches_desc": "Os resultados em falta são baixados e processados em segundo plano. Uma vez concluída esta operação, a imagem é atualizada",
+            "invalidriotid_title": "Riot ID incorreto",
+            "invalidriotid_desc": "O Riot ID inserido está incorreto. Por favor, certifique-se de que também introduziu a sua tag e não apenas o nome.\n\nRiot ID incorreto: Henrik3\nRiot ID correto : Henrik3#VALO",
+            "noriotid_title": "Não foi inserido nenhum Riot ID",
+            "noriotid_desc": "Não há nenhuma conta vinculada, nem um nome inserido. Por favor, vincule com `/link add` ou introduza um Riot ID",
+            "game_select": "Selecione uma partida"
         },
         "vote": {
             "title": "Vote em nós no top.gg",
-            "desc": "Ao votar tem acesso ao comando `/mmr` entre outras coisas e apoia o bot com o seu voto"
+            "desc": "Ao votar, você ganha acesso ao comando `/mmr` entre outras coisas e apoia o bot com o seu voto"
         },
         "weapon": {
             "name": "Armas",
             "cost": "Preço",
-            "magazinsize": "Tamanho da revista",
+            "magazinsize": "Tamanho do pente",
             "penetration": "Força da bala",
-            "firerate": "Taxa de Incêndio",
-            "firerate_zoom": "Taxa de Incêndio (Zoom)",
+            "firerate": "Taxa de disparo",
+            "firerate_zoom": "Taxa de disparo (Zoom)",
             "zoom": "Zoom",
-            "head": "Tiro de cabeça",
-            "body": "Tiro ao corpo",
+            "head": "Tiro na cabeça",
+            "body": "Tiro no corpo",
             "leg": "Perna",
-            "rangedamage": "Tiro de cabeça: ${String(cweapon.weaponStats.damageRanges[i].headDamage)} | Tiro ao corpo: ${String(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Perna: ${String(cweapon.weaponStats.damageRanges[i].legDamage)}",
-            "mweapons": "Preço: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Livre'}"
+            "rangedamage": "Tiro na cabeça: ${String(cweapon.weaponStats.damageRanges[i].headDamage)} | Tiro no corpo: ${String(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Perna: ${String(cweapon.weaponStats.damageRanges[i].legDamage)}",
+            "mweapons": "Preço: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Grátis'}"
         },
         "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=pt-br",
         "cmd": "Comandos",
@@ -1961,6 +1961,226 @@
         "support": "Support",
         "valorant_api_lang": "pl-PL",
         "websiteurl": "https://api.henrikdev.xyz/valorant/v1/website/pl-pl"
+    },
+    "it": {
+        "errors": {
+            "cmdundefined_title": "Il comando non esiste",
+            "cmdundefined_desc": "Utilizzare **/help** per vedere tutti i comandi o fare clic sul link sottostante per vedere tutti i comandi",
+            "cmdblacklist_title": "Non ho il permesso di scrivere qui",
+            "cmdblacklist_desc": "Se si ritiene che si tratti di un errore, contattare l'amministratore del server. Questo messaggio sarà cancellato in **7,5** secondi",
+            "deprecation_title": "Questo comando non è più supportato",
+            "deprecation_desc": "A causa di una modifica di Discord [Informazioni più dettagliate qui](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Access-Deprecation-for-Verified-Bots), <@702201518329430117> non sarà più in grado di inviare messaggi dopo agosto 2022. Per essere preparati in anticipo all'aggiornamento, le nuove funzioni saranno rilasciate solo tramite i comandi Slash. Inoltre, alcuni comandi sono già stati limitati ai comandi slash, attualmente i seguenti:\n- v?agent\n- v?api\n- v?blacklist\n- v?botinfo\n- v?game\n- v?link\n- v?map\n- v?patch\n- v?status\n- v?settings\n- v?vote\n- v?weapon\n- v?weapons\nSi prega pertanto di utilizzare il comando slash di questo comando"
+        },
+        "response": {
+            "501": {
+                "title": "Stato 501 | Versione API non implementata",
+                "default": "È stata inviata una query a un'API non implementata. Probabilmente il problema è noto, ma siete invitati a segnalarlo al server di supporto"
+            },
+            "404": {
+                "title": "Stato 404 | Non trovato",
+                "default": "Il nome utente e la tagline specificati non sono stati trovati. Se hai collegato il tuo account, aggiornalo con `/link add`, altrimenti controlla se il RiotID è stato inserito correttamente.",
+                "game": "Il gioco richiesto non è stato trovato",
+                "map": "La mappa richiesta non è stata trovata",
+                "agent": "L'agente richiesto non è stato trovato",
+                "patch": "La patch richiesta non è stata trovata",
+                "weapon": "L'arma richiesta non è stata trovata"
+            },
+            "503": {
+                "title": "Stato 503 | Server temporaneo non disponibile",
+                "default": "Il server di destinazione non può elaborare la richiesta al momento, si prega di riprovare più tardi"
+            },
+            "504": {
+                "title": "Stato 504 | Server temporaneo non disponibile",
+                "default": "Il server di destinazione non può elaborare la richiesta al momento, si prega di riprovare più tardi"
+            },
+            "429": {
+                "title": "Stato 429 | Bot Rate Limit",
+                "default": "Il bot è attualmente sovrautilizzato e ora è in fase di raffreddamento, si prega di attendere un po' e riprovare"
+            },
+            "1015": {
+                "title": "Stato 1015 | Bot Rate Limit",
+                "default": "Il bot è attualmente sovrautilizzato e ora è in fase di raffreddamento, si prega di attendere un po' e riprovare"
+            },
+            "403": {
+                "title": "Stato 403 | Autorizzazione mancante",
+                "default": "Il bot non ha accesso a questa fonte di dati. Il più delle volte questo errore si verifica durante gli aggiornamenti del gioco quando i server sono inattivi"
+            },
+            "400": {
+                "title": "Stato 400 | Errore di richiesta",
+                "default": "Si è verificato un errore durante la richiesta, di solito è dovuto alla formattazione della richiesta"
+            },
+            "410": {
+                "title": "Stato 410 | API non disponibile",
+                "default": "Il percorso API richiesto non è più disponibile, si tratta di un errore dello sviluppatore, si prega di segnalare questo errore al server di supporto"
+            },
+            "409": {
+                "title": "Stato 409 | Conflitto",
+                "default": "Si è verificato un errore durante la richiesta, si prega di riprovare più tardi"
+            },
+            "408": {
+                "title": "Stato 408 | Timeout",
+                "default": "La richiesta ha richiesto troppo tempo, si prega di riprovare più tardi"
+            },
+            "451": {
+                "title": "Stato: 451 | Questo account è privato",
+                "description": "Se questo è il vostro account, premete il pulsante `Log In` sotto questo messaggio per dare a VALORANT LABS il permesso di raccogliere i dati delle partite, per cui dovrete effettuare il login tramite RSO (Riot Sign On). Dopo aver effettuato l'accesso, questo messaggio dovrebbe aggiornarsi automaticamente. Se non lo fa, basta usare il pulsante `Refresh` sotto questo messaggio. Se avete già delle statistiche su tracker.gg e siete loggati lì, il bot cercherà di rilevarle.",
+                "component_login": "Log In",
+                "component_update": "Refresh",
+                "component_rank": "MMR"
+            },
+            "500": {
+                "title": "Stato 500 | Errore interno del server",
+                "default": "Si è verificato un errore interno del server, si prega di riprovare più tardi"
+            }
+        },
+        "agent": {
+            "agentunknown_title": "Agente non trovato",
+            "agentunknown_desc": "Assicurarsi che l'agente esista. Se si ritiene che si tratti di un bug, segnalarlo al server di supporto",
+            "agentrole": "Ruolo"
+        },
+        "autorole": {
+            "send_desc": "Per ottenere il tuo ruolo ingame, clicca sul pulsante `Aggiungi`. Ti verrà mostrato un link, cliccaci sopra. Verrai reindirizzato alla pagina di login di Riot Games. \n\n**Importante:** <@702201518329430117> non vede i tuoi dati di accesso, sul server riceviamo solo i seguenti dati di esempio:\n```{puuid: '000000000-00000000000-000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'}```Con il pulsante `Aggiorna' è possibile aggiornare il proprio ruolo se, ad esempio, si viene promossi.\nUtilizzare il pulsante `Rimuovi' per rimuovere nuovamente il proprio ruolo.",
+            "created_title": "Il messaggio del vostro AutoRole è stato creato",
+            "created_desc": "È possibile modificare questo messaggio come si desidera facendo clic con il tasto destro del mouse sul messaggio, selezionando App e quindi facendo clic su 'Modifica AutoRole'. Si aprirà una finestra in cui sarà possibile modificare il messaggio",
+            "correct": "✅ Configurato correttamente",
+            "wrong": "⛔ Non ancora configurato",
+            "member_error_title": "Nessun permesso per i membri",
+            "member_error_desc": "Il bot non ha i permessi per assegnare questi ruoli, assicuratevi che il bot abbia abbastanza permessi per assegnarvi il ruolo",
+            "message_send_error_title": "Nessun permesso per il canale",
+            "message_send_error_desc": "Assicuratevi che <@702201518329430117> abbia il permesso `Invio messaggi`",
+            "roles_error_title": "Nessun permesso di ruolo",
+            "roles_error_desc": "Il bot non ha abbastanza diritti per assegnare i seguenti ruoli agli utenti. Assicurarsi che i ruoli siano disposti sotto i ruoli del bot",
+            "message_edit_error_title": "Nessun messaggio AutoRole",
+            "message_edit_error_desc": "Questo non è un messaggio AutoRole, quindi non può essere modificato",
+            "autorole_permission_title": "Nessun permesso",
+            "autorole_permission_desc": "Assicurarsi che <@702201518329430117> abbia il permesso `MANAGE ROLES`",
+            "role_given_title": "Ruolo dato",
+            "role_given_desc": "Il tuo ruolo ingame ti è stato assegnato, potrebbe volerci fino a un minuto per ricevere il tuo ruolo a causa delle limitazioni dell'API di Discord.",
+            "role_removed_title": "Ruolo rimosso",
+            "role_removed_desc": "Il tuo ruolo ingame è stato nuovamente rimosso. Se vuoi aggiungerlo di nuovo, clicca su `Aggiorna`.",
+            "add": "Aggiungi",
+            "update": "Aggiorna",
+            "remove": "Rimuovi",
+            "modal_title": "Titolo",
+            "modal_desc": "Description",
+            "modal_color": "Colore",
+            "modal_edit_title": "Modifica messaggio",
+            "message_edit_title": "Messaggio modificato",
+            "message_edit_desc": "Il messaggio è stato modificato con successo"
+        },
+        "blacklist": {
+            "blacklistinactive_title": "Blacklist non attiva",
+            "blacklistinactive_desc": "Attivare la blacklist con: /impostazioni blacklist true",
+            "blacklistperms_title": "Non è consentito utilizzare questo comando",
+            "blacklistperms_desc": "Assicuratevi di avere il permesso `MANAGE_GUILD`",
+            "blacklistoverview_title": "Panoramica della blacklist dei canali",
+            "blacklistoverview_desc": "Usare uno dei seguenti comandi:\n\n/blacklist add #channel \n/blacklist remove #channel \n\nCanale Blacklistato: \n${cchannel ? cchannel : 'Nessun Canale'}",
+            "blacklistalreadyadded_title": "Il canale è già presente nella lista",
+            "blacklistalreadyadded_desc": "Il canale specificato è già presente nella lista, non è possibile aggiungerlo di nuovo",
+            "blacklistalreadyremoved_title": "Canale non presente nell'elenco",
+            "blacklistalreadyremoved_desc": "Il canale specificato non è nell'elenco, non è possibile rimuoverlo di nuovo",
+            "blacklistadded_title": "Aggiungi un canale alla lista",
+            "blacklistchannels": "Canale in Blacklist: \n${uchannel ? uchannel : 'Nessun Canale'}",
+            "blacklistremoved_title": "Canale rimosso dalla lista"
+        },
+        "botinfo": {
+            "title": "Informazioni bot su VALORANT LABS"
+        },
+        "feedback": {
+            "title": "Dai un feedback",
+            "label": "Feedback",
+            "placeholder": "Inserisci qui il tuo feedback",
+            "send_title": "Invio feedback",
+            "send_desc": "Grazie per il tuo feedback, questo è stato inviato allo sviluppatore ed esaminato il prima possibile"
+        },
+        "game": {
+            "unknown_title": "Gioco sconosciuto",
+            "unknown_desc": "Assicurarsi che la chiave di gioco esista e sia stata inserita correttamente",
+            "loading_title": "Attendere prego...",
+            "loading_desc": "Il gioco selezionato è stato generato, si prega di attendere un momento"
+        },
+        "link": {
+            "clink_title": "Il tuo link attuale",
+            "clink_desc": "Il tuo conto collegato è denominato come segue:",
+            "nolink_title": "Nessun conto collegato",
+            "nolink_desc": "Al momento non si dispone di un conto collegato. Clicca sul pulsante `Link` sotto questo messaggio per collegare il tuo account Discord a un account VALORANT.",
+            "removelink_title": "Link rimosso",
+            "removelink_desc": "Il vostro link è stato rimosso con successo",
+            "generate_link": "Link",
+            "link_generato_title": "Il vostro link di accesso è stato generato",
+            "link_generato_desc": "Si prega di cliccare sul seguente link per avviare il processo. Nota: questo link è valido solo per un'ora."
+        },
+        "mmr": {
+            "429_title": "Limite di controllo dei voti Top.gg",
+            "429_desc": "Il limite per il controllo dei voti su top.gg è stato raggiunto, si prega di attendere uno o due minuti e riprovare",
+            "500_title": "Errore di verifica dei voti",
+            "500_desc": "Si è verificato un errore durante la verifica del voto, si prega di riprovare a breve...",
+            "not_voted_title": "Non hai ancora votato",
+            "not_voted_desc": "Si prega di votare per il bot su top.gg (cliccare sul pulsante sotto questo messaggio per andare su top.gg) per utilizzare questo comando per le prossime 24h",
+            "no_link_title": "Non è stato specificato alcun ID Riot o non si dispone di un account collegato",
+            "no_link_desc": "Qui ci sono tutti i comandi disponibili",
+            "base": "Mostra i tuoi dati MMR se hai collegato il tuo account Discord con il tuo account Riot usando il comando /link",
+            "options": "Mostra i dati MMR dell'account specificato",
+            "loading_title": "Attendere prego...",
+            "loading_desc": "I dati MMR della stagione selezionata verranno caricati, si prega di attendere un momento",
+            "no_rank_title": "Attualmente non hai un grado",
+            "no_rank_desc": "Al momento non hai ranking o la tua ultima partita classificata risale a troppo tempo fa. Gioca una partita classificata e poi riprova"
+        },
+        "settings": {
+            "perms_title": "Nessun permesso",
+            "perms_desc": "Manca il permesso `Gestione gilda`. Se pensi che si tratti di un errore, contatta l'amministratore del server",
+            "imggeneration_title": "Si prega di attendere un momento",
+            "imggeneration_desc": "L'immagine campione con l'immagine specificata per il tipo di immagine selezionato è stata generata, si prega di attendere un momento. A questo punto è possibile selezionare se la configurazione deve essere salvata o meno.",
+            "imggenerated_title": "Immagine generata con successo",
+            "imggenerated_desc": "Qui si può vedere l'immagine finita così come apparirà utilizzando il comando. Se l'immagine è come l'avete immaginata, fate clic sul pulsante verde in basso. Se l'immagine non ha l'aspetto desiderato, fare clic sul pulsante rosso e caricare un'altra immagine.",
+            "imggenerated_label_accept": "Salva",
+            "imggenerated_label_deny": "Annulla",
+            "not_set": "Non impostato"
+        },
+        "status": {
+            "noerrors": "Non sono stati trovati errori nel cluster",
+            "postedat": "Creato alle:",
+            "platforms": "Piattaforme interessate:",
+            "type": "Tipo di problema:"
+        },
+        "stats": {
+            "missing_matches_title": "Mancano ancora alcune partite",
+            "missing_matches_desc": "Le corrispondenze mancanti vengono scaricate ed elaborate in background. Al termine, l'immagine viene aggiornata",
+            "invalidriotid_title": "ID sommossa non corretto",
+            "invalidriotid_desc": "L'ID Riot indicato non è corretto. Assicurati di aver inserito anche il tag e non solo il nome.ID Riot errato: Henrik3\nDenominazione corretta: Henrik3#VALO",
+            "noriotid_title": "Nessun ID Riot specificato",
+            "noriotid_desc": "Non hai né un account collegato né un nome specificato. Collegati con `/link add` o inserisci un ID Riot",
+            "game_select": "Seleziona un gioco"
+        },
+        "vote": {
+            "title": "Vota per noi su top.gg",
+            "desc": "Votando si ottiene, tra le altre cose, l'accesso al comando `/mmr` e si supporta il bot con il proprio voto"
+        },
+        "weapon": {
+            "name": "Armi",
+            "cost": "Prezzo",
+            "magazinsize": "Dimensione caricatore",
+            "penetration": "Forza del proiettile",
+            "firerate": "Frequenza di fuoco",
+            "firerate_zoom": "Frequenza di fuoco (zoom)",
+            "zoom": "Zoom",
+            "Head": "Headshot",
+            "body": "Bodyshot",
+            "leg": "Legshot",
+            "rangedamage": "Colpo alla testa: ${Stringa(cweapon.weaponStats.damageRanges[i].headDamage)} | Colpo al corpo: ${Stringa(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Colpo alla gamba: ${Stringa(cweapon.weaponStats.damageRanges[i].legDamage)}",
+            "mweapons": "Prezzo: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Free' }"
+        },
+        "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=it",
+        "cmd": "Comandi",
+        "help_title": "Panoramica della guida",
+        "help_desc": "Sul nostro nuovo sito web troverete in tutte le traduzioni disponibili la panoramica della guida",
+        "locale": "it_it",
+        "moment": "it",
+        "patchurl": "https://api.henrikdev.xyz/valorant/v1/website/it-it?filter=patch_notes",
+        "statusurl": "https://api.henrikdev.xyz/valorant/v1/status/eu",
+        "support": "Support",
+        "valorant_api_lang": "it-IT",
+        "websiteurl": "https://api.henrikdev.xyz/valorant/v1/website/it-it"
     },
     "translations": {
         "agenttitle": "Agent",

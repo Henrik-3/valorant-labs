@@ -341,6 +341,35 @@
             "Pokazuje link do strony głosowania top.gg",
             "Pokazuje informacje o konkretnej broni",
             "Pokazuje informacje o wszystkich broniach w grze"
+        ],
+        "it": [
+            "Mostra informazioni su un agente",
+            "Mostra il link all'API del backend aperto",
+            "Mostra le impostazioni correnti dell'autorole",
+            "Invia il messaggio di autorole con i suoi pulsanti",
+            "Imposta il sistema di autorole mappando il rank ingame con il ruolo su discord",
+            "Mostra informazioni sul bot stesso (utilizzo delle risorse, ecc.)",
+            "Apre una modale con la quale è possibile inviare un feedback allo sviluppatore",
+            "Mostra i dati dettagliati di una partita già giocata",
+            "Mostra la pagina di aiuto",
+            "Mostra il vostro account collegato",
+            "Crea un collegamento con cui è possibile connettere il proprio account riot con il proprio account discord",
+            "Rimuove il collegamento tra l'account di riot e quello di discordia",
+            "Mostra informazioni su una mappa",
+            "Mostra i dati MMR per episodio/atto e i dati attuali",
+            "Mostra le ultime note della patch",
+            "Imposta l'account collegato in uno stato privato",
+            "Mostra le impostazioni della gilda",
+            "Imposta il canale autonews per le patchnotes",
+            "Imposta il canale autonews per gli articoli del sito web che non sono patchnotes",
+            "Imposta il canale autonews per i problemi del server",
+            "Imposta la lingua della gilda",
+            "Aggiunge uno sfondo personalizzato per il tipo di immagine indicato",
+            "Mostra le proprie statistiche o quelle di un altro giocatore se è connesso tramite RSO",
+            "Mostra lo stato del server per il cluster di server richiesto",
+            "Mostra il link alla pagina di votazione di top.gg",
+            "Mostra informazioni su un'arma specifica",
+            "Mostra informazioni su tutte le armi in gioco"
         ]
     },
     "langlist": [
@@ -375,7 +404,8 @@
         {
             "name": "Polski",
             "value": "pl"
-        }
+        },
+        {"name": "Italian", "value": "it"}
     ],
     "translations": {
         "de": {
@@ -759,6 +789,54 @@
                     "status": "Status",
                     "tos": "Zasady i warunki",
                     "privacy": "Polityka prywatności"
+                }
+            }
+        },
+        "it": {
+            "mainsentence": "Bot multilingue di Discord per Valorant. Statistiche, Autonews e Server Status, realizzati in prima persona con tanto amore",
+            "buttons": {
+                "invite": "Invite",
+                "dashboard": "Vai al cruscotto",
+                "command": "Mostra comandi"
+            },
+            "nav": {
+                "command": "Comandi",
+                "support": "Support",
+                "invite": "Invito"
+            },
+            "numbers": {
+                "title": "Numeri",
+                "description": "Alcune statistiche sul Bot",
+                "server_count": "Server Count",
+                "commands_used": "Comandi utilizzati"
+            },
+            "server": {
+                "title": "Il Bot VALORANT di cui ci si può fidare",
+                "description": "Molti dei server Discord regionali ufficiali di VALORANT si affidano a noi",
+                "membercount": "Membri",
+                "join": "Unisciti"
+            },
+            "status": {
+                "title": "Stato del bot",
+                "description": "Stato dettagliato del bot per ogni singola istanza",
+                "status": "Status",
+                "server": "Server",
+                "ping": "Ping",
+                "uptime": "Tempo di attività"
+            },
+            "commands": {
+                "title": "Comandi",
+                "description": "Panoramica dei comandi con esempi"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Traduzioni"
+                },
+                "informazioni": {
+                    "updates": "Aggiornamenti",
+                    "Status": "Stato",
+                    "tos": "Termini e condizioni",
+                    "privacy": "Informativa sulla privacy"
                 }
             }
         }

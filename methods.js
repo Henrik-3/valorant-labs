@@ -90,6 +90,7 @@ export const locales = {
     'es-ES': 'es',
     vi: 'vi',
     pl: 'pl',
+    it: 'it',
 };
 export const agents = [
     {
@@ -566,9 +567,10 @@ export const shard_status_codes = {
     7: 'IDENTIFYING',
     8: 'RESUMING',
 };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 export const fetchWebsite = async function (manager) {
     const types = ['patchnotes', 'othernews', 'maintenance', 'incidents'];
-    const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi', 'pl'];
+    const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi', 'pl', 'it'];
     const nstatus = ['news', 'onews', 'serverstatus', 'serverstatus'];
     for (let i = 0; types.length > i; i++) {
         if (i == 0 || i == 1) {
@@ -588,10 +590,11 @@ export const fetchWebsite = async function (manager) {
                             .find({lang: ccodes[k]}, i == 0 ? {gid: 1, lang: 1, news: 1} : {gid: 1, lang: 1, onews: 1})
                             .toArray();
                         //fetch = fetch.filter(item => item[nstatus[i]] !== false && item[nstatus[i]] !== "false")
-                        article.forEach(article => {
-                            fetch.forEach(guild => {
-                                if (guild[nstatus[i]]) {
-                                    manager.broadcastEval(
+                        for (let o = 0; article.length > o; o++) {
+                            for (let f = 0; fetch.length > f; f++) {
+                                console.log(new Date());
+                                if (fetch[f][nstatus[i]]) {
+                                    await manager.broadcastEval(
                                         (client, {channelid, title, external_link, url, banner_url}) => {
                                             try {
                                                 if (client.channels.cache.has(channelid)) {
@@ -632,17 +635,18 @@ export const fetchWebsite = async function (manager) {
                                         },
                                         {
                                             context: {
-                                                channelid: guild[nstatus[i]].replace(/[^0-9]/g, ''),
-                                                title: article.title,
-                                                external_link: article.external_link,
-                                                url: article.url,
-                                                banner_url: article.banner_url,
+                                                channelid: fetch[f][nstatus[i]].replace(/[^0-9]/g, ''),
+                                                title: article[o].title,
+                                                external_link: article[o].external_link,
+                                                url: article[o].url,
+                                                banner_url: article[o].banner_url,
                                             },
                                         }
                                     );
+                                    await sleep(1000);
                                 }
-                            });
-                        });
+                            }
+                        }
                     }
                 }
             }
@@ -666,9 +670,9 @@ export const fetchWebsite = async function (manager) {
                                 ? getDB('websitecheck').updateOne({code: ccodes[k]}, {$set: {datestatusmaintenance: moment(article.updates[0].created_at).unix()}})
                                 : getDB('websitecheck').updateOne({code: ccodes[k]}, {$set: {datestatusincidents: moment(article.updates[0].created_at).unix()}});
                             const fetch = await getDB('settings').find({lang: ccodes[k]}, {gid: 1, lang: 1, serverstatus: 1}).toArray();
-                            fetch.forEach(guild => {
-                                if (guild.serverstatus) {
-                                    manager.broadcastEval(
+                            for (let f = 0; fetch.length > f; f++) {
+                                if (fetch[f].serverstatus) {
+                                    await manager.broadcastEval(
                                         (client, {channelid, desc, t, create, platform, postedat, platforms}) => {
                                             try {
                                                 if (client.channels.cache.has(channelid)) {
@@ -698,7 +702,7 @@ export const fetchWebsite = async function (manager) {
                                         },
                                         {
                                             context: {
-                                                channelid: guild.serverstatus.replace(/[^0-9]/g, ''),
+                                                channelid: fetch[f].serverstatus.replace(/[^0-9]/g, ''),
                                                 desc:
                                                     article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content != undefined
                                                         ? article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content
@@ -709,13 +713,14 @@ export const fetchWebsite = async function (manager) {
                                                         : article.titles.find(c => c.locale == 'en_US').content,
                                                 create: moment(article.created_at).format('LLLL'),
                                                 platform: article.platforms[0],
-                                                postedat: translations[guild.lang].status.postedat,
-                                                platforms: translations[guild.lang].status.platforms,
+                                                postedat: translations[fetch[f].lang].status.postedat,
+                                                platforms: translations[fetch[f].lang].status.platforms,
                                             },
                                         }
                                     );
+                                    await sleep(1000);
                                 }
-                            });
+                            }
                         }
                     }
                 }
@@ -1460,8 +1465,8 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                 );
                 ctx.drawImage(player, x_red_rank, 1320, 75, 75);
                 const agent = await Canvas.loadImage(
-                    getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortraitV2 ??
-                        getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortrait
+                    getAgents().find(item => item.displayName.toLowerCase() == red_players[i].character.toLowerCase()).fullPortraitV2 ??
+                        getAgents().find(item => item.displayName.toLowerCase() == red_players[i].character.toLowerCase()).fullPortrait
                 );
                 ctx.drawImage(agent, x_red_agent, 1480, 405, 405);
                 buildText({ctx, text: `${red_players[i].name} #${red_players[i].tag}`, size: 40, x: x_red_name, y: 1450, color: '#fff', align: 'center'});

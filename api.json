@@ -1,6 +1,6 @@
 {
   "kek": null,
-  "all": 717,
+  "all": 718,
   "status": 11,
   "help": 15,
   "agent": 20,
@@ -17,5 +17,6 @@
   "feedback": 6,
   "autoroles": 39,
   "Edit AutoRole": 4,
-  "map": null
+  "map": null,
+  "weapon": null
 }

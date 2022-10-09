@@ -1,5 +1,21 @@
 import {patchGuild, getAutoRoles, embedBuilder, translations, roles, firstletter, ButtonStyle, ComponentType, perms} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
+    if (!interaction.member.permissions.has(perms.ManageGuild))
+        return interaction.editReply({
+            embeds: [
+                embedBuilder({
+                    title: translations[guilddata.lang].settings.perms_title,
+                    desc: translations[guilddata.lang].settings.perms_desc,
+                    footer: 'VALORANT LABS [SETTINGS PERMISSION ERROR]',
+                }),
+            ],
+            components: [
+                {
+                    type: ComponentType.ActionRow,
+                    components: [{type: ComponentType.Button, label: translations[guilddata.lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/Zr5eF5D'}],
+                },
+            ],
+        });
     switch (interaction.options._subcommand) {
         case 'setup': {
             return patchGuild({
@@ -56,7 +72,6 @@ export async function execute({interaction, guilddata} = {}) {
                         embedBuilder({
                             title: translations[guilddata.lang].autorole.message_send_error_title,
                             desc: translations[guilddata.lang].autorole.message_send_error_desc,
-                            additionalFields: uneditableroles,
                             footer: 'VALORANT LABS [ROLE PERMISSION ERROR]',
                         }),
                     ],

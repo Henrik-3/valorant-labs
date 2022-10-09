@@ -11,8 +11,8 @@ const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
 
 const manager = new ShardingManager('./index.js', {
-    token: basedata.discordtokenreal,
-    totalShards: 10,
+    token: basedata.discordtoken,
+    totalShards: 1,
     respawn: true,
 });
 const poster = AutoPoster(basedata.dbltoken, manager);
