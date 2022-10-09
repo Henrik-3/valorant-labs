@@ -5,7 +5,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import system from 'systeminformation';
 import pretty from 'pretty-bytes';
-import {PermissionFlagsBits, ComponentType, ButtonStyle, TextInputStyle, ActivityType, AttachmentBuilder} from 'discord.js.dev';
+import {PermissionFlagsBits, ComponentType, ButtonStyle, TextInputStyle, ActivityType, AttachmentBuilder} from 'discord.js';
 import moment from 'moment';
 import Canvas from 'canvas';
 import randomize from 'randomatic';
@@ -44,7 +44,7 @@ axiosRetry(axios, {
     },
 });
 
-export {pretty, axios, translations, moment, ComponentType, ButtonStyle, TextInputStyle, ActivityType, mongoclient};
+export {pretty, axios, translations, moment, ComponentType, ButtonStyle, TextInputStyle, ActivityType, mongoclient, AttachmentBuilder};
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;
 export const topgg = basedata.dbltoken;
@@ -589,61 +589,104 @@ export const fetchWebsite = async function (manager) {
                         let fetch = await getDB('settings')
                             .find({lang: ccodes[k]}, i == 0 ? {gid: 1, lang: 1, news: 1} : {gid: 1, lang: 1, onews: 1})
                             .toArray();
-                        //fetch = fetch.filter(item => item[nstatus[i]] !== false && item[nstatus[i]] !== "false")
                         for (let o = 0; article.length > o; o++) {
                             for (let f = 0; fetch.length > f; f++) {
-                                console.log(new Date());
                                 if (fetch[f][nstatus[i]]) {
-                                    await manager.broadcastEval(
-                                        (client, {channelid, title, external_link, url, banner_url}) => {
+                                    const gcheck = await manager.broadcastEval(
+                                        (client, {channelid}) => {
                                             try {
-                                                if (client.channels.cache.has(channelid)) {
-                                                    client.channels.cache
-                                                        .get(channelid)
-                                                        .send({
-                                                            embeds: [
-                                                                {
-                                                                    color: 0xff4654,
-                                                                    title: title,
-                                                                    url: external_link != null ? external_link : url,
-                                                                    image: {
-                                                                        url: banner_url,
-                                                                    },
-                                                                    footer: {
-                                                                        text: 'VALORANT LABS [AUTONEWS WEBSITE]',
-                                                                        icon_url: 'https://valorantlabs.xyz/css/valorant-logo.png',
-                                                                    },
-                                                                },
-                                                            ],
-                                                            components: [
-                                                                {
-                                                                    type: 1,
+                                                return client.channels.cache.has(channelid);
+                                            } catch (e) {}
+                                        },
+                                        {context: {channelid: fetch[f][nstatus[i]].replace(/[^0-9]/g, '')}}
+                                    );
+                                    if (gcheck.some(item => item == true)) {
+                                        await manager.broadcastEval(
+                                            (client, {channelid, title, external_link, url, banner_url}) => {
+                                                try {
+                                                    if (client.channels.cache.has(channelid)) {
+                                                        const channel = client.channels.cache.get(channelid);
+                                                        if (channel.type == 15 && !channel.flags.has(16)) {
+                                                            channel.threads.create({
+                                                                name: title,
+                                                                message: {
+                                                                    embeds: [
+                                                                        {
+                                                                            color: 0xff4654,
+                                                                            title: title,
+                                                                            url: external_link != null ? external_link : url,
+                                                                            image: {
+                                                                                url: banner_url,
+                                                                            },
+                                                                            footer: {
+                                                                                text: 'VALORANT LABS [AUTONEWS WEBSITE]',
+                                                                                icon_url: 'https://valorantlabs.xyz/css/valorant-logo.png',
+                                                                            },
+                                                                        },
+                                                                    ],
                                                                     components: [
                                                                         {
-                                                                            type: 2,
-                                                                            style: 5,
-                                                                            url: external_link != null ? external_link : url,
-                                                                            label: title,
+                                                                            type: 1,
+                                                                            components: [
+                                                                                {
+                                                                                    type: 2,
+                                                                                    style: 5,
+                                                                                    url: external_link != null ? external_link : url,
+                                                                                    label: title,
+                                                                                },
+                                                                            ],
                                                                         },
                                                                     ],
                                                                 },
-                                                            ],
-                                                        })
-                                                        .catch(error => error);
-                                                }
-                                            } catch (e) {}
-                                        },
-                                        {
-                                            context: {
-                                                channelid: fetch[f][nstatus[i]].replace(/[^0-9]/g, ''),
-                                                title: article[o].title,
-                                                external_link: article[o].external_link,
-                                                url: article[o].url,
-                                                banner_url: article[o].banner_url,
+                                                            });
+                                                        } else {
+                                                            channel
+                                                                .send({
+                                                                    embeds: [
+                                                                        {
+                                                                            color: 0xff4654,
+                                                                            title: title,
+                                                                            url: external_link != null ? external_link : url,
+                                                                            image: {
+                                                                                url: banner_url,
+                                                                            },
+                                                                            footer: {
+                                                                                text: 'VALORANT LABS [AUTONEWS WEBSITE]',
+                                                                                icon_url: 'https://valorantlabs.xyz/css/valorant-logo.png',
+                                                                            },
+                                                                        },
+                                                                    ],
+                                                                    components: [
+                                                                        {
+                                                                            type: 1,
+                                                                            components: [
+                                                                                {
+                                                                                    type: 2,
+                                                                                    style: 5,
+                                                                                    url: external_link != null ? external_link : url,
+                                                                                    label: title,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    ],
+                                                                })
+                                                                .catch(error => error);
+                                                        }
+                                                    }
+                                                } catch (e) {}
                                             },
-                                        }
-                                    );
-                                    await sleep(1000);
+                                            {
+                                                context: {
+                                                    channelid: fetch[f][nstatus[i]].replace(/[^0-9]/g, ''),
+                                                    title: article[o].title,
+                                                    external_link: article[o].external_link,
+                                                    url: article[o].url,
+                                                    banner_url: article[o].banner_url,
+                                                },
+                                            }
+                                        );
+                                        await sleep(1000);
+                                    }
                                 }
                             }
                         }
@@ -672,53 +715,87 @@ export const fetchWebsite = async function (manager) {
                             const fetch = await getDB('settings').find({lang: ccodes[k]}, {gid: 1, lang: 1, serverstatus: 1}).toArray();
                             for (let f = 0; fetch.length > f; f++) {
                                 if (fetch[f].serverstatus) {
-                                    await manager.broadcastEval(
-                                        (client, {channelid, desc, t, create, platform, postedat, platforms}) => {
+                                    const gcheck = await manager.broadcastEval(
+                                        (client, {channelid}) => {
                                             try {
-                                                if (client.channels.cache.has(channelid)) {
-                                                    client.channels.cache
-                                                        .get(channelid)
-                                                        .send({
-                                                            embeds: [
-                                                                {
-                                                                    title: t,
-                                                                    color: 0xff4654,
-                                                                    description: desc,
-                                                                    fields: [
-                                                                        {name: postedat, value: create, inline: true},
-                                                                        {name: platforms, value: platform, inline: true},
-                                                                    ],
-                                                                    timestamp: new Date().toISOString(),
-                                                                    footer: {
-                                                                        text: 'VALORANT LABS [STATUS UPDATE]',
-                                                                        icon_url: 'https://valorantlabs.xyz/css/valorant-logo.png',
-                                                                    },
-                                                                },
-                                                            ],
-                                                        })
-                                                        .catch(error => error);
-                                                }
+                                                return client.channels.cache.has(channelid);
                                             } catch (e) {}
                                         },
-                                        {
-                                            context: {
-                                                channelid: fetch[f].serverstatus.replace(/[^0-9]/g, ''),
-                                                desc:
-                                                    article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content != undefined
-                                                        ? article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content
-                                                        : article.updates[0].translations.find(c => c.locale == 'en_US').content,
-                                                t:
-                                                    article.titles.find(c => c.locale == translations[ccodes[k]].locale).content != undefined
-                                                        ? article.titles.find(c => c.locale == translations[ccodes[k]].locale).content
-                                                        : article.titles.find(c => c.locale == 'en_US').content,
-                                                create: moment(article.created_at).format('LLLL'),
-                                                platform: article.platforms[0],
-                                                postedat: translations[fetch[f].lang].status.postedat,
-                                                platforms: translations[fetch[f].lang].status.platforms,
-                                            },
-                                        }
+                                        {context: {channelid: fetch[f].serverstatus.replace(/[^0-9]/g, '')}}
                                     );
-                                    await sleep(1000);
+                                    if (gcheck.some(item => item == true)) {
+                                        await manager.broadcastEval(
+                                            (client, {channelid, desc, t, create, platform, postedat, platforms}) => {
+                                                try {
+                                                    if (client.channels.cache.has(channelid)) {
+                                                        const channel = client.channels.cache.get(channelid);
+                                                        if (channel.type == 15 && !channel.flags.has(16)) {
+                                                            channel.threads.create({
+                                                                name: t,
+                                                                message: {
+                                                                    embeds: [
+                                                                        {
+                                                                            title: t,
+                                                                            color: 0xff4654,
+                                                                            description: desc,
+                                                                            fields: [
+                                                                                {name: postedat, value: create, inline: true},
+                                                                                {name: platforms, value: platform, inline: true},
+                                                                            ],
+                                                                            timestamp: new Date().toISOString(),
+                                                                            footer: {
+                                                                                text: 'VALORANT LABS [STATUS UPDATE]',
+                                                                                icon_url: 'https://valorantlabs.xyz/css/valorant-logo.png',
+                                                                            },
+                                                                        },
+                                                                    ],
+                                                                },
+                                                            });
+                                                        } else {
+                                                            channel
+                                                                .send({
+                                                                    embeds: [
+                                                                        {
+                                                                            title: t,
+                                                                            color: 0xff4654,
+                                                                            description: desc,
+                                                                            fields: [
+                                                                                {name: postedat, value: create, inline: true},
+                                                                                {name: platforms, value: platform, inline: true},
+                                                                            ],
+                                                                            timestamp: new Date().toISOString(),
+                                                                            footer: {
+                                                                                text: 'VALORANT LABS [STATUS UPDATE]',
+                                                                                icon_url: 'https://valorantlabs.xyz/css/valorant-logo.png',
+                                                                            },
+                                                                        },
+                                                                    ],
+                                                                })
+                                                                .catch(error => error);
+                                                        }
+                                                    }
+                                                } catch (e) {}
+                                            },
+                                            {
+                                                context: {
+                                                    channelid: fetch[f].serverstatus.replace(/[^0-9]/g, ''),
+                                                    desc:
+                                                        article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content != undefined
+                                                            ? article.updates[0].translations.find(c => c.locale == translations[ccodes[k]].locale).content
+                                                            : article.updates[0].translations.find(c => c.locale == 'en_US').content,
+                                                    t:
+                                                        article.titles.find(c => c.locale == translations[ccodes[k]].locale).content != undefined
+                                                            ? article.titles.find(c => c.locale == translations[ccodes[k]].locale).content
+                                                            : article.titles.find(c => c.locale == 'en_US').content,
+                                                    create: moment(article.created_at).format('LLLL'),
+                                                    platform: article.platforms[0],
+                                                    postedat: translations[fetch[f].lang].status.postedat,
+                                                    platforms: translations[fetch[f].lang].status.platforms,
+                                                },
+                                            }
+                                        );
+                                        await sleep(1000);
+                                    }
                                 }
                             }
                         }

@@ -12,7 +12,7 @@ const __dirname = path.resolve();
 
 const manager = new ShardingManager('./index.js', {
     token: basedata.discordtoken,
-    totalShards: 1,
+    totalShards: 2,
     respawn: true,
 });
 const poster = AutoPoster(basedata.dbltoken, manager);

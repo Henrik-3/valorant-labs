@@ -1,4 +1,14 @@
-import {embedBuilder, translations, buildBackground, getCustomBackground, getDB, axios, errorhandlerinteraction, buildMMRImage} from '../../methods.js';
+import {
+    embedBuilder,
+    translations,
+    buildBackground,
+    getCustomBackground,
+    AttachmentBuilder,
+    getDB,
+    axios,
+    errorhandlerinteraction,
+    buildMMRImage,
+} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate();
     const components = [...interaction.message.components];
@@ -23,6 +33,6 @@ export async function execute({interaction, args, guilddata} = {}) {
           });
     if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang, data: mmr.response.data});
     const image = await buildMMRImage({mmrdata: mmr.data.data, seasonid: interaction.values[0], guilddata, bgcanvas});
-    return interaction.editReply({files: [image], embeds: [], components: components});
+    return interaction.editReply({files: image && image instanceof AttachmentBuilder ? [image] : [], embeds: [], components: components});
 }
 export const name = 'mmr';

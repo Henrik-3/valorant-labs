@@ -1,7 +1,6 @@
-import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js.dev';
+import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
 import {perms, embedBuilder, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
-import path from 'path';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 
