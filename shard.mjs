@@ -1,7 +1,7 @@
 import {ShardingManager} from 'discord.js';
 import {AutoPoster} from 'topgg-autoposter';
 import {getDB, translations, patchStats, riottoken, getAgents, getGamemodes, shard_status_update, fetchWebsite} from './methods.js';
-import {readFileSync, writeFileSync} from 'fs';
+import {readFileSync, existsSync} from 'fs';
 import * as f from 'fastify';
 import axios from 'axios';
 import path from 'path';
@@ -15,7 +15,7 @@ const manager = new ShardingManager('./index.js', {
     totalShards: 2,
     respawn: true,
 });
-const poster = AutoPoster(basedata.dbltoken, manager);
+//const poster = AutoPoster(basedata.dbltoken, manager);
 
 let restart = false;
 setInterval(async () => {
@@ -46,9 +46,9 @@ manager.on('shardCreate', async shard => {
     console.log(`Launched shard ${shard.id}`);
 });
 
-fastify.register(await import('fastify-cors'), {});
+fastify.register(await import('@fastify/cors'), {});
 
-fastify.register(await import('fastify-static'), {
+fastify.register(await import('@fastify/static'), {
     root: path.join(__dirname, 'website', 'build'),
 });
 
@@ -343,7 +343,13 @@ fastify.get('/v1/login', async (req, res) => {
     );
 });
 
-fastify.listen(4200, '127.0.0.1', () => {
-    console.log('API Online');
+fastify.get('/cdn/v1/agents/:uuid', async (req, res) => {
+    if (existsSync(`assets/agents/${req.params.uuid}.png`)) return res.type('image/png').send(readFileSync(`assets/agents/${req.params.uuid}.png`));
 });
+
+fastify.listen({port: 4200}, (err, address) => {
+    if (err) throw err;
+    // Server is now listening on ${address}
+});
+
 manager.spawn({timeout: -1});

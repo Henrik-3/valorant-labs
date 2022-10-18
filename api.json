@@ -1,9 +1,9 @@
 {
   "kek": null,
-  "all": 718,
+  "all": 730,
   "status": 11,
   "help": 15,
-  "agent": 20,
+  "agent": 29,
   "api": 1,
   "blacklist": 24,
   "botinfo": 11,
@@ -18,5 +18,6 @@
   "autoroles": 39,
   "Edit AutoRole": 4,
   "map": null,
-  "weapon": null
+  "weapon": null,
+  "partner": 2
 }

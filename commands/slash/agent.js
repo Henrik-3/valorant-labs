@@ -42,6 +42,7 @@ export async function execute({interaction, guilddata} = {}) {
                     {name: `C: ${a3.displayName}`, value: a3.description},
                     {name: `X: ${ult.displayName}`, value: ult.description},
                 ],
+                image: `https://valorantlabs.xyz/cdn/v1/agents/${cagent.uuid}`,
                 footer: `VALORANT LABS [AGENT]`,
             }),
         ],

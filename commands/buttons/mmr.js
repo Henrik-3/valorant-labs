@@ -30,7 +30,17 @@ export async function execute({interaction, args, guilddata} = {}) {
     if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response.status, type: 'stats', lang: guilddata.lang, data: mmr.response.data});
     const bgcanvas = guilddata.background_mmr ? await buildBackground(getCustomBackground(guilddata.background_mmr), 'mmr') : null;
     if (!mmrdb) await getDB('mmr').insertOne({puuid: puuid.data.data.puuid, data: mmr.data, createdAt: new Date()});
-    const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error && item[1].wins != 0);
+    const seasonsvalues = Object.entries(mmr.data.data.by_season).filter(item => !item[1].error && typeof item[1].wins == 'number' && item[1].wins != 0);
+    if (!seasonsvalues.length)
+        return interaction.editReply({
+            embeds: [
+                embedBuilder({
+                    title: translations[guilddata.lang].mmr.no_rank_title,
+                    desc: translations[guilddata.lang].mmr.no_rank_desc,
+                    footer: 'VALORANT LABS [MMR ERROR]',
+                }),
+            ],
+        });
     const seasonscomponents = [];
     for (let i = 0; seasonsvalues.length > i; i++) {
         const crank = seasonsvalues[i][1].old ? old_ranks[seasonsvalues[i][1].final_rank] : ranks[seasonsvalues[i][1].final_rank];

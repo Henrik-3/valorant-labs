@@ -13,7 +13,7 @@ export async function execute({interaction, guilddata} = {}) {
             ],
         });
     if (image.error) return errorhandlerinteraction({interaction, status: image.error.status, type: 'game', lang: guilddata.lang, data: image.error.data});
-    if (image.embed) return interaction.editReply({embeds: [image.embed]});
+    if (image.embed) return interaction.editReply({embeds: image.embed});
     if (image.image) return interaction.editReply({files: [image.image]});
 }
 export const name = 'game';

@@ -1,7 +1,7 @@
 import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
 import {perms, embedBuilder, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
-import {dirname} from 'path';
+import path, {dirname} from 'path';
 import {fileURLToPath} from 'url';
 
 const basedata = JSON.parse(readFileSync('./basedata.json'));
@@ -30,30 +30,33 @@ const selectcommands = readdirSync('./commands/select').filter(file => file.ends
 const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'));
 const contextcommands = readdirSync('./commands/context').filter(file => file.endsWith('.js'));
 
-for (let i = 0; normalcommands.length > i; i++) {
-    const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
-    client.ncommands.set(command.name, command);
+async function update() {
+    for (let i = 0; normalcommands.length > i; i++) {
+        const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
+        client.ncommands.set(command.name, command);
+    }
+    for (let i = 0; slashcommands.length > i; i++) {
+        const command = await import(`./commands/slash/${slashcommands[i]}?update=${Date.now()}`);
+        client.scommands.set(command.name, command);
+    }
+    for (let i = 0; buttoncommand.length > i; i++) {
+        const cmd = await import(`./commands/buttons/${buttoncommand[i]}?update=${Date.now()}`);
+        client.buttoncommands.set(cmd.name, cmd);
+    }
+    for (let i = 0; selectcommands.length > i; i++) {
+        const cmd = await import(`./commands/select/${selectcommands[i]}?update=${Date.now()}`);
+        client.selectcommands.set(cmd.name, cmd);
+    }
+    for (let i = 0; modalcommands.length > i; i++) {
+        const cmd = await import(`./commands/modals/${modalcommands[i]}?update=${Date.now()}`);
+        client.modals.set(cmd.name, cmd);
+    }
+    for (let i = 0; contextcommands.length > i; i++) {
+        const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
+        client.context.set(cmd.name, cmd);
+    }
 }
-for (let i = 0; slashcommands.length > i; i++) {
-    const command = await import(`./commands/slash/${slashcommands[i]}?update=${Date.now()}`);
-    client.scommands.set(command.name, command);
-}
-for (let i = 0; buttoncommand.length > i; i++) {
-    const cmd = await import(`./commands/buttons/${buttoncommand[i]}?update=${Date.now()}`);
-    client.buttoncommands.set(cmd.name, cmd);
-}
-for (let i = 0; selectcommands.length > i; i++) {
-    const cmd = await import(`./commands/select/${selectcommands[i]}?update=${Date.now()}`);
-    client.selectcommands.set(cmd.name, cmd);
-}
-for (let i = 0; modalcommands.length > i; i++) {
-    const cmd = await import(`./commands/modals/${modalcommands[i]}?update=${Date.now()}`);
-    client.modals.set(cmd.name, cmd);
-}
-for (let i = 0; contextcommands.length > i; i++) {
-    const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
-    client.context.set(cmd.name, cmd);
-}
+update();
 
 client.on('ready', async () => {
     console.log('tes');
@@ -136,6 +139,70 @@ client.on('interactionCreate', async interaction => {
     if (interaction.commandName == 'shard-restart') {
         client.shard.send(`restart-${interaction.options.get('shard').value}`);
         return interaction.reply({content: 'Restarted'});
+    }
+    if (interaction.commandName == 'reload') {
+        const normalcommands = readdirSync('./commands/normal')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/normal/${i}?update=${Date.now()}`));
+        const slashcommands = readdirSync('./commands/slash')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/slash/${i}?update=${Date.now()}`));
+        const buttoncommand = readdirSync('./commands/buttons')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/buttons/${i}?update=${Date.now()}`));
+        const selectcommands = readdirSync('./commands/select')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/select/${i}?update=${Date.now()}`));
+        const modalcommands = readdirSync('./commands/modals')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/modals/${i}?update=${Date.now()}`));
+        const contextcommands = readdirSync('./commands/context')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/context/${i}?update=${Date.now()}`));
+        update();
+        client.shard.broadcastEval(
+            async (client, {normalcommands, slashcommands, buttoncommand, selectcommands, modalcommands, contextcommands}) => {
+                try {
+                    for (let i = 0; normalcommands.length > i; i++) {
+                        const command = await import(normalcommands[i]);
+                        client.ncommands.set(command.name, command);
+                    }
+                    for (let i = 0; slashcommands.length > i; i++) {
+                        const command = await import(slashcommands[i]);
+                        client.scommands.set(command.name, command);
+                    }
+                    for (let i = 0; buttoncommand.length > i; i++) {
+                        const cmd = await import(buttoncommand[i]);
+                        client.buttoncommands.set(cmd.name, cmd);
+                    }
+                    for (let i = 0; selectcommands.length > i; i++) {
+                        const cmd = await import(selectcommands[i]);
+                        client.selectcommands.set(cmd.name, cmd);
+                    }
+                    for (let i = 0; modalcommands.length > i; i++) {
+                        const cmd = await import(modalcommands[i]);
+                        client.modals.set(cmd.name, cmd);
+                    }
+                    for (let i = 0; contextcommands.length > i; i++) {
+                        const cmd = await import(contextcommands[i]);
+                        client.context.set(cmd.name, cmd);
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            },
+            {
+                context: {
+                    normalcommands,
+                    slashcommands,
+                    buttoncommand,
+                    selectcommands,
+                    modalcommands,
+                    contextcommands,
+                },
+            }
+        );
+        return interaction.reply({ephemeral: true, content: 'Restarted'});
     }
     api[interaction.commandName]++;
     api['all']++;
