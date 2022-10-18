@@ -188,6 +188,11 @@ export const agents = [
         id: 'bb2a4828-46eb-8cd1-e765-15848195d751',
         discord_id: '<:duelist:868802702258352178>',
     },
+    {
+        name: 'Harbor',
+        id: '95b78ed7-463786d9-7e4171ba-8c293152',
+        discord_id: '<:controller:868803058711277598>',
+    },
 ];
 export const weapons = {
     'EWallPenetrationDisplayType::High': 'High',
@@ -580,7 +585,10 @@ export const fetchWebsite = async function (manager) {
                 });
                 if (!website.response) {
                     const db = await getDB('websitecheck').findOne({code: ccodes[k]});
-                    const article = website.data.data.filter(item => (i == 0 ? moment(item.date).unix() > db.patchnotes : moment(item.date).unix() > db.datewebsite));
+                    let article =
+                        i == 0
+                            ? website.data.data.filter(item => moment(item.date).unix() > db.patchnotes)
+                            : website.data.data.filter(item => moment(item.date).unix() > db.datewebsite && item.category != 'patch_notes');
                     if (article.length) {
                         getDB('websitecheck').updateOne(
                             {code: ccodes[k]},
@@ -1077,7 +1085,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
     for (let i = 0; fmatches.length > i; i++) {
         if (!fmatches[i].response && (!fmatches.code || fmatches.code == 'ECONNABORTED')) {
             if (dbstats.ingamepuuid) {
-                if (!fmatches[i].data) console.error(fmatches[i], mmatches[i].matchId);
+                if (!fmatches[i].data) continue;
                 if (fmatches[i].data.data.metadata.mode != 'Deathmatch') {
                     if (fmatches[i].data.data.metadata.mode != 'Custom Game') {
                         const player = fmatches[i].data.data.players.all_players.find(item => item.puuid == dbstats.ingamepuuid);
