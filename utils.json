@@ -370,6 +370,35 @@
             "Mostra il link alla pagina di votazione di top.gg",
             "Mostra informazioni su un'arma specifica",
             "Mostra informazioni su tutte le armi in gioco"
+        ],
+        "tr": [
+            "Bir ajan hakkında bilgi gösterir",
+            "Shows the link to the open backend API",
+            "Geçerli otomatik rol ayarlarını gösterir",
+            "Butonlarıyla otorol mesajını gönderir",
+            "Discord'daki rolle oyun içindeki sıralamayı eşleştirerek otomatik rol sistemini kurun",
+            "Botun kendisi hakkındaki bilgileri gösterir (kaynak kullanımı vb.)",
+            "Geliştiriciye geri bildirim gönderebileceğiniz bir pencere açar",
+            "Oynanmış bir maçla ilgili ayrıntılı verileri gösterir",
+            "Yardım sayfasını gösterir",
+            "Bağlı hesabınızı gösterir",
+            "Discord hesabınızı Riot hesabınızla bağlayabileceğiniz bir link oluşturur",
+            "Discord hesabınızla Riot hesabınız arasındaki bağlantıyı kaldırır",
+            "Bir harita hakkında bilgi gösterir",
+            "MMR bilgilerini Bölüm/Kısım şeklinde gösterir",
+            "En son yayınlanan yama notlarını gösterir",
+            "Bağlı hesabın bilgilerini gizliye al",
+            "Sunucu ayarlarını gösterir",
+            "Yama notları için bir bildirim kanalı ayarlayın",
+            "Yama notları olmayan web sitesi makaleleri için bildirim kanalı ayarlayın",
+            "Sunucu sorunları için bir bildirim kanalı ayarlayın",
+            "Sunucu dilini ayarla",
+            "Verilen görüntü türü için özel bir arkaplan ekler",
+            "Kendi istatistiklerinizi ya da başka bir oyuncunun istatistiklerini RSO ile giriş yapılmışsa gösterir.",
+            "İstediğin bölgeye göre sunucu durumunu gösterir",
+            "top.gg oy sayfasının bağlantısını gösterir",
+            "Belirli bir silahla ilgili bilgileri gösterir",
+            "Tüm silahların oyun içi bilgilerini gösterir"
         ]
     },
     "langlist": [
@@ -405,7 +434,14 @@
             "name": "Polski",
             "value": "pl"
         },
-        {"name": "Italian", "value": "it"}
+        {
+            "name": "Italian",
+            "value": "it"
+        },
+        {
+            "name": "Turkish",
+            "value": "tr"
+        }
     ],
     "translations": {
         "de": {
@@ -837,6 +873,54 @@
                     "Status": "Stato",
                     "tos": "Termini e condizioni",
                     "privacy": "Informativa sulla privacy"
+                }
+            }
+        },
+        "tr": {
+            "mainsentence": "Çoklu dil destekli VALORANT Discord Botu. İstatistikler, Otomatik haberler ve İlk elden sunucu durumu, çok fazla sevgi ile yapıldı",
+            "buttons": {
+                "invite": "Davet",
+                "dashboard": "Kontrol Paneline Git",
+                "command": "Komutları Görüntüle"
+            },
+            "nav": {
+                "command": "Komutlar",
+                "support": "Destek",
+                "invite": "Davet"
+            },
+            "numbers": {
+                "title": "Sayılar",
+                "description": "Bot hakkında bazı istatistikler",
+                "server_count": "Sunucu sayısı",
+                "commands_used": "Komut kullanıldı"
+            },
+            "servers": {
+                "title": "Güvenebileceğiniz bir VALORANT Botu",
+                "description": "Resmi VALORANT Discord sunucularının çoğu bize güveniyor",
+                "membercount": "Üye Sayısı",
+                "join": "Katıl"
+            },
+            "status": {
+                "title": "Bot durumu",
+                "description": "Her bir shard için detaylı bot istatistiği",
+                "status": "Durum",
+                "server": "Sunucu",
+                "ping": "Ping",
+                "uptime": "Çalışma süresi"
+            },
+            "commands": {
+                "title": "Komutlar",
+                "description": "Örnekli komut önizlemesi"
+            },
+            "footer": {
+                "help": {
+                    "translations": "Tercüme"
+                },
+                "information": {
+                    "updates": "Güncellemeler",
+                    "status": "Durum",
+                    "tos": "Şartlar ve Koşullar",
+                    "privacy": "Gizlilik Politikası"
                 }
             }
         }

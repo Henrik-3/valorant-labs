@@ -2182,6 +2182,226 @@
         "valorant_api_lang": "it-IT",
         "websiteurl": "https://api.henrikdev.xyz/valorant/v1/website/it-it"
     },
+    "tr": {
+        "errors": {
+            "cmdundefined_title": "Komut mevcut değil",
+            "cmdundefined_desc": "Tüm komutları görmek için **/help** kullanın veya tüm komutları görmek için aşağıdaki bağlantıya tıklayın",
+            "cmdblacklist_title": "Buraya yazabilmek için yeterli yetkiye sahip değilim",
+            "cmdblacklist_desc": "Bunun bir hata olduğunu düşünüyorsanız, sunucu yöneticisiyle iletişime geçin. Bu mesaj **7.5** saniye içinde silinecek.",
+            "deprecation_title": "Bu komut artık desteklenmiyor",
+            "deprecation_desc": "Discord değişikliği nedeniyle [Daha detaylı bilgi burada](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Access-Deprecation-for-Verified-Bots), <@702201518329430117> Ağustos 2022'den sonra mesaj göndererek erişilemeyecek. Güncellemeye erkenden hazırlanmak için, yeni özellikler yalnızca Eğik Çizgi Komutlarıyla kullanılabilecek. Ek olarak, bazı komutlar zaten eğik çizgi komutlarıyla sınırlandırılmıştır, şu anda aşağıdakiler:\n- v?agent\n- v?api\n- v?blacklist\n- v?botinfo\n- v?game\n- v?link\n- v?map\n- v?patch\n- v?status\n- v?settings\n- v?vote\n- v?weapon\n- v?weapons\nBu nedenle lütfen bu komutun eğik çizgi komutunu kullanın"
+        },
+        "response": {
+            "501": {
+                "title": "Status 501 | API sürümü uygulanmadı",
+                "default": "Uygulanmayan bir API'ye bir sorgu gönderildi. Muhtemelen sorun biliniyordur, ama bunu destek sunucusuna bildirebilirsin."
+            },
+            "404": {
+                "title": "Status 404 | Bulunamadı",
+                "default": "Belirtilen kullanıcı adı ve etiketi bulunamadı. Hesabınızı bağladıysanız, `/link add` ile güncelleyin, aksi takdirde RiotID'nin doğru girilip girilmediğini kontrol edin.",
+                "game": "İstenen oyun bulunamadı",
+                "map": "İstenen harita bulunamadı",
+                "agent": "İstenen ajan bulunamadı",
+                "patch": "İstenen sürüm bulunamadı",
+                "weapon": "İstenen silah bulunamadı"
+            },
+            "503": {
+                "title": "Status 503 | Sunucu geçici olarak mevcut değil",
+                "default": "Hedef sunucu şu anda isteği işleyemiyor, lütfen daha sonra tekrar deneyin"
+            },
+            "504": {
+                "title": "Status 504 | Sunucu geçici olarak mevcut değil",
+                "default": "Hedef sunucu şu anda isteği işleyemiyor, lütfen daha sonra tekrar deneyin"
+            },
+            "429": {
+                "title": "Status 429 | Bot Rate Limit",
+                "default": "Bot şu anda çok fazla kullanılıyor ve bir zamanaşımına sahip, lütfen biraz bekleyin ve tekrar deneyin"
+            },
+            "1015": {
+                "title": "Status 1015 | Bot Rate Limit",
+                "default": "Bot şu anda çok fazla kullanılıyor ve bir zamanaşımına sahip, lütfen biraz bekleyin ve tekrar deneyin"
+            },
+            "403": {
+                "title": "Status 403 | Eksik İzin",
+                "default": "Botun bu veri kaynağına erişimi yok. oğu zaman bu hata, oyun güncellemeleri sırasında sunucular kapalıyken ortaya çıkar."
+            },
+            "400": {
+                "title": "Status 400 | İstek hatası",
+                "default": "İstek sırasında bir hata oluştu, genellikle bu, isteğin biçimlendirilmesinden kaynaklanır"
+            },
+            "410": {
+                "title": "Status 410 | API mevcut değil",
+                "default": "İstenilen API yolu artık mevcut değil, bu bir geliştirici hatasıdır, lütfen bu hatayı destek sunucusuna bildirin"
+            },
+            "409": {
+                "title": "Status 409 | Conflict",
+                "default": "İstek sırasında bir hata oluştu, lütfen daha sonra tekrar deneyin"
+            },
+            "408": {
+                "title": "Status 408 | Zaman aşımı",
+                "default": "İstek çok uzun sürdü, lütfen daha sonra tekrar deneyin"
+            },
+            "451": {
+                "title": "Status: 451 | Bu hesap gizli",
+                "description": "Eğer bu sizin hesabınızsa VALORANT LABS'e maç verilerinin iznini vermek için bu yazının altındaki `Oturum Aç` tuşuna basın. Bunun için Riot hesabınızla oturum açmanız gerekecek. Oturum açtıktan sonra, bu mesaj otomatik olarak güncellenmeli. Eğer güncellenmiyorsa, bu mesajın altındaki `Yenile` butonunu kullanın. Eğer ki zaten tracker.gg'de oturum açtıysanız ve istatistiklere sahipseniz, bot onları almaya çalışacak.",
+                "component_login": "Giriş Yap",
+                "component_update": "Yenile",
+                "component_rank": "MMR"
+            },
+            "500": {
+                "title": "Status 500 | Dahili Sunucu Hatası",
+                "default": "Dahili sunucu hatası oluştu, lütfen daha sonra tekrar deneyin."
+            }
+        },
+        "agent": {
+            "agentunknown_title": "Ajan bulunamadı",
+            "agentunknown_desc": "Lütfen ajanın var olduğundan emin olun. Bunun bir hata olduğunu düşünüyorsanız, lütfen destek sunucusuna bildirin",
+            "agentrole": "Rol"
+        },
+        "autorole": {
+            "send_desc": "Oyun içi rolünüzü almak için `Ekle` butonuna basın. Gördüğünüz linke tıklayın. Riot Games oturum açma sayfasına yönlendirileceksiniz. \n\n**Önemli:** <@702201518329430117> Oturum açma bilgilerinizi göremez, yalnızca aşağıdaki örnek verileri alıyoruz.\n {puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'} \n `Güncelle` butonuyla rank atladığınızda rolünüzü güncelleyebilirsiniz. \n `Kaldır` butonuyla rolünüzü silebilirsiniz.",
+            "created_title": "OtoRol mesajınız oluşturuldu",
+            "created_desc": "Mesaja sağ tıklayarak bu mesajı istediğiniz gibi düzenleyebilirsiniz, Uygulamalar'ı seçin ve 'Edit AutoRole' tıklayın. Ardından mesajı düzenleyebileceğiniz bir pencere açılacaktır",
+            "correct": "✅ Doğru yapılandırılmış",
+            "wrong": "⛔ Henüz yapılandırılmadı",
+            "member_error_title": "Üye izni yok",
+            "member_error_desc": "Botun size bu rolleri verme izni yok, lütfen botun size rolü vermek için yeterli izne sahip olduğundan emin olun.",
+            "roles_error_title": "Rol izni yok",
+            "roles_error_desc": "Bot, kullanıcılara aşağıdaki rolleri atamak için yeterli izinlere sahip değil. Lütfen rollerin bot rolünün altında düzenlendiğinden emin olun",
+            "message_send_error_title": "Kanal izni yok",
+            "message_send_error_desc": "Lütfen <@702201518329430117> botunun `MESAJ GÖNDER` izni olduğundan emin olun",
+            "message_edit_error_title": "OtoRol mesajı yok",
+            "message_edit_error_desc": "Bu bir OtoRol mesajı değil, öyleyse düzenlenemez",
+            "autorole_permission_title": "İzin yok",
+            "autorole_permission_desc": "Lütfen <@702201518329430117> botunun `ROLLERİ YÖNET` izni olduğundan emin olun.",
+            "role_given_title": "Verilen rol",
+            "role_given_desc": "Oyun içi rolünüz size verildi, Discord API sınırlamaları nedeniyle rolünüzü almanız bir dakika kadar sürebilir.",
+            "role_removed_title": "Rol Kaldırıldı",
+            "role_removed_desc": "Oyun içi rolünüz tekrar kaldırıldı. Tekrar eklemek isterseniz `Güncelle` butonunun üstüne tıklamanız yeterli.",
+            "add": "Ekle",
+            "update": "Güncelle",
+            "remove": "Kaldır",
+            "modal_title": "Başlık",
+            "modal_desc": "Açıklama",
+            "modal_color": "Renk",
+            "modal_edit_title": "Mesajı düzenle",
+            "message_edit_title": "Mesaj düzenlendi",
+            "message_edit_desc": "Mesaj başarıyla değiştirildi"
+        },
+        "blacklist": {
+            "blacklistinactive_title": "Kara liste aktif değil",
+            "blacklistinactive_desc": "Kara listeyi şununla etkinleştirin: /settings blacklist true",
+            "blacklistperms_title": "Bu komutu kullanma izniniz yok",
+            "blacklistperms_desc": "Lütfen `SUNUCUYU YÖNET` iznine sahip olduğunuzdan emin olun.",
+            "blacklistoverview_title": "Kanal kara listesine genel bakış",
+            "blacklistoverview_desc": "Aşağıdaki komutlardan birini kullanın:\n\n/blacklist add #channel \n/blacklist remove #channel \n\nKara listeye alınmış kanal: \n${cchannel ? cchannel : 'Kanal yok'}",
+            "blacklistalreadyadded_title": "Kanal zaten listede",
+            "blacklistalreadyadded_desc": "Belirtilen kanal zaten listede, tekrar ekleyemezsin",
+            "blacklistalreadyremoved_title": "Kanal listede değil",
+            "blacklistalreadyremoved_desc": "Belirtilen kanal zaten listede değil, tekrar çıkaramazsın",
+            "blacklistadded_title": "Listeye kanal ekleyin",
+            "blacklistchannels": "Kara listeye alınan kanal: \n${uchannel ? uchannel : 'Kanal yok'}",
+            "blacklistremoved_title": "Kanal listeden çıkarıldı"
+        },
+        "botinfo": {
+            "title": "VALORANT LABS hakkında bot bilgisi"
+        },
+        "feedback": {
+            "title": "Geri Bildirimde Bulunun",
+            "label": "Geri Bildirim",
+            "placeholder": "Lütfen geri bildiriminizi buraya yazın",
+            "send_title": "Geri bildirimi gönder",
+            "send_desc": "Geri bildiriminiz için teşekkür ederiz, bu geliştiriciye gönderildi ve mümkün olan en kısa sürede incelenecek"
+        },
+        "game": {
+            "unknown_title": "Bilinmeyen maç",
+            "unknown_desc": "Lütfen maç anahtarının var olduğundan ve doğru girildiğinden emin olun.",
+            "loading_title": "Lütfen bekleyin...",
+            "loading_desc": "Seçtiğiniz maç oluşturuldu, lütfen biraz bekleyin"
+        },
+        "link": {
+            "clink_title": "Şuan ki Bağlı Hesabınız",
+            "clink_desc": "Bağlı hesabınızın adı:",
+            "nolink_title": "Bağlı hesap yok",
+            "nolink_desc": "Şu anda bağlı bir hesabınız yok. Discord hesabınızı bir VALORANT hesabına bağlamak için bu mesajın altındaki `Bağla` butonuna tıklayın.",
+            "removelink_title": "Bağlantı kaldırıldı",
+            "removelink_desc": "Bağlantınız başarıyla kaldırıldı",
+            "generate_link": "Bağla",
+            "link_generated_title": "Giriş bağlantınız oluşturuldu",
+            "link_generated_desc": "İşlemi başlatmak için lütfen aşağıdaki bağlantıya tıklayın. Not: Bu bağlantı yalnızca bir saat geçerlidir.\n\n"
+        },
+        "mmr": {
+            "429_title": "Top.gg oy kontrol limiti",
+            "429_desc": "Top.gg'deki oyları kontrol etme sınırına ulaşıldı, lütfen bir veya iki dakika bekleyin ve tekrar deneyin.",
+            "500_title": "Oy doğrulama hatası",
+            "500_desc": "Oy verip vermediğinizi kontrol ederken bir hata oluştu, lütfen kısa süre sonra tekrar deneyin....",
+            "not_voted_title": "Henüz oy vermemişsin",
+            "not_voted_desc": "Bu komutu sonraki 24 saat boyunca kullanmak için lütfen top.gg'deki bota oy verin (top.gg'ye gitmek için bu mesajın altındaki düğmeye tıklayın)",
+            "no_link_title": "Riot ID belirtilmemiş veya bağlantılı bir hesabınız yok",
+            "no_link_desc": "İşte mevcut tüm komutlar",
+            "base": "/link komutunu kullanarak Discord hesabınızı Riot hesabınızla bağladıysanız MMR verilerinizi gösterir..",
+            "options": "Belirtilen hesabın MMR verilerini gösterir",
+            "loading_title": "Lütfen bekleyin...",
+            "loading_desc": "Seçilen sezonun MMR verileri yüklenecek, lütfen biraz bekleyin",
+            "no_rank_title": "Şu anda rütbeniz yok",
+            "no_rank_desc": "Şu anda rütbeniz yok veya son dereceli oyununuz çok uzun zaman önceydi. Lütfen dereceli bir oyun oynayın ve ardından tekrar deneyin."
+        },
+        "settings": {
+            "perms_title": "İzin yok",
+            "perms_desc": "'Sunucuyu Yönet' iznine sahip değilsiniz. Bunun bir hata olduğunu düşünüyorsanız sunucu yöneticisiyle iletişime geçin.",
+            "imggeneration_title": "Lütfen bir süre bekleyin",
+            "imggeneration_desc": "Yüklenen dosya, seçilen türe göre arkaplan olarak oluşturulur lütfen bir süre bekleyin. Daha sonra konfigürasyonun kaydedilip kaydedilmeyeceğini seçebilirsiniz.",
+            "imggenerated_title": "Resim başarıyla oluşturuldu",
+            "imggenerated_desc": "Burada bitmiş görüntüyü komutu kullanırken göründüğü gibi görebilirsiniz. Görüntü hayal ettiğiniz gibi görünüyorsa, aşağıdaki yeşil düğmeye tıklayın. Resim istediğiniz gibi görünmüyorsa kırmızı düğmeye tıklayın ve başka bir resim yükleyin.",
+            "imggenerated_label_accept": "Kaydet",
+            "imggenerated_label_deny": "İptal",
+            "not_set": "Ayarlanmadı"
+        },
+        "status": {
+            "noerrors": "Bölgede hata bulunamadı",
+            "postedat": "Şu saatte oluşturuldu:",
+            "platforms": "Etkilenen platformlar:",
+            "type": "Sorun türü:"
+        },
+        "stats": {
+            "missing_matches_title": "Bazı maçlar hala kayıp",
+            "missing_matches_desc": "Eksik maçlar indirilir ve arka planda işlenir. Bu tamamlandığında, görüntü güncellenir",
+            "invalidriotid_title": "Yanlış Riot ID",
+            "invalidriotid_desc": "Verilen Riot ID yanlış. Lütfen sadece adı değil, etiketinizi de girdiğinizden emin olun.\n\nYanlış Riot ID: Henrik3\nDoğru Riot ID: Henrik3#VALO",
+            "noriotid_title": "Riot ID belirtilmedi",
+            "noriotid_desc": "Hem bağlı hesabınız yok hem de adınız belirtilmedi. Lütfen kendinizi `/link add` ile bağlayın veya bir Riot ID girin",
+            "game_select": "Bir maç seçin"
+        },
+        "vote": {
+            "title": "top.gg'de bize oy verin",
+            "desc": "Oy vererek, diğer şeylerin yanı sıra `/mmr` komutuna erişebilir ve oyunuzla botu destekleyebilirsiniz."
+        },
+        "weapon": {
+            "name": "Silahlar",
+            "cost": "Fiyatı",
+            "magazinsize": "Şarjör boyutu",
+            "penetration": "Mermi gücü",
+            "firerate": "Atış hızı",
+            "firerate_zoom": "Atış hızı (Yakınlaştırılmış)",
+            "zoom": "Yakınlaştırma",
+            "head": "Kafadan vuruş",
+            "body": "Vücut vuruşu",
+            "leg": "Bacak vuruşu",
+            "rangedamage": "Kafadan vuruş: ${String(cweapon.weaponStats.damageRanges[i].headDamage)} | Vücut vuruşu: ${String(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Bacak vuruşu: ${String(cweapon.weaponStats.damageRanges[i].legDamage)}",
+            "mweapons": "Fiyatı: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Bedava'}"
+        },
+        "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=tr",
+        "cmd": "Komutlar",
+        "help_title": "Yardım önizlemesi",
+        "help_desc": "Yeni sitemizde önizlemeye yardımcı olacak her türlü erişilebilir çevirmeyi bulacaksınız.",
+        "locale": "tr-TR",
+        "moment": "tr",
+        "patchurl": "https://api.henrikdev.xyz/valorant/v1/website/tr-tr?filter=patch_notes",
+        "statusurl": "https://api.henrikdev.xyz/valorant/v1/status/eu",
+        "support": "Destek",
+        "valorant_api_lang": "tr-TR",
+        "websiteurl": "https://api.henrikdev.xyz/valorant/v1/website/tr-tr"
+    },
     "translations": {
         "agenttitle": "Agent",
         "agentrole": "Role",
