@@ -2185,7 +2185,7 @@
     "tr": {
         "errors": {
             "cmdundefined_title": "Komut mevcut değil",
-            "cmdundefined_desc": "Tüm komutları görmek için **/help** kullanın veya tüm komutları görmek için aşağıdaki bağlantıya tıklayın",
+            "cmdundefined_desc": "Tüm komutları görmek için **/help** kullanın veya aşağıdaki bağlantıya tıklayın",
             "cmdblacklist_title": "Buraya yazabilmek için yeterli yetkiye sahip değilim",
             "cmdblacklist_desc": "Bunun bir hata olduğunu düşünüyorsanız, sunucu yöneticisiyle iletişime geçin. Bu mesaj **7.5** saniye içinde silinecek.",
             "deprecation_title": "Bu komut artık desteklenmiyor",
