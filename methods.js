@@ -592,37 +592,6 @@ export const uuidv4 = function () {
 export const getDB = function (name) {
     return mongoclient.db('VALORANT-LABS').collection(name);
 };
-export const guildSettings = async function (guild) {
-    return (
-        await getDB('settings').findOneAndUpdate(
-            {gid: guild.id},
-            {
-                $setOnInsert: {
-                    news: false,
-                    onews: false,
-                    serverstatus: false,
-                    lang: locales[guild.preferredLocale] ? locales[guild.preferredLocale] : 'en-us',
-                    prefix: 'v?',
-                    background_stats: false,
-                    background_game: false,
-                    background_mmr: false,
-                    autoroles: [],
-                },
-            },
-            {upsert: true, returnDocument: 'after'}
-        )
-    ).value;
-};
-export const getLink = async function ({user} = {}) {
-    const db = await getDB('linkv2').findOne({userid: user.id});
-    if (!db) return null;
-    const riot = await axios
-        .get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/${db.rpuuid}`, {headers: {'X-Riot-Token': riottoken}})
-        .catch(error => {
-            return error;
-        });
-    return riot.response ? {error: riot.response.status, data: riot.response.data} : {error: false, name: riot.data.gameName, tag: riot.data.tagLine};
-};
 export const getGameKey = async function (id) {
     const request = await getDB('games').findOne({gamekey: id});
     return request ? request : null;
@@ -1635,7 +1604,7 @@ export const errorhandlerinteraction = async function ({interaction, status, typ
     });
 };
 export const getGuild = async function (interaction) {
-    const settings = await guildSettings(interaction.guild);
+    const settings = await interaction.client.methods.get('guildSettings').execute(interaction.guild);
     return interaction.editReply({
         embeds: [
             embedBuilder({
@@ -1686,7 +1655,7 @@ export const getGuild = async function (interaction) {
     });
 };
 export const getAutoRoles = async function (interaction, guilddata) {
-    const settings = guilddata ? guilddata : await guildSettings(interaction.guild);
+    const settings = guilddata ? guilddata : await interaction.client.methods.get('guildSettings').execute(interaction.guild);
     const formattedarray = roles.map(item => {
         return {
             name: firstletter(item),

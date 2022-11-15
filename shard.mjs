@@ -1,7 +1,9 @@
 import {ShardingManager} from 'discord.js';
 import {AutoPoster} from 'topgg-autoposter';
-import {getDB, translations, patchStats, riottoken, getAgents, getGamemodes, shard_status_update, fetchWebsite} from './methods.js';
+import {getDB, translations, patchStats, riottoken, getAgents, getGamemodes} from './methods.js';
 import {readFileSync, existsSync} from 'fs';
+import {execute as fetchWebsite} from './methods/fetchWebsite.js';
+import {execute as shard_status_update} from './methods/shard_status_update.js';
 import * as f from 'fastify';
 import axios from 'axios';
 import path from 'path';

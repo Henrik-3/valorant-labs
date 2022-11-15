@@ -23,12 +23,14 @@ client.buttoncommands = new Collection();
 client.selectcommands = new Collection();
 client.modals = new Collection();
 client.context = new Collection();
+client.methods = new Collection();
 const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'));
 const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
 const buttoncommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
 const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'));
 const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'));
 const contextcommands = readdirSync('./commands/context').filter(file => file.endsWith('.js'));
+const methodfiles = readdirSync('./methods').filter(file => file.endsWith('.js'));
 
 async function update() {
     for (let i = 0; normalcommands.length > i; i++) {
@@ -54,6 +56,10 @@ async function update() {
     for (let i = 0; contextcommands.length > i; i++) {
         const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
         client.context.set(cmd.name, cmd);
+    }
+    for (let i = 0; methodfiles.length > i; i++) {
+        const cmd = await import(`./methods/${methodfiles[i]}?update=${Date.now()}`);
+        client.methods.set(cmd.name, cmd);
     }
 }
 update();
@@ -97,7 +103,7 @@ client.on('ready', async () => {
 });
 
 client.on('guildCreate', async g => {
-    const updatedGuild = await guildSettings(g);
+    const updatedGuild = await client.methods.get('guildSettings').execute(g);
     const channels = g.channels.cache
         .filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has(perms.SendMessages))
         .sort((a, b) => a.position - b.position);
@@ -128,7 +134,7 @@ client.on('guildCreate', async g => {
 });
 
 client.on('interactionCreate', async interaction => {
-    const guilddata = await guildSettings(interaction.guild);
+    const guilddata = await client.methods.get('guildSettings').execute(interaction.guild);
     if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
@@ -159,9 +165,12 @@ client.on('interactionCreate', async interaction => {
         const contextcommands = readdirSync('./commands/context')
             .filter(file => file.endsWith('.js'))
             .map(i => path.join('file:///', __dirname, `/commands/context/${i}?update=${Date.now()}`));
+        const methodfiles = readdirSync('./methods')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/methods/${i}?update=${Date.now()}`));
         update();
         client.shard.broadcastEval(
-            async (client, {normalcommands, slashcommands, buttoncommand, selectcommands, modalcommands, contextcommands}) => {
+            async (client, {normalcommands, slashcommands, buttoncommand, selectcommands, modalcommands, contextcommands, methodfiles}) => {
                 try {
                     for (let i = 0; normalcommands.length > i; i++) {
                         const command = await import(normalcommands[i]);
@@ -187,6 +196,10 @@ client.on('interactionCreate', async interaction => {
                         const cmd = await import(contextcommands[i]);
                         client.context.set(cmd.name, cmd);
                     }
+                    for (let i = 0; methodfiles.length > i; i++) {
+                        const cmd = await import(methodfiles[i]);
+                        client.methods.set(cmd.name, cmd);
+                    }
                 } catch (e) {
                     console.log(e);
                 }
@@ -199,6 +212,7 @@ client.on('interactionCreate', async interaction => {
                     selectcommands,
                     modalcommands,
                     contextcommands,
+                    methodfiles,
                 },
             }
         );

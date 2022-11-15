@@ -1,13 +1,10 @@
 import {
     ComponentType,
-    ButtonStyle,
     getDB,
-    getLink,
     axios,
     errorhandlerinteraction,
     embedBuilder,
     translations,
-    topgg,
     buildBackground,
     getCustomBackground,
     ranks,

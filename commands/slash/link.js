@@ -1,8 +1,8 @@
-import {getDB, translations, embedBuilder, ButtonStyle, ComponentType, getLink, uuidv4} from '../../methods.js';
+import {getDB, translations, embedBuilder, ButtonStyle, ComponentType, uuidv4} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
     switch (interaction.options._subcommand) {
         case 'get':
-            const link = await getLink({user: interaction.user});
+            const link = await interaction.client.methods.get('getLink').execute({user: interaction.user});
             if (link == null || typeof link.error == 'number')
                 return interaction.editReply({
                     embeds: [

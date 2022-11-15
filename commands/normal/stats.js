@@ -1,8 +1,6 @@
 import {
     patchStats,
     ComponentType,
-    getLink,
-    ButtonStyle,
     getAgents,
     getGamemodes,
     getStatsDB,
@@ -20,7 +18,7 @@ import {
 } from '../../methods.js';
 
 export async function execute({message, guilddata, args} = {}) {
-    const link = await getLink({user: message.author});
+    const link = await message.client.methods.get('getLink').execute({user: message.author});
     const agent = getAgents();
     const modes = getGamemodes();
     const components = [];

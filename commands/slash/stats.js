@@ -1,9 +1,7 @@
 import {
     ComponentType,
-    ButtonStyle,
     moment,
     getAgents,
-    getLink,
     getGamemodes,
     getStatsDB,
     errorhandlerinteraction,
@@ -18,7 +16,7 @@ import {
     buildStatsImage,
 } from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
-    const link = await getLink({user: interaction.user});
+    const link = await interaction.client.methods.get('getLink').execute({user: interaction.user});
     const agent = getAgents();
     const modes = getGamemodes();
     const components = [];

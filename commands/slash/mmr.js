@@ -2,7 +2,6 @@ import {
     ComponentType,
     ButtonStyle,
     getDB,
-    getLink,
     axios,
     errorhandlerinteraction,
     embedBuilder,
@@ -59,7 +58,7 @@ export async function execute({interaction, guilddata} = {}) {
             });
         await getDB('topggvote').insertOne({userid: interaction.user.id, createdAt: new Date()});
     }
-    const link = await getLink({user: interaction.user});
+    const link = await interaction.client.methods.get('getLink').execute({user: interaction.user});
     if (!link && !interaction.options.get('riot-id'))
         return interaction.editReply({
             embeds: [
