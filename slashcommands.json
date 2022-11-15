@@ -38,6 +38,10 @@
                         "value": "fade"
                     },
                     {
+                        "name": "Harbor",
+                        "value": "harbor"
+                    },
+                    {
                         "name": "Jett",
                         "value": "jett"
                     },

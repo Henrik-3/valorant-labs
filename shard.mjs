@@ -5,17 +5,16 @@ import {readFileSync, existsSync} from 'fs';
 import * as f from 'fastify';
 import axios from 'axios';
 import path from 'path';
-import randomize from 'randomatic';
 const fastify = f.fastify({logger: {level: 'error'}});
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
 
 const manager = new ShardingManager('./index.js', {
-    token: basedata.discordtoken,
-    totalShards: 2,
+    token: basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken,
+    totalShards: basedata.environment == 'live' ? 12 : 2,
     respawn: true,
 });
-//const poster = AutoPoster(basedata.dbltoken, manager);
+if (basedata.environment == 'live') AutoPoster(basedata.dbltoken, manager);
 
 let restart = false;
 setInterval(async () => {
@@ -35,7 +34,7 @@ manager.on('shardCreate', async shard => {
     });
     shard.on('ready', async rshard => {
         console.log('Ready', shard.id);
-        if (manager.shards.size == manager.totalShards && restart == false) {
+        if (manager.shards.size == manager.totalShards && restart == false && basedata.environment == 'live') {
             fetchWebsite(manager);
             shard_status_update(manager);
             manager.shards.forEach(sshard => {
@@ -132,7 +131,7 @@ fastify.post('/v1/topgg/vote', async (req, res) => {
                     description: `ID: ${user.id} | Username: ${user.tag} | <t:${Math.round(+new Date() / 1000)}:F>`,
                     color: 16777215,
                     thumbnail: {
-                        url: user.avatar != null ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : null,
+                        url: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : null,
                     },
                 },
             },

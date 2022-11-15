@@ -357,4 +357,4 @@ process.on('uncaughtException', error => {
     console.error(error);
 });
 
-client.login(basedata.discordtoken);
+client.login(basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken);
