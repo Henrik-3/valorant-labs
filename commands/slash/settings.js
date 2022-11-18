@@ -1,4 +1,7 @@
-import {perms, embedBuilder, translations, getGuild, patchGuild, ComponentType, ButtonStyle} from '../../methods.js';
+import {perms, embedBuilder, translations, ComponentType, ButtonStyle} from '../../methods.js';
+import {getGuild} from '../../methods/getGuild.js';
+import {patchGuild} from '../../methods/patchGuild.js';
+
 export async function execute({interaction, guilddata} = {}) {
     if (!interaction.member.permissions.has(perms.ManageGuild))
         return interaction.editReply({

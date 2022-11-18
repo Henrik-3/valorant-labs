@@ -1,4 +1,8 @@
-import {embedBuilder, buildBackground, getCustomBackground, buildGameImage, translations, errorhandlerinteraction} from '../../methods.js';
+import {embedBuilder, getCustomBackground, translations} from '../../methods.js';
+import {buildGameImage} from '../../methods/buildGameImage.js';
+import {buildBackground} from '../../methods/buildBackground.js';
+import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate();
     const components = [...interaction.message.components];

@@ -1,6 +1,7 @@
 import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
-import {perms, embedBuilder, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
+import {perms, embedBuilder, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
+import {guildSettings} from './methods/guildSettings.js';
 import path, {dirname} from 'path';
 import {fileURLToPath} from 'url';
 
@@ -103,7 +104,7 @@ client.on('ready', async () => {
 });
 
 client.on('guildCreate', async g => {
-    const updatedGuild = await client.methods.get('guildSettings').execute(g);
+    const updatedGuild = await guildSettings(g);
     const channels = g.channels.cache
         .filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has(perms.SendMessages))
         .sort((a, b) => a.position - b.position);
@@ -134,7 +135,7 @@ client.on('guildCreate', async g => {
 });
 
 client.on('interactionCreate', async interaction => {
-    const guilddata = await client.methods.get('guildSettings').execute(interaction.guild);
+    const guilddata = await guildSettings(interaction.guild);
     if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});

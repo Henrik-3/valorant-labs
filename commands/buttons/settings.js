@@ -1,4 +1,6 @@
-import {patchGuild, uuidv4} from '../../methods.js';
+import {uuidv4} from '../../methods.js';
+import {patchGuild} from '../../methods/patchGuild.js';
+
 export async function execute({interaction, args} = {}) {
     await interaction.deferUpdate();
     switch (args[1]) {

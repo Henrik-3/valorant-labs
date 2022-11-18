@@ -1,4 +1,7 @@
-import {patchGuild, getAutoRoles, embedBuilder, translations, roles, firstletter, ButtonStyle, ComponentType, perms} from '../../methods.js';
+import {embedBuilder, translations, roles, firstletter, ButtonStyle, ComponentType, perms} from '../../methods.js';
+import {getAutoRoles} from '../../methods/getAutoRoles.js';
+import {patchGuild} from '../../methods/patchGuild.js';
+
 export async function execute({interaction, guilddata} = {}) {
     if (!interaction.member.permissions.has(perms.ManageGuild))
         return interaction.editReply({

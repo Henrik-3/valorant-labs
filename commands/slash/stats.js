@@ -1,22 +1,13 @@
-import {
-    ComponentType,
-    moment,
-    getAgents,
-    getGamemodes,
-    getStatsDB,
-    errorhandlerinteraction,
-    gamemodes,
-    axios,
-    embedBuilder,
-    translations,
-    riottoken,
-    buildBackground,
-    getCustomBackground,
-    patchStats,
-    buildStatsImage,
-} from '../../methods.js';
+import {ComponentType, moment, getAgents, getGamemodes, gamemodes, axios, embedBuilder, translations, riottoken, getCustomBackground} from '../../methods.js';
+import {buildStatsImage} from '../../methods/buildStatsImage.js';
+import {getLink} from '../../methods/getLink.js';
+import {getStatsDB} from '../../methods/getStatsDB.js';
+import {patchStats} from '../../methods/patchStats.js';
+import {buildBackground} from '../../methods/buildBackground.js';
+import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+
 export async function execute({interaction, guilddata} = {}) {
-    const link = await interaction.client.methods.get('getLink').execute({user: interaction.user});
+    const link = await getLink({user: interaction.user});
     const agent = getAgents();
     const modes = getGamemodes();
     const components = [];

@@ -1,5 +1,5 @@
 import {getDB, moment, axios, translations, sleep} from '../methods.js';
-export const execute = async function (manager) {
+export const fetchWebsite = async function (manager) {
     const types = ['patchnotes', 'othernews', 'maintenance', 'incidents'];
     const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi', 'pl', 'it'];
     const nstatus = ['news', 'onews', 'serverstatus', 'serverstatus'];
@@ -239,4 +239,3 @@ export const execute = async function (manager) {
         }
     }
 };
-export const name = 'fetchWebsite';

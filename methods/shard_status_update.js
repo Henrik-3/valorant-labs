@@ -1,4 +1,4 @@
-export const execute = async function (manager) {
+export const shard_status_update = async function (manager) {
     const sharddata = await manager.broadcastEval(client => {
         return {status: client.ws.status, ping: client.ws.ping, mem: process.memoryUsage().heapUsed};
     });
@@ -28,4 +28,3 @@ export const execute = async function (manager) {
         {context: {efields: fields}}
     );
 };
-export const name = 'shard_status_update';

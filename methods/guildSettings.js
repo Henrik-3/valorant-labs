@@ -1,5 +1,5 @@
 import {getDB} from '../methods.js';
-export const execute = async function (guild) {
+export const guildSettings = async function (guild) {
     return (
         await getDB('settings').findOneAndUpdate(
             {gid: guild.id},
@@ -20,4 +20,3 @@ export const execute = async function (guild) {
         )
     ).value;
 };
-export const name = 'guildSettings';

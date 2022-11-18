@@ -1,4 +1,6 @@
-import {axios, errorhandlerinteraction, embedBuilder} from '../../methods.js';
+import {axios, embedBuilder} from '../../methods.js';
+import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+
 export async function execute({interaction, guilddata} = {}) {
     const request = await axios.get(`https://valorant-api.com/v1/maps`).catch(error => {
         return error;

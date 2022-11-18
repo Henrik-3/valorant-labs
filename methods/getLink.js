@@ -1,5 +1,5 @@
 import {getDB, axios} from '../methods.js';
-export const execute = async function ({user} = {}) {
+export const getLink = async function ({user} = {}) {
     const db = await getDB('linkv2').findOne({userid: user.id});
     if (!db) return null;
     const riot = await axios
@@ -9,4 +9,3 @@ export const execute = async function ({user} = {}) {
         });
     return riot.response ? {error: riot.response.status, data: riot.response.data} : {error: false, name: riot.data.gameName, tag: riot.data.tagLine};
 };
-export const name = 'getLink';

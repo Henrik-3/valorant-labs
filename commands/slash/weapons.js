@@ -1,4 +1,6 @@
-import {axios, errorhandlerinteraction, translations, embedBuilder} from '../../methods.js';
+import {axios, translations, embedBuilder} from '../../methods.js';
+import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+
 export async function execute({interaction, guilddata} = {}) {
     const request = await axios.get(`https://valorant-api.com/v1/weapons?language=${translations[guilddata.lang].valorant_api_lang}`).catch(error => {
         return error;

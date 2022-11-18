@@ -1,4 +1,5 @@
-import {uuidv4, getDB, embedBuilder, translations, axios, errorhandlerinteraction, roles, firstletter} from '../../methods.js';
+import {uuidv4, getDB, embedBuilder, translations, axios, roles, firstletter} from '../../methods.js';
+import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
 
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferReply({ephemeral: true});

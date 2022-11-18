@@ -1,24 +1,24 @@
 import {
-    patchStats,
     ComponentType,
     getAgents,
     getGamemodes,
-    getStatsDB,
     errorhandler,
     axios,
     moment,
-    getDB,
     embedBuilder,
     gamemodes,
-    buildBackground,
     getCustomBackground,
     translations,
-    buildStatsImage,
     riottoken,
 } from '../../methods.js';
+import {getLink} from '../../methods/getLink.js';
+import {buildStatsImage} from '../../methods/buildStatsImage.js';
+import {getStatsDB} from '../../methods/getStatsDB.js';
+import {patchStats} from '../../methods/patchStats.js';
+import {buildBackground} from '../../methods/buildBackground.js';
 
 export async function execute({message, guilddata, args} = {}) {
-    const link = await message.client.methods.get('getLink').execute({user: message.author});
+    const link = await getLink({user: message.author});
     const agent = getAgents();
     const modes = getGamemodes();
     const components = [];

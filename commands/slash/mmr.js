@@ -1,18 +1,9 @@
-import {
-    ComponentType,
-    ButtonStyle,
-    getDB,
-    axios,
-    errorhandlerinteraction,
-    embedBuilder,
-    translations,
-    topgg,
-    buildBackground,
-    getCustomBackground,
-    ranks,
-    old_ranks,
-    buildMMRImage,
-} from '../../methods.js';
+import {ComponentType, ButtonStyle, getDB, axios, embedBuilder, translations, topgg, getCustomBackground, ranks, old_ranks} from '../../methods.js';
+import {getLink} from '../../methods/getLink.js';
+import {buildBackground} from '../../methods/buildBackground.js';
+import {buildMMRImage} from '../../methods/buildMMRImage.js';
+import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+
 export async function execute({interaction, guilddata} = {}) {
     const dbcheck = await getDB('topggvote').findOne({userid: interaction.user.id});
     if (!dbcheck) {
@@ -58,7 +49,7 @@ export async function execute({interaction, guilddata} = {}) {
             });
         await getDB('topggvote').insertOne({userid: interaction.user.id, createdAt: new Date()});
     }
-    const link = await interaction.client.methods.get('getLink').execute({user: interaction.user});
+    const link = await getLink({user: interaction.user});
     if (!link && !interaction.options.get('riot-id'))
         return interaction.editReply({
             embeds: [
