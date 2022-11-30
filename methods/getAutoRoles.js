@@ -1,7 +1,8 @@
 import {guildSettings} from './guildSettings.js';
-import {firstletter, embedBuilder} from '../methods.js';
+import {firstletter, embedBuilder, getTranslations, roles} from '../methods.js';
 
 export const getAutoRoles = async function (interaction, guilddata) {
+    const translations = getTranslations();
     const settings = guilddata ? guilddata : await guildSettings(interaction.guild);
     const formattedarray = roles.map(item => {
         return {

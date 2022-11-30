@@ -1,5 +1,6 @@
-import {translations, ComponentType, TextInputStyle} from '../../methods.js';
+import {getTranslations, ComponentType, TextInputStyle} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
+    const translations = getTranslations();
     interaction.showModal({
         title: translations[guilddata.lang].feedback.title,
         customId: `feedback;${interaction.user.id}`,

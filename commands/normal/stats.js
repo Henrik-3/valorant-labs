@@ -8,19 +8,21 @@ import {
     embedBuilder,
     gamemodes,
     getCustomBackground,
-    translations,
+    getTranslations,
     riottoken,
+    getFunction,
 } from '../../methods.js';
-import {getLink} from '../../methods/getLink.js';
-import {buildStatsImage} from '../../methods/buildStatsImage.js';
-import {getStatsDB} from '../../methods/getStatsDB.js';
-import {patchStats} from '../../methods/patchStats.js';
-import {buildBackground} from '../../methods/buildBackground.js';
 
 export async function execute({message, guilddata, args} = {}) {
     const link = await getLink({user: message.author});
+    const translations = getTranslations();
     const agent = getAgents();
     const modes = getGamemodes();
+    const buildStatsImage = getFunction('buildStatsImage');
+    const getStatsDB = getFunction('getStatsDB');
+    const patchStats = getFunction('patchStats');
+    const buildBackground = getFunction('buildBackground');
+    const getLink = getFunction('getLink');
     const components = [];
     let dbstats;
     let matchlist;

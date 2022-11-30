@@ -1,4 +1,4 @@
-import {Canvas, AttachmentBuilder} from '../methods.js';
+import {Canvas, AttachmentBuilder, ranks, old_ranks} from '../methods.js';
 import {buildText} from './buildText.js';
 export const buildMMRImage = async function ({mmrdata, bgcanvas, seasonid} = {}) {
     const canvas = Canvas.createCanvas(3840, 2160);

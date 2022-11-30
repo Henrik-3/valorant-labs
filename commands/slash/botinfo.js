@@ -1,5 +1,6 @@
-import {sysinfo, embedBuilder, translations, pretty} from '../../methods.js';
+import {sysinfo, embedBuilder, getTranslations, pretty} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
+    const translations = getTranslations();
     const sysdata = await sysinfo.get({mem: 'total, free, used', osInfo: 'distro', currentLoad: 'currentLoad'});
     console.log(sysdata);
     return interaction.editReply({

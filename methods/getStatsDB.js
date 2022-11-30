@@ -1,4 +1,4 @@
-import {axios, getDB} from '../methods.js';
+import {axios, getDB, riottoken} from '../methods.js';
 export const getStatsDB = async function (account) {
     const puuid = await axios
         .get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURI(account.name)}/${encodeURI(account.tag)}`, {

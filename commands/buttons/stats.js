@@ -1,14 +1,27 @@
-import {ComponentType, moment, getAgents, getGamemodes, gamemodes, axios, embedBuilder, translations, riottoken, getCustomBackground} from '../../methods.js';
-import {buildStatsImage} from '../../methods/buildStatsImage.js';
-import {getStatsDB} from '../../methods/getStatsDB.js';
-import {patchStats} from '../../methods/patchStats.js';
-import {buildBackground} from '../../methods/buildBackground.js';
-import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+import {
+    ComponentType,
+    moment,
+    getAgents,
+    getGamemodes,
+    gamemodes,
+    axios,
+    embedBuilder,
+    getTranslations,
+    riottoken,
+    getCustomBackground,
+    getFunction,
+} from '../../methods.js';
 
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate();
+    const translations = getTranslations();
     const agent = getAgents();
     const modes = getGamemodes();
+    const buildStatsImage = getFunction('buildStatsImage');
+    const getStatsDB = getFunction('getStatsDB');
+    const patchStats = getFunction('patchStats');
+    const buildBackground = getFunction('buildBackground');
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     const components = [];
     const dbstats = await getStatsDB({name: args[2], tag: args[3]});
     if (dbstats.status != 200)

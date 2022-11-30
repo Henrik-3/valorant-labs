@@ -1,3 +1,4 @@
+import {shard_status_codes, pretty} from '../methods.js';
 export const shard_status_update = async function (manager) {
     const sharddata = await manager.broadcastEval(client => {
         return {status: client.ws.status, ping: client.ws.ping, mem: process.memoryUsage().heapUsed};

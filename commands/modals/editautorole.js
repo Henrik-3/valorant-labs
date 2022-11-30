@@ -1,5 +1,6 @@
-import {embedBuilder, translations} from '../../methods.js';
+import {embedBuilder, getTranslations} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
+    const translations = getTranslations();
     interaction.client.channels.cache.get(args[1]).messages.edit(args[2], {
         embeds: [
             embedBuilder({

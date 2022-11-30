@@ -1,7 +1,9 @@
-import {getDB, axios, randomize, getAgents, moment, riottoken, ComponentType, translations} from '../methods.js';
-import {buildStatsImage} from './buildStatsImage.js';
+import {getDB, axios, randomize, getAgents, moment, riottoken, ComponentType, getTranslations, gamemodes, getFunction} from '../methods.js';
+
 export const patchStats = async function ({dbstats, mmatches, message, lang, agent, modes, bgcanvas} = {}) {
     const agents = getAgents();
+    const translations = getTranslations();
+    const buildStatsImage = getFunction('buildStatsImage');
     const reqs = [];
     if (!dbstats.stats) {
         dbstats.false;

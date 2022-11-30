@@ -1,6 +1,7 @@
-import {embedBuilder, translations} from '../../methods.js';
+import {embedBuilder, getTranslations} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
-    interaction.client.shard.broadcastEval(
+    const translations = getTranslations();
+    await interaction.client.shard.broadcastEval(
         (c, {embed}) => {
             if (c.channels.cache.has('975850839040200763'))
                 c.channels.cache.get('975850839040200763').send({
@@ -18,6 +19,7 @@ export async function execute({interaction, args, guilddata} = {}) {
         }
     );
     return interaction.reply({
+        ephemeral: true,
         embeds: [
             embedBuilder({
                 title: translations[guilddata.lang].feedback.send_title,

@@ -1,5 +1,6 @@
-import {getDB, moment, axios, translations, sleep} from '../methods.js';
+import {getDB, moment, axios, getTranslations, sleep} from '../methods.js';
 export const fetchWebsite = async function (manager) {
+    const translations = getTranslations();
     const types = ['patchnotes', 'othernews', 'maintenance', 'incidents'];
     const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi', 'pl', 'it'];
     const nstatus = ['news', 'onews', 'serverstatus', 'serverstatus'];

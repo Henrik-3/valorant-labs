@@ -1,8 +1,8 @@
-import {uuidv4} from '../../methods.js';
-import {patchGuild} from '../../methods/patchGuild.js';
+import {uuidv4, getFunction} from '../../methods.js';
 
 export async function execute({interaction, args} = {}) {
     await interaction.deferUpdate();
+    const patchGuild = getFunction('patchGuild');
     switch (args[1]) {
         case 'background': {
             switch (args[3]) {

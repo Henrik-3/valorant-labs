@@ -1,4 +1,4 @@
-import {getDB, axios} from '../methods.js';
+import {getDB, axios, riottoken} from '../methods.js';
 export const getLink = async function ({user} = {}) {
     const db = await getDB('linkv2').findOne({userid: user.id});
     if (!db) return null;

@@ -1,10 +1,7 @@
 import {ShardingManager} from 'discord.js';
 import {AutoPoster} from 'topgg-autoposter';
-import {getDB, translations, riottoken, getAgents, getGamemodes} from './methods.js';
+import {getDB, getTranslations, riottoken, getAgents, getGamemodes, getFunction, brotliDecompressSync} from './methods.js';
 import {readFileSync, existsSync} from 'fs';
-import {fetchWebsite} from './methods/fetchWebsite.js';
-import {shard_status_update} from './methods/shard_status_update.js';
-import {patchStats} from './methods/patchStats.js';
 import * as f from 'fastify';
 import axios from 'axios';
 import path from 'path';
@@ -21,8 +18,12 @@ if (basedata.environment == 'live') AutoPoster(basedata.dbltoken, manager);
 
 let restart = false;
 setInterval(async () => {
-    fetchWebsite(manager);
-    shard_status_update(manager);
+    if (basedata.environment == 'live') {
+        const fetchWebsite = getFunction('fetchWebsite');
+        const shard_status_update = getFunction('shard_status_update');
+        fetchWebsite(manager);
+        shard_status_update(manager);
+    }
 }, 150000);
 
 manager.on('shardCreate', async shard => {
@@ -37,9 +38,13 @@ manager.on('shardCreate', async shard => {
     });
     shard.on('ready', async rshard => {
         console.log('Ready', shard.id);
-        if (manager.shards.size == manager.totalShards && restart == false && basedata.environment == 'live') {
-            fetchWebsite(manager);
-            shard_status_update(manager);
+        if (manager.shards.size == manager.totalShards && restart == false) {
+            if (basedata.environment == 'live') {
+                const fetchWebsite = getFunction('fetchWebsite');
+                const shard_status_update = getFunction('shard_status_update');
+                fetchWebsite(manager);
+                shard_status_update(manager);
+            }
             manager.shards.forEach(sshard => {
                 sshard.send('startup');
             });
@@ -81,6 +86,7 @@ fastify.get('/v1/shard-state', async (req, res) => {
 });
 
 fastify.get('/v1/pagedata', async (req, res) => {
+    const translations = getTranslations();
     if (req.query.type == 'landingpage') {
         const guild = (await manager.fetchClientValues('guilds.cache.size')).reduce((prev, val) => prev + val, 0);
         const commands = JSON.parse(readFileSync('./api.json'));
@@ -103,7 +109,6 @@ fastify.get('/v1/pagedata', async (req, res) => {
             clang: req.query.lang != undefined ? (parselang[req.query.lang] != undefined ? parselang[req.query.lang] : 'English') : 'English',
         });
     } else if (req.query.type == 'translation') {
-        const translations = JSON.parse(readFileSync('./lang.json', {encoding: 'utf-8'}));
         const utils = JSON.parse(readFileSync('./utils.json', {encoding: 'utf-8'}));
         return res.code(200).send({langtranslations: translations, translations: utils.translations});
     } else if (req.query.type == 'shards') {
@@ -162,9 +167,21 @@ fastify.get('/v1/rso/redirect/:state', async (req, res) => {
 
 fastify.get('/oauth-finished.html', async (req, res) => {
     console.log(req.query);
+    const patchStats = getFunction('patchStats');
+    const translations = getTranslations();
     if (req.query.state) {
         const fstate = await getDB('state').findOne({code: req.query.state});
-        if (!fstate) return res.code(400).send({error: 'The Link is older than one hour, please generate a new one'});
+        if (!fstate)
+            return res.redirect(
+                301,
+                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                    JSON.stringify({
+                        rank: null,
+                        full: null,
+                        error: `The Link is older than one hour, please generate a new one`,
+                    })
+                )}`
+            );
         const formData = new URLSearchParams();
         formData.append('grant_type', 'authorization_code');
         formData.append('code', req.query.code);
@@ -183,11 +200,31 @@ fastify.get('/oauth-finished.html', async (req, res) => {
             .catch(error => {
                 return error;
             });
-        if (userinfo.response) return res.code(500).send({error: `There seems to be an error with the riot server | Status: ${userinfo.response.status}`});
+        if (userinfo.response)
+            return res.redirect(
+                301,
+                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                    JSON.stringify({
+                        rank: null,
+                        full: null,
+                        error: `There seems to be an error with the riot server | Status: ${userinfo.response.status}`,
+                    })
+                )}`
+            );
         if (fstate.type == 'delete') {
             getDB('rso').deleteMany({puuid: userinfo.data.puuid});
             getDB('state').deleteOne({code: req.query.state});
-            return res.code(200).send({message: `Your account was successfully set to a private state`});
+            return res.redirect(
+                301,
+                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                    JSON.stringify({
+                        rank: null,
+                        full: null,
+                        error: null,
+                        message: 'Your account was successfully set to a private state',
+                    })
+                )}`
+            );
         }
         const region = await axios
             .get(`https://europe.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/${userinfo.data.puuid}`, {
@@ -197,36 +234,78 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 return error;
             });
         if (region.response)
-            return res.code(500).send({
-                error: `There seems to be an error with region of your account | Status: ${region.response.status} | Message: ${region.response.message}`,
-            });
+            return res.redirect(
+                301,
+                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                    JSON.stringify({
+                        rank: null,
+                        full: null,
+                        error: `There seems to be an error with region of your account | Status: ${region.response.status} | Message: ${region.response.message}`,
+                        message: null,
+                    })
+                )}`
+            );
         const db = await axios
             .get(`https://api.henrikdev.xyz/valorant/v1/account/${encodeURI(userinfo.data.gameName)}/${encodeURI(userinfo.data.tagLine)}?asia=true`)
             .catch(error => {
                 return error;
             });
         if (db.response)
-            return res.code(500).send({
-                error: `There seems to be an error with the requested account | Status: ${db.response.status} | Message: ${db.response.data.message}`,
-            });
+            return res.redirect(
+                301,
+                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                    JSON.stringify({
+                        rank: null,
+                        full: null,
+                        error: `There seems to be an error with the requested account | Status: ${db.response.status} | Message: ${db.response.data.message}`,
+                        message: null,
+                    })
+                )}`
+            );
         if (fstate.type == 'autorole') {
             const guilddata = await getDB('settings').findOne({gid: fstate.guild});
             const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${region.data.activeShard}/${db.data.data.puuid}?asia=true`).catch(error => {
                 return error;
             });
             if (mmr.response)
-                return res.code(500).send({
-                    error: `There seems to be an error with the mmr of that account | Status: ${mmr.response.status} | Message: ${mmr.response.data.message}`,
-                });
+                return res.redirect(
+                    301,
+                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                        JSON.stringify({
+                            rank: null,
+                            full: null,
+                            error: `There seems to be an error with the mmr of that account | Status: ${mmr.response.status} | Message: ${mmr.response.data.message}`,
+                            message: null,
+                        })
+                    )}`
+                );
             if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0)
-                return res.code(500).send({error: translations[guilddata.lang].mmr.no_rank_desc});
+                return res.redirect(
+                    301,
+                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                        JSON.stringify({
+                            rank: null,
+                            full: null,
+                            error: translations[guilddata.lang].mmr.no_rank_desc,
+                            message: null,
+                        })
+                    )}`
+                );
             if (
                 mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == 'ascendant' &&
                 !guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)
             )
-                return res.code(404).send({
-                    message: "The new rank ASCENDANT isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
-                });
+                return res.redirect(
+                    301,
+                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                        JSON.stringify({
+                            rank: null,
+                            full: null,
+                            error: "The new rank ASCENDANT isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
+                            message: null,
+                        })
+                    )}`
+                );
             await manager
                 .broadcastEval(
                     async (c, {user, guild, ra, rm}) => {
@@ -281,7 +360,17 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 {upsert: true}
             );
             getDB('state').deleteOne({code: req.query.state});
-            return res.code(200).send({message: `Your account was successfully linked and your role was given`});
+            return res.redirect(
+                301,
+                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                    JSON.stringify({
+                        rank: mmr.data.data.current_data.currenttier,
+                        full: null,
+                        error: null,
+                        message: `Your account was successfully linked and your role was given`,
+                    })
+                )}`
+            );
         }
         if (fstate.type == 'link') {
             getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
@@ -291,7 +380,17 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 {upsert: true}
             );
             getDB('state').deleteOne({code: req.query.state});
-            return res.code(200).send({message: `Your account was successfully linked`});
+            return res.redirect(
+                301,
+                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                    JSON.stringify({
+                        rank: null,
+                        full: null,
+                        error: null,
+                        message: `Your account was successfully linked`,
+                    })
+                )}`
+            );
         }
         if (fstate.type == 'stats') {
             const matchlist = await axios
@@ -302,9 +401,17 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                     return error;
                 });
             if (matchlist.response)
-                return res.code(500).send({
-                    error: `There seems to be an issue with your matchlist | Status: ${matchlist.response.status} | Message: ${db.data.data.puuid}`,
-                });
+                return res.redirect(
+                    301,
+                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
+                        JSON.stringify({
+                            rank: null,
+                            full: null,
+                            error: `There seems to be an issue with your matchlist | Status: ${matchlist.response.status} | PUUID: ${db.data.data.puuid}`,
+                            message: null,
+                        })
+                    )}`
+                );
             patchStats({
                 dbstats: {
                     puuid: userinfo.data.puuid,
@@ -334,6 +441,11 @@ fastify.get('/oauth-finished.html', async (req, res) => {
     }
 });
 
+fastify.get('/rso/oauth', async (req, res) => {
+    const oauth = readFileSync('./website/build/oauth.html', {encoding: 'utf-8'});
+    res.type('text/html').send(oauth);
+});
+
 fastify.get('/v1/login', async (req, res) => {
     if (!req.query.guild || !req.query.channel || !req.query.message || !req.query.puuid) res.code(400).send({status: 400, message: 'Missing Query String'});
     res.header('Set-Cookie', `guild=${req.query.guild}; Path=/`);
@@ -347,6 +459,13 @@ fastify.get('/v1/login', async (req, res) => {
 
 fastify.get('/cdn/v1/agents/:uuid', async (req, res) => {
     if (existsSync(`assets/agents/${req.params.uuid}.png`)) return res.type('image/png').send(readFileSync(`assets/agents/${req.params.uuid}.png`));
+    else return res.code(404).send({error: 'Ressource not found'});
+});
+
+fastify.get('/cdn/v1/backgrounds/:uuid', async (req, res) => {
+    if (existsSync(`settings/backgrounds/${req.params.uuid}.png`))
+        return res.type('image/png').send(brotliDecompressSync(readFileSync(`settings/backgrounds/${req.params.uuid}.png`)));
+    else return res.code(404).send({error: 'Ressource not found'});
 });
 
 fastify.listen({port: 4200}, (err, address) => {

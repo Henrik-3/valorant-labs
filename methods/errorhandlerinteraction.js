@@ -1,5 +1,6 @@
-import {embedBuilder, uuidv4, getDB, ComponentType, ButtonStyle, translations} from '../methods.js';
+import {embedBuilder, uuidv4, getDB, ComponentType, ButtonStyle, getTranslations} from '../methods.js';
 export const errorhandlerinteraction = async function ({interaction, status, type, lang, data, name, tag} = {}) {
+    const translations = getTranslations();
     if (status == 451) {
         const uuid = uuidv4();
         await getDB('state').insertOne({userid: interaction.user.id, code: uuid, expireAt: new Date(), type: 'stats'});

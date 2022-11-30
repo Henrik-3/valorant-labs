@@ -1,6 +1,7 @@
-import {embedBuilder, getDB, translations, uuidv4} from '../../methods.js';
+import {embedBuilder, getDB, getTranslations, uuidv4} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferReply({ephemeral: true});
+    const translations = getTranslations();
     switch (args[1]) {
         case 'generate': {
             const uuid = uuidv4();

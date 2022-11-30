@@ -1,6 +1,6 @@
 import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
-import {perms, embedBuilder, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
+import {perms, embedBuilder, getTranslations, ActivityType, ComponentType, ButtonStyle, updateFunctions, getFunction} from './methods.js';
 import {guildSettings} from './methods/guildSettings.js';
 import path, {dirname} from 'path';
 import {fileURLToPath} from 'url';
@@ -58,6 +58,7 @@ async function update() {
         const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
         client.context.set(cmd.name, cmd);
     }
+    updateFunctions();
     for (let i = 0; methodfiles.length > i; i++) {
         const cmd = await import(`./methods/${methodfiles[i]}?update=${Date.now()}`);
         client.methods.set(cmd.name, cmd);
@@ -104,6 +105,7 @@ client.on('ready', async () => {
 });
 
 client.on('guildCreate', async g => {
+    const guildSettings = getFunction('guildSettings');
     const updatedGuild = await guildSettings(g);
     const channels = g.channels.cache
         .filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has(perms.SendMessages))
@@ -135,6 +137,8 @@ client.on('guildCreate', async g => {
 });
 
 client.on('interactionCreate', async interaction => {
+    const translations = getTranslations();
+    const guildSettings = getFunction('guildSettings');
     const guilddata = await guildSettings(interaction.guild);
     if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');

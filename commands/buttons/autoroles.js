@@ -1,7 +1,8 @@
-import {uuidv4, getDB, embedBuilder, translations, axios, roles, firstletter} from '../../methods.js';
-import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+import {uuidv4, getDB, embedBuilder, getTranslations, axios, roles, firstletter, getFunction} from '../../methods.js';
 
 export async function execute({interaction, args, guilddata} = {}) {
+    const translations = getTranslations();
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     await interaction.deferReply({ephemeral: true});
     switch (args[1]) {
         case 'generate': {

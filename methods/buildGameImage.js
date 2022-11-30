@@ -1,7 +1,9 @@
-import {axios, embedBuilder, ranks, moment, Canvas, translations, getAgents, AttachmentBuilder} from '../methods.js';
+import {axios, embedBuilder, ranks, old_ranks, moment, Canvas, getTranslations, getAgents, AttachmentBuilder, gamemodes} from '../methods.js';
 import {getGameKey} from './getGameKey.js';
 import {buildText} from './buildText.js';
+
 export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas} = {}) {
+    const translations = getTranslations();
     const gamekey = matchid ? true : await getGameKey(id);
     if (!gamekey) return {error: null, unknown: true, embed: null, image: null};
     const match = await axios.get(`https://api.henrikdev.xyz/valorant/v2/match/${matchid ?? gamekey.matchid}`).catch(error => {
@@ -30,7 +32,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                 unknown: null,
                 embed: [
                     embedBuilder({
-                        title: `Game ${id} | ID: ${match.data.data.metadata.matchid}`,
+                        title: `Game ${id ?? ''} | ID: ${match.data.data.metadata.matchid}`,
                         desc: `Mode: Deathmatch | Map: ${match.data.data.metadata.map} | Length: ${moment
                             .duration(match.data.data.metadata.game_length)
                             .minutes()}m ${moment.duration(match.data.data.metadata.game_length).seconds()}s | Started at: ${moment(

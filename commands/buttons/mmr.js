@@ -1,10 +1,11 @@
-import {ComponentType, getDB, axios, embedBuilder, translations, getCustomBackground, ranks, old_ranks} from '../../methods.js';
-import {buildBackground} from '../../methods/buildBackground.js';
-import {buildMMRImage} from '../../methods/buildMMRImage.js';
-import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+import {ComponentType, getDB, axios, embedBuilder, getTranslations, getCustomBackground, ranks, old_ranks, getFunction} from '../../methods.js';
 
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate();
+    const buildBackground = getFunction('buildBackground');
+    const buildMMRImage = getFunction('buildMMRImage');
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
+    const translations = getTranslations();
     const puuid = await axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${encodeURI(args[1])}/${encodeURI(args[2])}?asia=true`).catch(error => {
         return error;
     });

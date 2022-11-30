@@ -1,4 +1,4 @@
-import {getDB} from '../methods.js';
+import {getDB, locales} from '../methods.js';
 export const guildSettings = async function (guild) {
     return (
         await getDB('settings').findOneAndUpdate(

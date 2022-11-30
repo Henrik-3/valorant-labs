@@ -1,6 +1,7 @@
-import {embedBuilder, getDB, translations, uuidv4} from '../../methods.js';
+import {embedBuilder, getDB, getTranslations, uuidv4} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
     const uuid = uuidv4();
+    const translations = getTranslations();
     await getDB('state').insertOne({userid: interaction.user.id, code: uuid, expireAt: new Date(), type: 'delete'});
     return interaction.editReply({
         embeds: [

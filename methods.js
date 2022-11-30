@@ -1,5 +1,5 @@
 import {MongoClient} from 'mongodb';
-import {readFileSync, writeFileSync, unlinkSync} from 'fs';
+import {readFileSync, writeFileSync, unlinkSync, readdirSync} from 'fs';
 import {brotliDecompressSync, brotliCompressSync, constants} from 'zlib';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
@@ -9,13 +9,6 @@ import {PermissionFlagsBits, ComponentType, ButtonStyle, TextInputStyle, Activit
 import moment from 'moment';
 import Canvas from 'canvas';
 import randomize from 'randomatic';
-
-import {guildSettings} from './methods/guildSettings.js';
-import {buildStatsImage} from './methods/buildStatsImage.js';
-import {getGameKey} from './methods/getGameKey.js';
-import {buildGameImage} from './methods/buildGameImage.js';
-import {buildBackground} from './methods/buildBackground.js';
-import {buildMMRImage} from './methods/buildMMRImage.js';
 
 Canvas.registerFont('assets/fonts/product_sans.ttf', {family: 'product_sans'});
 Canvas.registerFont('assets/fonts/valorant_font.ttf', {family: 'valorant_font'});
@@ -48,6 +41,11 @@ setInterval(async () => {
         return error;
     });
     translations = JSON.parse(readFileSync('./translations.json'));
+    const methodfiles = readdirSync('./methods').filter(file => file.endsWith('.js'));
+    for (let i = 0; methodfiles.length > i; i++) {
+        const cmd = await import(`./methods/${methodfiles[i]}?update=${Date.now()}`);
+        functions[methodfiles[i].split('.')[0]] = cmd[methodfiles[i].split('.')[0]];
+    }
 }, 60000 * 5);
 
 axiosRetry(axios, {
@@ -74,8 +72,7 @@ export {
     unlinkSync,
     writeFileSync,
     brotliCompressSync,
-    getTranslations,
-    getCrosshairs,
+    brotliDecompressSync,
 };
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;
@@ -604,6 +601,7 @@ export const shard_status_codes = {
     7: 'IDENTIFYING',
     8: 'RESUMING',
 };
+export const functions = {};
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
 export const uuidv4 = function () {
     let dt = new Date().getTime();
@@ -629,9 +627,21 @@ export const getTranslations = function () {
 export const getCrosshairs = function () {
     return crosshairs.data;
 };
+export const getFunction = function (name) {
+    return functions[name];
+};
+export const updateFunctions = async function () {
+    const methodfiles = readdirSync('./methods').filter(file => file.endsWith('.js'));
+    for (let i = 0; methodfiles.length > i; i++) {
+        const cmd = await import(`./methods/${methodfiles[i]}?update=${Date.now()}`);
+        functions[methodfiles[i].split('.')[0]] = cmd[methodfiles[i].split('.')[0]];
+    }
+    console.log(functions);
+};
 export const embedBuilder = function ({title, desc, user, additionalFields = [], color, thumbnail, image, footer, url} = {}) {
     return {
         title: title,
+        url,
         description: desc ? desc : null,
         author: user
             ? {
@@ -657,7 +667,7 @@ export const embedBuilder = function ({title, desc, user, additionalFields = [],
 export const getCustomBackground = function (uuid) {
     return brotliDecompressSync(readFileSync(`./settings/backgrounds/${uuid}.png`));
 };
-/*export const errorhandler = async function ({message, status, type, lang, data, name, tag} = {}) {
+export const errorhandler = async function ({message, status, type, lang, data, name, tag} = {}) {
     if (status == 451) {
         const uuid = uuidv4();
         await getDB('state').insertOne({userid: message.author.id, code: uuid, expireAt: new Date(), type: 'stats'});
@@ -743,7 +753,7 @@ export const getCustomBackground = function (uuid) {
             },
         ],
     });
-};*/
+};
 export const firstletter = function (string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };

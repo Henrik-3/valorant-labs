@@ -1,8 +1,9 @@
-import {embedBuilder} from '../methods.js';
+import {embedBuilder, getTranslations} from '../methods.js';
 import {guildSettings} from './guildSettings.js';
 
 export const getGuild = async function (interaction) {
     const settings = await guildSettings(interaction.guild);
+    const translations = getTranslations();
     return interaction.editReply({
         embeds: [
             embedBuilder({
@@ -32,17 +33,19 @@ export const getGuild = async function (interaction) {
                         name: 'Background - Stats',
                         value: ['false', false].some(i => i == settings.background_stats)
                             ? translations[settings.lang].settings.not_set
-                            : String(settings.background_stats),
+                            : `[${settings.background_stats}](https://valorantlabs.xyz/cdn/v1/backgrounds/${settings.background_stats})`,
                     },
                     {
                         name: 'Background - Game',
                         value: ['false', false].some(i => i == settings.background_game)
                             ? translations[settings.lang].settings.not_set
-                            : String(settings.background_game),
+                            : `[${settings.background_game}](https://valorantlabs.xyz/cdn/v1/backgrounds/${settings.background_game})`,
                     },
                     {
                         name: 'Background - MMR',
-                        value: ['false', false].some(i => i == settings.background_mmr) ? translations[settings.lang].settings.not_set : String(settings.background_mmr),
+                        value: ['false', false].some(i => i == settings.background_mmr)
+                            ? translations[settings.lang].settings.not_set
+                            : `[${settings.background_mmr}](https://valorantlabs.xyz/cdn/v1/backgrounds/${settings.background_mmr})`,
                     },
                 ],
                 footer: 'VALORANT LABS [SETTINGS]',

@@ -1,9 +1,10 @@
-import {getCustomBackground, embedBuilder, translations} from '../../methods.js';
-import {buildGameImage} from '../../methods/buildGameImage.js';
-import {buildBackground} from '../../methods/buildBackground.js';
-import {errorhandlerinteraction} from '../../methods/errorhandlerinteraction.js';
+import {getCustomBackground, embedBuilder, getTranslations, getFunction} from '../../methods.js';
 
 export async function execute({interaction, guilddata} = {}) {
+    const translations = getTranslations();
+    const buildBackground = getFunction('buildBackground');
+    const buildGameImage = getFunction('buildGameImage');
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     const bgcanvas = guilddata.background_game ? await buildBackground(getCustomBackground(guilddata.background_game), 'game') : null;
     const image = await buildGameImage({id: interaction.options.getString('gamekey'), guilddata: guilddata, bgcanvas});
     if (image.unknown)

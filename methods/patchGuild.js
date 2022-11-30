@@ -1,13 +1,14 @@
-import {getDB, unlinkSync, embedBuilder, ComponentType, ButtonStyle, writeFileSync, brotliCompressSync} from '../methods.js';
+import {getDB, unlinkSync, embedBuilder, ComponentType, ButtonStyle, writeFileSync, brotliCompressSync, getTranslations} from '../methods.js';
 import {buildBackground} from './buildBackground.js';
-import {buildStatsImage} from './buildStatsImage';
-import {buildGameImage} from './buildGameImage';
+import {buildStatsImage} from './buildStatsImage.js';
+import {buildGameImage} from './buildGameImage.js';
 import {buildMMRImage} from './buildMMRImage.js';
 import {getAutoRoles} from './getAutoRoles.js';
 import {getGuild} from './getGuild.js';
 
 export const patchGuild = async function ({interaction, key, value, additionaldata, guilddata} = {}) {
     let doc;
+    const translations = getTranslations();
     switch (key) {
         case 'prefix': {
             doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {prefix: value}}, {upsert: false, returnDocument: 'after'})).value;
