@@ -120,6 +120,7 @@ export const locales = {
     vi: 'vi',
     pl: 'pl',
     it: 'it',
+    tr: 'tr',
 };
 export const agents = [
     {
