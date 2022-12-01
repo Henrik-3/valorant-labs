@@ -2,7 +2,7 @@ import {getDB, moment, axios, getTranslations, sleep} from '../methods.js';
 export const fetchWebsite = async function (manager) {
     const translations = getTranslations();
     const types = ['patchnotes', 'othernews', 'maintenance', 'incidents'];
-    const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi', 'pl', 'it'];
+    const ccodes = ['de', 'en-us', 'en-gb', 'jp', 'pt-br', 'fr', 'es', 'vi', 'pl', 'it', 'tr'];
     const nstatus = ['news', 'onews', 'serverstatus', 'serverstatus'];
     for (let i = 0; types.length > i; i++) {
         if (i == 0 || i == 1) {

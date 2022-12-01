@@ -70,4 +70,4 @@ export async function execute({interaction, args, guilddata} = {}) {
         ],
     });
 }
-export const name = '978299772278558790';
+export const name = 'Edit AutoRole';

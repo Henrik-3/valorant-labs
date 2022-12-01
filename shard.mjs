@@ -1,6 +1,6 @@
 import {ShardingManager} from 'discord.js';
 import {AutoPoster} from 'topgg-autoposter';
-import {getDB, getTranslations, riottoken, getAgents, getGamemodes, getFunction, brotliDecompressSync} from './methods.js';
+import {getDB, getTranslations, riottoken, getAgents, getGamemodes, getFunction, brotliDecompressSync, updateFunctions} from './methods.js';
 import {readFileSync, existsSync} from 'fs';
 import * as f from 'fastify';
 import axios from 'axios';
@@ -11,11 +11,12 @@ const __dirname = path.resolve();
 
 const manager = new ShardingManager('./index.js', {
     token: basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken,
-    totalShards: basedata.environment == 'live' ? 12 : 2,
+    totalShards: basedata.environment == 'live' ? 14 : 2,
     respawn: true,
 });
 if (basedata.environment == 'live') AutoPoster(basedata.dbltoken, manager);
 
+updateFunctions();
 let restart = false;
 setInterval(async () => {
     if (basedata.environment == 'live') {

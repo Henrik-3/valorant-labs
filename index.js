@@ -144,8 +144,9 @@ client.on('interactionCreate', async interaction => {
         const args = interaction.customId?.split(';');
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
         if (interaction instanceof ModalSubmitInteraction) return client.modals.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isMessageContextMenuCommand()) return client.context.get(interaction.commandId).execute({interaction, args, guilddata});
+        if (interaction.isStringSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
+        if (interaction.isUserContextMenuCommand() || interaction.isMessageContextMenuCommand())
+            return client.context.get(interaction.commandName).execute({interaction, args, guilddata});
     }
     if (interaction.commandName == 'shard-restart') {
         client.shard.send(`restart-${interaction.options.get('shard').value}`);
