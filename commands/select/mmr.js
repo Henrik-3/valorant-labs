@@ -1,16 +1,11 @@
-import {
-    embedBuilder,
-    translations,
-    buildBackground,
-    getCustomBackground,
-    AttachmentBuilder,
-    getDB,
-    axios,
-    errorhandlerinteraction,
-    buildMMRImage,
-} from '../../methods.js';
+import {embedBuilder, getTranslations, getCustomBackground, AttachmentBuilder, getDB, axios, getFunction} from '../../methods.js';
+
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate();
+    const translations = getTranslations();
+    const buildBackground = getFunction('buildBackground');
+    const buildMMRImage = getFunction('buildMMRImage');
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     const components = [...interaction.message.components];
     interaction.editReply({
         embeds: [

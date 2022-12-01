@@ -1,6 +1,7 @@
 import {Client, GatewayIntentBits, Collection, Options, ModalSubmitInteraction} from 'discord.js';
 import {readFileSync, readdirSync, writeFileSync} from 'fs';
-import {perms, embedBuilder, guildSettings, translations, ActivityType, ComponentType, ButtonStyle} from './methods.js';
+import {perms, embedBuilder, getTranslations, ActivityType, ComponentType, ButtonStyle, updateFunctions, getFunction} from './methods.js';
+import {guildSettings} from './methods/guildSettings.js';
 import path, {dirname} from 'path';
 import {fileURLToPath} from 'url';
 
@@ -23,12 +24,14 @@ client.buttoncommands = new Collection();
 client.selectcommands = new Collection();
 client.modals = new Collection();
 client.context = new Collection();
+client.methods = new Collection();
 const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'));
 const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
 const buttoncommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
 const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'));
 const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'));
 const contextcommands = readdirSync('./commands/context').filter(file => file.endsWith('.js'));
+const methodfiles = readdirSync('./methods').filter(file => file.endsWith('.js'));
 
 async function update() {
     for (let i = 0; normalcommands.length > i; i++) {
@@ -54,6 +57,11 @@ async function update() {
     for (let i = 0; contextcommands.length > i; i++) {
         const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
         client.context.set(cmd.name, cmd);
+    }
+    updateFunctions();
+    for (let i = 0; methodfiles.length > i; i++) {
+        const cmd = await import(`./methods/${methodfiles[i]}?update=${Date.now()}`);
+        client.methods.set(cmd.name, cmd);
     }
 }
 update();
@@ -97,6 +105,7 @@ client.on('ready', async () => {
 });
 
 client.on('guildCreate', async g => {
+    const guildSettings = getFunction('guildSettings');
     const updatedGuild = await guildSettings(g);
     const channels = g.channels.cache
         .filter(c => c.type == 'text' && c.viewable && c.permissionsFor(g.me).has(perms.SendMessages))
@@ -106,7 +115,7 @@ client.on('guildCreate', async g => {
             embeds: [
                 embedBuilder({
                     title: 'Language Selection',
-                    desc: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi/pl/it\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
+                    desc: `Hey, based on your prefered locale (\`${g.preferredLocale}\`) and the available bot languages (\`en-gb/en-us/de/fr/ja-jp/pt-br/es/vi/pl/it/tr\`), your bot language was set to \`${updatedGuild.lang}\`.To change the language, do \`/settings language [LANGUAGE CODE]\``,
                     footer: 'VALORANT LABS [SERVER JOINED]',
                 }),
             ],
@@ -128,13 +137,16 @@ client.on('guildCreate', async g => {
 });
 
 client.on('interactionCreate', async interaction => {
+    const translations = getTranslations();
+    const guildSettings = getFunction('guildSettings');
     const guilddata = await guildSettings(interaction.guild);
     if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
         if (interaction instanceof ModalSubmitInteraction) return client.modals.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isMessageContextMenuCommand()) return client.context.get(interaction.commandId).execute({interaction, args, guilddata});
+        if (interaction.isStringSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
+        if (interaction.isUserContextMenuCommand() || interaction.isMessageContextMenuCommand())
+            return client.context.get(interaction.commandName).execute({interaction, args, guilddata});
     }
     if (interaction.commandName == 'shard-restart') {
         client.shard.send(`restart-${interaction.options.get('shard').value}`);
@@ -159,9 +171,12 @@ client.on('interactionCreate', async interaction => {
         const contextcommands = readdirSync('./commands/context')
             .filter(file => file.endsWith('.js'))
             .map(i => path.join('file:///', __dirname, `/commands/context/${i}?update=${Date.now()}`));
+        const methodfiles = readdirSync('./methods')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/methods/${i}?update=${Date.now()}`));
         update();
         client.shard.broadcastEval(
-            async (client, {normalcommands, slashcommands, buttoncommand, selectcommands, modalcommands, contextcommands}) => {
+            async (client, {normalcommands, slashcommands, buttoncommand, selectcommands, modalcommands, contextcommands, methodfiles}) => {
                 try {
                     for (let i = 0; normalcommands.length > i; i++) {
                         const command = await import(normalcommands[i]);
@@ -187,6 +202,10 @@ client.on('interactionCreate', async interaction => {
                         const cmd = await import(contextcommands[i]);
                         client.context.set(cmd.name, cmd);
                     }
+                    for (let i = 0; methodfiles.length > i; i++) {
+                        const cmd = await import(methodfiles[i]);
+                        client.methods.set(cmd.name, cmd);
+                    }
                 } catch (e) {
                     console.log(e);
                 }
@@ -199,6 +218,7 @@ client.on('interactionCreate', async interaction => {
                     selectcommands,
                     modalcommands,
                     contextcommands,
+                    methodfiles,
                 },
             }
         );
@@ -357,4 +377,4 @@ process.on('uncaughtException', error => {
     console.error(error);
 });
 
-client.login(basedata.discordtoken);
+client.login(basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken);

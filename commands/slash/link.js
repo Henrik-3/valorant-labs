@@ -1,30 +1,35 @@
-import {getDB, translations, embedBuilder, ButtonStyle, ComponentType, getLink, uuidv4} from '../../methods.js';
+import {getDB, getTranslations, embedBuilder, ButtonStyle, ComponentType, uuidv4, getFunction} from '../../methods.js';
+
 export async function execute({interaction, guilddata} = {}) {
+    const translations = getTranslations();
+    const getLink = getFunction('getLink');
     switch (interaction.options._subcommand) {
         case 'get':
-            const link = await getLink({user: interaction.user});
+            const link = await getLink({user: interaction.options.getUser('user') ?? interaction.user});
             if (link == null || typeof link.error == 'number')
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({
                             title: translations[guilddata.lang].link.nolink_title,
-                            desc: translations[guilddata.lang].link.nolink_desc,
+                            desc: translations[guilddata.lang].link[interaction.options.getUser('user') ? 'nolink_other_desc' : 'nolink_desc'],
                             footer: 'VALORANT LABS [LINK UNKNOWN]',
                         }),
                     ],
-                    components: [
-                        {
-                            type: ComponentType.ActionRow,
-                            components: [
-                                {
-                                    type: ComponentType.Button,
-                                    style: ButtonStyle.Danger,
-                                    customId: 'link;generate',
-                                    label: translations[guilddata.lang].link.generate_link,
-                                },
-                            ],
-                        },
-                    ],
+                    components: interaction.options.getUser('user')
+                        ? []
+                        : [
+                              {
+                                  type: ComponentType.ActionRow,
+                                  components: [
+                                      {
+                                          type: ComponentType.Button,
+                                          style: ButtonStyle.Danger,
+                                          customId: 'link;generate',
+                                          label: translations[guilddata.lang].link.generate_link,
+                                      },
+                                  ],
+                              },
+                          ],
                 });
             return interaction.editReply({
                 embeds: [

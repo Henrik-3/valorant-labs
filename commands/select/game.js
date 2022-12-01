@@ -1,6 +1,11 @@
-import {embedBuilder, buildBackground, getCustomBackground, buildGameImage, translations, errorhandlerinteraction} from '../../methods.js';
+import {embedBuilder, getCustomBackground, getTranslations, getFunction} from '../../methods.js';
+
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate();
+    const translations = getTranslations();
+    const buildGameImage = getFunction('buildGameImage');
+    const buildBackground = getFunction('buildBackground');
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     const components = [...interaction.message.components];
     interaction.editReply({
         embeds: [

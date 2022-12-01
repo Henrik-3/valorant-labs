@@ -1,5 +1,6 @@
-import {embedBuilder, translations, ComponentType, ButtonStyle} from '../../methods.js';
+import {embedBuilder, getTranslations, ComponentType, ButtonStyle} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
+    const translations = getTranslations();
     return interaction.editReply({
         embeds: [
             embedBuilder({

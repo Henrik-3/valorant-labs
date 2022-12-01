@@ -1,28 +1,28 @@
 import {
-    patchStats,
     ComponentType,
-    getLink,
-    ButtonStyle,
     getAgents,
     getGamemodes,
-    getStatsDB,
     errorhandler,
     axios,
     moment,
-    getDB,
     embedBuilder,
     gamemodes,
-    buildBackground,
     getCustomBackground,
-    translations,
-    buildStatsImage,
+    getTranslations,
     riottoken,
+    getFunction,
 } from '../../methods.js';
 
 export async function execute({message, guilddata, args} = {}) {
     const link = await getLink({user: message.author});
+    const translations = getTranslations();
     const agent = getAgents();
     const modes = getGamemodes();
+    const buildStatsImage = getFunction('buildStatsImage');
+    const getStatsDB = getFunction('getStatsDB');
+    const patchStats = getFunction('patchStats');
+    const buildBackground = getFunction('buildBackground');
+    const getLink = getFunction('getLink');
     const components = [];
     let dbstats;
     let matchlist;

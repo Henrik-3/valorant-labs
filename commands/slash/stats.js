@@ -1,26 +1,28 @@
 import {
     ComponentType,
-    ButtonStyle,
     moment,
     getAgents,
-    getLink,
     getGamemodes,
-    getStatsDB,
-    errorhandlerinteraction,
     gamemodes,
     axios,
     embedBuilder,
-    translations,
+    getTranslations,
     riottoken,
-    buildBackground,
     getCustomBackground,
-    patchStats,
-    buildStatsImage,
+    getFunction,
 } from '../../methods.js';
+
 export async function execute({interaction, guilddata} = {}) {
-    const link = await getLink({user: interaction.user});
+    const translations = getTranslations();
     const agent = getAgents();
     const modes = getGamemodes();
+    const buildStatsImage = getFunction('buildStatsImage');
+    const getLink = getFunction('getLink');
+    const getStatsDB = getFunction('getStatsDB');
+    const patchStats = getFunction('patchStats');
+    const buildBackground = getFunction('buildBackground');
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
+    const link = await getLink({user: interaction.user});
     const components = [];
     let dbstats;
     let matchlist;
@@ -103,7 +105,6 @@ export async function execute({interaction, guilddata} = {}) {
             data: matchlist.response.data,
         });
     const missingmatches = matchlist.data.history.filter(item => item.gameStartTimeMillis > (dbstats.last_update ? dbstats.last_update : 0));
-
     const bgcanvas = guilddata.background_stats ? await buildBackground(getCustomBackground(guilddata.background_stats), 'stats') : null;
     const attachment = dbstats.stats ? await buildStatsImage({dbstats, agent, modes, bgcanvas}) : null;
     if (!missingmatches.length) {

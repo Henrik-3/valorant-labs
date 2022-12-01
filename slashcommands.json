@@ -38,6 +38,10 @@
                         "value": "fade"
                     },
                     {
+                        "name": "Harbor",
+                        "value": "harbor"
+                    },
+                    {
                         "name": "Jett",
                         "value": "jett"
                     },
@@ -144,7 +148,15 @@
             {
                 "type": 1,
                 "name": "get",
-                "description": "Shows the linked account"
+                "description": "Shows the linked account",
+                "options": [
+                    {
+                        "type": 6,
+                        "name": "user",
+                        "description": "User from which u want to see the riot id",
+                        "required": false
+                    }
+                ]
             },
             {
                 "type": 1,
@@ -384,8 +396,7 @@
         "dm_permission": false
     },
     {
-        "default_permission": true,
-        "default_member_permissions": null,
+        "default_member_permissions": 8,
         "type": 1,
         "name": "settings",
         "description": "VALORANT LABS Settings Handler",
@@ -530,6 +541,10 @@
                                         "value": "pt-br"
                                     },
                                     {
+                                        "name": "Turkish",
+                                        "value": "tr"
+                                    },
+                                    {
                                         "name": "Vietnamese",
                                         "value": "vi"
                                     }
@@ -598,8 +613,7 @@
         "dm_permission": false
     },
     {
-        "default_permission": true,
-        "default_member_permissions": null,
+        "default_member_permissions": 8,
         "type": 1,
         "name": "autoroles",
         "description": "Give roles on a server based on the ingame rank",
@@ -679,6 +693,14 @@
         "default_member_permissions": null,
         "type": 3,
         "name": "Edit AutoRole",
+        "description": "",
+        "dm_permission": false
+    },
+    {
+        "default_permission": true,
+        "default_member_permissions": null,
+        "type": 2,
+        "name": "Show Link",
         "description": "",
         "dm_permission": false
     },

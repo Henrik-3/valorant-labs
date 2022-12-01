@@ -1,20 +1,11 @@
-import {
-    ComponentType,
-    ButtonStyle,
-    getDB,
-    getLink,
-    axios,
-    errorhandlerinteraction,
-    embedBuilder,
-    translations,
-    topgg,
-    buildBackground,
-    getCustomBackground,
-    ranks,
-    old_ranks,
-    buildMMRImage,
-} from '../../methods.js';
+import {ComponentType, ButtonStyle, getDB, axios, embedBuilder, getTranslations, topgg, getCustomBackground, ranks, old_ranks, getFunction} from '../../methods.js';
+
 export async function execute({interaction, guilddata} = {}) {
+    const translations = getTranslations();
+    const getLink = getFunction('getLink');
+    const buildBackground = getFunction('buildBackground');
+    const buildMMRImage = getFunction('buildMMRImage');
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     const dbcheck = await getDB('topggvote').findOne({userid: interaction.user.id});
     if (!dbcheck) {
         const topggusage = await getDB('rate-limit-key').findOne({key: 'topgg'});

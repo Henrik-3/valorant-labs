@@ -1,5 +1,8 @@
-import {ComponentType, ButtonStyle, axios, translations, errorhandlerinteraction, embedBuilder} from '../../methods.js';
+import {ComponentType, ButtonStyle, axios, getTranslations, embedBuilder, getFunction} from '../../methods.js';
+
 export async function execute({interaction, guilddata} = {}) {
+    const translations = getTranslations();
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     const website = await axios.get(translations[guilddata.lang].patchurl).catch(error => {
         return error;
     });
