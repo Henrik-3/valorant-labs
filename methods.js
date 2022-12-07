@@ -239,6 +239,15 @@ export const gamemodes = {
             animated: false,
         },
     },
+    swiftplay: {
+        name: 'Swiftplay',
+        path: 'swiftplay.png',
+        emoji: {
+            name: 'swiftplay',
+            id: '1049838296194359297',
+            animated: false,
+        },
+    },
     spikerush: {
         name: 'Spike Rush',
         path: 'spikerush.png',

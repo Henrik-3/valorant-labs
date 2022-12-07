@@ -1,4 +1,4 @@
-import {embedBuilder, getTranslations, ComponentType, getFunction} from '../../methods.js';
+import {embedBuilder, getTranslations, ComponentType, ButtonStyle, getFunction} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferReply({ephemeral: true});
     const translations = getTranslations();

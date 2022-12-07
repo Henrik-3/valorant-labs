@@ -10,7 +10,7 @@ export const fetchWebsite = async function (manager) {
                 const website = await axios.get(i == 0 ? translations[ccodes[k]].patchurl : translations[ccodes[k]].websiteurl).catch(error => {
                     return error;
                 });
-                if (!website.response) {
+                if (!website.response && !website.code) {
                     const db = await getDB('websitecheck').findOne({code: ccodes[k]});
                     let article =
                         i == 0

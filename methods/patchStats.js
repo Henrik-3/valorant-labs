@@ -1,4 +1,4 @@
-import {getDB, axios, randomize, getAgents, moment, riottoken, ComponentType, getTranslations, gamemodes, getFunction} from '../methods.js';
+import {getDB, axios, randomize, getAgents, moment, riottoken, ComponentType, getTranslations, gamemodes, getFunction, maps} from '../methods.js';
 
 export const patchStats = async function ({dbstats, mmatches, message, lang, agent, modes, bgcanvas} = {}) {
     const agents = getAgents();
@@ -241,7 +241,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                         if (team.won) dbstats.stats.wins = !dbstats.stats?.wins ? 1 : dbstats.stats?.wins + 1;
                         if (!team.won) dbstats.stats.wins = !dbstats.stats?.wins ? 0 : dbstats.stats?.wins + 0;
 
-                        const agentid = agents.find(item => item.id == player.characterId);
+                        const agentid = agents.find(item => item.uuid == player.characterId);
                         const dbagent = dbstats.agents.find(item => item.agent == agentid.name);
                         const dbindex = dbstats.agents.findIndex(item => item.agent == agentid.name);
                         if (dbindex != -1) dbstats.agents.splice(dbindex, 1);
@@ -314,7 +314,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                 } else {
                     if (fmatches[i].data.matchInfo.queueId != '') {
                         const player = fmatches[i].data.players.find(item => item.puuid == dbstats.puuid);
-                        const agentid = agents.find(item => item.id == player.characterId);
+                        const agentid = agents.find(item => item.uuid == player.characterId);
                         const team = fmatches[i].data.teams.find(item => item.teamId == dbstats.puuid);
 
                         const dbcheck = await getDB('games').findOne({matchid: fmatches[i].data.matchInfo.matchId});
