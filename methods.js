@@ -15,6 +15,10 @@ Canvas.registerFont('assets/fonts/valorant_font.ttf', {family: 'valorant_font'})
 Canvas.registerFont('assets/fonts/umeboshi_.ttf', {family: 'japan2'});
 Canvas.registerFont('assets/fonts/anton.ttf', {family: 'anton'});
 Canvas.registerFont('assets/fonts/DINNextLTPro-Bold.ttf', {family: 'DinNext'});
+Canvas.registerFont('assets/fonts/aksaramatee_bold.ttf', { family: 'aksaramatee' })     // Thai
+Canvas.registerFont('assets/fonts/IBMPlexSansKR-Regular.ttf', { family: 'ibmplexsansKR' }) // Korean
+Canvas.registerFont('assets/fonts/OpenSans-Regular.ttf', { family: 'opensansR' })     // Vietnamese
+Canvas.registerFont('assets/fonts/SawarabiGothic-Regular.ttf', { family: 'sawarabigothic' })  // Japanese
 
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const mongoclient = new MongoClient(basedata.mongoaccess);

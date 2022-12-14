@@ -1,6 +1,6 @@
 import {axios, embedBuilder, ranks, old_ranks, moment, Canvas, getTranslations, getAgents, AttachmentBuilder, gamemodes} from '../methods.js';
 import {getGameKey} from './getGameKey.js';
-import {buildText} from './buildText.js';
+import {buildText, buildUsername} from './buildText.js';
 
 export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas} = {}) {
     const translations = getTranslations();
@@ -100,7 +100,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                         getAgents().find(item => item.displayName.toLowerCase() == red_players[i].character.toLowerCase()).fullPortrait
                 );
                 ctx.drawImage(agent, x_red_agent, 1480, 405, 405);
-                buildText({ctx, text: `${red_players[i].name} #${red_players[i].tag}`, size: 40, x: x_red_name, y: 1450, color: '#fff', align: 'center'});
+                buildUsername({ ctx, text: `${red_players[i].name} #${red_players[i].tag}`, size: 40, x: x_red_name, y: 1450, color: '#fff', align: 'center' })
                 buildText({ctx, text: red_players[i].stats.score, size: 60, x: x_red_score, y: 2025, color: '#fff', align: 'center'});
                 buildText({ctx, text: red_players[i].stats.kills, size: 60, x: x_red_kills, y: 2025, color: '#fff', align: 'center'});
                 buildText({
@@ -131,7 +131,7 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                         getAgents().find(item => item.displayName.toLowerCase() == blue_players[i].character.toLowerCase()).fullPortrait
                 );
                 ctx.drawImage(agent, x_blue_agent, 270, 405, 405);
-                buildText({ctx, text: `${blue_players[i].name} #${blue_players[i].tag}`, size: 40, x: x_blue_name, y: 240, color: '#fff', align: 'center'});
+                buildUsername({ctx, text: `${blue_players[i].name} #${blue_players[i].tag}`, size: 40, x: x_blue_name, y: 240, color: '#fff', align: 'center'})
                 buildText({ctx, text: blue_players[i].stats.score, size: 60, x: x_blue_score, y: 815, color: '#fff', align: 'center'});
                 buildText({ctx, text: blue_players[i].stats.kills, size: 60, x: x_blue_kills, y: 815, color: '#fff', align: 'center'});
                 buildText({
