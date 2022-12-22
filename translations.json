@@ -2337,7 +2337,7 @@
             },
             "451": {
                 "title": "Status: 451 | Bu hesap gizli",
-                "description": "Bu senin hesabın ise, VALORANT LABS'a seninle ilgili maç verilerini toplamaya izin vermek için bu mesajın altındaki 'Giriş Yap' butonuna tıklayın, RSO (Riot Sign On) üzerinden giriş yapmanız gerekecek. Giriş yaptıktan sonra, bu mesaj otomatik olarak güncellenecektir. Eğer güncellenmiyorsa, bu mesajın altındaki 'Yenile' düğmesini kullanın. Eğer tracker.gg'de zaten istatistikleriniz var ve orada oturum açmışsanız, bot bunları almaya çalışacaktır.",
+                "description": "Bu senin hesabın ise, VALORANT LABS'a seninle ilgili maç verilerini toplamaya izin vermek için bu mesajın altındaki 'Giriş Yap' butonuna tıklayın, RSO (Riot Sign On) üzerinden giriş yapmanız gerekecek. Giriş yaptıktan sonra, bu mesaj otomatik olarak güncellenecektir. Eğer güncellenmiyorsa, bu mesajın altındaki `Yenile` düğmesini kullanın. Eğer tracker.gg'de zaten istatistikleriniz var ve orada oturum açmışsanız, bot bunları almaya çalışacaktır.",
                 "component_login": "Giriş Yap",
                 "component_update": "Yenile",
                 "component_rank": "MMR"
@@ -2431,7 +2431,7 @@
             "500_title": "Oy doğrulama hatası",
             "500_desc": "Oy verip vermediğinizi kontrol ederken bir hata oluştu, lütfen kısa süre sonra tekrar deneyin....",
             "not_voted_title": "Henüz oy vermemişsin",
-            "not_voted_desc": "Bu komutu sonraki 24 saat boyunca kullanmak için lütfen top.gg'deki bota oy verin (top.gg'ye gitmek için bu mesajın altındaki butonuna tıklayın)",
+            "not_voted_desc": "Bu komutu sonraki 24 saat boyunca kullanmak için lütfen top.gg'deki bota oy verin (top.gg'ye gitmek için bu mesajın altındaki butona tıklayın)",
             "no_link_title": "Riot ID belirtilmemiş veya bağlantılı bir hesabınız yok",
             "no_link_desc": "İşte mevcut tüm komutlar",
             "base": "/link komutunu kullanarak Discord hesabınızı Riot hesabınızla bağladıysanız MMR verilerinizi gösterir..",
