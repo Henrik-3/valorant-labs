@@ -2337,7 +2337,7 @@
             },
             "451": {
                 "title": "Status: 451 | Bu hesap gizli",
-                "description": "Bu senin hesabın ise, VALORANT LABS'a seninle ilgili maç verilerini toplamaya izin vermek için bu mesajın altındaki 'Giriş Yap' butonuna tıklayın, RSO (Riot Sign On) üzerinden giriş yapmanız gerekecek. Giriş yaptıktan sonra, bu mesaj otomatik olarak güncellenecektir. Eğer güncellenmiyorsa, bu mesajın altındaki `Yenile` düğmesini kullanın. Eğer tracker.gg'de zaten istatistikleriniz var ve orada oturum açmışsanız, bot bunları almaya çalışacaktır.",
+                "description": "Bu senin hesabın ise, VALORANT LABS'a seninle ilgili maç verilerini toplamaya izin vermek için bu mesajın altındaki `Giriş Yap` butonuna tıklayın, RSO (Riot Sign On) üzerinden giriş yapmanız gerekecek. Giriş yaptıktan sonra, bu mesaj otomatik olarak güncellenecektir. Eğer güncellenmiyorsa, bu mesajın altındaki `Yenile` düğmesini kullanın. Eğer tracker.gg'de zaten istatistikleriniz var ve orada oturum açmışsanız, bot bunları almaya çalışacaktır.",
                 "component_login": "Giriş Yap",
                 "component_update": "Yenile",
                 "component_rank": "MMR"
