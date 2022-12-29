@@ -60,9 +60,9 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
         align: 'left',
     });
 
-    const best_agent = dbstats.agents.filter(item => item.agent != '').sort((agent1, agent2) => agent2.playtime - agent1.playtime)[0];
+    const best_agent = dbstats.agents.filter(item => item.agent && item.agent != '').sort((agent1, agent2) => agent2.playtime - agent1.playtime)[0];
     if (best_agent) {
-        if (!agent.response) {
+        if (!agent.response && best_agent) {
             const a_img = await Canvas.loadImage(agent.find(item => item.displayName.toLowerCase() == best_agent.agent.toLowerCase()).fullPortrait);
             ctx.drawImage(a_img, 2475, 475, 725, 725);
             buildText({ctx, text: (best_agent.kills / best_agent.deaths).toFixed(2), size: 80, x: 3535, y: 690, align: 'center', color: '#ff4654'});
@@ -98,8 +98,10 @@ export const buildStatsImage = async function ({dbstats, agent, modes, bgcanvas}
             const mode_img = await Canvas.loadImage(mode_data.displayIcon);
             ctx.drawImage(mode_img, 700, modeimgk[i], 100, 100);
         }
-        const agent_img = await Canvas.loadImage(agent.find(item => item.displayName.toLowerCase() == matches[i].agent.toLowerCase()).displayIcon);
-        ctx.drawImage(agent_img, 700, agentimgk[i], 100, 100);
+        if (matches[i].agent) {
+            const agent_img = await Canvas.loadImage(agent.find(item => item.displayName.toLowerCase() == matches[i].agent.toLowerCase()).displayIcon);
+            ctx.drawImage(agent_img, 700, agentimgk[i], 100, 100);
+        }
         buildText({ctx, text: 'Score', size: 110, x: 1525, y: mapk[i]});
         buildText({ctx, text: matches[i].teamblue_rounds, size: 90, x: 1595, y: modek[i], color: '#0088ff', align: 'center'});
         buildText({ctx, text: ':', size: 90, x: 1675, y: modek[i], align: 'center'});

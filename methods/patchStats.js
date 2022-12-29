@@ -242,11 +242,11 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                         if (!team.won) dbstats.stats.wins = !dbstats.stats?.wins ? 0 : dbstats.stats?.wins + 0;
 
                         const agentid = agents.find(item => item.uuid == player.characterId);
-                        const dbagent = dbstats.agents.find(item => item.agent == agentid.name);
-                        const dbindex = dbstats.agents.findIndex(item => item.agent == agentid.name);
+                        const dbagent = dbstats.agents.find(item => item.agent == agentid.displayName);
+                        const dbindex = dbstats.agents.findIndex(item => item.agent == agentid.displayName);
                         if (dbindex != -1) dbstats.agents.splice(dbindex, 1);
                         const agent = dbindex != -1 ? dbagent : {};
-                        agent.agent = agentid.name;
+                        agent.agent = agentid.displayName;
                         agent.playtime = !isNaN(fmatches[i].data.matchInfo.gameLengthMillis)
                             ? Number(agent.playtime ? agent.playtime : 0) + Number(fmatches[i].data.matchInfo.gameLengthMillis)
                             : 0;
@@ -269,7 +269,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 gamekey: dbcheck.gamekey,
                                 id: fmatches[i].data.matchInfo.matchId,
                                 start: fmatches[i].data.matchInfo.gameStartMillis,
-                                agent: agentid.name,
+                                agent: agentid.displayName,
                                 mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
                                 map: maps[fmatches[i].data.matchInfo.mapId],
                                 teamblue_won: team.won,
@@ -293,7 +293,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                         gamekey: rid,
                                         id: fmatches[i].data.matchInfo.matchId,
                                         start: fmatches[i].data.matchInfo.gameStartMillis,
-                                        agent: agentid.name,
+                                        agent: agentid.displayName,
                                         mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
                                         map: maps[fmatches[i].data.matchInfo.mapId],
                                         teamblue_won: team.won,
@@ -324,7 +324,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                 gamekey: dbcheck.gamekey,
                                 id: fmatches[i].data.matchInfo.matchId,
                                 start: fmatches[i].data.matchInfo.gameStartMillis,
-                                agent: agentid.name,
+                                agent: agentid.displayName,
                                 mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
                                 map: maps[fmatches[i].data.matchInfo.mapId],
                                 teamblue_won: team.won,
@@ -348,7 +348,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                                         gamekey: rid,
                                         id: fmatches[i].data.matchInfo.matchId,
                                         start: fmatches[i].data.matchInfo.gameStartMillis,
-                                        agent: agentid.name,
+                                        agent: agentid.displayName,
                                         mode: gamemodes[fmatches[i].data.matchInfo.queueId].name,
                                         map: maps[fmatches[i].data.matchInfo.mapId],
                                         teamblue_won: team.won,
