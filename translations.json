@@ -2337,7 +2337,7 @@
             },
             "451": {
                 "title": "Status: 451 | Bu hesap gizli",
-                "description": "Eğer bu sizin hesabınızsa VALORANT LABS'e maç verilerinin iznini vermek için bu yazının altındaki `Oturum Aç` tuşuna basın. Bunun için Riot hesabınızla oturum açmanız gerekecek. Oturum açtıktan sonra, bu mesaj otomatik olarak güncellenmeli. Eğer güncellenmiyorsa, bu mesajın altındaki `Yenile` butonunu kullanın. Eğer ki zaten tracker.gg'de oturum açtıysanız ve istatistiklere sahipseniz, bot onları almaya çalışacak.",
+                "description": "Bu senin hesabın ise, VALORANT LABS'a seninle ilgili maç verilerini toplamaya izin vermek için bu mesajın altındaki `Giriş Yap` butonuna tıklayın, RSO (Riot Sign On) üzerinden giriş yapmanız gerekecek. Giriş yaptıktan sonra, bu mesaj otomatik olarak güncellenecektir. Eğer güncellenmiyorsa, bu mesajın altındaki `Yenile` düğmesini kullanın. Eğer tracker.gg'de zaten istatistikleriniz var ve orada oturum açmışsanız, bot bunları almaya çalışacaktır.",
                 "component_login": "Giriş Yap",
                 "component_update": "Yenile",
                 "component_rank": "MMR"
@@ -2353,25 +2353,25 @@
             "agentrole": "Rol"
         },
         "autorole": {
-            "send_desc": "Oyun içi rolünüzü almak için `Ekle` butonuna basın. Gördüğünüz linke tıklayın. Riot Games oturum açma sayfasına yönlendirileceksiniz. \n\n**Önemli:** <@702201518329430117> Oturum açma bilgilerinizi göremez, yalnızca aşağıdaki örnek verileri alıyoruz.\n {puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'} \n `Güncelle` butonuyla rank atladığınızda rolünüzü güncelleyebilirsiniz. \n `Kaldır` butonuyla rolünüzü silebilirsiniz.",
+            "send_desc": "Oyun içi rolünüzü almak için `Ekle` butonuna basın. Gördüğünüz linke tıklayın. Riot Games oturum açma sayfasına yönlendirileceksiniz. \n\n**Önemli:** <@702201518329430117> Oturum açma bilgilerinizi göremez, yalnızca aşağıdaki örnek verileri alıyoruz.\n```{puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'}```\n`Güncelle` butonuyla rank atladığınızda rolünüzü güncelleyebilirsiniz. \n`Kaldır` butonuyla rolünüzü silebilirsiniz.",
             "created_title": "OtoRol mesajınız oluşturuldu",
             "created_desc": "Mesaja sağ tıklayarak bu mesajı istediğiniz gibi düzenleyebilirsiniz, Uygulamalar'ı seçin ve 'Edit AutoRole' tıklayın. Ardından mesajı düzenleyebileceğiniz bir pencere açılacaktır",
             "correct": "✅ Doğru yapılandırılmış",
             "wrong": "⛔ Henüz yapılandırılmadı",
             "member_error_title": "Üye izni yok",
-            "member_error_desc": "Botun size bu rolleri verme izni yok, lütfen botun size rolü vermek için yeterli izne sahip olduğundan emin olun.",
+            "member_error_desc": "Botun sana bu rolleri verme izni yok, lütfen botun sana rolü vermek için yeterli izne sahip olduğundan emin olun.",
             "roles_error_title": "Rol izni yok",
             "roles_error_desc": "Bot, kullanıcılara aşağıdaki rolleri atamak için yeterli izinlere sahip değil. Lütfen rollerin bot rolünün altında düzenlendiğinden emin olun",
             "message_send_error_title": "Kanal izni yok",
             "message_send_error_desc": "Lütfen <@702201518329430117> botunun `MESAJ GÖNDER` izni olduğundan emin olun",
             "message_edit_error_title": "OtoRol mesajı yok",
-            "message_edit_error_desc": "Bu bir OtoRol mesajı değil, öyleyse düzenlenemez",
+            "message_edit_error_desc": "Bu bir OtoRol mesajı değildir, bu nedenle düzenlenemez",
             "autorole_permission_title": "İzin yok",
             "autorole_permission_desc": "Lütfen <@702201518329430117> botunun `ROLLERİ YÖNET` izni olduğundan emin olun.",
-            "role_given_title": "Verilen rol",
-            "role_given_desc": "Oyun içi rolünüz size verildi, Discord API sınırlamaları nedeniyle rolünüzü almanız bir dakika kadar sürebilir.",
+            "role_given_title": "Rol Verildi",
+            "role_given_desc": "Oyun içi rolün sana verildi, Discord API sınırlamaları nedeniyle rolünü almak bir dakika sürebilir.",
             "role_removed_title": "Rol Kaldırıldı",
-            "role_removed_desc": "Oyun içi rolünüz tekrar kaldırıldı. Tekrar eklemek isterseniz `Güncelle` butonunun üstüne tıklamanız yeterli.",
+            "role_removed_desc": "Oyun içi rolünüz kaldırıldı. Tekrar eklemek isterseniz `Güncelle` butonuna tıklamanız yeterli.",
             "add": "Ekle",
             "update": "Güncelle",
             "remove": "Kaldır",
@@ -2409,35 +2409,35 @@
         },
         "game": {
             "unknown_title": "Bilinmeyen maç",
-            "unknown_desc": "Lütfen maç anahtarının var olduğundan ve doğru girildiğinden emin olun.",
+            "unknown_desc": "Lütfen maç anahtarının var olduğundan ve doğru bir şekilde girildiğinden emin olun.",
             "loading_title": "Lütfen bekleyin...",
-            "loading_desc": "Seçtiğiniz maç oluşturuldu, lütfen biraz bekleyin"
+            "loading_desc": "Seçtiğiniz maç oluşturuluyor, lütfen biraz bekleyin"
         },
         "link": {
-            "clink_title": "Şuan ki Bağlı Hesabınız",
+            "clink_title": "Şu anki bağlı hesabınız",
             "clink_desc": "Bağlı hesabınızın adı:",
             "nolink_title": "Bağlı hesap yok",
-            "nolink_other_desc": "Talep edilen kullanıcının bağlantılı bir hesabı yok",
-            "nolink_desc": "Şu anda bağlı bir hesabınız yok. Discord hesabınızı bir VALORANT hesabına bağlamak için bu mesajın altındaki `Bağla` butonuna tıklayın.",
+            "nolink_other_desc": "İstenen kullanıcının bağlı bir hesabı yok",
+            "nolink_desc": "Bağlı bir hesabınız yok. Discord hesabınızı VALORANT hesabına bağlamak için bu mesajın altındaki `Bağla` butonuna tıklayın.",
             "removelink_title": "Bağlantı kaldırıldı",
             "removelink_desc": "Bağlantınız başarıyla kaldırıldı",
             "generate_link": "Bağla",
             "link_generated_title": "Giriş bağlantınız oluşturuldu",
-            "link_generated_desc": "İşlemi başlatmak için lütfen aşağıdaki bağlantıya tıklayın. Not: Bu bağlantı yalnızca bir saat geçerlidir.\n\n"
+            "link_generated_desc": "Lütfen işlemi başlatmak için aşağıdaki bağlantıya tıklayın. Not: Bu bağlantı yalnızca bir saat geçerlidir.\n\n"
         },
         "mmr": {
             "429_title": "Top.gg oy kontrol limiti",
-            "429_desc": "Top.gg'deki oyları kontrol etme sınırına ulaşıldı, lütfen bir veya iki dakika bekleyin ve tekrar deneyin.",
+            "429_desc": "Top.gg'deki oyları kontrol etme sınırına ulaşıldı, lütfen birkaç dakika bekleyin ve tekrar deneyin.",
             "500_title": "Oy doğrulama hatası",
             "500_desc": "Oy verip vermediğinizi kontrol ederken bir hata oluştu, lütfen kısa süre sonra tekrar deneyin....",
             "not_voted_title": "Henüz oy vermemişsin",
-            "not_voted_desc": "Bu komutu sonraki 24 saat boyunca kullanmak için lütfen top.gg'deki bota oy verin (top.gg'ye gitmek için bu mesajın altındaki düğmeye tıklayın)",
+            "not_voted_desc": "Bu komutu sonraki 24 saat boyunca kullanmak için lütfen top.gg'deki bota oy verin (top.gg'ye gitmek için bu mesajın altındaki butona tıklayın)",
             "no_link_title": "Riot ID belirtilmemiş veya bağlantılı bir hesabınız yok",
             "no_link_desc": "İşte mevcut tüm komutlar",
             "base": "/link komutunu kullanarak Discord hesabınızı Riot hesabınızla bağladıysanız MMR verilerinizi gösterir..",
             "options": "Belirtilen hesabın MMR verilerini gösterir",
             "loading_title": "Lütfen bekleyin...",
-            "loading_desc": "Seçilen sezonun MMR verileri yüklenecek, lütfen biraz bekleyin",
+            "loading_desc": "Seçilen sezonun MMR verileri yükleniyor, lütfen biraz bekleyin",
             "no_rank_title": "Şu anda rütbeniz yok",
             "no_rank_desc": "Şu anda rütbeniz yok veya son dereceli oyununuz çok uzun zaman önceydi. Lütfen dereceli bir oyun oynayın ve ardından tekrar deneyin."
         },
@@ -2447,9 +2447,9 @@
             "imggeneration_title": "Lütfen bir süre bekleyin",
             "imggeneration_desc": "Yüklenen dosya, seçilen türe göre arkaplan olarak oluşturulur lütfen bir süre bekleyin. Daha sonra konfigürasyonun kaydedilip kaydedilmeyeceğini seçebilirsiniz.",
             "imggenerated_title": "Resim başarıyla oluşturuldu",
-            "imggenerated_desc": "Burada bitmiş görüntüyü komutu kullanırken göründüğü gibi görebilirsiniz. Görüntü hayal ettiğiniz gibi görünüyorsa, aşağıdaki yeşil düğmeye tıklayın. Resim istediğiniz gibi görünmüyorsa kırmızı düğmeye tıklayın ve başka bir resim yükleyin.",
+            "imggenerated_desc": "Burada komutu kullanarak nasıl görüneceğini görebileceksiniz. Eğer görüntü hayal ettiğiniz gibi görünüyorsa, aşağıdaki yeşil butona tıklayın. Eğer görüntü istediğiniz gibi görünmüyorsa, kırmızı düğmeye tıklayın ve başka bir resim yükleyin.",
             "imggenerated_label_accept": "Kaydet",
-            "imggenerated_label_deny": "İptal",
+            "imggenerated_label_deny": "İptal et",
             "not_set": "Ayarlanmadı"
         },
         "status": {
@@ -2459,12 +2459,12 @@
             "type": "Sorun türü:"
         },
         "stats": {
-            "missing_matches_title": "Bazı maçlar hala kayıp",
-            "missing_matches_desc": "Eksik maçlar indirilir ve arka planda işlenir. Bu tamamlandığında, görüntü güncellenir",
+            "missing_matches_title": "Bazı maçlar hala eksik",
+            "missing_matches_desc": "Eksik maçlar arka planda indirilir ve işlenir. Bu tamamlandıktan sonra, görüntü güncellenir",
             "invalidriotid_title": "Yanlış Riot ID",
             "invalidriotid_desc": "Verilen Riot ID yanlış. Lütfen sadece adı değil, etiketinizi de girdiğinizden emin olun.\n\nYanlış Riot ID: Henrik3\nDoğru Riot ID: Henrik3#VALO",
             "noriotid_title": "Riot ID belirtilmedi",
-            "noriotid_desc": "Hem bağlı hesabınız yok hem de adınız belirtilmedi. Lütfen kendinizi `/link add` ile bağlayın veya bir Riot ID girin",
+            "noriotid_desc": "Hem bağlı bir hesabınız yok, hem de bir isim belirtilmemiş. Lütfen hesabınızı `/link add` ile bağlayın veya bir Riot ID girin",
             "game_select": "Bir maç seçin"
         },
         "vote": {
