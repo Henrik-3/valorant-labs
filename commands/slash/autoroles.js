@@ -1,5 +1,5 @@
 import {embedBuilder, getTranslations, roles, firstletter, ButtonStyle, ComponentType, perms, getFunction} from '../../methods.js';
-
+//rework
 export async function execute({interaction, guilddata} = {}) {
     const translations = getTranslations();
     const getAutoRoles = getFunction('getAutoRoles');
