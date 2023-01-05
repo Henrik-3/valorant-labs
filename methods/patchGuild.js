@@ -1,43 +1,44 @@
-import {getDB, unlinkSync, embedBuilder, ComponentType, ButtonStyle, writeFileSync, brotliCompressSync, getTranslations} from '../methods.js';
-import {buildBackground} from './buildBackground.js';
-import {buildStatsImage} from './buildStatsImage.js';
-import {buildGameImage} from './buildGameImage.js';
-import {buildMMRImage} from './buildMMRImage.js';
-import {getAutoRoles} from './getAutoRoles.js';
-import {getGuild} from './getGuild.js';
+import {getDB, unlinkSync, embedBuilder, ComponentType, ButtonStyle, writeFileSync, brotliCompressSync, getTranslations, getFunction} from '../methods.js';
+
+const getAutoRoles = getFunction('getAutoRoles');
+const getGuild = getFunction('getGuild');
+const buildMMRImage = getFunction('buildMMRImage');
+const buildGameImage = getFunction('buildGameImage');
+const buildStatsImage = getFunction('buildStatsImage');
+const buildBackground = getFunction('buildBackground');
 
 export const patchGuild = async function ({interaction, key, value, additionaldata, guilddata} = {}) {
     let doc;
     const translations = getTranslations();
     switch (key) {
         case 'prefix': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {prefix: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {prefix: value}}, {upsert: false, returnDocument: 'after'})).value;
             break;
         }
         case 'language': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {lang: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {lang: value}}, {upsert: false, returnDocument: 'after'})).value;
             break;
         }
         case 'patchnotes': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {news: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {news: value}}, {upsert: false, returnDocument: 'after'})).value;
             break;
         }
         case 'othernews': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {onews: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {onews: value}}, {upsert: false, returnDocument: 'after'})).value;
             break;
         }
         case 'serverstatus': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {serverstatus: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {serverstatus: value}}, {upsert: false, returnDocument: 'after'})).value;
             break;
         }
         case 'background': {
             if (value == false) {
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {background: value}}, {upsert: false, returnDocument: 'before'}))
+                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background: value}}, {upsert: false, returnDocument: 'before'}))
                     .value;
                 unlinkSync(`./settings/backgrounds/${doc.background}.png`);
                 doc.background = false;
             } else {
-                doc = await getDB('settings').findOne({gid: interaction.guild.id});
+                doc = await getDB('settings').findOne({gid: interaction.guildId});
                 await interaction.editReply({
                     embeds: [
                         embedBuilder({
@@ -106,7 +107,7 @@ export const patchGuild = async function ({interaction, key, value, additionalda
                 return error;
             });
             if (background.response) {
-                doc = await getDB('settings').findOne({gid: interaction.guild.id});
+                doc = await getDB('settings').findOne({gid: interaction.guildId});
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({
@@ -119,13 +120,13 @@ export const patchGuild = async function ({interaction, key, value, additionalda
             const compressed = brotliCompressSync(background.data, {params: {[constants.BROTLI_PARAM_QUALITY]: 6}});
             writeFileSync(`./settings/backgrounds/${value}.png`, compressed);
             if (additionaldata == 'stats')
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {background_stats: value}}, {upsert: false, returnDocument: 'after'}))
+                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background_stats: value}}, {upsert: false, returnDocument: 'after'}))
                     .value;
             if (additionaldata == 'game')
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {background_game: value}}, {upsert: false, returnDocument: 'after'}))
+                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background_game: value}}, {upsert: false, returnDocument: 'after'}))
                     .value;
             if (additionaldata == 'mmr')
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: {background_mmr: value}}, {upsert: false, returnDocument: 'after'}))
+                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background_mmr: value}}, {upsert: false, returnDocument: 'after'}))
                     .value;
             break;
         }
@@ -134,15 +135,67 @@ export const patchGuild = async function ({interaction, key, value, additionalda
             autoroleupdate[`autoroles.${guilddata.autoroles?.findIndex(item => item.name == value)}`] = {id: additionaldata, name: value};
             doc =
                 guilddata.autoroles && guilddata.autoroles.some(item => item.name == value)
-                    ? (await getDB('settings').findOneAndUpdate({gid: interaction.guild.id}, {$set: autoroleupdate}, {upsert: false, returnDocument: 'after'})).value
+                    ? (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: autoroleupdate}, {upsert: false, returnDocument: 'after'})).value
                     : (
                           await getDB('settings').findOneAndUpdate(
-                              {gid: interaction.guild.id},
+                              {gid: interaction.guildId},
                               {$push: {autoroles: {id: additionaldata, name: value}}},
                               {upsert: false, returnDocument: 'after'}
                           )
                       ).value;
-            return getAutoRoles(interaction);
+            const autoroles_data = await getAutoRoles({interaction, guilddata: doc});
+            const mapping = {
+                0: 0,
+                1: 5,
+                2: 8,
+                3: 11,
+                4: 14,
+                5: 17,
+                6: 20,
+                7: 23,
+                8: 26,
+                9: 27,
+            };
+            return interaction.editReply({
+                embeds: [
+                    embedBuilder({
+                        title: `AutoRoles ${interaction.guild.name}`,
+                        desc: translations[guilddata.lang].autorole.settings_desc,
+                        additionalFields: autoroles_data,
+                        footer: 'VALORANT LABS [AUTOROLES]',
+                    }),
+                ],
+                components: [
+                    {
+                        type: ComponentType.ActionRow,
+                        components: [
+                            {
+                                type: ComponentType.StringSelect,
+                                customId: `autoroles;settings`,
+                                maxValues: 1,
+                                minValues: 1,
+                                placeholder: translations[guilddata.lang].autorole.settings_placeholder,
+                                options: autoroles_data.map((i, index) => {
+                                    const crank = ranks[mapping[index]];
+                                    return {
+                                        emoji: {
+                                            id: i.value.startsWith('<@&')
+                                                ? crank.discordid.substring(2, crank.discordid.length - 1).split(':')[1]
+                                                : crank.graydiscordid.substring(2, crank.graydiscordid.length - 1).split(':')[1],
+                                        },
+                                        label: i.name,
+                                        value: String(mapping[index]),
+                                        description: i.value.startsWith('<@&')
+                                            ? translations[guilddata.lang].autorole.settings_set
+                                            : translations[guilddata.lang].autorole.settings_not_set,
+                                    };
+                                }),
+                            },
+                        ],
+                    },
+                ],
+                attachments: [],
+            });
         }
     }
     getGuild(interaction);

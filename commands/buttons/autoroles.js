@@ -1,9 +1,11 @@
-import {uuidv4, getDB, embedBuilder, getTranslations, axios, roles, firstletter, getFunction} from '../../methods.js';
+import {uuidv4, getDB, embedBuilder, getTranslations, axios, roles, firstletter, getFunction, ComponentType, ranks, ChannelType, ButtonStyle} from '../../methods.js';
 
 export async function execute({interaction, args, guilddata} = {}) {
     const translations = getTranslations();
     const errorhandlerinteraction = getFunction('errorhandlerinteraction');
-    await interaction.deferReply({ephemeral: true});
+    const getAutoRoles = getFunction('getAutoRoles');
+    if (['generate', 'update', 'remove'].some(i => i == args[1])) await interaction.deferReply({ephemeral: true});
+    else await interaction.deferUpdate({ephemeral: true});
     switch (args[1]) {
         case 'generate': {
             const uuid = uuidv4();
@@ -119,6 +121,140 @@ export async function execute({interaction, args, guilddata} = {}) {
                         title: translations[guilddata.lang].autorole.role_removed_title,
                         desc: translations[guilddata.lang].autorole.role_removed_desc,
                     }),
+                ],
+            });
+        }
+        case 'settings': {
+            const autoroles_data = await getAutoRoles({interaction, guilddata});
+            const mapping = {
+                0: 0,
+                1: 5,
+                2: 8,
+                3: 11,
+                4: 14,
+                5: 17,
+                6: 20,
+                7: 23,
+                8: 26,
+                9: 27,
+            };
+            return interaction.editReply({
+                embeds: [
+                    embedBuilder({
+                        title: `AutoRoles @${interaction.guild.name}`,
+                        desc: translations[guilddata.lang].autorolettings_desc,
+                        additionalFields: autoroles_data,
+                        footer: 'VALORANT LABS [AUTOROLES]',
+                    }),
+                ],
+                components: [
+                    {
+                        type: ComponentType.ActionRow,
+                        components: [
+                            {
+                                type: ComponentType.StringSelect,
+                                customId: `autoroles;settings`,
+                                maxValues: 1,
+                                minValues: 1,
+                                placeholder: translations[guilddata.lang].autoroleettings_placeholder,
+                                options: autoroles_data.map((i, index) => {
+                                    const crank = ranks[mapping[index]];
+                                    return {
+                                        emoji: {
+                                            id: i.value.startsWith('<@&')
+                                                ? crank.discordid.substring(2, crank.discordid.length - 1).split(':')[1]
+                                                : crank.graydiscordid.substring(2, crank.graydiscordid.length - 1).split(':')[1],
+                                        },
+                                        label: i.name,
+                                        value: String(index),
+                                        description: i.value.startsWith('<@&')
+                                            ? translations[guilddata.lang].autoroleettings_set
+                                            : translations[guilddata.lang].autoroleettings_not_set,
+                                    };
+                                }),
+                            },
+                        ],
+                    },
+                    {
+                        type: ComponentType.ActionRow,
+                        components: [
+                            {
+                                type: ComponentType.Button,
+                                style: ButtonStyle.Danger,
+                                label: translations[guilddata.lang].autorole.back_to_overview,
+                                customId: `autoroles;overview`,
+                            },
+                        ],
+                    },
+                ],
+                attachments: [],
+            });
+        }
+        case 'message': {
+            return interaction.editReply({
+                embeds: [
+                    embedBuilder({
+                        title: `AutoRoles @${interaction.guild.name}`,
+                        desc: translations[guilddata.lang].autorole.message_desc,
+                        footer: 'VALORANT LABS [AUTOROLES]',
+                    }),
+                ],
+                components: [
+                    {
+                        type: ComponentType.ActionRow,
+                        components: [
+                            {
+                                type: ComponentType.ChannelSelect,
+                                customId: `autoroles;message`,
+                                maxValues: 1,
+                                minValues: 1,
+                                placeholder: translations[guilddata.lang].autorole.message_placeholder,
+                                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                            },
+                        ],
+                    },
+                    {
+                        type: ComponentType.ActionRow,
+                        components: [
+                            {
+                                type: ComponentType.Button,
+                                style: ButtonStyle.Danger,
+                                label: translations[guilddata.lang].autorole.back_to_overview,
+                                customId: `autoroles;overview`,
+                            },
+                        ],
+                    },
+                ],
+                attachments: [],
+            });
+        }
+        case 'overview': {
+            return interaction.editReply({
+                embeds: [
+                    embedBuilder({
+                        title: translations[guilddata.lang].autorole.overview_title,
+                        desc: translations[guilddata.lang].autorole.overview_desc,
+                        footer: 'VALORANT LABS [AUTOROLE OVERVIEW]',
+                    }),
+                ],
+                components: [
+                    {
+                        type: ComponentType.ActionRow,
+                        components: [
+                            {
+                                type: ComponentType.Button,
+                                style: ButtonStyle.Danger,
+                                label: translations[guilddata.lang].autorole.overview_button_settings,
+                                customId: `autoroles;settings`,
+                            },
+                            {
+                                type: ComponentType.Button,
+                                style: ButtonStyle.Danger,
+                                label: translations[guilddata.lang].autorole.overview_button_message,
+                                customId: `autoroles;message`,
+                            },
+                        ],
+                    },
                 ],
             });
         }

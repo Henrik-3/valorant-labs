@@ -22,6 +22,8 @@ client.ncommands = new Collection();
 client.scommands = new Collection();
 client.buttoncommands = new Collection();
 client.selectcommands = new Collection();
+client.channelselectcommands = new Collection();
+client.roleselectcommands = new Collection();
 client.modals = new Collection();
 client.context = new Collection();
 client.methods = new Collection();
@@ -29,6 +31,8 @@ const normalcommands = readdirSync('./commands/normal').filter(file => file.ends
 const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
 const buttoncommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
 const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'));
+const channelselectcommands = readdirSync('./commands/channel_select').filter(file => file.endsWith('.js'));
+const roleselectcommands = readdirSync('./commands/role_select').filter(file => file.endsWith('.js'));
 const modalcommands = readdirSync('./commands/modals').filter(file => file.endsWith('.js'));
 const contextcommands = readdirSync('./commands/context').filter(file => file.endsWith('.js'));
 const methodfiles = readdirSync('./methods').filter(file => file.endsWith('.js'));
@@ -50,6 +54,14 @@ async function update() {
         const cmd = await import(`./commands/select/${selectcommands[i]}?update=${Date.now()}`);
         client.selectcommands.set(cmd.name, cmd);
     }
+    for (let i = 0; channelselectcommands.length > i; i++) {
+        const cmd = await import(`./commands/channel_select/${channelselectcommands[i]}?update=${Date.now()}`);
+        client.channelselectcommands.set(cmd.name, cmd);
+    }
+    for (let i = 0; roleselectcommands.length > i; i++) {
+        const cmd = await import(`./commands/role_select/${roleselectcommands[i]}?update=${Date.now()}`);
+        client.roleselectcommands.set(cmd.name, cmd);
+    }
     for (let i = 0; modalcommands.length > i; i++) {
         const cmd = await import(`./commands/modals/${modalcommands[i]}?update=${Date.now()}`);
         client.modals.set(cmd.name, cmd);
@@ -67,7 +79,7 @@ async function update() {
 update();
 
 client.on('ready', async () => {
-    console.log('tes');
+    console.log(`Shard: ${client.shard.ids[0]} Online`);
     /*if(client.shard.ids[0] == 0) {
         const competitivetiers = await axios.get("https://valorant-api.com/v1/competitivetiers")
         const tiers = competitivetiers.data.data.find(item => item.uuid == "03621f52-342b-cf4e-4f86-9350a49c6d04").tiers
@@ -145,6 +157,7 @@ client.on('interactionCreate', async interaction => {
         if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
         if (interaction instanceof ModalSubmitInteraction) return client.modals.get(args[0]).execute({interaction, args, guilddata});
         if (interaction.isStringSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
+        if (interaction.isChannelSelectMenu()) return client.channelselectcommands.get(args[0]).execute({interaction, args, guilddata});
         if (interaction.isUserContextMenuCommand() || interaction.isMessageContextMenuCommand())
             return client.context.get(interaction.commandName).execute({interaction, args, guilddata});
     }
@@ -165,6 +178,12 @@ client.on('interactionCreate', async interaction => {
         const selectcommands = readdirSync('./commands/select')
             .filter(file => file.endsWith('.js'))
             .map(i => path.join('file:///', __dirname, `/commands/select/${i}?update=${Date.now()}`));
+        const channelselectcommands = readdirSync('./commands/channel_select')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/channel_select/${i}?update=${Date.now()}`));
+        const roleselectcommands = readdirSync('./commands/role_select')
+            .filter(file => file.endsWith('.js'))
+            .map(i => path.join('file:///', __dirname, `/commands/role_select/${i}?update=${Date.now()}`));
         const modalcommands = readdirSync('./commands/modals')
             .filter(file => file.endsWith('.js'))
             .map(i => path.join('file:///', __dirname, `/commands/modals/${i}?update=${Date.now()}`));
@@ -176,7 +195,10 @@ client.on('interactionCreate', async interaction => {
             .map(i => path.join('file:///', __dirname, `/methods/${i}?update=${Date.now()}`));
         update();
         client.shard.broadcastEval(
-            async (client, {normalcommands, slashcommands, buttoncommand, selectcommands, modalcommands, contextcommands, methodfiles}) => {
+            async (
+                client,
+                {normalcommands, slashcommands, buttoncommand, selectcommands, modalcommands, contextcommands, methodfiles, channelselectcommands, roleselectcommands}
+            ) => {
                 try {
                     for (let i = 0; normalcommands.length > i; i++) {
                         const command = await import(normalcommands[i]);
@@ -193,6 +215,14 @@ client.on('interactionCreate', async interaction => {
                     for (let i = 0; selectcommands.length > i; i++) {
                         const cmd = await import(selectcommands[i]);
                         client.selectcommands.set(cmd.name, cmd);
+                    }
+                    for (let i = 0; channelselectcommands.length > i; i++) {
+                        const cmd = await import(channelselectcommands[i]);
+                        client.channelselectcommands.set(cmd.name, cmd);
+                    }
+                    for (let i = 0; roleselectcommands.length > i; i++) {
+                        const cmd = await import(roleselectcommands[i]);
+                        client.roleselectcommands.set(cmd.name, cmd);
                     }
                     for (let i = 0; modalcommands.length > i; i++) {
                         const cmd = await import(modalcommands[i]);
@@ -219,6 +249,8 @@ client.on('interactionCreate', async interaction => {
                     modalcommands,
                     contextcommands,
                     methodfiles,
+                    channelselectcommands,
+                    roleselectcommands,
                 },
             }
         );
