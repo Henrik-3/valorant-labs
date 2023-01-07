@@ -166,7 +166,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                                                 : crank.graydiscordid.substring(2, crank.graydiscordid.length - 1).split(':')[1],
                                         },
                                         label: i.name,
-                                        value: String(index),
+                                        value: String(mapping[index]),
                                         description: i.value.startsWith('<@&')
                                             ? translations[guilddata.lang].autoroleettings_set
                                             : translations[guilddata.lang].autoroleettings_not_set,

@@ -20,14 +20,12 @@ export async function execute({interaction, args, guilddata} = {}) {
         });
     const translations = getTranslations();
     const patchGuild = getFunction('patchGuild');
-    const competitive = getCompetitiveTiers();
     switch (args[1]) {
         case 'role': {
-            const rank = competitive.find(i => i.tier == Number(args[2]));
             return patchGuild({
                 interaction,
                 key: 'autoroles',
-                value: rank.divisionName.toLowerCase(),
+                value: args[2],
                 additionaldata: interaction.values[0],
                 guilddata,
             });

@@ -158,6 +158,7 @@ client.on('interactionCreate', async interaction => {
         if (interaction instanceof ModalSubmitInteraction) return client.modals.get(args[0]).execute({interaction, args, guilddata});
         if (interaction.isStringSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
         if (interaction.isChannelSelectMenu()) return client.channelselectcommands.get(args[0]).execute({interaction, args, guilddata});
+        if (interaction.isRoleSelectMenu()) return client.roleselectcommands.get(args[0]).execute({interaction, args, guilddata});
         if (interaction.isUserContextMenuCommand() || interaction.isMessageContextMenuCommand())
             return client.context.get(interaction.commandName).execute({interaction, args, guilddata});
     }

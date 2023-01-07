@@ -2,8 +2,8 @@ import {embedBuilder, perms, getTranslations, getCompetitiveTiers, roles, firstl
 
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate({ephemeral: true});
-    const competitive = getCompetitiveTiers();
     const translations = getTranslations();
+    const competitive = getCompetitiveTiers();
     if (!interaction.member.permissions.has(perms.ManageGuild))
         return interaction.editReply({
             embeds: [
@@ -42,7 +42,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                                 maxValues: 1,
                                 minValues: 1,
                                 placeholder: translations[guilddata.lang].autorole.settings_role_placeholder,
-                                customId: `autoroles;role;${interaction.values[0]}`,
+                                customId: `autoroles;role;${rank.divisionName.toLowerCase()}`,
                             },
                         ],
                     },
