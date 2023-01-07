@@ -36,6 +36,19 @@ export async function execute({interaction, args, guilddata} = {}) {
                             footer: 'VALORANT LABS [ROLE PERMISSION ERROR]',
                         }),
                     ],
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.Button,
+                                    style: ButtonStyle.Danger,
+                                    label: translations[guilddata.lang].autorole.back_to_overview,
+                                    customId: `autoroles;overview`,
+                                },
+                            ],
+                        },
+                    ],
                 });
             if (!interaction.client.channels.cache.get(interaction.values[0]).permissionsFor(interaction.client.user.id).has(perms.SendMessages))
                 return interaction.editReply({
@@ -45,6 +58,19 @@ export async function execute({interaction, args, guilddata} = {}) {
                             desc: translations[guilddata.lang].autorole.message_send_error_desc,
                             footer: 'VALORANT LABS [ROLE PERMISSION ERROR]',
                         }),
+                    ],
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.Button,
+                                    style: ButtonStyle.Danger,
+                                    label: translations[guilddata.lang].autorole.back_to_overview,
+                                    customId: `autoroles;overview`,
+                                },
+                            ],
+                        },
                     ],
                 });
             await interaction.client.channels.cache
@@ -91,6 +117,19 @@ export async function execute({interaction, args, guilddata} = {}) {
                                 desc: translations[guilddata.lang].autorole.message_send_error_desc,
                                 footer: 'VALORANT LABS [ROLE PERMISSION ERROR]',
                             }),
+                        ],
+                        components: [
+                            {
+                                type: ComponentType.ActionRow,
+                                components: [
+                                    {
+                                        type: ComponentType.Button,
+                                        style: ButtonStyle.Danger,
+                                        label: translations[guilddata.lang].autorole.back_to_overview,
+                                        customId: `autoroles;overview`,
+                                    },
+                                ],
+                            },
                         ],
                     });
                 });

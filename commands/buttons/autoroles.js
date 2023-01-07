@@ -156,7 +156,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                                 customId: `autoroles;settings`,
                                 maxValues: 1,
                                 minValues: 1,
-                                placeholder: translations[guilddata.lang].autoroleettings_placeholder,
+                                placeholder: translations[guilddata.lang].autorole.settings_placeholder,
                                 options: autoroles_data.map((i, index) => {
                                     const crank = ranks[mapping[index]];
                                     return {
@@ -168,8 +168,8 @@ export async function execute({interaction, args, guilddata} = {}) {
                                         label: i.name,
                                         value: String(mapping[index]),
                                         description: i.value.startsWith('<@&')
-                                            ? translations[guilddata.lang].autoroleettings_set
-                                            : translations[guilddata.lang].autoroleettings_not_set,
+                                            ? translations[guilddata.lang].autorole.settings_set
+                                            : translations[guilddata.lang].autorole.settings_not_set,
                                     };
                                 }),
                             },

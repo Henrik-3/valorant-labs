@@ -193,6 +193,17 @@ export const patchGuild = async function ({interaction, key, value, additionalda
                             },
                         ],
                     },
+                    {
+                        type: ComponentType.ActionRow,
+                        components: [
+                            {
+                                type: ComponentType.Button,
+                                style: ButtonStyle.Danger,
+                                label: translations[guilddata.lang].autorole.back_to_overview,
+                                customId: `autoroles;overview`,
+                            },
+                        ],
+                    },
                 ],
                 attachments: [],
             });
