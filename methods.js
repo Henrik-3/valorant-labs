@@ -329,6 +329,7 @@ export const maps = {
     '/Game/Maps/Foxtrot/Foxtrot': 'Breeze',
     '/Game/Maps/Canyon/Canyon': 'Fracture',
     '/Game/Maps/Pitt/Pitt': 'Pearl',
+    '/Game/Maps/Jam/Jam': 'Lotus',
 };
 export const ranks = {
     0: {
