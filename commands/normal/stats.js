@@ -14,6 +14,7 @@ import {
 } from '../../methods.js';
 
 export async function execute({message, guilddata, args} = {}) {
+    const getLink = getFunction('getLink');
     const link = await getLink({user: message.author});
     const translations = getTranslations();
     const agent = getAgents();
@@ -22,7 +23,6 @@ export async function execute({message, guilddata, args} = {}) {
     const getStatsDB = getFunction('getStatsDB');
     const patchStats = getFunction('patchStats');
     const buildBackground = getFunction('buildBackground');
-    const getLink = getFunction('getLink');
     const components = [];
     let dbstats;
     let matchlist;

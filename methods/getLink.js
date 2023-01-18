@@ -7,5 +7,5 @@ export const getLink = async function ({user} = {}) {
         .catch(error => {
             return error;
         });
-    return riot.response ? {error: riot.response.status, data: riot.response.data} : {error: false, name: riot.data.gameName, tag: riot.data.tagLine};
+    return riot.response ? {error: riot.response.status, data: riot.response.data, link: db} : {error: false, name: riot.data.gameName, tag: riot.data.tagLine, link: db};
 };

@@ -641,6 +641,13 @@
         "dm_permission": false
     },
     {
+        "default_member_permissions": 8,
+        "type": 2,
+        "name": "Update Rank Role",
+        "description": "",
+        "dm_permission": false
+    },
+    {
         "default_permission": true,
         "default_member_permissions": null,
         "type": 1,

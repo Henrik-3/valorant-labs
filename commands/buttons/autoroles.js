@@ -3,6 +3,7 @@ import {uuidv4, getDB, embedBuilder, getTranslations, axios, roles, firstletter,
 export async function execute({interaction, args, guilddata} = {}) {
     const translations = getTranslations();
     const errorhandlerinteraction = getFunction('errorhandlerinteraction');
+    const getLink = getFunction('getLink');
     const getAutoRoles = getFunction('getAutoRoles');
     if (['generate', 'update', 'remove'].some(i => i == args[1])) await interaction.deferReply({ephemeral: true});
     else await interaction.deferUpdate({ephemeral: true});
@@ -21,8 +22,8 @@ export async function execute({interaction, args, guilddata} = {}) {
             });
         }
         case 'update': {
-            const link = await getDB('linkv2').findOne({userid: interaction.user.id});
-            if (!link)
+            const link = await getLink({user: interaction.user});
+            if (link == null || typeof link.error == 'number')
                 return interaction.editReply({
                     embeds: [
                         embedBuilder({
@@ -32,7 +33,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                         }),
                     ],
                 });
-            const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${link.region}/${link.puuid}?asia=true`).catch(error => {
+            const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${link.link.region}/${link.link.puuid}?asia=true`).catch(error => {
                 return error;
             });
             if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response, type: 'mmr', lang: guilddata.lang, data: mmr.response.data});
@@ -64,29 +65,67 @@ export async function execute({interaction, args, guilddata} = {}) {
                         }),
                     ],
                 });
-            await interaction.member.roles
-                .remove(
-                    guilddata.autoroles
-                        .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name)
-                        .map(item => {
-                            return item.id;
-                        })
-                )
-                .catch(error => {
-                    if (error.code == 50013)
-                        return interaction.editReply({
-                            embeds: [
-                                embedBuilder({
-                                    title: translations[guilddata.lang].autorole_permission_title,
-                                    desc: translations[guilddata.lang].autorole_permission_desc,
-                                    footer: 'VALORANT LABS [NO PERMISSION]',
-                                }),
-                            ],
-                        });
+            const removerole = guilddata.autoroles
+                .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name)
+                .map(item => {
+                    return item.id;
                 });
-            await interaction.member.roles.add(
-                guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id
-            );
+            const addrole = guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)?.id;
+            if (!addrole || !removerole?.length)
+                return interaction.editReply({
+                    embeds: [
+                        embedBuilder({
+                            title: translations[guilddata.lang].autorole.settings_not_set_title,
+                            desc: translations[guilddata.lang].autorole.settings_not_set_desc,
+                            additionalFields: [
+                                {
+                                    name: translations[guilddata.lang].autorole.settings_not_set_affected,
+                                    value: mmr.data.data.current_data.currenttierpatched.split(' ')[0],
+                                },
+                            ],
+                            footer: 'VALORANT LABS [AUTOROLES CONFIG ERROR]',
+                        }),
+                    ],
+                });
+            await interaction.member.roles.remove(removerole).catch(error => {
+                if (error.code == 50013)
+                    return interaction.editReply({
+                        embeds: [
+                            embedBuilder({
+                                title: translations[guilddata.lang].autorole_permission_title,
+                                desc: translations[guilddata.lang].autorole_permission_desc,
+                                footer: 'VALORANT LABS [NO PERMISSION]',
+                            }),
+                        ],
+                    });
+            });
+            await interaction.member.roles.add(addrole).catch(error => {
+                if (error.code == 50013)
+                    return interaction.editReply({
+                        embeds: [
+                            embedBuilder({
+                                title: translations[guilddata.lang].autorole_permission_title,
+                                desc: translations[guilddata.lang].autorole_permission_desc,
+                                footer: 'VALORANT LABS [NO PERMISSION]',
+                            }),
+                        ],
+                    });
+            });
+            await getDB('linkv2-logs').insertOne({
+                userid: interaction.user.id,
+                date: new Date(),
+                admin: null,
+                guild: {id: interaction.guildId, name: interaction.guild.name},
+                event: 'update',
+                type: 'autorole',
+                rank: {
+                    name: mmr.data.data.current_data.currenttierpatched.split(' ')[0],
+                    id: addrole,
+                },
+                riotid: `${link.name}#${link.tag}`,
+                rpuuid: link.link.rpuuid,
+                puuid: link.link.puuid,
+            });
             return interaction.editReply({
                 embeds: [
                     embedBuilder({
@@ -97,6 +136,7 @@ export async function execute({interaction, args, guilddata} = {}) {
             });
         }
         case 'remove': {
+            const link = await getLink({user: interaction.user});
             await interaction.member.roles
                 .remove(
                     guilddata.autoroles.map(item => {
@@ -115,6 +155,18 @@ export async function execute({interaction, args, guilddata} = {}) {
                             ],
                         });
                 });
+            await getDB('linkv2-logs').insertOne({
+                userid: interaction.user.id,
+                date: new Date(),
+                admin: null,
+                guild: {id: interaction.guildId, name: interaction.guild.name},
+                event: 'remove',
+                type: 'autorole',
+                rank: null,
+                riotid: `${link.name}#${link.tag}`,
+                rpuuid: link.link.rpuuid,
+                puuid: link.link.puuid,
+            });
             return interaction.editReply({
                 embeds: [
                     embedBuilder({
