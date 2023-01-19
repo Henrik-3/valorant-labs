@@ -37,18 +37,6 @@ export async function execute({interaction, args, guilddata} = {}) {
                 title: translations[guilddata.lang].link.clink_title,
                 desc: translations[guilddata.lang].link.clink_desc + ` \`${link.name}#${link.tag}\``,
                 additionalFields: link_data.map((i, index) => {
-                    console.log(
-                        `**${translations[guilddata.lang].autorole.date}:** <t:${moment(i.date).unix()}:F>
-                        **${translations[guilddata.lang].autorole.admin}:** ${i.admin ? `<@${i.admin}> (${i.admin})` : '-'}
-                        **${translations[guilddata.lang].autorole.guild}:** ${i.guild.id} (${i.guild.name ?? '-'})
-                        **${translations[guilddata.lang].autorole.event}:** ${firstletter(i.event)}
-                        **${translations[guilddata.lang].autorole.type}:** ${firstletter(i.type)}
-                        **${translations[guilddata.lang].autorole.rank}:** ${
-                            i.rank ? `${i.rank.name} ${interaction.guild.roles.cache.has(i.rank.id) ? `(<@&${i.rank.id}>)` : ''}` : '-'
-                        }
-                        **${translations[guilddata.lang].autorole.riotid}:** ${i.riotid ?? '-'}
-                        **${translations[guilddata.lang].autorole.riotpuuid}:** ${i.rpuuid ?? '-'}`.length
-                    );
                     return {
                         name: `${translations[guilddata.lang].autorole.entry} #${index + 1}`,
                         value: `**${translations[guilddata.lang].autorole.date}:** <t:${moment(i.date).unix()}:F>
