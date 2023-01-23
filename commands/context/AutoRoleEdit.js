@@ -1,4 +1,4 @@
-import {embedBuilder, getTranslations, ComponentType, TextInputStyle, perms} from '../../methods.js';
+import {embedBuilder, getTranslations, ComponentType, ButtonStyle, perms} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
     console.log(interaction.targetMessage.author.id);
     const translations = getTranslations();
@@ -24,20 +24,42 @@ export async function execute({interaction, args, guilddata} = {}) {
             ],
             ephemeral: true,
         });
-    interaction.showModal({
-        title: translations[guilddata.lang].autorole.modal_edit_title,
-        customId: `editautorole;${interaction.channelId};${interaction.targetMessage.id}`,
+    return interaction.reply({
+        ephemeral: true,
+        embeds: [interaction.targetMessage.embeds[0]],
         components: [
             {
                 type: ComponentType.ActionRow,
                 components: [
                     {
-                        type: ComponentType.TextInput,
-                        customId: 'title',
-                        style: TextInputStyle.Short,
-                        label: translations[guilddata.lang].autorole.modal_title,
-                        required: false,
-                        value: interaction.targetMessage.embeds[0].title,
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.title,
+                        customId: `embed;edit;title`,
+                        style: ButtonStyle.Secondary,
+                    },
+                    {
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.desc,
+                        customId: `embed;edit;description`,
+                        style: ButtonStyle.Secondary,
+                    },
+                    {
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.color,
+                        customId: `embed;edit;color`,
+                        style: ButtonStyle.Secondary,
+                    },
+                    {
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.thumbnail,
+                        customId: `embed;edit;thumbnail`,
+                        style: ButtonStyle.Secondary,
+                    },
+                    {
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.image,
+                        customId: `embed;edit;image`,
+                        style: ButtonStyle.Secondary,
                     },
                 ],
             },
@@ -45,12 +67,17 @@ export async function execute({interaction, args, guilddata} = {}) {
                 type: ComponentType.ActionRow,
                 components: [
                     {
-                        type: ComponentType.TextInput,
-                        customId: 'desc',
-                        style: TextInputStyle.Paragraph,
-                        label: translations[guilddata.lang].autorole.modal_desc,
-                        required: false,
-                        value: interaction.targetMessage.embeds[0].description,
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.fields,
+                        customId: `embed;edit;fields;sub;appedit-${interaction.targetMessage.id}`,
+                        style: ButtonStyle.Secondary,
+                    },
+                    {
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.content,
+                        customId: `embed;edit;content`,
+                        disabled: !interaction.member.permissions.has(perms.ManageGuild),
+                        style: ButtonStyle.Secondary,
                     },
                 ],
             },
@@ -58,12 +85,10 @@ export async function execute({interaction, args, guilddata} = {}) {
                 type: ComponentType.ActionRow,
                 components: [
                     {
-                        type: ComponentType.TextInput,
-                        customId: 'color',
-                        style: TextInputStyle.Short,
-                        label: translations[guilddata.lang].autorole.modal_color,
-                        required: false,
-                        placeholder: '#ff4654',
+                        type: ComponentType.Button,
+                        label: translations[guilddata.lang].embeds.send,
+                        customId: `embed;appedit;${interaction.targetMessage.id}`,
+                        style: ButtonStyle.Success,
                     },
                 ],
             },

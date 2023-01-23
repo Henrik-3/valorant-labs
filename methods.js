@@ -5,7 +5,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import system from 'systeminformation';
 import pretty from 'pretty-bytes';
-import {PermissionFlagsBits, ComponentType, ButtonStyle, TextInputStyle, ActivityType, AttachmentBuilder, ChannelType} from 'discord.js';
+import {PermissionFlagsBits, ComponentType, ButtonStyle, TextInputStyle, ActivityType, AttachmentBuilder, ChannelType, ButtonBuilder, EmbedBuilder} from 'discord.js';
 import moment from 'moment';
 import Canvas from 'canvas';
 import randomize from 'randomatic';
@@ -72,6 +72,8 @@ export {
     brotliCompressSync,
     brotliDecompressSync,
     ChannelType,
+    EmbedBuilder,
+    ButtonBuilder,
 };
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;

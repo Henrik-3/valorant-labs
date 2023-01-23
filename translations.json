@@ -152,6 +152,31 @@
         "botinfo": {
             "title": "Bot Informationen zu VALORANT LABS"
         },
+        "embeds": {
+            "title": "Titel",
+            "desc": "Beschreibung",
+            "color": "Farbe (Hex)",
+            "thumbnail": "Thumbnail",
+            "image": "Bild",
+            "fields": "Felder",
+            "content": "Content",
+            "send": "Absenden",
+            "embed_edit_title": "Embed Bearbeiten (Titel)",
+            "embed_edit_desc": "Embed Bearbeiten (Beschreibung)",
+            "embed_edit_thumbnail": "Embed Bearbeiten (Thumbnail URL)",
+            "embed_edit_image": "Embed Bearbeiten (Bild URL)",
+            "embed_edit_color": "Embed Bearbeiten (Farbe Hex)",
+            "embed_edit_content": "Embed Bearbeiten (Content)",
+            "embed_edit_add_field": "Feld hinzufügen",
+            "embed_edit_edit_field": "Feld bearbeiten",
+            "embed_edit_remove_field": "Feld entfernen",
+            "overview": "Hauptmenü",
+            "name": "Name",
+            "value": "Wert",
+            "name_of_field": "Name des Felds",
+            "value_of_field": "Wert des Felds",
+            "edited": "Embed bearbeitet"
+        },
         "feedback": {
             "title": "Gebe dein Feedback ab",
             "label": "Feedback",
