@@ -1,9 +1,10 @@
-import {embedBuilder, getTranslations, ComponentType, ButtonStyle, getFunction} from '../../methods.js';
+import {embedBuilder, getTranslations, ComponentType, ButtonStyle, getFunction, axios, roles, getDB, firstletter} from '../../methods.js';
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferReply({ephemeral: true});
     const translations = getTranslations();
     const getLink = getFunction('getLink');
     const link = await getLink({user: interaction.targetUser});
+    const errorhandlerinteraction = getFunction('errorhandlerinteraction');
     if (link == null || typeof link.error == 'number')
         return interaction.editReply({
             embeds: [
@@ -19,7 +20,10 @@ export async function execute({interaction, args, guilddata} = {}) {
     });
     if (mmr.response) return errorhandlerinteraction({interaction, status: mmr.response, type: 'mmr', lang: guilddata.lang, data: mmr.response.data});
     if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0 || mmr.data.data.current_data.old) {
-        await interaction.targetMember.remove(guilddata.autoroles.map(item => item.id));
+        if (guilddata.autoroles.some(i => i.name == 'unranked')) {
+            await interaction.targetMember.roles.remove(guilddata.autoroles.filter(i => i.name != 'unranked').map(i => i.id));
+            await interaction.targetMember.roles.add(guilddata.autoroles.find(i => i.name == 'unranked').id);
+        } else await interaction.targetMember.roles.remove(guilddata.autoroles.map(i => i.id));
         return interaction.editReply({
             embeds: [
                 embedBuilder({
@@ -31,9 +35,10 @@ export async function execute({interaction, args, guilddata} = {}) {
         });
     }
     const uneditableroles = [];
-    roles.forEach(item => {
-        const role = interaction.guild.roles.cache.get(guilddata.autoroles.find(item1 => item1.name == item).id);
-        if (!role.editable) uneditableroles.push({name: firstletter(item), value: `<@&${role.id}>`});
+    roles.forEach(i => {
+        if (!guilddata.autoroles.some(k => k.name == i)) return;
+        const role = interaction.guild.roles.cache.get(guilddata.autoroles.find(k => k.name == i)?.id);
+        if (!role?.editable) uneditableroles.push({name: firstletter(i), value: role ? `<@&${role?.id}>` : translations[guilddata.lang].autorole.settings_not_set});
     });
     if (uneditableroles.length)
         return interaction.editReply({
@@ -46,11 +51,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                 }),
             ],
         });
-    const removerole = guilddata.autoroles
-        .filter(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != item.name)
-        .map(item => {
-            return item.id;
-        });
+    const removerole = guilddata.autoroles.filter(i => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() != i.name).map(i => i.id);
     const addrole = guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)?.id;
     if (!addrole || !removerole?.length)
         return interaction.editReply({

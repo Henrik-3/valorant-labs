@@ -1,4 +1,4 @@
-import {ShardingManager} from 'discord.js';
+import {DiscordAPIError, ShardingManager} from 'discord.js';
 import {AutoPoster} from 'topgg-autoposter';
 import {getDB, getTranslations, riottoken, getAgents, getGamemodes, getFunction, brotliDecompressSync, updateFunctions} from './methods.js';
 import {readFileSync, existsSync} from 'fs';
@@ -280,7 +280,35 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                         })
                     )}`
                 );
-            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0)
+            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0) {
+                if (guilddata.autoroles.some(i => i.name == 'unranked')) {
+                    await manager.broadcastEval(
+                        async (c, {user, guild, ra, rm}) => {
+                            if (c.guilds.cache.has(guild)) {
+                                const member = await c.guilds.cache
+                                    .get(guild)
+                                    .members.fetch(user)
+                                    .catch(e => {
+                                        console.log(e);
+                                    });
+                                await member?.roles?.remove(rm).catch(e => {
+                                    console.log(e);
+                                });
+                                await member?.roles?.add(ra).catch(e => {
+                                    console.log(e);
+                                });
+                            }
+                        },
+                        {
+                            context: {
+                                user: fstate.userid,
+                                guild: fstate.guild,
+                                ra: guilddata.autoroles.find(i => i.name == 'unranked').id,
+                                rm: guilddata.autoroles.filter(i => i.name != 'unranked').map(i => i.id),
+                            },
+                        }
+                    );
+                }
                 return res.redirect(
                     301,
                     `https://valorantlabs.xyz/rso/oauth?data=${btoa(
@@ -292,6 +320,7 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                         })
                     )}`
                 );
+            }
             if (!guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name))
                 return res.redirect(
                     301,
