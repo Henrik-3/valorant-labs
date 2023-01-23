@@ -765,7 +765,7 @@ export const errorhandler = async function ({message, status, type, lang, data, 
             components: [
                 {
                     type: ComponentType.ActionRow,
-                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle - Link, url: 'https://discord.gg/Zr5eF5D'}],
+                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/X3GaVkX2YN'}],
                 },
             ],
         });
@@ -781,7 +781,7 @@ export const errorhandler = async function ({message, status, type, lang, data, 
             components: [
                 {
                     type: ComponentType.ActionRow,
-                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/Zr5eF5D'}],
+                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/X3GaVkX2YN'}],
                 },
             ],
         });
@@ -796,7 +796,7 @@ export const errorhandler = async function ({message, status, type, lang, data, 
         components: [
             {
                 type: ComponentType.ActionRow,
-                components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/Zr5eF5D'}],
+                components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/X3GaVkX2YN'}],
             },
         ],
     });
