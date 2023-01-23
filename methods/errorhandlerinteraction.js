@@ -51,7 +51,7 @@ export const errorhandlerinteraction = async function ({interaction, status, typ
             components: [
                 {
                     type: ComponentType.ActionRow,
-                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/Zr5eF5D'}],
+                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/X3GaVkX2YN'}],
                 },
             ],
         });
@@ -67,7 +67,7 @@ export const errorhandlerinteraction = async function ({interaction, status, typ
             components: [
                 {
                     type: ComponentType.ActionRow,
-                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/Zr5eF5D'}],
+                    components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/X3GaVkX2YN'}],
                 },
             ],
         });
@@ -82,7 +82,7 @@ export const errorhandlerinteraction = async function ({interaction, status, typ
         components: [
             {
                 type: ComponentType.ActionRow,
-                components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/Zr5eF5D'}],
+                components: [{type: ComponentType.Button, label: translations[lang].support, style: ButtonStyle.Link, url: 'https://discord.gg/X3GaVkX2YN'}],
             },
         ],
     });

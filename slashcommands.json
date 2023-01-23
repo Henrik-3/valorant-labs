@@ -209,6 +209,10 @@
                         "value": "icebox"
                     },
                     {
+                        "name": "Lotus",
+                        "value": "lotus"
+                    },
+                    {
                         "name": "Pearl",
                         "value": "pearl"
                     },
@@ -618,75 +622,7 @@
         "name": "autoroles",
         "description": "Give roles on a server based on the ingame rank",
         "dm_permission": false,
-        "options": [
-            {
-                "type": 1,
-                "name": "setup",
-                "description": "Setup the roles for the autoroles system",
-                "options": [
-                    {
-                        "type": 3,
-                        "name": "rank",
-                        "description": "Select for which rank you want to set a role",
-                        "required": true,
-                        "choices": [
-                            {
-                                "name": "Iron",
-                                "value": "iron"
-                            },
-                            {
-                                "name": "Bronze",
-                                "value": "bronze"
-                            },
-                            {
-                                "name": "Silver",
-                                "value": "silver"
-                            },
-                            {
-                                "name": "Gold",
-                                "value": "gold"
-                            },
-                            {
-                                "name": "Platinum",
-                                "value": "platinum"
-                            },
-                            {
-                                "name": "Diamond",
-                                "value": "diamond"
-                            },
-                            {
-                                "name": "Ascendant",
-                                "value": "ascendant"
-                            },
-                            {
-                                "name": "Immortal",
-                                "value": "immortal"
-                            },
-                            {
-                                "name": "Radiant",
-                                "value": "radiant"
-                            }
-                        ]
-                    },
-                    {
-                        "type": 8,
-                        "name": "role",
-                        "description": "Select role that should be given",
-                        "required": true
-                    }
-                ]
-            },
-            {
-                "type": 1,
-                "name": "send",
-                "description": "Create the autorole embed"
-            },
-            {
-                "type": 1,
-                "name": "get",
-                "description": "Show the current configuration"
-            }
-        ]
+        "options": []
     },
     {
         "default_permission": true,
@@ -701,6 +637,13 @@
         "default_member_permissions": null,
         "type": 2,
         "name": "Show Link",
+        "description": "",
+        "dm_permission": false
+    },
+    {
+        "default_member_permissions": 8,
+        "type": 2,
+        "name": "Update Rank Role",
         "description": "",
         "dm_permission": false
     },

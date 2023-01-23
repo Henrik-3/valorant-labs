@@ -1,4 +1,4 @@
-import {ShardingManager} from 'discord.js';
+import {DiscordAPIError, ShardingManager} from 'discord.js';
 import {AutoPoster} from 'topgg-autoposter';
 import {getDB, getTranslations, riottoken, getAgents, getGamemodes, getFunction, brotliDecompressSync, updateFunctions} from './methods.js';
 import {readFileSync, existsSync} from 'fs';
@@ -280,7 +280,35 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                         })
                     )}`
                 );
-            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0)
+            if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0) {
+                if (guilddata.autoroles.some(i => i.name == 'unranked')) {
+                    await manager.broadcastEval(
+                        async (c, {user, guild, ra, rm}) => {
+                            if (c.guilds.cache.has(guild)) {
+                                const member = await c.guilds.cache
+                                    .get(guild)
+                                    .members.fetch(user)
+                                    .catch(e => {
+                                        console.log(e);
+                                    });
+                                await member?.roles?.remove(rm).catch(e => {
+                                    console.log(e);
+                                });
+                                await member?.roles?.add(ra).catch(e => {
+                                    console.log(e);
+                                });
+                            }
+                        },
+                        {
+                            context: {
+                                user: fstate.userid,
+                                guild: fstate.guild,
+                                ra: guilddata.autoroles.find(i => i.name == 'unranked').id,
+                                rm: guilddata.autoroles.filter(i => i.name != 'unranked').map(i => i.id),
+                            },
+                        }
+                    );
+                }
                 return res.redirect(
                     301,
                     `https://valorantlabs.xyz/rso/oauth?data=${btoa(
@@ -292,17 +320,15 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                         })
                     )}`
                 );
-            if (
-                mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == 'ascendant' &&
-                !guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)
-            )
+            }
+            if (!guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name))
                 return res.redirect(
                     301,
                     `https://valorantlabs.xyz/rso/oauth?data=${btoa(
                         JSON.stringify({
                             rank: null,
                             full: null,
-                            error: "The new rank ASCENDANT isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
+                            error: "The rank you have isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
                             message: null,
                         })
                     )}`
@@ -360,6 +386,21 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}},
                 {upsert: true}
             );
+            await getDB('linkv2-logs').insertOne({
+                userid: fstate.userid,
+                date: new Date(),
+                admin: null,
+                guild: {id: fstate.guild, name: null},
+                event: 'add',
+                type: 'autorole',
+                rank: {
+                    name: mmr.data.data.current_data.currenttierpatched.split(' ')[0],
+                    id: guilddata.autoroles.find(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name).id,
+                },
+                riotid: userinfo.data.gameName && userinfo.data.tagLine ? `${userinfo.data.gameName}#${userinfo.data.tagLine}` : null,
+                rpuuid: userinfo.data.puuid,
+                puuid: db.data.data.puuid,
+            });
             getDB('state').deleteOne({code: req.query.state});
             return res.redirect(
                 301,
@@ -380,6 +421,18 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}},
                 {upsert: true}
             );
+            await getDB('linkv2-logs').insertOne({
+                userid: fstate.userid,
+                date: new Date(),
+                admin: null,
+                guild: {id: fstate.guild, name: null},
+                event: 'add',
+                type: 'link',
+                rank: null,
+                riotid: userinfo.data.gameName && userinfo.data.tagLine ? `${userinfo.data.gameName}#${userinfo.data.tagLine}` : null,
+                rpuuid: userinfo.data.puuid,
+                puuid: db.data.data.puuid,
+            });
             getDB('state').deleteOne({code: req.query.state});
             return res.redirect(
                 301,
@@ -435,6 +488,18 @@ fastify.get('/oauth-finished.html', async (req, res) => {
                 {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}},
                 {upsert: true}
             );
+            await getDB('linkv2-logs').insertOne({
+                userid: fstate.userid,
+                date: new Date(),
+                admin: null,
+                guild: {id: fstate.guild, name: null},
+                event: 'add',
+                type: 'stats',
+                rank: null,
+                riotid: userinfo.data.gameName && userinfo.data.tagLine ? `${userinfo.data.gameName}#${userinfo.data.tagLine}` : null,
+                rpuuid: userinfo.data.puuid,
+                puuid: db.data.data.puuid,
+            });
             getDB('state').deleteOne({code: req.query.state});
             return res.redirect(301, 'https://discord.com/channels/@me');
         }

@@ -1,5 +1,6 @@
-import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle, EmbedBuilder, InteractionType} from 'discord.js.dev';
+import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInputStyle, EmbedBuilder, InteractionType} from 'discord.js';
 import {readFileSync} from 'fs';
+import moment from 'moment';
 import {MongoClient} from 'mongodb';
 
 const basedata = JSON.parse(readFileSync('./basedata.json'));
@@ -25,6 +26,29 @@ const uuidv4 = function () {
 const getDB = function ({db, col}) {
     return mongoclient.db(db).collection(col);
 };
+const embedBuilder = ({title, desc, additionalFields, color, thumbnail, image, footer, guild, author} = {}) => {
+    const fields = [];
+    if (additionalFields) fields.push(...additionalFields);
+    return {
+        title: title,
+        description: desc ? desc : null,
+        fields: fields,
+        author: author ? author : null,
+        thumbnail: {
+            url: thumbnail ? thumbnail : null,
+        },
+        image: {
+            url: image ? image : null,
+        },
+        color: color ? color : 0xffffff,
+        timestamp: new Date().toISOString(),
+        footer: {
+            text: footer ? `${footer.tag} | ${footer.id}` : guild.name,
+            icon_url: guild.iconURL(),
+        },
+    };
+};
+
 const select_icon = {
     valorant: {
         id: '722028690053136434',
@@ -57,12 +81,11 @@ client.on('messageCreate', async message => {
     if (message.content == 'create' && message.author.id == '346345363990380546') {
         message.channel.send({
             embeds: [
-                {
+                embedBuilder({
                     title: 'Verification',
-                    description: 'Press the button below to get access to the server. This measure is for the prevention of bots',
-                    color: 0xffffff,
-                    footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                },
+                    desc: 'Press the button below to get access to the server. This measure is for the prevention of bots',
+                    guild: message.guild,
+                }),
             ],
             components: [
                 {type: ComponentType.ActionRow, components: [{type: ComponentType.Button, style: ButtonStyle.Secondary, label: '✅ Verify', customId: 'verify'}]},
@@ -72,20 +95,18 @@ client.on('messageCreate', async message => {
     if (message.content == 'roles' && message.author.id == '346345363990380546') {
         message.channel.send({
             embeds: [
-                {
+                embedBuilder({
                     title: 'Role Selection',
-                    description:
-                        'Select the roles with the buttons down below for which you want to receive notifications. When you already have the role and press again on the role button, the role will get removed again',
-                    color: 0xffffff,
-                    footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                },
+                    desc: 'Select the roles with the buttons down below for which you want to receive notifications. When you already have the role and press again on the role button, the role will get removed again',
+                    guild: message.guild,
+                }),
             ],
             components: [
                 {
                     type: ComponentType.ActionRow,
                     components: [
-                        {type: ComponentType.Button, style: ButtonStyle.Secondary, label: 'VALORANT API', customId: 'val_api'},
-                        {type: ComponentType.Button, style: ButtonStyle.Secondary, label: 'VALORANT LABS', customId: 'val_labs'},
+                        {type: ComponentType.Button, style: ButtonStyle.Secondary, label: 'VALORANT API', customId: 'role;910576659156062229'},
+                        {type: ComponentType.Button, style: ButtonStyle.Secondary, label: 'VALORANT LABS', customId: 'role;910576761232830515'},
                     ],
                 },
             ],
@@ -95,11 +116,10 @@ client.on('messageCreate', async message => {
     if (message.content == 'keys' && message.author.id == '346345363990380546') {
         message.channel.send({
             embeds: [
-                {
+                embedBuilder({
                     title: 'API Key Generation',
-                    description: `Klick on the \`Generate\` Button below beginn the process of the key generation. If you need a higher Rate Limit klick on \`Upgrade RL\`.`,
-                    color: 0xffffff,
-                    fields: [
+                    desc: `Klick on the \`Generate\` Button below beginn the process of the key generation. If you need a higher Rate Limit klick on \`Upgrade RL\`.`,
+                    additionalFields: [
                         {
                             name: 'No Key',
                             value: `\`\`\`- 30req/min (2 uncached accounts/hour)\n- Suitable for: Twitch Bots | Educational purposes (How do i code etc)\`\`\``,
@@ -113,8 +133,8 @@ client.on('messageCreate', async message => {
                             value: `\`\`\`- Rate Limit you requested\n- Suitable for: Production Discord Bots / Websites\n- PLEASE MAKE SURE THAT YOU ALSO REQUEST AN OFFICIAL VALORANT API KEY AT RIOT TO GET RSO IF YOU HAVE A STATS FEATURE FOR EXAMPLE\`\`\``,
                         },
                     ],
-                    footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                },
+                    guild: interaction.guild,
+                }),
             ],
             components: [
                 {
@@ -153,66 +173,38 @@ client.on('messageCreate', async message => {
 });
 
 client.on('interactionCreate', async interaction => {
-    if (!['upgrade', 'generate', 'generate;', 'upgrade;', 'applicationaccept', 'applicationdeny'].some(item => interaction.customId == item))
+    if (
+        !['upgrade', 'generate', 'generate;', 'upgrade;', 'applicationaccept', 'applicationdeny', 'applicationupgradeaccept', 'applicationupgradedeny'].some(
+            item => interaction.customId == item
+        )
+    )
         await interaction.deferReply({ephemeral: true});
     if (interaction.isButton()) {
-        switch (interaction.customId) {
-            case 'val_api': {
-                if (interaction.member._roles.includes('910576659156062229')) {
-                    interaction.member.roles.remove('910576659156062229');
+        switch (interaction.customId.split(';')[0]) {
+            case 'role': {
+                const roleid = interaction.customId.split(';')[1];
+                if (interaction.member._roles.includes(roleid)) {
+                    interaction.member.roles.remove(roleid);
                     return interaction.editReply({
                         ephemeral: true,
                         embeds: [
-                            {
-                                title: `Role removed`,
-                                description: `The <@&910576659156062229> role was removed. To get the role back, please click again on the button`,
-                                color: 0xffffff,
-                                footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                            },
+                            embedBuilder({
+                                title: 'Role removed',
+                                desc: `The <@&${roleid}> role was removed. To get the role back, please click again on the button`,
+                                guild: interaction.guild,
+                            }),
                         ],
                     });
                 }
-                interaction.member.roles.add('910576659156062229');
+                interaction.member.roles.add(roleid);
                 return interaction.editReply({
                     ephemeral: true,
                     embeds: [
-                        {
-                            title: `Role given`,
-                            description: `The <@&910576659156062229> role was added. To remove the role, please click again on the button`,
-                            color: 0xffffff,
-                            footer: {
-                                text: 'HenrikDev Systems',
-                                icon_url: 'https://cdn.discordapp.com/avatars/737704450478833735/c3560a9b6cf6725758236abe144d3f98.webp?size=512',
-                            },
-                        },
-                    ],
-                });
-            }
-            case 'val_labs': {
-                if (interaction.member._roles.includes('910576761232830515')) {
-                    interaction.member.roles.remove('910576761232830515');
-                    return interaction.editReply({
-                        ephemeral: true,
-                        embeds: [
-                            {
-                                title: `Role removed`,
-                                description: `The <@&910576761232830515> role was removed. To get the role back, please click again on the button`,
-                                color: 0xffffff,
-                                footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                            },
-                        ],
-                    });
-                }
-                interaction.member.roles.add('910576761232830515');
-                return interaction.editReply({
-                    ephemeral: true,
-                    embeds: [
-                        {
-                            title: `Role given`,
-                            description: `The <@&910576761232830515> role was added. To remove the role, please click again on the button`,
-                            color: 0xffffff,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                        embedBuilder({
+                            title: 'Role given',
+                            desc: `The <@&${roleid}> role was added. To remove the role, please click again on the button`,
+                            guild: interaction.guild,
+                        }),
                     ],
                 });
             }
@@ -224,12 +216,11 @@ client.on('interactionCreate', async interaction => {
                 return interaction.reply({
                     ephemeral: true,
                     embeds: [
-                        {
+                        embedBuilder({
                             title: 'Please select the API Key type',
-                            description: 'Please select the API Key type u like to apply for',
-                            color: 0xffffff,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                            desc: `Please select the API Key type u like to apply for`,
+                            guild: interaction.guild,
+                        }),
                     ],
                     components: [
                         {
@@ -269,23 +260,23 @@ client.on('interactionCreate', async interaction => {
                     return interaction.reply({
                         ephemeral: true,
                         embeds: [
-                            {
+                            embedBuilder({
                                 title: 'No application available',
-                                description: "You haven't created an application with that account yet, please create a new one first",
+                                desc: `You haven't created an application with that account yet, please create a new one first`,
                                 color: 0xff4654,
-                                footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                            },
+                                guild: interaction.guild,
+                            }),
                         ],
                     });
                 return interaction.reply({
                     ephemeral: true,
                     embeds: [
-                        {
+                        embedBuilder({
                             title: 'Please select the API Key',
-                            description: 'Please select the API Key you want to upgrade',
-                            color: 0xffffff,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                            desc: `Please select the API Key you want to upgrade`,
+                            color: 0xff4654,
+                            guild: interaction.guild,
+                        }),
                     ],
                     components: [
                         {
@@ -348,14 +339,66 @@ client.on('interactionCreate', async interaction => {
                     ],
                 });
             }
+            case 'applicationupgradeaccept': {
+                return interaction.showModal({
+                    title: 'Deny Upgrade',
+                    customId: `applicationupgradeacceptconfirm;${interaction.message.embeds[0].title.split(' ')[2].trim()};${interaction.message.id}`,
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'info',
+                                    style: TextInputStyle.Paragraph,
+                                    label: 'Additional Information',
+                                    required: false,
+                                },
+                            ],
+                        },
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'limit',
+                                    style: TextInputStyle.Paragraph,
+                                    label: 'Changed Limit',
+                                    required: false,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            }
+            case 'applicationupgradedeny': {
+                return interaction.showModal({
+                    title: 'Deny Upgrade',
+                    customId: `applicationupgradedenyconfirm;${interaction.message.embeds[0].title.split(' ')[2].trim()};${interaction.message.id}`,
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.TextInput,
+                                    customId: 'info',
+                                    style: TextInputStyle.Paragraph,
+                                    label: 'Additional Information',
+                                    required: true,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            }
             case 'showkeys': {
                 const keys = await getDB({db: 'API', col: 'tokens'}).find({userid: interaction.user.id}).toArray();
                 return interaction.editReply({
                     embeds: [
-                        {
+                        embedBuilder({
                             title: 'Key Overview',
-                            description: 'Overviews over all keys you have',
-                            fields: keys.map(i => {
+                            desc: `Overviews over all keys you have`,
+                            additionalFields: keys.map(i => {
                                 return {
                                     name: i.name,
                                     value: `__Type__: ${i.type}\n__Limit__: ${i.limit}req/min\n__Token__: ||${i.token}||`,
@@ -363,8 +406,8 @@ client.on('interactionCreate', async interaction => {
                                 };
                             }),
                             color: 0x00ff93,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                            guild: interaction.guild,
+                        }),
                     ],
                 });
             }
@@ -376,9 +419,9 @@ client.on('interactionCreate', async interaction => {
             case 'genkey': {
                 client.channels.cache.get('983100719840256090').send({
                     embeds: [
-                        {
+                        embedBuilder({
                             title: `New Application ${args[1]}`,
-                            fields: [
+                            additionalFields: [
                                 {name: 'Product Name', value: interaction.fields.getTextInputValue('title')},
                                 {name: 'Type', value: args[2]},
                                 {name: 'Details', value: interaction.fields.getTextInputValue('desc')},
@@ -387,9 +430,8 @@ client.on('interactionCreate', async interaction => {
                                     value: interaction.fields.getTextInputValue('addinfo') ? interaction.fields.getTextInputValue('addinfo') : 'Not available',
                                 },
                             ],
-                            color: 0xffffff,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                            guild: interaction.guild,
+                        }),
                     ],
                     components: [
                         {
@@ -413,23 +455,21 @@ client.on('interactionCreate', async interaction => {
                 });
                 return interaction.editReply({
                     embeds: [
-                        {
+                        embedBuilder({
                             title: 'Application send',
-                            description:
-                                'The application was send, you will get a DM Notification when the request was reviewed. Please make sure the Bot is able to send you Private Messages',
-                            color: 0xff4654,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                            desc: `The application was send, you will get a DM Notification when the request was reviewed. Please make sure the Bot is able to send you Private Messages`,
+                            guild: interaction.guild,
+                        }),
                     ],
                 });
             }
             case 'upkey': {
-                const key = await mongoclient.db('API').collection('tokens').findOne({token: args[2]});
+                const key = await getDB({db: 'API', col: 'tokens'}).findOne({token: args[2]});
                 client.channels.cache.get('983100719840256090').send({
                     embeds: [
-                        {
+                        embedBuilder({
                             title: `Upgrade Application ${args[1]}`,
-                            fields: [
+                            additionalFields: [
                                 {name: 'Product Name', value: key.name},
                                 {name: 'Details', value: key.details},
                                 {name: 'Type', value: key.type},
@@ -447,9 +487,8 @@ client.on('interactionCreate', async interaction => {
                                     value: interaction.fields.getTextInputValue('addinfo') ? interaction.fields.getTextInputValue('addinfo') : 'Not available',
                                 },
                             ],
-                            color: 0xffffff,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                            guild: interaction.guild,
+                        }),
                     ],
                     components: [
                         {
@@ -473,13 +512,11 @@ client.on('interactionCreate', async interaction => {
                 });
                 return interaction.editReply({
                     embeds: [
-                        {
-                            title: 'Upgrade Application send',
-                            description:
-                                'The application was send, you will get a DM Notification when the request was reviewed. Please make sure the Bot is able to send you Private Messages',
-                            color: 0xff4654,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                        embedBuilder({
+                            title: `Upgrade Application send`,
+                            desc: 'The application was send, you will get a DM Notification when the request was reviewed. Please make sure the Bot is able to send you Private Messages',
+                            guild: interaction.guild,
+                        }),
                     ],
                 });
             }
@@ -488,18 +525,18 @@ client.on('interactionCreate', async interaction => {
                 const message = await client.channels.cache.get('983100719840256090').messages.fetch(interaction.customId.split(';')[2]);
                 user.send({
                     embeds: [
-                        {
-                            title: 'Application declined',
-                            description: `Your application for the VALORANT API got declined`,
-                            fields: [
+                        embedBuilder({
+                            title: `Application declined`,
+                            desc: `Your application for the ${message.embeds[0].fields.find(i => i.name == 'Type').value} API got declined`,
+                            additionalFields: [
                                 {
                                     name: 'Reason',
                                     value: interaction.fields.getTextInputValue('info'),
                                 },
                             ],
                             color: 0xff4654,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
-                        },
+                            guild: interaction.guild,
+                        }),
                     ],
                 });
                 console.log(interaction.customId.split(';')[2]);
@@ -529,10 +566,10 @@ client.on('interactionCreate', async interaction => {
                 });
                 user.send({
                     embeds: [
-                        {
-                            title: 'Application accepted',
-                            description: 'Your application for the VALORANT API got accepted',
-                            fields: [
+                        embedBuilder({
+                            title: `Application accepted`,
+                            desc: `Your application for the ${message.embeds[0].fields.find(i => i.name == 'Type').value} API got accepted`,
+                            additionalFields: [
                                 {name: 'Key', value: tokens},
                                 {name: 'Rate Limit', value: '90req/min'},
                                 {
@@ -541,8 +578,83 @@ client.on('interactionCreate', async interaction => {
                                 },
                             ],
                             color: 0x00ff93,
-                            footer: {text: 'HenrikDev Systems', icon_url: 'https://cloud.henrikdev.xyz/valorant_labs_platinum0.png'},
+                            guild: interaction.guild,
+                        }),
+                    ],
+                });
+                message.edit({
+                    embeds: [
+                        EmbedBuilder.from(message.embeds[0])
+                            .setColor(0x00ff93)
+                            .addFields([{name: 'Reason', value: interaction.fields.getTextInputValue('info') ? interaction.fields.getTextInputValue('info') : 'None'}]),
+                    ],
+                    components: [],
+                });
+                return interaction.editReply({content: 'Accept'});
+            }
+            case 'applicationupgradedenyconfirm': {
+                const user = await client.users.fetch(interaction.customId.split(';')[1]);
+                const message = await client.channels.cache.get('983100719840256090').messages.fetch(interaction.customId.split(';')[2]);
+                user.send({
+                    embeds: [
+                        embedBuilder({
+                            title: `Application Upgrade declined`,
+                            desc: `Your application for the upgrade of your ${message.embeds[0].fields.find(i => i.name == 'Type').value} API Key got declined`,
+                            additionalFields: [
+                                {
+                                    name: 'Reason',
+                                    value: interaction.fields.getTextInputValue('info'),
+                                },
+                            ],
+                            color: 0xff4654,
+                            guild: interaction.guild,
+                        }),
+                    ],
+                });
+                console.log(interaction.customId.split(';')[2]);
+                message.edit({
+                    embeds: [
+                        EmbedBuilder.from(message.embeds[0])
+                            .setColor(0xff4654)
+                            .addFields([{name: 'Reason', value: interaction.fields.getTextInputValue('info')}]),
+                    ],
+                    components: [],
+                });
+                return interaction.editReply({content: 'Deny'});
+            }
+            case 'applicationupgradeacceptconfirm': {
+                const user = await client.users.fetch(interaction.customId.split(';')[1]);
+                const message = await client.channels.cache.get('983100719840256090').messages.fetch(interaction.customId.split(';')[2]);
+                const token = await getDB({db: 'API', col: 'tokens'}).findOne({userid: user.id, type: message.embeds[0].fields.find(i => i.name == 'Type').value});
+                getDB({db: 'API', col: 'tokens'}).updateOne(
+                    {token: token.token},
+                    {
+                        $set: {
+                            limit: Number(interaction.fields.getTextInputValue('limit')) ?? Number(message.embeds[0].fields.find(i => i.name == 'Requested limit').value),
                         },
+                    }
+                );
+                user.send({
+                    embeds: [
+                        embedBuilder({
+                            title: `Application Upgrade accepted`,
+                            desc: `Your application for the upgrade of your ${message.embeds[0].fields.find(i => i.name == 'Type').value} API Key got accepted`,
+                            additionalFields: [
+                                {name: 'Old Rate Limit', value: `${message.embeds[0].fields.find(i => i.name == 'Current limit').value}req/min`},
+                                {
+                                    name: 'New Rate Limit',
+                                    value: `${
+                                        interaction.fields.getTextInputValue('limit') ?? message.embeds[0].fields.find(i => i.name == 'Requested limit').value
+                                    }req/min`,
+                                },
+                                {
+                                    name: 'Additional Information',
+                                    value: interaction.fields.getTextInputValue('info') ? interaction.fields.getTextInputValue('info') : 'None',
+                                },
+                            ],
+                            color: 0x00ff93,
+                            guild: interaction.guild,
+                        }),
                     ],
                 });
                 message.edit({
@@ -664,6 +776,64 @@ client.on('interactionCreate', async interaction => {
                                 },
                             ],
                         },
+                    ],
+                });
+            }
+        }
+    }
+    if (interaction.isChatInputCommand()) {
+        switch (interaction.commandName) {
+            case 'lookup': {
+                const lookup = await getDB({db: 'API', col: 'logs'}).findOne({id: interaction.options.get('id').value});
+                if (!lookup)
+                    return interaction.editReply({
+                        embeds: [
+                            embedBuilder({
+                                title: `Unknown ID`,
+                                desc: `Make sure you correctly copied the \`X-Request-ID\` Header`,
+                                color: 0xff4654,
+                                guild: interaction.guild,
+                            }),
+                        ],
+                    });
+                return interaction.editReply({
+                    embeds: [
+                        embedBuilder({
+                            title: `Request ID ${lookup.id}`,
+                            additionalFields: [
+                                {
+                                    name: 'Method',
+                                    value: `\`${lookup.method}\``,
+                                    inline: true,
+                                },
+                                {
+                                    name: 'HTTP',
+                                    value: `\`${lookup.http}\``,
+                                    inline: true,
+                                },
+                                {
+                                    name: 'URL',
+                                    value: `\`${lookup.url}\``,
+                                    inline: true,
+                                },
+                                {
+                                    name: 'Date',
+                                    value: `<t:${moment(lookup.date).unix()}:F>`,
+                                    inline: true,
+                                },
+                                {
+                                    name: 'Status',
+                                    value: `\`${lookup.status}\``,
+                                    inline: true,
+                                },
+                                {
+                                    name: 'Latency',
+                                    value: `\`${lookup.latency.toFixed(2)}\`ms`,
+                                    inline: true,
+                                },
+                            ],
+                            guild: interaction.guild,
+                        }),
                     ],
                 });
             }

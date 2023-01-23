@@ -1,9 +1,7 @@
-import {perms, embedBuilder, getTranslations, ComponentType, ButtonStyle, getFunction} from '../../methods.js';
+import {embedBuilder, perms, getTranslations, getFunction, roles, firstletter, ComponentType, ButtonStyle} from '../../methods.js';
 
-export async function execute({interaction, guilddata} = {}) {
-    const translations = getTranslations();
-    const getGuild = getFunction('getGuild');
-    const patchGuild = getFunction('patchGuild');
+export async function execute({interaction, args, guilddata} = {}) {
+    await interaction.deferUpdate({ephemeral: true});
     if (!interaction.member.permissions.has(perms.ManageGuild))
         return interaction.editReply({
             embeds: [
@@ -22,8 +20,18 @@ export async function execute({interaction, guilddata} = {}) {
                 },
             ],
         });
-    if (interaction.options._subcommand == 'get') return getGuild(interaction);
-    if (interaction.options._subcommand == 'deactivate') return patchGuild({interaction: interaction, key: interaction.options.get('value').value, value: false});
-    return patchGuild({interaction: interaction, key: interaction.options._subcommand, value: interaction.options.get('value')?.value});
+    const translations = getTranslations();
+    const patchGuild = getFunction('patchGuild');
+    switch (args[1]) {
+        case 'role': {
+            return patchGuild({
+                interaction,
+                key: 'autoroles',
+                value: args[2],
+                additionaldata: interaction.values[0],
+                guilddata,
+            });
+        }
+    }
 }
-export const name = 'settings';
+export const name = 'autoroles';

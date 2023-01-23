@@ -4,7 +4,7 @@ export async function execute({interaction, guilddata} = {}) {
     const translations = getTranslations();
     const getLink = getFunction('getLink');
     switch (interaction.options._subcommand) {
-        case 'get':
+        case 'get': {
             const link = await getLink({user: interaction.options.getUser('user') ?? interaction.user});
             if (link == null || typeof link.error == 'number')
                 return interaction.editReply({
@@ -40,7 +40,8 @@ export async function execute({interaction, guilddata} = {}) {
                     }),
                 ],
             });
-        case 'add':
+        }
+        case 'add': {
             const uuid = uuidv4();
             await getDB('state').insertOne({userid: interaction.user.id, code: uuid, expireAt: new Date(), type: 'link'});
             return interaction.editReply({
@@ -65,8 +66,22 @@ export async function execute({interaction, guilddata} = {}) {
                     },
                 ],
             });
-        case 'remove':
+        }
+        case 'remove': {
+            const link = await getLink({user: interaction.user});
             await getDB('linkv2').deleteOne({userid: interaction.user.id});
+            await getDB('linkv2-logs').insertOne({
+                userid: interaction.user.id,
+                date: new Date(),
+                admin: null,
+                guild: {id: interaction.guildId, name: interaction.guild.name},
+                event: 'remove',
+                type: 'link',
+                rank: null,
+                riotid: `${link.name}#${link.tag}`,
+                rpuuid: link.link.rpuuid,
+                puuid: link.link.puuid,
+            });
             return interaction.editReply({
                 embeds: [
                     embedBuilder({
@@ -76,6 +91,7 @@ export async function execute({interaction, guilddata} = {}) {
                     }),
                 ],
             });
+        }
     }
 }
 export const name = 'link';
