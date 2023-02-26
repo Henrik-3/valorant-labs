@@ -2692,9 +2692,13 @@
             "deprecation_desc": "Discord değişikliği nedeniyle [Daha detaylı bilgi burada](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Access-Deprecation-for-Verified-Bots), <@702201518329430117> Ağustos 2022'den sonra mesaj göndererek erişilemeyecek. Güncellemeye erkenden hazırlanmak için, yeni özellikler yalnızca Eğik Çizgi Komutlarıyla kullanılabilecek. Ek olarak, bazı komutlar zaten eğik çizgi komutlarıyla sınırlandırılmıştır, şu anda aşağıdakiler:\n- v?agent\n- v?api\n- v?blacklist\n- v?botinfo\n- v?game\n- v?link\n- v?map\n- v?patch\n- v?status\n- v?settings\n- v?vote\n- v?weapon\n- v?weapons\nBu nedenle lütfen bu komutun eğik çizgi komutunu kullanın"
         },
         "response": {
-            "501": {
-                "title": "Status 501 | API sürümü uygulanmadı",
-                "default": "Uygulanmayan bir API'ye bir sorgu gönderildi. Muhtemelen sorun biliniyordur, ama bunu destek sunucusuna bildirebilirsin."
+            "400": {
+                "title": "Status 400 | İstek hatası",
+                "default": "İstek sırasında bir hata oluştu, genellikle bu, isteğin biçimlendirilmesinden kaynaklanır"
+            },
+            "403": {
+                "title": "Status 403 | Eksik İzin",
+                "default": "Botun bu veri kaynağına erişimi yok. oğu zaman bu hata, oyun güncellemeleri sırasında sunucular kapalıyken ortaya çıkar."
             },
             "404": {
                 "title": "Status 404 | Bulunamadı",
@@ -2705,41 +2709,21 @@
                 "patch": "İstenen sürüm bulunamadı",
                 "weapon": "İstenen silah bulunamadı"
             },
-            "503": {
-                "title": "Status 503 | Sunucu geçici olarak mevcut değil",
-                "default": "Hedef sunucu şu anda isteği işleyemiyor, lütfen daha sonra tekrar deneyin"
-            },
-            "504": {
-                "title": "Status 504 | Sunucu geçici olarak mevcut değil",
-                "default": "Hedef sunucu şu anda isteği işleyemiyor, lütfen daha sonra tekrar deneyin"
-            },
-            "429": {
-                "title": "Status 429 | Bot Rate Limit",
-                "default": "Bot şu anda çok fazla kullanılıyor ve bir zamanaşımına sahip, lütfen biraz bekleyin ve tekrar deneyin"
-            },
-            "1015": {
-                "title": "Status 1015 | Bot Rate Limit",
-                "default": "Bot şu anda çok fazla kullanılıyor ve bir zamanaşımına sahip, lütfen biraz bekleyin ve tekrar deneyin"
-            },
-            "403": {
-                "title": "Status 403 | Eksik İzin",
-                "default": "Botun bu veri kaynağına erişimi yok. oğu zaman bu hata, oyun güncellemeleri sırasında sunucular kapalıyken ortaya çıkar."
-            },
-            "400": {
-                "title": "Status 400 | İstek hatası",
-                "default": "İstek sırasında bir hata oluştu, genellikle bu, isteğin biçimlendirilmesinden kaynaklanır"
-            },
-            "410": {
-                "title": "Status 410 | API mevcut değil",
-                "default": "İstenilen API yolu artık mevcut değil, bu bir geliştirici hatasıdır, lütfen bu hatayı destek sunucusuna bildirin"
+            "408": {
+                "title": "Status 408 | Zaman aşımı",
+                "default": "İstek çok uzun sürdü, lütfen daha sonra tekrar deneyin"
             },
             "409": {
                 "title": "Status 409 | Conflict",
                 "default": "İstek sırasında bir hata oluştu, lütfen daha sonra tekrar deneyin"
             },
-            "408": {
-                "title": "Status 408 | Zaman aşımı",
-                "default": "İstek çok uzun sürdü, lütfen daha sonra tekrar deneyin"
+            "410": {
+                "title": "Status 410 | API mevcut değil",
+                "default": "İstenilen API yolu artık mevcut değil, bu bir geliştirici hatasıdır, lütfen bu hatayı destek sunucusuna bildirin"
+            },
+            "429": {
+                "title": "Status 429 | Bot Rate Limit",
+                "default": "Bot şu anda çok fazla kullanılıyor ve bir zamanaşımına sahip, lütfen biraz bekleyin ve tekrar deneyin"
             },
             "451": {
                 "title": "Status: 451 | Bu hesap gizli",
@@ -2751,6 +2735,22 @@
             "500": {
                 "title": "Status 500 | Dahili Sunucu Hatası",
                 "default": "Dahili sunucu hatası oluştu, lütfen daha sonra tekrar deneyin."
+            },
+            "501": {
+                "title": "Status 501 | API sürümü uygulanmadı",
+                "default": "Uygulanmayan bir API'ye bir sorgu gönderildi. Muhtemelen sorun biliniyordur, ama bunu destek sunucusuna bildirebilirsin."
+            },
+            "503": {
+                "title": "Status 503 | Sunucu geçici olarak mevcut değil",
+                "default": "Hedef sunucu şu anda isteği işleyemiyor, lütfen daha sonra tekrar deneyin"
+            },
+            "504": {
+                "title": "Status 504 | Sunucu geçici olarak mevcut değil",
+                "default": "Hedef sunucu şu anda isteği işleyemiyor, lütfen daha sonra tekrar deneyin"
+            },
+            "1015": {
+                "title": "Status 1015 | Bot Rate Limit",
+                "default": "Bot şu anda çok fazla kullanılıyor ve bir zamanaşımına sahip, lütfen biraz bekleyin ve tekrar deneyin"
             }
         },
         "agent": {
@@ -2759,53 +2759,53 @@
             "agentrole": "Rol"
         },
         "autorole": {
-            "overview_title": "Autorole Yönetimi",
-            "overview_desc": "AutoRole sisteminin rollerini özelleştirmek için `Ayarlar` düğmesine tıklayın.\nBir Autorole mesajı oluşturmak için `Mesaj Oluştur` düğmesine tıklayın.",
+            "overview_title": "OtoRol Yönetimi",
+            "overview_desc": "OtoRol sisteminin rollerini özelleştirmek için `Ayarlar` düğmesine tıklayın.\nBir OtoRol mesajı oluşturmak için `Mesaj Oluştur` düğmesine tıklayın.",
             "overview_button_settings": "Ayarlar",
             "overview_button_message": "Mesaj Oluştur",
             "settings_desc": "Burada, atanabilecek önceden oluşturulmuş ve henüz oluşturulmamış tüm rolleri görebilirsiniz. Bir rütbe rolünü özelleştirmek için aşağıdaki seçim menüsünden rolü seçin. Daha sonra size bu rütbe için uygun sunucu rolünü seçme seçeneği sunulacaktır.",
             "settings_placeholder": "Lütfen özelleştirmek istediğiniz VALORANT rütbesini seçin...",
             "settings_set": "✅ Zaten yapılandırılmış",
             "settings_not_set": "⛔ Henüz yapılandırılmadı",
-            "settings_not_set_title": "Gerekli rollerden biri veya daha fazlası yapılandırılmamıştır.",
-            "settings_not_set_desc": "Bu eylemi yürütürken bir sorun oluştu. Aşağıda, bu eylemi gerçekleştirmek için hala yapılandırılması gereken rol(ler)i görebilirsiniz.",
-            "settings_not_set_affected": "Etkilenen rol/ler",
+            "settings_not_set_title": "Gerekli rollerden biri ya da daha fazlası yapılandırılmamış.",
+            "settings_not_set_desc": "Bu eylemi gerçekleştirirken bir sorun oluştu. Aşağıda, bu eylemi gerçekleştirmek için yapılandırılması gereken rol(ler)i görebilirsiniz.",
+            "settings_not_set_affected": "Etkilenen rol/roller",
             "settings_role_desc": "Bu mesajın altındaki açılır menüden VALORANT rütbesi ile ilişkilendirmek istediğiniz ilişkili rolü seçin.",
             "settings_role_placeholder": "Lütfen uygun rolü seçin...",
-            "message_desc": "Lütfen aşağıdaki seçim menüsünden AutoRole sistemini oluşturmak istediğiniz kanalı seçin. Botun bu kanalda yazma izinleri olduğundan emin olun.\nDuyuru kanalları ve normal metin kanalları arasında seçim yapabilirsiniz.",
+            "message_desc": "Lütfen aşağıdaki seçim menüsünden OtoRol sistemini oluşturmak istediğiniz kanalı seçin. Botun bu kanalda yazma izinleri olduğundan emin olun.\nDuyuru kanalları ve normal metin kanalları arasında seçim yapabilirsiniz.",
             "message_placeholder": "Lütfen mesajı göndermek istediğiniz kanalı seçin...",
-            "back_to_overview": "Genel bakışa geri dönün",
+            "back_to_overview": "Genel bakışa geri dön",
             "roles_error_title": "Rol izinleri yok",
-            "roles_error_desc": "Bot, kullanıcılara aşağıdaki rolleri atamak için yeterli izne sahip değil. Lütfen rollerin bot rolleri altında düzenlendiğinden emin olun",
+            "roles_error_desc": "Bot, kullanıcılara aşağıdaki rolleri atamak için yeterli izne sahip değil. Lütfen rollerin botun rolleri altında düzenlendiğinden emin olun",
             "message_send_error_title": "Kanal izni yok",
-            "message_send_error_desc": "Lütfen <@702201518329430117>'nin `MESAJ GÖNDERME` iznine sahip olduğundan emin olun.",
+            "message_send_error_desc": "Lütfen <@702201518329430117>'in `MESAJ GÖNDER` iznine sahip olduğundan emin olun.",
             "message_edit_error_title": "Otomatik Rol mesajı yok",
-            "message_edit_error_desc": "Bu bir AutoRole mesajı değildir, bu nedenle düzenlenemez",
-            "send_desc": "Oyun içi rolünüzü almak için 'Ekle' düğmesine tıklayın. Size bir bağlantı gösterilecek, üzerine tıklayın. Riot Games giriş sayfasına yönlendirileceksiniz. \n\n**Önemli:** <@702201518329430117> giriş verilerinizi görmez, sunucuda yalnızca aşağıdaki örnek verileri alırız:\n```{puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'}```\nÖrneğin terfi etmeniz gerektiğinde `Güncelle` düğmesi ile rolünüzü güncelleyebilirsiniz.\nRolünüzü tekrar kaldırmak için `Kaldır` düğmesini kullanın.",
+            "message_edit_error_desc": "Bu bir OtoRol mesajı değildir, bu nedenle düzenlenemez",
+            "send_desc": "Oyun içi rolünüzü almak için `Ekle` düğmesine tıklayın. Size gösterilen bağlantının üzerine tıklayın. Riot Games oturum açma sayfasına yönlendirileceksiniz. \n\n**Önemli:** <@702201518329430117> giriş bilgilerinizi göremez, yalnızca aşağıdaki örnek verileri alıyoruz:\n```{puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'}```\nÖrneğin terfi etmeniz gerekirse `Güncelle` düğmesi ile rolünüzü güncelleyebilirsiniz.\nRolünüzü kaldırmak için `Kaldır` düğmesini kullanın.",
             "add": "Ekle",
-            "update": "Güncelleme",
-            "remove": "Kaldırmak",
-            "created_title": "Mesaja sağ tıklayıp Uygulamalar'ı seçerek ve ardından 'Otomatik Rolü Düzenle'ye tıklayarak bu mesajı istediğiniz gibi düzenleyebilirsiniz. Ardından mesajı düzenleyebileceğiniz bir pencere açılacaktır.",
-            "created_desc": "Mesaja sağ tıklayıp Uygulamalar'ı seçerek ve ardından 'Otomatik Rolü Düzenle'ye tıklayarak bu mesajı istediğiniz gibi düzenleyebilirsiniz. Ardından mesajı düzenleyebileceğiniz bir pencere açılacaktır.",
+            "update": "Güncelle",
+            "remove": "Kaldır",
+            "created_title": "OtoRol mesajınız oluşturuldu",
+            "created_desc": "Mesaja sağ tıklayıp Uygulamalar'ı seçin ve ardından 'Edit AutoRole'ye tıklayın. Bu mesajı düzenleyebileceğiniz bir mesaj oluşturulacaktır. Mesajı istediğiniz gibi düzenleyebilirsiniz.",
             "member_error_title": "Üye izni yok",
-            "member_error_desc": "Botun size bu rolleri vermek için izni yok, lütfen botun size rolleri vermek için yeterli izinlere sahip olduğundan emin olun.",
-            "role_given_title": "Verilen rol",
+            "member_error_desc": "Botun size bu rolleri vermek için izni yok, lütfen botun size rolü vermek için yeterli izinlere sahip olduğundan emin olun.",
+            "role_given_title": "Rol verildi",
             "role_given_desc": "Oyun içi rolünüz size atandı, Discord API sınırlamaları nedeniyle rolünüzü almanız bir dakika kadar sürebilir.",
             "role_removed_title": "Rol kaldırıldı",
             "role_removed_desc": "Oyun içi rolünüz tekrar kaldırıldı. Tekrar eklemek isterseniz `Güncelle`ye tıklamanız yeterlidir..",
             "role_admin_updated_tes": "Rol güncellendi",
             "role_admin_updated_desc": "Kullanıcının ilgili oyun içi rolü güncellendi.",
-            "entry": "Giriş",
+            "entry": "Günlük Kaydı",
             "date": "Tarih",
             "admin": "Yönetici",
             "guild": "Sunucu",
             "event": "Etkinlik",
-            "type": "Tip",
+            "type": "Tür",
             "rank": "Rütbe",
             "riotid": "Riot ID",
             "riotpuuid": "Riot PUUID",
             "autorole_permission_title": "İzin yok",
-            "autorole_permission_desc": "Lütfen <@702201518329430117>'nin `MANAGE ROLES` iznine sahip olduğundan emin olun.",
+            "autorole_permission_desc": "Lütfen <@702201518329430117>'in `ROLLERİ YÖNET` iznine sahip olduğundan emin olun.",
             "roles_missing_title": "Henüz tüm roller yapılandırılmadı",
             "roles_missing_desc": "Tüm roller yapılandırılmadan autoroles sistemini kurmak istediğinizden emin misiniz?\nEvet ise, `Devam` tuşuna basın\nHayır ise, `İptal` tuşuna basın",
             "continue": "Devam",
@@ -2838,21 +2838,21 @@
             "fields": "Alanlar",
             "content": "İçerik",
             "send": "Gönder",
-            "embed_edit_title": "Yerleştirme Düzenlemesi (Başlık)",
-            "embed_edit_desc": "Yerleştirme Düzenlemesi (Açıklama)",
-            "embed_edit_thumbnail": "Yerleştirme Düzenlemesi (Küçük Resim URL)",
-            "embed_edit_image": "Yerleştirme Düzenlemesi (Resim URL)",
-            "embed_edit_color": "Yerleştirme Düzenlemesi (Renk Hex)",
-            "embed_edit_content": "Yerleştirme Düzenlemesi (İçerik)",
+            "embed_edit_title": "Gömülü Mesaj Düzenlemesi (Başlık)",
+            "embed_edit_desc": "Gömülü Mesaj Düzenlemesi (Açıklama)",
+            "embed_edit_thumbnail": "Gömülü Mesaj Düzenlemesi (Küçük Resim URL)",
+            "embed_edit_image": "Gömülü Mesaj Düzenlemesi (Resim URL)",
+            "embed_edit_color": "Gömülü Mesaj Düzenlemesi (Renk Hex)",
+            "embed_edit_content": "Gömülü Mesaj Düzenlemesi (İçerik)",
             "embed_edit_add_field": "Alan Ekle",
             "embed_edit_edit_field": "Alanı Düzenle",
-            "embed_edit_remove_field": "Alanı Kaldır",
+            "embed_edit_remove_field": "Alan Kaldır",
             "overview": "Genel Bakış",
             "name": "İsim",
             "value": "Değer",
             "name_of_field": "Alan Adı",
             "value_of_field": "Alan Değeri",
-            "edited": "Düzenlenmiş yerleştirme"
+            "edited": "Gömülü mesaj düzenlendi"
         },
         "feedback": {
             "title": "Geri Bildirimde Bulunun",
