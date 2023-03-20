@@ -34,6 +34,10 @@
                         "value": "cypher"
                     },
                     {
+                        "name": "Gekko",
+                        "value": "gekko"
+                    },
+                    {
                         "name": "Fade",
                         "value": "fade"
                     },

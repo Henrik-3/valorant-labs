@@ -5,7 +5,18 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import system from 'systeminformation';
 import pretty from 'pretty-bytes';
-import {PermissionFlagsBits, ComponentType, ButtonStyle, TextInputStyle, ActivityType, AttachmentBuilder, ChannelType, ButtonBuilder, EmbedBuilder} from 'discord.js';
+import {
+    PermissionFlagsBits,
+    ComponentType,
+    ButtonStyle,
+    TextInputStyle,
+    ActivityType,
+    AttachmentBuilder,
+    ChannelType,
+    ButtonBuilder,
+    EmbedBuilder,
+    DiscordAPIError,
+} from 'discord.js';
 import moment from 'moment';
 import Canvas from 'canvas';
 import randomize from 'randomatic';
@@ -74,6 +85,7 @@ export {
     ChannelType,
     EmbedBuilder,
     ButtonBuilder,
+    DiscordAPIError,
 };
 export const perms = PermissionFlagsBits;
 export const sysinfo = system;
@@ -223,6 +235,11 @@ export const agents = [
         name: 'Harbor',
         id: '95b78ed7-463786d9-7e4171ba-8c293152',
         discord_id: '<:controller:868803058711277598>',
+    },
+    {
+        name: 'Gekko',
+        id: 'e370fa57-4757-3604-3648-499e1f642d3f',
+        discord_id: '<:initiator:868802616732303362>',
     },
 ];
 export const weapons = {

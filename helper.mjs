@@ -2,6 +2,7 @@ import {Client, GatewayIntentBits, ComponentType, ButtonStyle, Options, TextInpu
 import {readFileSync} from 'fs';
 import moment from 'moment';
 import {MongoClient} from 'mongodb';
+import axios from 'axios';
 
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const mongoclient = new MongoClient(basedata.mongoaccess);
@@ -60,8 +61,75 @@ const select_icon = {
     },
 };
 
+setInterval(async () => {
+    const pages = await getDB({col: 'cloudflare', db: 'HenrikDev'}).find({type: 'pages'}).toArray();
+    for (const page of pages) {
+        const cf_page = await axios
+            .get(`https://api.cloudflare.com/client/v4/accounts/${basedata.cf_account_hdev}/pages/projects/${page.page_name}`, {
+                headers: {Authorization: `Bearer ${basedata.cf_pages}`},
+            })
+            .catch(e => e);
+        if (cf_page.response) {
+            console.error(cf_page.response.status, cf_page.response.data);
+            continue;
+        }
+        if (
+            page.channel &&
+            client.channels.cache.get(page.channel) &&
+            moment(page.latest_build).unix() < moment(cf_page.data.result.latest_deployment.created_on).unix()
+        ) {
+            const channel = await client.channels.fetch(page.channel, {force: false});
+            await channel.send({
+                embeds: [
+                    embedBuilder({
+                        author: {
+                            name: 'Cloudflare | Pages',
+                            icon_url: 'https://cdn.discordapp.com/attachments/705516265749348382/1081571089286713444/cloudflare.png',
+                        },
+                        title: `New Deploy: ${cf_page.data.result.name}`,
+                        color: 0xf6821f,
+                        additionalFields: [
+                            {
+                                name: 'Build started at',
+                                value: `<t:${moment(cf_page.data.result.latest_deployment.created_on).unix()}:F> (<t:${moment(
+                                    cf_page.data.result.latest_deployment.created_on
+                                ).unix()}:R>)`,
+                            },
+                            {
+                                name: 'Fully deployed at',
+                                value: `<t:${moment(cf_page.data.result.latest_deployment.modified_on).unix()}:F> (<t:${moment(
+                                    cf_page.data.result.latest_deployment.modified_on
+                                ).unix()}:R>)`,
+                            },
+                            {name: 'Github Commit Branch', value: cf_page.data.result.latest_deployment.deployment_trigger.metadata.branch},
+                            {name: 'Github Commit Hash', value: cf_page.data.result.latest_deployment.deployment_trigger.metadata.commit_hash},
+                            {name: 'Github Commit Message', value: cf_page.data.result.latest_deployment.deployment_trigger.metadata.commit_message},
+                            {name: 'ID', value: cf_page.data.result.latest_deployment.short_id},
+                            {name: 'Build Successful?', value: cf_page.data.result.latest_deployment.latest_stage.status == 'failure' ? 'No' : 'Yes'},
+                            {name: 'Deploy URL', value: cf_page.data.result.latest_deployment.url},
+                            {name: 'Latest Build URL', value: cf_page.data.result.latest_deployment.aliases[0]},
+                        ],
+                        guild: channel.guild,
+                    }),
+                ],
+            });
+            getDB({col: 'cloudflare', db: 'HenrikDev'}).updateOne(
+                {type: 'pages', page_id: cf_page.data.result.id},
+                {
+                    $set: {
+                        latest_build: cf_page.data.result.latest_deployment.created_on,
+                        short_id: cf_page.data.result.latest_deployment.short_id,
+                        failed: cf_page.data.result.latest_deployment.latest_stage.status == 'failure',
+                    },
+                }
+            );
+        }
+    }
+}, 60000);
+
 client.once('ready', async () => {
     console.log('ready');
+    console.log(await client.channels.fetch('1082283082926792774', {force: false}));
 });
 
 client.on('messageCreate', async message => {

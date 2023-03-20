@@ -1,4 +1,17 @@
-import {getDB, unlinkSync, embedBuilder, ComponentType, ButtonStyle, writeFileSync, brotliCompressSync, getTranslations, ranks, getFunction} from '../methods.js';
+import {
+    getDB,
+    unlinkSync,
+    embedBuilder,
+    ComponentType,
+    ButtonStyle,
+    writeFileSync,
+    brotliCompressSync,
+    getTranslations,
+    ranks,
+    getFunction,
+    getAgents,
+    getGamemodes,
+} from '../methods.js';
 
 const getAutoRoles = getFunction('getAutoRoles');
 const getGuild = getFunction('getGuild');

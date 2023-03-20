@@ -168,9 +168,9 @@ export async function execute({interaction, args, guilddata} = {}) {
                 event: 'remove',
                 type: 'autorole',
                 rank: null,
-                riotid: `${link.name}#${link.tag}`,
-                rpuuid: link.link.rpuuid,
-                puuid: link.link.puuid,
+                riotid: link ? `${link.name}#${link.tag}` : null,
+                rpuuid: link?.link?.rpuuid ?? null,
+                puuid: link?.link?.puuid ?? null,
             });
             return interaction.editReply({
                 embeds: [

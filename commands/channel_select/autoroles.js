@@ -1,4 +1,4 @@
-import {embedBuilder, perms, getTranslations, roles, firstletter, ComponentType, ButtonStyle} from '../../methods.js';
+import {embedBuilder, perms, getTranslations, roles, firstletter, ComponentType, ButtonStyle, DiscordAPIError} from '../../methods.js';
 
 export async function execute({interaction, args, guilddata} = {}) {
     await interaction.deferUpdate({ephemeral: true});
@@ -105,7 +105,7 @@ export async function execute({interaction, args, guilddata} = {}) {
                         },
                     ],
                 });
-            await interaction.client.channels.cache
+            const message = await interaction.client.channels.cache
                 .get(interaction.values[0])
                 .send({
                     embeds: [
@@ -141,29 +141,31 @@ export async function execute({interaction, args, guilddata} = {}) {
                         },
                     ],
                 })
-                .catch(e => {
-                    return interaction.editReply({
-                        embeds: [
-                            embedBuilder({
-                                title: translations[guilddata.lang].autorole.message_send_error_title,
-                                desc: translations[guilddata.lang].autorole.message_send_error_desc,
-                                footer: 'VALORANT LABS [ROLE PERMISSION ERROR]',
-                            }),
-                        ],
-                        components: [
-                            {
-                                type: ComponentType.ActionRow,
-                                components: [
-                                    {
-                                        type: ComponentType.Button,
-                                        style: ButtonStyle.Danger,
-                                        label: translations[guilddata.lang].autorole.back_to_overview,
-                                        customId: `autoroles;overview`,
-                                    },
-                                ],
-                            },
-                        ],
-                    });
+                .catch(e => e);
+            if (message instanceof DiscordAPIError)
+                return interaction.editReply({
+                    embeds: [
+                        embedBuilder({
+                            title: translations[guilddata.lang].autorole.message_send_error_title,
+                            desc:
+                                translations[guilddata.lang].autorole.message_send_error_desc +
+                                `\n\nData for support requests: \`\`\`\nCode: ${message.code}\nMessage: ${message.message}\nName: ${message.name}\`\`\``,
+                            footer: 'VALORANT LABS [ROLE PERMISSION ERROR]',
+                        }),
+                    ],
+                    components: [
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.Button,
+                                    style: ButtonStyle.Danger,
+                                    label: translations[guilddata.lang].autorole.back_to_overview,
+                                    customId: `autoroles;overview`,
+                                },
+                            ],
+                        },
+                    ],
                 });
             return interaction.editReply({
                 embeds: [
