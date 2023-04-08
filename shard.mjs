@@ -534,7 +534,7 @@ fastify.get('/cdn/v1/backgrounds/:uuid', async (req, res) => {
     else return res.code(404).send({error: 'Ressource not found'});
 });
 
-fastify.listen({port: 4200}, (err, address) => {
+fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200}, (err, address) => {
     if (err) throw err;
     // Server is now listening on ${address}
 });
