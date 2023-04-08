@@ -16,6 +16,37 @@ const manager = new ShardingManager('./index.js', {
 });
 if (basedata.environment == 'live') AutoPoster(basedata.dbltoken, manager);
 
+const checkVerify = async (req, res, dbcheck = null) => {
+    if (!req.headers.cookie && !req.headers.auth)
+        return res.code(401).send({
+            redirect:
+                environment == 'pbe'
+                    ? 'https://discord.com/api/oauth2/authorize?client_id=864881059950231593&redirect_uri=https%3A%2F%2Fbeta.valorantlabs.xyz%2Fapi%2Fv1%2Flogin%2Fdiscord&response_type=code&scope=guilds.members.read%20identify%20guilds'
+                    : 'https://discord.com/api/oauth2/authorize?client_id=702201518329430117&redirect_uri=https%3A%2F%2Fvalorantlabs.xyz%2Fapi%2Fv1%2Flogin%2Fdiscord&response_type=code&scope=guilds%20identify%20guilds.members.read',
+        });
+    const uuid = req.headers.auth ?? getCookie('auth', req);
+    const db = await getDB('dashboard').findOne({uuid});
+    if (!db)
+        return res.code(401).send({
+            redirect:
+                environment == 'pbe'
+                    ? 'https://discord.com/api/oauth2/authorize?client_id=864881059950231593&redirect_uri=https%3A%2F%2Fbeta.valorantlabs.xyz%2Fapi%2Fv1%2Flogin%2Fdiscord&response_type=code&scope=guilds.members.read%20identify%20guilds'
+                    : 'https://discord.com/api/oauth2/authorize?client_id=702201518329430117&redirect_uri=https%3A%2F%2Fvalorantlabs.xyz%2Fapi%2Fv1%2Flogin%2Fdiscord&response_type=code&scope=guilds%20identify%20guilds.members.read',
+        });
+    if (dbcheck && !db.guilds.some(i => i.id == dbcheck)) return res.code(403).send({message: 'Guild not available for client'});
+    return db;
+};
+const getCookie = (name, req) => {
+    const nameEQ = name + '=';
+    const ca = req.headers.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        const c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+};
+
 updateFunctions();
 let restart = false;
 setInterval(async () => {
@@ -54,15 +85,39 @@ manager.on('shardCreate', async shard => {
     console.log(`Launched shard ${shard.id}`);
 });
 
-fastify.register(await import('@fastify/cors'), {});
-
-fastify.register(await import('@fastify/static'), {
-    root: path.join(__dirname, 'website', 'build'),
+fastify.addHook('onRequest', async (req, res) => {
+    console.log(req.headers.host, req.url);
+    if (['.png', '.css', '.html', '.js', '.svg', '.jpg', '.jpeg'].some(i => req.url.endsWith(i))) {
+        if (req.url.endsWith('.png')) res.type('image/png');
+        if (req.url.endsWith('.css')) res.type('text/css');
+        if (req.url.endsWith('.html')) res.type('text/html');
+        if (req.url.endsWith('.js')) res.type('text/javascript');
+        if (req.url.endsWith('.svg')) res.type('image/svg+xml');
+        if (req.url.endsWith('.jpg') || req.url.endsWith('.jpeg')) res.type('image/jpeg');
+    } else res.type('application/json; charset=UTF-8');
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header(
+        'Access-Control-Allow-Headers',
+        'auth, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Set-Cookie, Cookie'
+    );
+    if (req.method == 'OPTIONS') return res.code(200).send();
 });
 
-fastify.get('/', async (req, res) => {
-    const usage = readFileSync('./website/build/index.html', {encoding: 'utf-8'});
-    res.type('text/html').send(usage);
+fastify.setNotFoundHandler((req, res) => {
+    if (!req.url.includes('api')) return res.type('text/html').send(readFileSync('./dist/index.html', {encoding: 'utf-8'}));
+    return res.code(404).send({message: 'Not found'});
+});
+
+fastify.register(import('@fastify/multipart'), {});
+fastify.register(import('@fastify/cors'), {});
+fastify.register(import('@fastify/static'), {
+    root: path.join(__dirname, 'dist'),
+});
+
+fastify.get('/', (req, res) => {
+    res.type('text/html').send(readFileSync('./dist/index.html', {encoding: 'utf-8'}));
 });
 
 fastify.get('/v1/guild-available/:guild', async (req, res) => {
@@ -147,16 +202,6 @@ fastify.post('/v1/topgg/vote', async (req, res) => {
         }
     );
     res.send('ok');
-});
-
-fastify.get('/invite', async (req, res) => {
-    res.redirect(
-        'https://discord.com/oauth2/authorize?client_id=702201518329430117&permissions=2416307264&redirect_uri=https%3A%2F%2Fdiscord.gg%2FZr5eF5D&scope=bot%20applications.commands'
-    );
-});
-
-fastify.get('/invite/guilded', async (req, res) => {
-    res.redirect('https://www.guilded.gg/b/5f089b0d-fa2c-4335-91c6-54df79f5d6e1');
 });
 
 fastify.get('/v1/rso/redirect/:state', async (req, res) => {
@@ -512,17 +557,6 @@ fastify.get('/rso/oauth', async (req, res) => {
     res.type('text/html').send(oauth);
 });
 
-fastify.get('/v1/login', async (req, res) => {
-    if (!req.query.guild || !req.query.channel || !req.query.message || !req.query.puuid) res.code(400).send({status: 400, message: 'Missing Query String'});
-    res.header('Set-Cookie', `guild=${req.query.guild}; Path=/`);
-    res.header('Set-Cookie', `channel=${req.query.channel}; Path=/`);
-    res.header('Set-Cookie', `message=${req.query.message}; Path=/`);
-    res.header('Set-Cookie', `puuid=${req.query.puuid}; Path=/`);
-    res.redirect(
-        'https://auth.riotgames.com/login#client_id=valorantlabs&redirect_uri=https%3A%2F%2Fvalorantlabs.xyz%2Foauth-finished.html&response_type=code&scope=openid%20offline_access&ui_locales=en'
-    );
-});
-
 fastify.get('/cdn/v1/agents/:uuid', async (req, res) => {
     if (existsSync(`assets/agents/${req.params.uuid}.png`)) return res.type('image/png').send(readFileSync(`assets/agents/${req.params.uuid}.png`));
     else return res.code(404).send({error: 'Ressource not found'});
@@ -533,6 +567,9 @@ fastify.get('/cdn/v1/backgrounds/:uuid', async (req, res) => {
         return res.type('image/png').send(brotliDecompressSync(readFileSync(`settings/backgrounds/${req.params.uuid}.png`)));
     else return res.code(404).send({error: 'Ressource not found'});
 });
+
+fastify.register(import('./routes/auth.js'));
+fastify.register(import('./routes/invites.js'));
 
 fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200}, (err, address) => {
     if (err) throw err;
