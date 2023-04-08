@@ -34,8 +34,8 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
                     embedBuilder({
                         title: `Game ${id ?? ''} | ID: ${match.data.data.metadata.matchid}`,
                         desc: `Mode: Deathmatch | Map: ${match.data.data.metadata.map} | Length: ${moment
-                            .duration(match.data.data.metadata.game_length)
-                            .minutes()}m ${moment.duration(match.data.data.metadata.game_length).seconds()}s | Started at: ${moment(
+                            .duration(match.data.data.metadata.game_length, 'seconds')
+                            .minutes()}m ${moment.duration(match.data.data.metadata.game_length, 'seconds').seconds()}s | Started at: ${moment(
                             match.data.data.metadata.game_start * 1000
                         ).format('LLLL')}`,
                         thumbnail: 'https://media.valorant-api.com/gamemodes/a8790ec5-4237-f2f0-e93b-08a8e89865b2/displayicon.png',
@@ -64,9 +64,9 @@ export const buildGameImage = async function ({id, guilddata, matchid, bgcanvas}
             });
             buildText({
                 ctx,
-                text: `${moment.duration(match.data.data.metadata.game_length).minutes()}m ${moment.duration(match.data.data.metadata.game_length).seconds()}s | ${moment(
-                    match.data.data.metadata.game_start * 1000
-                ).format('LLLL')}`,
+                text: `${moment.duration(match.data.data.metadata.game_length, 'seconds').minutes()}m ${moment
+                    .duration(match.data.data.metadata.game_length, 'seconds')
+                    .seconds()}s | ${moment(match.data.data.metadata.game_start * 1000).format('LLLL')}`,
                 size: 100,
                 x: 950,
                 y: 1200,
