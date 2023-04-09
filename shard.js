@@ -46,6 +46,9 @@ const getCookie = (name, req) => {
     }
     return null;
 };
+const getManager = () => {
+    return manager;
+};
 
 updateFunctions();
 let restart = false;
@@ -118,20 +121,6 @@ fastify.register(import('@fastify/static'), {
 
 fastify.get('/', (req, res) => {
     res.type('text/html').send(readFileSync('./dist/index.html', {encoding: 'utf-8'}));
-});
-
-fastify.get('/v1/guild-available/:guild', async (req, res) => {
-    const gcheck = await manager.broadcastEval(
-        (client, {guild}) => {
-            try {
-                const check = client.guilds.cache.has(guild);
-                return check ? client.guilds.cache.get(guild) : false;
-            } catch (e) {}
-        },
-        {context: {guild: req.params.guild}}
-    );
-    if (gcheck.some(item => typeof item == 'object')) return res.code(200).send({status: 200, data: gcheck.find(item => typeof item == 'object')});
-    res.code(404).send({status: 404, message: 'Guild unavailable'});
 });
 
 fastify.get('/v1/shard-state', async (req, res) => {
@@ -570,6 +559,7 @@ fastify.get('/cdn/v1/backgrounds/:uuid', async (req, res) => {
 
 fastify.register(import('./routes/auth.js'));
 fastify.register(import('./routes/invites.js'));
+fastify.register(import('./routes/public.js'));
 
 fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200}, (err, address) => {
     if (err) throw err;
@@ -577,3 +567,5 @@ fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.enviro
 });
 
 manager.spawn({timeout: -1});
+
+export {checkVerify, getManager, getDB};

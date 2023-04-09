@@ -1,4 +1,4 @@
-import {checkVerify} from '../main.mjs';
+import {checkVerify} from '../shard.js';
 
 export default async function (fastify, opts, done) {
     fastify.get('/api/v1/auth', async (req, res) => {

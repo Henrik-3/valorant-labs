@@ -2052,7 +2052,7 @@ span.flatpickr-weekday {
     max-height: 400px;
 }
 
-.on {
+.min-h-screen {
     min-height: 100vh;
 }
 
@@ -2086,6 +2086,10 @@ span.flatpickr-weekday {
 
 .w-full {
     width: 100%;
+}
+
+.w-12 {
+    width: 3rem;
 }
 
 .oa {

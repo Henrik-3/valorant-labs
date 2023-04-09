@@ -188,7 +188,7 @@
     </SkeletonTheme>
 </template>
 
-<style src="@/assets/new_design.css"></style>
+<style src="@/assets/dashboard.css"></style>
 
 <script>
 import axios from 'axios';

@@ -66,7 +66,7 @@
     </header>
 </template>
 
-<style src="@/assets/skeleton.css"></style>
+<style src="@/assets/skeleton.css" scoped></style>
 
 <script>
 import axios from 'axios';
