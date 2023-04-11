@@ -1548,6 +1548,11 @@ span.flatpickr-weekday {
     margin-bottom: 1rem;
 }
 
+.my-20 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
 .mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
@@ -1623,6 +1628,10 @@ span.flatpickr-weekday {
 
 .mb-0 {
     margin-bottom: 0;
+}
+
+.mb-20 {
+    margin-bottom: 5rem;
 }
 
 .ml-3 {
@@ -2488,6 +2497,10 @@ span.flatpickr-weekday {
 
 .gap-6 {
     gap: 1.5rem;
+}
+
+.gap-20 {
+    gap: 5rem;
 }
 
 .fr {
@@ -3367,6 +3380,11 @@ span.flatpickr-weekday {
     padding-right: 0.5rem;
 }
 
+.px-20 {
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
 .px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -3395,6 +3413,11 @@ span.flatpickr-weekday {
 .py-8 {
     padding-top: 2rem;
     padding-bottom: 2rem;
+}
+
+.px-8 {
+    padding-right: 2rem;
+    padding-left: 2rem;
 }
 
 .px-5 {

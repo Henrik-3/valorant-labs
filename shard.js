@@ -561,11 +561,11 @@ fastify.register(import('./routes/auth.js'));
 fastify.register(import('./routes/invites.js'));
 fastify.register(import('./routes/public.js'));
 
-fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200}, (err, address) => {
+fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200, host: '127.0.0.1'}, (err, address) => {
     if (err) throw err;
     // Server is now listening on ${address}
 });
 
 manager.spawn({timeout: -1});
 
-export {checkVerify, getManager, getDB};
+export {checkVerify, getManager, getDB, readFileSync};

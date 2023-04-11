@@ -1,6 +1,23 @@
-import {getManager, getDB} from '../shard.js';
+import {getManager, getDB, readFileSync} from '../shard.js';
 
 export default async function (fastify, opts, done) {
+    fastify.get('/v1/public/stats', async (req, res) => {
+        const manager = getManager();
+        const guilds = await manager.broadcastEval(client => {
+            return {
+                guilds: client.guilds.cache.size,
+                member: client.guilds.cache.reduce((a, c) => a + c.memberCount, 0),
+            };
+        });
+        console.log(guilds);
+        return res.code(200).send({
+            shards: manager.shardList.length,
+            commands: JSON.parse(readFileSync('./api.json')).all,
+            guilds: guilds.reduce((a, c) => a + c.guilds, 0),
+            member: guilds.reduce((a, c) => a + c.member, 0),
+        });
+    });
+
     fastify.get('/v1/public/guild/:guild', async (req, res) => {
         const gcheck = await getManager().broadcastEval(
             (client, {guild}) => {
