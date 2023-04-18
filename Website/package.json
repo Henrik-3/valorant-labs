@@ -6,7 +6,8 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
-        "staging": "vue-cli-service serve --mode staging"
+        "staging": "vue-cli-service serve --mode staging",
+        "pbe": "vue-cli-service build --mode pbe"
     },
     "dependencies": {
         "core-js": "^3.8.3",

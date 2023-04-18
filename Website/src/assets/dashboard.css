@@ -1654,6 +1654,10 @@ span.flatpickr-weekday {
     margin-top: 0.25rem;
 }
 
+.mt-20 {
+    margin-top: 5rem;
+}
+
 .mb-1 {
     margin-bottom: 0.25rem;
 }
@@ -1946,6 +1950,10 @@ span.flatpickr-weekday {
     height: 25vh;
 }
 
+.h-50-screen {
+    height: 50vh;
+}
+
 .h-6 {
     height: 1.5rem;
 }
@@ -1980,6 +1988,14 @@ span.flatpickr-weekday {
 
 .h-full {
     height: 100%;
+}
+
+.h-15 {
+    height: 15vh;
+}
+
+.h-50-p {
+    height: 50%;
 }
 
 .sp {
@@ -2069,6 +2085,14 @@ span.flatpickr-weekday {
     min-height: 10vh;
 }
 
+.m-h-15 {
+    min-height: 15vh;
+}
+
+.m-h-25 {
+    min-height: 25vh;
+}
+
 .m-h-50 {
     min-height: 50vh;
 }
@@ -2095,6 +2119,10 @@ span.flatpickr-weekday {
 
 .w-full {
     width: 100%;
+}
+
+.w-content {
+    width: fit-content;
 }
 
 .w-12 {
@@ -2139,6 +2167,10 @@ span.flatpickr-weekday {
 
 .w-32 {
     width: 8rem;
+}
+
+.w-48 {
+    width: 12rem;
 }
 
 .og {
@@ -2191,6 +2223,10 @@ span.flatpickr-weekday {
 
 .min-w-44 {
     min-width: 11rem;
+}
+
+.min-w-48 {
+    min-width: 12rem;
 }
 
 .min-w-60 {
@@ -2419,6 +2455,10 @@ span.flatpickr-weekday {
     grid-auto-flow: column;
 }
 
+.grid-cols-auto-0-400 {
+    grid-template-columns: repeat(auto-fit, minmax(0px, 400px));
+}
+
 .grid-cols-12 {
     grid-template-columns: repeat(12, minmax(0, 1fr));
 }
@@ -2427,7 +2467,11 @@ span.flatpickr-weekday {
     grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
-.ab {
+.grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -3390,9 +3434,19 @@ span.flatpickr-weekday {
     padding-right: 1rem;
 }
 
+.px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
 .py-3 {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
+}
+
+.py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
 .py-4 {

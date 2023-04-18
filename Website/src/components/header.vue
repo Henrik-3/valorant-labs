@@ -69,20 +69,22 @@
 <style src="@/assets/skeleton.css" scoped></style>
 
 <script>
-import axios from 'axios';
 import {Skeleton, SkeletonTheme} from 'vue-loading-skeleton';
+import SingleSelect from './singleselect_frontend.vue';
+import axios from 'axios';
 
 export default {
     name: 'custom_header',
     components: {
         Skeleton,
         SkeletonTheme,
+        SingleSelect,
     },
     props: {},
     async created() {
-        const user = await axios.get('https://dash.gforg.net/api/v1/auth', {withCredentials: true}).catch(e => e);
-        if (user.response?.status == 401) return (window.location.href = user.response.data.redirect);
-        this.user = user.data.user;
+        //const user = await axios.get('https://dash.gforg.net/api/v1/auth', {withCredentials: true}).catch(e => e);
+        //if (user.response?.status == 401) return (window.location.href = user.response.data.redirect);
+        //this.user = user.data.user;
         this.loading = false;
     },
     data() {
@@ -121,6 +123,16 @@ export default {
                     'fixed inset-0 bg-gray bg-opacity-30 z-40 lg:hidden transition-opacity duration-200 opacity-0 pointer-events-none';
                 document.getElementById('open_sidebar').ariaExpanded = 'false';
             }
+        },
+        getCookie(name) {
+            const nameEQ = name + '=';
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
         },
     },
 };

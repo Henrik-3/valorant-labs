@@ -1,4 +1,4 @@
-import {DiscordAPIError, ShardingManager} from 'discord.js';
+import {ApplicationCommandType, ApplicationCommandOptionType, ShardingManager, REST, Routes} from 'discord.js';
 import {AutoPoster} from 'topgg-autoposter';
 import {getDB, getTranslations, riottoken, getAgents, getGamemodes, getFunction, brotliDecompressSync, updateFunctions} from './methods.js';
 import {readFileSync, existsSync} from 'fs';
@@ -8,6 +8,7 @@ import path from 'path';
 const fastify = f.fastify({logger: {level: 'error'}});
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
+let application_commands = [];
 
 const manager = new ShardingManager('./index.js', {
     token: basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken,
@@ -15,6 +16,9 @@ const manager = new ShardingManager('./index.js', {
     respawn: true,
 });
 if (basedata.environment == 'live') AutoPoster(basedata.dbltoken, manager);
+const rest = new REST({version: '10'}).setToken(
+    basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken
+);
 
 const checkVerify = async (req, res, dbcheck = null) => {
     if (!req.headers.cookie && !req.headers.auth)
@@ -49,6 +53,9 @@ const getCookie = (name, req) => {
 const getManager = () => {
     return manager;
 };
+const getApplicationCommands = () => {
+    return application_commands;
+};
 
 updateFunctions();
 let restart = false;
@@ -58,6 +65,7 @@ setInterval(async () => {
         const shard_status_update = getFunction('shard_status_update');
         fetchWebsite(manager);
         shard_status_update(manager);
+        application_commands = await rest.get(Routes.applicationCommands(await shard.fetchClientValue('user.id')));
     }
 }, 150000);
 
@@ -84,6 +92,7 @@ manager.on('shardCreate', async shard => {
                 sshard.send('startup');
             });
         }
+        if (shard.id == 0) application_commands = await rest.get(Routes.applicationCommands(await shard.fetchClientValue('user.id')));
     });
     console.log(`Launched shard ${shard.id}`);
 });
@@ -121,13 +130,6 @@ fastify.register(import('@fastify/static'), {
 
 fastify.get('/', (req, res) => {
     res.type('text/html').send(readFileSync('./dist/index.html', {encoding: 'utf-8'}));
-});
-
-fastify.get('/v1/shard-state', async (req, res) => {
-    const sharddata = await manager.broadcastEval(client => {
-        return {status: client.ws.status, ping: client.ws.ping, server: client.guilds.cache.size};
-    });
-    res.send(sharddata);
 });
 
 fastify.get('/v1/pagedata', async (req, res) => {
@@ -568,4 +570,4 @@ fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.enviro
 
 manager.spawn({timeout: -1});
 
-export {checkVerify, getManager, getDB, readFileSync};
+export {checkVerify, getManager, getDB, readFileSync, ApplicationCommandType, ApplicationCommandOptionType, getApplicationCommands};
