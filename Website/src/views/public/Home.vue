@@ -4,7 +4,7 @@
             <div class="items-center text-center">
                 <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex items-center justify-center">
                     <img src="@/assets/bubbles-red.svg" height="10" width="50" class="mr-2" />VALORANT LABS
-                    <img src="@/assets/bubbles-red.svg" height="10" width="50" class="ml-2" />
+                    <img src="@/assets/bubbles-red.svg" height="10" width="50" class="ml-2" style="transform: scaleX(-1)" />
                 </h1>
                 <p class="text-xl text-gray-400 mb-4">{{ getTranslation('mainpage.description') }}</p>
                 <div>
