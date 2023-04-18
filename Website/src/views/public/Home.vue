@@ -2,7 +2,10 @@
     <div class="grow flex flex-col items-center text-center translate-y-0 transition-transform duration-x ease-in-out translate-x-0">
         <section class="flex items-center text-center min-h-screen">
             <div class="items-center text-center">
-                <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white">VALORANT LABS</h1>
+                <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex items-center justify-center">
+                    <img src="@/assets/bubbles-red.svg" height="10" width="50" class="mr-2" />VALORANT LABS
+                    <img src="@/assets/bubbles-red.svg" height="10" width="50" class="ml-2" />
+                </h1>
                 <p class="text-xl text-gray-400 mb-4">{{ getTranslation('mainpage.description') }}</p>
                 <div>
                     <a class="btn text-white shrink-0 mr-2 mb-2" href="/invite/discord" target="_blank" style="background-color: #404eed">
