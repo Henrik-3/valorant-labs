@@ -43,8 +43,8 @@
 
                     <!-- Middle links -->
                     <div class="text-sm order-1 text-gray-700 mb-2 mb-0">
-                        <a class="text-white hover:underline transition duration-150 ease-in-out" href="/tos">Terms</a> ·
-                        <a class="text-white hover:underline transition duration-150 ease-in-out" href="/privacy">Privacy Policy</a>
+                        <router-link :to="{name: 'Tos'}" class="text-white hover:underline transition duration-150 ease-in-out">Terms</router-link> ·
+                        <router-link :to="{name: 'Privacy'}" class="text-white hover:underline transition duration-150 ease-in-out">Privacy</router-link>
                     </div>
                 </div>
             </div>

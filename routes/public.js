@@ -109,7 +109,14 @@ export default async function (fastify, opts, done) {
 
     fastify.get('/v1/public/shards', async (req, res) => {
         const sharddata = await getManager().broadcastEval(client => {
-            return {status: client.ws.status, ping: client.ws.ping, server: client.guilds.cache.size, ready_at: client.readyAt, memory: process.memoryUsage().heapUsed};
+            return {
+                status: client.ws.status,
+                ping: client.ws.ping,
+                server: client.guilds.cache.size,
+                ready_at: client.readyAt,
+                member: client.guilds.cache.reduce((a, c) => a + c.memberCount, 0),
+                memory: process.memoryUsage().heapUsed,
+            };
         });
         res.send(sharddata);
     });

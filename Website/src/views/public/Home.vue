@@ -60,7 +60,7 @@
         <section class="flex flex-col items-center text-center w-full mb-20 mt-20">
             <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold val_gradient">{{ getTranslation('mainpage.numbers.title') }}</h1>
             <p class="text-xl val_gradient mb-16">{{ getTranslation('mainpage.numbers.description') }}</p>
-            <div class="grid grid-cols-auto-0-400 gap-2 text-center mb-20 w-full px-20">
+            <div class="grid grid-cols-auto-0-400 gap-2 text-center mb-20 w-full px-20 justify-center">
                 <div class="bg-gray-3 py-8 rounded-xl">
                     <i class="fa-sharp fa-solid fa-server text-white fa-xl mb-4"></i>
                     <div class="text-white text-3xl font-extrabold tracking-tighter mb-1" data-v-5fd9d94b="">{{ localString(stats?.guilds ?? 0) }}</div>
@@ -144,12 +144,10 @@
             </div>
         </section>
         <section class="mb-20 mt-20">
-            <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold hdev_gradient">{{ getTranslation('mainpage.support.title') }}</h1>
-            <p class="text-xl hdev_gradient mb-16">{{ getTranslation('mainpage.support.description') }}</p>
             <div class="flex rounded-xl overflow-hidden justify-center h-50-screen px-20">
                 <div class="flex px-12 py-12 flex-col text-left bg-gray-3 rounded-xl w-content justify-center">
-                    <h1 class="h1 text-2xl mb-4 font-extrabold hdev_gradient">{{ getTranslation('mainpage.support.help.title') }}</h1>
-                    <p class="text-xl hdev_gradient mb-16" style="line-break: anywhere">{{ getTranslation('mainpage.support.help.description') }}</p>
+                    <h1 class="h1 text-2xl mb-4 font-extrabold hdev_gradient">{{ getTranslation('mainpage.support.title') }}</h1>
+                    <p class="text-xl hdev_gradient mb-16" style="line-break: anywhere">{{ getTranslation('mainpage.support.description') }}</p>
                     <a class="btn text-white shrink-0 mr-2 hdev_gradient-bg" href="https://discord.gg/X3GaVkX2YN" target="_blank">
                         <i class="fa-brands fa-discord mr-2"></i>{{ getTranslation('mainpage.join') }}
                     </a>
@@ -186,14 +184,8 @@
 </style>
 
 <script>
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 import CustomFooter from '../../components/footer.vue';
-import SingleSelect from '../../components/singleselect_frontend.vue';
 import axios from 'axios';
-import dayjs from 'dayjs';
-import 'dayjs/locale/de';
-dayjs.locale('de');
-dayjs.extend(localizedFormat);
 
 export default {
     name: 'Home',

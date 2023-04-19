@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Home from '../views/public/Home.vue';
 import Uptime from '../views/public/Uptime.vue';
+import Tos from '../views/public/Tos.vue';
+import Privacy from '../views/public/Privacy.vue';
 import GuildSelect from '../views/dashboard/GuildSelect.vue';
 
 const routes = [
@@ -13,6 +15,16 @@ const routes = [
         path: '/uptime',
         name: 'Uptime',
         component: Uptime,
+    },
+    {
+        path: '/tos',
+        name: 'Tos',
+        component: Tos,
+    },
+    {
+        path: '/privacy',
+        name: 'Privacy',
+        component: Privacy,
     },
     {
         path: '/dashboard',

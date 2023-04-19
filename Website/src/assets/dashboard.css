@@ -8,6 +8,15 @@
     border-color: #e5e7eb;
 }
 
+li::marker {
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+    text-indent: 0px !important;
+    text-align: start !important;
+    text-align-last: start !important;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -1638,6 +1647,18 @@ span.flatpickr-weekday {
     margin-left: 0.75rem;
 }
 
+.ml-4 {
+    margin-left: 1rem;
+}
+
+.ml-8 {
+    margin-left: 2rem;
+}
+
+.ml-10-p {
+    margin-left: 10%;
+}
+
 .ml-2 {
     margin-left: 0.5rem;
 }
@@ -1664,6 +1685,22 @@ span.flatpickr-weekday {
 
 .rn {
     margin-top: auto;
+}
+
+.mt-25-screen {
+    margin-top: 25vh;
+}
+
+.mt-10-screen {
+    margin-top: 10vh;
+}
+
+.mt-15-screen {
+    margin-top: 15vh;
+}
+
+.mt-20-screen {
+    margin-top: 20vh;
 }
 
 .-mb-px {
@@ -2123,6 +2160,7 @@ span.flatpickr-weekday {
 
 .w-content {
     width: fit-content;
+    -moz-fit-content: fit-content;
 }
 
 .w-12 {
@@ -2457,6 +2495,10 @@ span.flatpickr-weekday {
 
 .grid-cols-auto-0-400 {
     grid-template-columns: repeat(auto-fit, minmax(0px, 400px));
+}
+
+.grid-cols-auto-0-200 {
+    grid-template-columns: repeat(auto-fit, minmax(0px, 200px));
 }
 
 .grid-cols-12 {
