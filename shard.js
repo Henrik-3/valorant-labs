@@ -122,11 +122,12 @@ fastify.setNotFoundHandler((req, res) => {
     return res.code(404).send({message: 'Not found'});
 });
 
-fastify.register(import('@fastify/multipart'), {});
+fastify.register(import('@fastify/multipart'), {attachFieldsToBody: true});
 fastify.register(import('@fastify/cors'), {});
 fastify.register(import('@fastify/static'), {
     root: path.join(__dirname, 'dist'),
 });
+fastify.register(import('fastify-socket.io'), {});
 
 fastify.get('/', (req, res) => {
     res.type('text/html').send(readFileSync('./dist/index.html', {encoding: 'utf-8'}));
@@ -565,9 +566,26 @@ fastify.register(import('./routes/public.js'));
 
 fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200, host: '127.0.0.1'}, (err, address) => {
     if (err) throw err;
+    fastify.io.on('connection', socket => {
+        console.log('Connected: ', socket.id);
+    });
     // Server is now listening on ${address}
 });
 
 manager.spawn({timeout: -1});
 
-export {checkVerify, getManager, getDB, readFileSync, ApplicationCommandType, ApplicationCommandOptionType, getApplicationCommands};
+export {
+    checkVerify,
+    getManager,
+    getDB,
+    axios,
+    basedata,
+    readFileSync,
+    ApplicationCommandType,
+    ApplicationCommandOptionType,
+    getApplicationCommands,
+    getFunction,
+    getTranslations,
+    getAgents,
+    getGamemodes,
+};
