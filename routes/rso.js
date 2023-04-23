@@ -32,7 +32,7 @@ export const steps = {
         {step: 7, name: 'DELETE_STATE_DB'},
         {step: 8, name: 'DONE'},
     ],
-    autorole: [
+    stats: [
         {step: 0, name: 'FETCH_TOKENS'},
         {step: 1, name: 'FETCH_USERINFO'},
         {step: 2, name: 'FETCH_REGION'},
@@ -88,7 +88,7 @@ export default async function (fastify, opts, done) {
             },
             req.query.state
         );
-        if (tokens.response) return;
+        if (tokens.response) return deleteRSO(req.query.state);
         const userinfo = await axios
             .get('https://europe.api.riotgames.com/riot/account/v1/accounts/me', {
                 headers: {Authorization: `Bearer ${tokens.data.access_token}`},
@@ -104,7 +104,7 @@ export default async function (fastify, opts, done) {
             },
             req.query.state
         );
-        if (userinfo.response) return;
+        if (userinfo.response) return deleteRSO(req.query.state);
         if (fstate.type == 'delete') {
             getDB('rso').deleteMany({puuid: userinfo.data.puuid});
             await stepUpdate(
@@ -156,7 +156,7 @@ export default async function (fastify, opts, done) {
             },
             req.query.state
         );
-        if (region.response) return;
+        if (region.response) return deleteRSO(req.query.state);
         const db = await axios
             .get(`https://api.henrikdev.xyz/valorant/v1/account/${encodeURI(userinfo.data.gameName)}/${encodeURI(userinfo.data.tagLine)}?asia=true`)
             .catch(e => e);
@@ -170,24 +170,21 @@ export default async function (fastify, opts, done) {
             },
             req.query.state
         );
-        if (db.response) return;
+        if (db.response) return deleteRSO(req.query.state);
         if (fstate.type == 'autorole') {
             const guilddata = await getDB('settings').findOne({gid: fstate.guild});
-            const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${region.data.activeShard}/${db.data.data.puuid}?asia=true`).catch(error => {
-                return error;
-            });
-            if (mmr.response)
-                return res.redirect(
-                    301,
-                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
-                        JSON.stringify({
-                            rank: null,
-                            full: null,
-                            error: `There seems to be an error with the mmr of that account | Status: ${mmr.response.status} | Message: ${mmr.response.data.message}`,
-                            message: null,
-                        })
-                    )}`
-                );
+            const mmr = await axios.get(`https://api.henrikdev.xyz/valorant/v2/by-puuid/mmr/${region.data.activeShard}/${db.data.data.puuid}?asia=true`).catch(e => e);
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][4],
+                    done: true,
+                    success: mmr.response ? false : true,
+                    value: mmr.response?.data ?? mmr.data,
+                },
+                req.query.state
+            );
+            if (mmr.response) return deleteRSO(req.query.state);
             if (mmr.data.data.current_data.currenttier == null || mmr.data.data.current_data.games_needed_for_rating != 0) {
                 if (guilddata.autoroles.some(i => i.name == 'unranked')) {
                     await manager.broadcastEval(
@@ -217,30 +214,31 @@ export default async function (fastify, opts, done) {
                         }
                     );
                 }
-                return res.redirect(
-                    301,
-                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
-                        JSON.stringify({
-                            rank: null,
-                            full: null,
-                            error: translations[guilddata.lang].mmr.no_rank_desc,
-                            message: null,
-                        })
-                    )}`
+                await stepUpdate(
+                    fastify.io.to(getClient(req.query.state)),
+                    {
+                        ...steps[fstate.type][5],
+                        done: true,
+                        success: false,
+                        value: 'Unranked',
+                    },
+                    req.query.state
                 );
+                return deleteRSO(req.query.state);
             }
-            if (!guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name))
-                return res.redirect(
-                    301,
-                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
-                        JSON.stringify({
-                            rank: null,
-                            full: null,
-                            error: "The rank you have isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
-                            message: null,
-                        })
-                    )}`
+            if (!guilddata.autoroles.some(item => mmr.data.data.current_data.currenttierpatched.split(' ')[0].toLowerCase() == item.name)) {
+                await stepUpdate(
+                    fastify.io.to(getClient(req.query.state)),
+                    {
+                        ...steps[fstate.type][5],
+                        done: true,
+                        success: false,
+                        value: "The rank you have isn't configured yet, please ask the owner or admin of the server to reconfigure/resend the autorole system",
+                    },
+                    req.query.state
                 );
+                return deleteRSO(req.query.state);
+            }
             await manager
                 .broadcastEval(
                     async (c, {user, guild, ra, rm}) => {
@@ -288,11 +286,41 @@ export default async function (fastify, opts, done) {
                         }
                     );
                 });
-            getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][5],
+                    done: true,
+                    success: true,
+                    value: mmr.data.data.current_data.currenttierpatched,
+                },
+                req.query.state
+            );
+            await getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][6],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
             getDB('linkv2').updateOne(
                 {userid: fstate.userid},
                 {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}},
                 {upsert: true}
+            );
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][7],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
             );
             await getDB('linkv2-logs').insertOne({
                 userid: fstate.userid,
@@ -309,25 +337,65 @@ export default async function (fastify, opts, done) {
                 rpuuid: userinfo.data.puuid,
                 puuid: db.data.data.puuid,
             });
-            getDB('state').deleteOne({code: req.query.state});
-            return res.redirect(
-                301,
-                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
-                    JSON.stringify({
-                        rank: mmr.data.data.current_data.currenttier,
-                        full: null,
-                        error: null,
-                        message: `Your account was successfully linked and your role was given`,
-                    })
-                )}`
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][8],
+                    done: true,
+                    success: true,
+                    value: mmr.data.data.current_data.currenttierpatched,
+                },
+                req.query.state
             );
+            await getDB('state').deleteOne({code: req.query.state});
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][9],
+                    done: true,
+                    success: true,
+                    value: mmr.data.data.current_data.currenttierpatched,
+                },
+                req.query.state
+            );
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][10],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            return deleteRSO(req.query.state);
         }
         if (fstate.type == 'link') {
-            getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
-            getDB('linkv2').updateOne(
+            await getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][4],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            await getDB('linkv2').updateOne(
                 {userid: fstate.userid},
                 {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}},
                 {upsert: true}
+            );
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][5],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
             );
             await getDB('linkv2-logs').insertOne({
                 userid: fstate.userid,
@@ -341,39 +409,56 @@ export default async function (fastify, opts, done) {
                 rpuuid: userinfo.data.puuid,
                 puuid: db.data.data.puuid,
             });
-            getDB('state').deleteOne({code: req.query.state});
-            return res.redirect(
-                301,
-                `https://valorantlabs.xyz/rso/oauth?data=${btoa(
-                    JSON.stringify({
-                        rank: null,
-                        full: null,
-                        error: null,
-                        message: `Your account was successfully linked`,
-                    })
-                )}`
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][6],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
             );
+            await getDB('state').deleteOne({code: req.query.state});
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][7],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][8],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            return deleteRSO(req.query.state);
         }
         if (fstate.type == 'stats') {
             const matchlist = await axios
                 .get(`https://${region.data.activeShard}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${userinfo.data.puuid}`, {
                     headers: {'X-Riot-Token': riottoken},
                 })
-                .catch(error => {
-                    return error;
-                });
-            if (matchlist.response)
-                return res.redirect(
-                    301,
-                    `https://valorantlabs.xyz/rso/oauth?data=${btoa(
-                        JSON.stringify({
-                            rank: null,
-                            full: null,
-                            error: `There seems to be an issue with your matchlist | Status: ${matchlist.response.status} | PUUID: ${db.data.data.puuid}`,
-                            message: null,
-                        })
-                    )}`
-                );
+                .catch(e => e);
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][4],
+                    done: true,
+                    success: matchlist.response ? false : true,
+                    value: matchlist.response?.data ?? matchlist.data,
+                },
+                req.query.state
+            );
+            if (matchlist.response) return deleteRSO(req.query.state);
             patchStats({
                 dbstats: {
                     puuid: userinfo.data.puuid,
@@ -390,11 +475,41 @@ export default async function (fastify, opts, done) {
                 agent: getAgents(),
                 modes: getGamemodes(),
             });
-            getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
-            getDB('linkv2').updateOne(
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][5],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            await getDB('rso').updateOne({puuid: userinfo.data.puuid}, {$set: {puuid: userinfo.data.puuid}}, {upsert: true});
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][6],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            await getDB('linkv2').updateOne(
                 {userid: fstate.userid},
                 {$set: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard}},
                 {upsert: true}
+            );
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][7],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
             );
             await getDB('linkv2-logs').insertOne({
                 userid: fstate.userid,
@@ -408,8 +523,38 @@ export default async function (fastify, opts, done) {
                 rpuuid: userinfo.data.puuid,
                 puuid: db.data.data.puuid,
             });
-            getDB('state').deleteOne({code: req.query.state});
-            return res.redirect(301, 'https://discord.com/channels/@me');
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][8],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            await getDB('state').deleteOne({code: req.query.state});
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][9],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            await stepUpdate(
+                fastify.io.to(getClient(req.query.state)),
+                {
+                    ...steps[fstate.type][10],
+                    done: true,
+                    success: true,
+                    value: null,
+                },
+                req.query.state
+            );
+            return deleteRSO(req.query.state);
         }
         return;
     });

@@ -75,7 +75,9 @@ const updateRSO = (uuid, data) => {
     return;
 };
 const deleteRSO = uuid => {
-    rso.splice(i => i.uuid == uuid);
+    setTimeout(() => {
+        if (rso.some(i => i.uuid == uuid)) rso.splice(i => i.uuid == uuid);
+    }, 60 * 1000 * 15);
     return;
 };
 

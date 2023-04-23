@@ -3,12 +3,19 @@
         <section class="flex text-left items-center m-h-25 mt-20">
             <div class="ml-10-p">
                 <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex">
-                    {{ getTranslation('rso.title') }}
+                    {{ getTranslation(`rso.title.${steps_name}`) }}
                 </h1>
                 <p class="text-xl text-gray-400 mb-4">{{ getTranslation(`rso.descriptions.${steps_name}`) }}</p>
             </div>
         </section>
-        <section class="ml-10-p text-left w-full mb-20">
+        <section class="flex items-center justify-center" v-if="unknown_state">
+            <div class="items-center text-center">
+                <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex items-center justify-center">
+                    {{ getTranslation('rso.unknown_state') }}
+                </h1>
+            </div>
+        </section>
+        <section class="ml-10-p text-left w-full mb-20" v-if="!unknown_state && steps.length">
             <div v-for="(step, i) of steps" :key="step" class="flex items-center mb-8">
                 <div
                     class="w-12 h-12 rounded-full dark:bg-opacity-25 flex justify-center items-center text-white dark:text-teal-400 font-medium"
@@ -23,12 +30,19 @@
                 >
                     <i v-if="step.success" class="fa-solid fa-check text-white"></i>
                     <i v-else-if="(!step.success && step.done && !steps[i + 1].done) || steps.some(i => !i.success && i.done)" class="fa-solid fa-xmark text-white"></i>
-                    <i v-else class="fa-solid fa-circle-notch text-white fa-spin"></i>
+                    <i v-else-if="!step.done && (steps[i - 1]?.done || !steps[i - 1])" class="fa-solid fa-circle-notch text-white fa-spin"></i>
                 </div>
                 <div class="flex flex-col text-left ml-8 text-white" style="max-width: -webkit-fill-available">
                     <p>{{ getTranslation(`rso.events.${step.name}`) }}</p>
                     <pre style="overflow: auto">{{ step.value ? JSON.stringify(step.value) : null }}</pre>
                 </div>
+            </div>
+        </section>
+        <section class="flex items-center justify-center" v-if="!steps.length">
+            <div class="items-center text-center">
+                <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex items-center justify-center">
+                    {{ getTranslation('rso.fetching_steps') }}
+                </h1>
             </div>
         </section>
     </div>
