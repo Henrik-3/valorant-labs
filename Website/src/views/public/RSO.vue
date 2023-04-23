@@ -38,7 +38,7 @@
                 </div>
             </div>
         </section>
-        <section class="flex items-center justify-center" v-if="!steps.length">
+        <section class="flex items-center justify-center" v-if="!steps.length && !unknown_state">
             <div class="items-center text-center">
                 <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex items-center justify-center">
                     {{ getTranslation('rso.fetching_steps') }}
@@ -108,6 +108,7 @@ export default {
                 rso: this.$route.query.uuid,
             },
         });
+        if (!this.$route.query.uuid) this.unknown_state = true;
         socket.on('UNKNOWN_STATE', msg => {
             console.log(msg);
             this.unknown_state = true;
