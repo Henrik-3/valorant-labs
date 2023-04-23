@@ -2007,6 +2007,10 @@ span.flatpickr-weekday {
     height: 4rem;
 }
 
+.h-12 {
+    height: 3rem;
+}
+
 .h-8 {
     height: 2rem;
 }

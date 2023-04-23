@@ -9,6 +9,7 @@ const fastify = f.fastify({logger: {level: 'error'}});
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
 let application_commands = [];
+let rso = [];
 
 const manager = new ShardingManager('./index.js', {
     token: basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken,
@@ -55,6 +56,27 @@ const getManager = () => {
 };
 const getApplicationCommands = () => {
     return application_commands;
+};
+const addRSO = (uuid, type, steps) => {
+    rso.push({
+        uuid,
+        type,
+        steps: steps.map(i => {
+            return {...i, done: false, value: null, success: null};
+        }),
+    });
+};
+const getRSO = uuid => {
+    return rso.find(i => i.uuid == uuid) ?? null;
+};
+const updateRSO = (uuid, data) => {
+    console.log(data);
+    rso.find(i => i.uuid == uuid).steps[rso.find(i => i.uuid == uuid).steps.findIndex(i => i.step == data.step)] = data;
+    return;
+};
+const deleteRSO = uuid => {
+    rso.splice(i => i.uuid == uuid);
+    return;
 };
 
 updateFunctions();
@@ -127,7 +149,10 @@ fastify.register(import('@fastify/cors'), {});
 fastify.register(import('@fastify/static'), {
     root: path.join(__dirname, 'dist'),
 });
-fastify.register(import('fastify-socket.io'), {});
+fastify.register(import('fastify-socket.io'), {
+    cors: true,
+    origins: ['https://valorantlabs.xyz', 'http://127.0.0.1:8080', 'https://beta.valorantlabs.xyz'],
+});
 
 fastify.get('/', (req, res) => {
     res.type('text/html').send(readFileSync('./dist/index.html', {encoding: 'utf-8'}));
@@ -203,7 +228,7 @@ fastify.get('/v1/rso/redirect/:state', async (req, res) => {
     );
 });
 
-fastify.get('/oauth-finished.html', async (req, res) => {
+/*fastify.get('/oauth-finished.html', async (req, res) => {
     console.log(req.query);
     const patchStats = getFunction('patchStats');
     const translations = getTranslations();
@@ -542,7 +567,7 @@ fastify.get('/oauth-finished.html', async (req, res) => {
         }
         return;
     }
-});
+});*/
 
 fastify.get('/rso/oauth', async (req, res) => {
     const oauth = readFileSync('./website/build/oauth.html', {encoding: 'utf-8'});
@@ -563,13 +588,17 @@ fastify.get('/cdn/v1/backgrounds/:uuid', async (req, res) => {
 fastify.register(import('./routes/auth.js'));
 fastify.register(import('./routes/invites.js'));
 fastify.register(import('./routes/public.js'));
+fastify.register(import('./routes/rso.js'));
+fastify.register(import('./routes/test.js'));
 
 fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200, host: '127.0.0.1'}, (err, address) => {
     if (err) throw err;
     fastify.io.on('connection', socket => {
         console.log('Connected: ', socket.id);
+        const rso = getRSO(socket.handshake.query.rso);
+        if (!rso) return socket.emit('UNKNOWN_STATE');
+        socket.emit('INIT_PLAN', rso);
     });
-    // Server is now listening on ${address}
 });
 
 manager.spawn({timeout: -1});
@@ -588,4 +617,8 @@ export {
     getTranslations,
     getAgents,
     getGamemodes,
+    addRSO,
+    getRSO,
+    updateRSO,
+    deleteRSO,
 };

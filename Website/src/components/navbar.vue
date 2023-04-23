@@ -7,7 +7,7 @@
                     <!-- Logo -->
                     <a class="block">
                         <router-link :to="{name: 'Home'}" class="text-white text-white flex items-center transition duration-150 ease-in-out cursor-pointer"
-                            ><img src="https://valorantlabs.xyz/logo.png" class="w-12 h-12"
+                            ><img src="https://valorantlabs.xyz/logo.png" class="w-12"
                         /></router-link>
                     </a>
                 </div>
