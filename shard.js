@@ -5,6 +5,8 @@ import {readFileSync, existsSync} from 'fs';
 import * as f from 'fastify';
 import axios from 'axios';
 import path from 'path';
+import _ from 'lodash';
+
 const fastify = f.fastify({logger: {level: 'error'}});
 const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
@@ -623,4 +625,5 @@ export {
     getRSO,
     updateRSO,
     deleteRSO,
+    _,
 };

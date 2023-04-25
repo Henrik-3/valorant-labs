@@ -2,10 +2,10 @@
     <div class="grow flex flex-col translate-y-0 transition-transform duration-x ease-in-out translate-x-0">
         <section class="flex text-left items-center m-h-25 mt-20">
             <div class="ml-10-p">
-                <h1 class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex">
+                <h1 v-if="!unknown_state" class="h1 lg:text-5xl mb-4 font-red-hat-display font-extrabold text-white flex">
                     {{ getTranslation(`rso.title.${steps_name}`) }}
                 </h1>
-                <p class="text-xl text-gray-400 mb-4">{{ getTranslation(`rso.descriptions.${steps_name}`) }}</p>
+                <p v-if="!unknown_state" class="text-xl text-gray-400 mb-4">{{ getTranslation(`rso.description.${steps_name}`) }}</p>
             </div>
         </section>
         <section class="flex items-center justify-center" v-if="unknown_state">
@@ -21,8 +21,10 @@
                     class="w-12 h-12 rounded-full dark:bg-opacity-25 flex justify-center items-center text-white dark:text-teal-400 font-medium"
                     style="flex-shrink: 0"
                     :class="
-                        (!step.success && step.done && !steps[i + 1].done) || (steps.some(k => !k.success && k.done) && steps.findIndex(k => !k.success && k.done) < i)
+                        !step.success && step.done && !steps[i + 1].done
                             ? 'val_gradient-bg'
+                            : steps.some(k => !k.success && k.done) && steps.findIndex(k => !k.success && k.done) < i
+                            ? 'bg-gray-3'
                             : step.success
                             ? 'green_gradient-bg'
                             : 'hdev_gradient-bg'

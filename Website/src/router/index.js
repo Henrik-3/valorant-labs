@@ -3,6 +3,7 @@ import Home from '../views/public/Home.vue';
 import Uptime from '../views/public/Uptime.vue';
 import Tos from '../views/public/Tos.vue';
 import Privacy from '../views/public/Privacy.vue';
+import LegalNotice from '../views/public/Impressum.vue';
 import RSO from '../views/public/RSO.vue';
 import GuildSelect from '../views/dashboard/GuildSelect.vue';
 
@@ -26,6 +27,11 @@ const routes = [
         path: '/privacy',
         name: 'Privacy',
         component: Privacy,
+    },
+    {
+        path: '/legal-notice',
+        name: 'LegalNotice',
+        component: LegalNotice,
     },
     {
         path: '/rso',

@@ -1,4 +1,4 @@
-import {getFunction, getTranslations, getDB, axios, basedata, getManager, getAgents, getGamemodes, addRSO, updateRSO, deleteRSO} from '../shard.js';
+import {getFunction, getTranslations, getDB, axios, basedata, getManager, getAgents, getGamemodes, addRSO, updateRSO, deleteRSO, _} from '../shard.js';
 
 export const steps = {
     delete: [
@@ -61,7 +61,6 @@ export default async function (fastify, opts, done) {
     fastify.get('/oauth-finished.html', async (req, res) => {
         console.log(req.query);
         const patchStats = getFunction('patchStats');
-        const translations = getTranslations();
         const manager = getManager();
         if (!req.query.state) return res.redirect(`/rso?uuid=null`);
         const fstate = await getDB('state').findOne({code: req.query.state});
@@ -83,8 +82,15 @@ export default async function (fastify, opts, done) {
             {
                 ...steps[fstate.type][0],
                 done: true,
-                success: tokens.response ? false : true,
-                value: tokens.response?.data ?? tokens.data,
+                success: tokens.response || tokens.code ? false : true,
+                value: tokens.response?.data ??
+                    tokens.code ?? {
+                        scope: tokens.data.scope,
+                        expires_in: tokens.data.expires_in,
+                        token_type: tokens.data.token_type,
+                        refresh_token: _.truncate(tokens.data.refresh_token, {length: 10}),
+                        access_token: _.truncate(tokens.data.access_token, {length: 10}),
+                    },
             },
             req.query.state
         );
@@ -99,8 +105,8 @@ export default async function (fastify, opts, done) {
             {
                 ...steps[fstate.type][1],
                 done: true,
-                success: userinfo.response ? false : true,
-                value: userinfo.response?.data ?? userinfo.data,
+                success: userinfo.response || userinfo.code ? false : true,
+                value: userinfo.response?.data ?? userinfo.code ?? userinfo.data,
             },
             req.query.state
         );
@@ -151,8 +157,8 @@ export default async function (fastify, opts, done) {
             {
                 ...steps[fstate.type][2],
                 done: true,
-                success: region.response ? false : true,
-                value: region.response?.data ?? userinfo.data,
+                success: region.response || region.code ? false : true,
+                value: region.response?.data ?? region.code ?? region.data,
             },
             req.query.state
         );
@@ -165,8 +171,8 @@ export default async function (fastify, opts, done) {
             {
                 ...steps[fstate.type][3],
                 done: true,
-                success: db.response ? false : true,
-                value: db.response?.data ?? db.data,
+                success: db.response || db.code ? false : true,
+                value: db.response?.data ?? db.code ?? db.data,
             },
             req.query.state
         );
@@ -179,8 +185,8 @@ export default async function (fastify, opts, done) {
                 {
                     ...steps[fstate.type][4],
                     done: true,
-                    success: mmr.response ? false : true,
-                    value: mmr.response?.data ?? mmr.data,
+                    success: mmr.response || mmr.code ? false : true,
+                    value: mmr.response?.data ?? mmr.code ?? mmr.data,
                 },
                 req.query.state
             );
@@ -292,7 +298,7 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][5],
                     done: true,
                     success: true,
-                    value: mmr.data.data.current_data.currenttierpatched,
+                    value: `${mmr.data?.data?.current_data?.currenttierpatched} (Elo: ${mmr.data?.data?.currenttierpatched?.elo})`,
                 },
                 req.query.state
             );
@@ -303,7 +309,7 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][6],
                     done: true,
                     success: true,
-                    value: null,
+                    value: {puuid: userinfo.data.puuid},
                 },
                 req.query.state
             );
@@ -318,11 +324,11 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][7],
                     done: true,
                     success: true,
-                    value: null,
+                    value: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard},
                 },
                 req.query.state
             );
-            await getDB('linkv2-logs').insertOne({
+            const log_data = {
                 userid: fstate.userid,
                 date: new Date(),
                 admin: null,
@@ -336,14 +342,15 @@ export default async function (fastify, opts, done) {
                 riotid: userinfo.data.gameName && userinfo.data.tagLine ? `${userinfo.data.gameName}#${userinfo.data.tagLine}` : null,
                 rpuuid: userinfo.data.puuid,
                 puuid: db.data.data.puuid,
-            });
+            };
+            await getDB('linkv2-logs').insertOne(log_data);
             await stepUpdate(
                 fastify.io.to(getClient(req.query.state)),
                 {
                     ...steps[fstate.type][8],
                     done: true,
                     success: true,
-                    value: mmr.data.data.current_data.currenttierpatched,
+                    value: log_data,
                 },
                 req.query.state
             );
@@ -354,7 +361,7 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][9],
                     done: true,
                     success: true,
-                    value: mmr.data.data.current_data.currenttierpatched,
+                    value: null,
                 },
                 req.query.state
             );
@@ -378,7 +385,7 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][4],
                     done: true,
                     success: true,
-                    value: null,
+                    value: {puuid: userinfo.data.puuid},
                 },
                 req.query.state
             );
@@ -393,11 +400,11 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][5],
                     done: true,
                     success: true,
-                    value: null,
+                    value: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard},
                 },
                 req.query.state
             );
-            await getDB('linkv2-logs').insertOne({
+            const log_data = {
                 userid: fstate.userid,
                 date: new Date(),
                 admin: null,
@@ -408,14 +415,15 @@ export default async function (fastify, opts, done) {
                 riotid: userinfo.data.gameName && userinfo.data.tagLine ? `${userinfo.data.gameName}#${userinfo.data.tagLine}` : null,
                 rpuuid: userinfo.data.puuid,
                 puuid: db.data.data.puuid,
-            });
+            };
+            await getDB('linkv2-logs').insertOne(log_data);
             await stepUpdate(
                 fastify.io.to(getClient(req.query.state)),
                 {
                     ...steps[fstate.type][6],
                     done: true,
                     success: true,
-                    value: null,
+                    value: log_data,
                 },
                 req.query.state
             );
@@ -453,8 +461,8 @@ export default async function (fastify, opts, done) {
                 {
                     ...steps[fstate.type][4],
                     done: true,
-                    success: matchlist.response ? false : true,
-                    value: matchlist.response?.data ?? matchlist.data,
+                    success: matchlist.response || matchlist.code ? false : true,
+                    value: matchlist.response?.data ?? matchlist.code ?? matchlist.data,
                 },
                 req.query.state
             );
@@ -492,7 +500,7 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][6],
                     done: true,
                     success: true,
-                    value: null,
+                    value: {puuid: userinfo.data.puuid},
                 },
                 req.query.state
             );
@@ -507,11 +515,11 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][7],
                     done: true,
                     success: true,
-                    value: null,
+                    value: {puuid: db.data.data.puuid, rpuuid: userinfo.data.puuid, region: region.data.activeShard},
                 },
                 req.query.state
             );
-            await getDB('linkv2-logs').insertOne({
+            const link_data = {
                 userid: fstate.userid,
                 date: new Date(),
                 admin: null,
@@ -522,14 +530,15 @@ export default async function (fastify, opts, done) {
                 riotid: userinfo.data.gameName && userinfo.data.tagLine ? `${userinfo.data.gameName}#${userinfo.data.tagLine}` : null,
                 rpuuid: userinfo.data.puuid,
                 puuid: db.data.data.puuid,
-            });
+            };
+            await getDB('linkv2-logs').insertOne(link_data);
             await stepUpdate(
                 fastify.io.to(getClient(req.query.state)),
                 {
                     ...steps[fstate.type][8],
                     done: true,
                     success: true,
-                    value: null,
+                    value: link_data,
                 },
                 req.query.state
             );
