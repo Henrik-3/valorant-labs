@@ -211,9 +211,9 @@ export default {
     },
     async created() {
         console.log(this.getCookie('lang'));
+        this.i18n = (await axios.get(`${process.env.VUE_APP_BASE_API_URL}/v1/public/i18n/${this.llang}`).catch(e => e)).data ?? {};
         this.featured_guilds = (await axios.get(`${process.env.VUE_APP_BASE_API_URL}/v1/public/featured`).catch(e => e)).data ?? [];
         this.stats = (await axios.get(`${process.env.VUE_APP_BASE_API_URL}/v1/public/stats`).catch(e => e)).data ?? {};
-        this.i18n = (await axios.get(`${process.env.VUE_APP_BASE_API_URL}/v1/public/i18n/${this.llang}`).catch(e => e)).data ?? {};
         this.commands = (await axios.get(`${process.env.VUE_APP_BASE_API_URL}/v1/public/commands?lang=${this.llang}`).catch(e => e)).data ?? {};
     },
     methods: {

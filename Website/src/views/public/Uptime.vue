@@ -22,7 +22,7 @@
             />
             <div class="grid grid-cols-auto-0-200 gap-2 text-center mb-20 w-full">
                 <div
-                    v-for="(shard, i) of calculated_shard"
+                    v-for="shard of calculated_shard"
                     :key="shard"
                     class="bg-gray-3 py-8 rounded-xl"
                     :class="shard.status == 0 ? 'green_gradient-bg' : 'val_gradient-bg'"
@@ -30,7 +30,7 @@
                     <div class="flex flex-col items-center text-left items-center ml-2" style="margin-right: auto">
                         <div class="items-center flex mb-2 li">
                             <i class="fa-solid fa-circle-nodes text-white fa-sm mr-2"></i>
-                            <p class="text-xs text-white">#{{ i }}</p>
+                            <p class="text-xs text-white">#{{ shard.id }}</p>
                         </div>
                         <div class="items-center flex mb-2 li">
                             <i class="fa-solid fa-server text-white mr-2 fa-sm"></i>
@@ -112,7 +112,7 @@ export default {
     },
     computed: {
         calculated_shard() {
-            if (this.shard) return this.shards.filter((i, index) => index == (this.shard >> 22) % this.shards.length);
+            if (this.shard) return this.shards.filter((i, index) => index == Number((BigInt(this.shard) >> BigInt(22)) % BigInt(this.shards.length)));
             return this.shards;
         },
     },
@@ -147,7 +147,7 @@ export default {
         },
         updateShard(event) {
             this.shard = event.target.value;
-            console.log((this.shard >> 22) % this.shards.length);
+            console.log(Number((BigInt(this.shard) >> BigInt(22)) % BigInt(this.shards.length)));
         },
     },
 };
