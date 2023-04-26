@@ -118,6 +118,7 @@ export default async function (fastify, opts, done) {
                 ready_at: client.readyAt,
                 member: client.guilds.cache.reduce((a, c) => a + c.memberCount, 0),
                 memory: process.memoryUsage().heapUsed,
+                id: client.shard.ids[0],
             };
         });
         res.send(sharddata);
