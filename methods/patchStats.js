@@ -87,7 +87,7 @@ export const patchStats = async function ({dbstats, mmatches, message, lang, age
                         const agent = dbindex != -1 ? dbagent : {};
                         agent.agent = player.character;
                         agent.playtime = !isNaN(fmatches[i].data.data.metadata.game_length)
-                            ? Number(agent.playtime ? agent.playtime : 0) + Number(fmatches[i].data.data.metadata.game_length)
+                            ? Number(agent.playtime ? agent.playtime : 0) + Number(fmatches[i].data.data.metadata.game_length * 1000)
                             : 0;
                         agent.matches = !agent.matches ? 1 : agent.matches + 1;
                         agent.kills = !isNaN(player.stats.kills) ? Number(agent.kills ? agent.kills : 0) + Number(player.stats.kills) : 0;

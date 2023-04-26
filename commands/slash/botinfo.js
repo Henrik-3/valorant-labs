@@ -1,7 +1,7 @@
 import {sysinfo, embedBuilder, getTranslations, pretty} from '../../methods.js';
 export async function execute({interaction, guilddata} = {}) {
     const translations = getTranslations();
-    const sysdata = await sysinfo.get({mem: 'total, free, used', osInfo: 'distro', currentLoad: 'currentLoad'});
+    const sysdata = await sysinfo.get({mem: '*', osInfo: '*', currentLoad: 'currentLoad'});
     console.log(sysdata);
     return interaction.editReply({
         embeds: [
@@ -17,22 +17,21 @@ export async function execute({interaction, guilddata} = {}) {
                     },
                     {
                         name: 'CPU',
-                        value: `AMD Epyc 7702 (8C@3GHz) | Load: ${sysdata.currentLoad.currentLoad.toFixed(2)}%`,
+                        value: `i9 9900K (8C 16T, 3.6 - 5.0 GHz) | Load: ${sysdata.currentLoad.currentLoad.toFixed(2)}%`,
                         inline: false,
                     },
                     {
                         name: 'Memory',
-                        value: `Total: ${pretty(sysdata.mem.total, {locale: 'en'})} | Free: ${pretty(sysdata.mem.free, {locale: 'en'})} | Used: ${pretty(
-                            sysdata.mem.used,
-                            {
-                                locale: 'en',
-                            }
-                        )}`,
+                        value: `Total: ${pretty(sysdata.mem.total - sysdata.mem.available - sysdata.mem.buffers + sysdata.mem.available, {
+                            locale: 'en',
+                        })} | Free: ${pretty(sysdata.mem.available, {locale: 'en'})} | Used: ${pretty(sysdata.mem.total - sysdata.mem.available - sysdata.mem.buffers, {
+                            locale: 'en',
+                        })}`,
                         inline: false,
                     },
                     {
                         name: 'OS',
-                        value: sysdata.osInfo.distro,
+                        value: `${sysdata.osInfo.distro} ${sysdata.osInfo.release} (${sysdata.osInfo.codename}) `,
                         inline: false,
                     },
                 ],
