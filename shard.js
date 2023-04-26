@@ -548,6 +548,8 @@ fastify.register(import('./routes/invites.js'));
 fastify.register(import('./routes/public.js'));
 fastify.register(import('./routes/rso.js'));
 fastify.register(import('./routes/test.js'));
+fastify.register(import('./routes/topgg.js'));
+fastify.register(import('./routes/cdn.js'));
 
 fastify.listen({port: environment == 'staging' ? 4200 : environment == 'pbe' ? 4201 : 4200, host: '127.0.0.1'}, (err, address) => {
     if (err) throw err;
