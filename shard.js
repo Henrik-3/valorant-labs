@@ -162,7 +162,7 @@ fastify.get('/', (req, res) => {
     res.type('text/html').send(readFileSync('./dist/index.html', {encoding: 'utf-8'}));
 });
 
-fastify.get('/v1/pagedata', async (req, res) => {
+/*fastify.get('/v1/pagedata', async (req, res) => {
     const translations = getTranslations();
     if (req.query.type == 'landingpage') {
         const guild = (await manager.fetchClientValues('guilds.cache.size')).reduce((prev, val) => prev + val, 0);
@@ -198,41 +198,7 @@ fastify.get('/v1/pagedata', async (req, res) => {
     }
 });
 
-fastify.post('/v1/topgg/vote', async (req, res) => {
-    const user = await manager.broadcastEval(
-        async (c, {user}) => {
-            return await c.users.fetch(user);
-        },
-        {shard: 0, context: {user: req.body.user}}
-    );
-    await manager.broadcastEval(
-        (c, {embed}) => {
-            if (c.channels.cache.has('913842504611266560')) return c.channels.cache.get('913842504611266560').send({embeds: [embed]});
-        },
-        {
-            context: {
-                embed: {
-                    title: 'New Vote',
-                    description: `ID: ${user.id} | Username: ${user.tag} | <t:${Math.round(+new Date() / 1000)}:F>`,
-                    color: 16777215,
-                    thumbnail: {
-                        url: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : null,
-                    },
-                },
-            },
-        }
-    );
-    res.send('ok');
-});
-
-fastify.get('/v1/rso/redirect/:state', async (req, res) => {
-    res.redirect(
-        301,
-        `https://auth.riotgames.com/login#client_id=valorantlabs&redirect_uri=https%3A%2F%2Fvalorantlabs.xyz%2Foauth-finished.html&response_type=code&scope=openid%20offline_access&prompt=login&state=${req.params.state}`
-    );
-});
-
-/*fastify.get('/oauth-finished.html', async (req, res) => {
+fastify.get('/oauth-finished.html', async (req, res) => {
     console.log(req.query);
     const patchStats = getFunction('patchStats');
     const translations = getTranslations();
@@ -571,23 +537,12 @@ fastify.get('/v1/rso/redirect/:state', async (req, res) => {
         }
         return;
     }
-});*/
+});
 
 fastify.get('/rso/oauth', async (req, res) => {
     const oauth = readFileSync('./website/build/oauth.html', {encoding: 'utf-8'});
     res.type('text/html').send(oauth);
-});
-
-fastify.get('/cdn/v1/agents/:uuid', async (req, res) => {
-    if (existsSync(`assets/agents/${req.params.uuid}.png`)) return res.type('image/png').send(readFileSync(`assets/agents/${req.params.uuid}.png`));
-    else return res.code(404).send({error: 'Ressource not found'});
-});
-
-fastify.get('/cdn/v1/backgrounds/:uuid', async (req, res) => {
-    if (existsSync(`settings/backgrounds/${req.params.uuid}.png`))
-        return res.type('image/png').send(brotliDecompressSync(readFileSync(`settings/backgrounds/${req.params.uuid}.png`)));
-    else return res.code(404).send({error: 'Ressource not found'});
-});
+});*/
 
 fastify.register(import('./routes/auth.js'));
 fastify.register(import('./routes/invites.js'));
@@ -626,4 +581,7 @@ export {
     updateRSO,
     deleteRSO,
     _,
+    existsSync,
+    readFileSync,
+    brotliDecompressSync,
 };

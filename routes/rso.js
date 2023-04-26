@@ -567,4 +567,10 @@ export default async function (fastify, opts, done) {
         }
         return;
     });
+    fastify.get('/v1/rso/redirect/:state', async (req, res) => {
+        res.redirect(
+            301,
+            `https://auth.riotgames.com/login#client_id=valorantlabs&redirect_uri=https%3A%2F%2Fvalorantlabs.xyz%2Foauth-finished.html&response_type=code&scope=openid%20offline_access&prompt=login&state=${req.params.state}`
+        );
+    });
 }
