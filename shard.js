@@ -12,16 +12,15 @@ const basedata = JSON.parse(readFileSync('./basedata.json'));
 const __dirname = path.resolve();
 let application_commands = [];
 let rso = [];
+const environment = basedata.environment;
 
 const manager = new ShardingManager('./index.js', {
-    token: basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken,
-    totalShards: basedata.environment == 'live' ? 14 : 2,
+    token: environment == 'staging' ? basedata.stagingtoken : environment == 'pbe' ? basedata.betatoken : basedata.discordtoken,
+    totalShards: environment == 'live' ? 14 : 2,
     respawn: true,
 });
-if (basedata.environment == 'live') AutoPoster(basedata.dbltoken, manager);
-const rest = new REST({version: '10'}).setToken(
-    basedata.environment == 'staging' ? basedata.stagingtoken : basedata.environment == 'pbe' ? basedata.betatoken : basedata.discordtoken
-);
+if (environment == 'live') AutoPoster(basedata.dbltoken, manager);
+const rest = new REST({version: '10'}).setToken(environment == 'staging' ? basedata.stagingtoken : environment == 'pbe' ? basedata.betatoken : basedata.discordtoken);
 
 const checkVerify = async (req, res, dbcheck = null) => {
     if (!req.headers.cookie && !req.headers.auth)
@@ -86,7 +85,7 @@ const deleteRSO = uuid => {
 updateFunctions();
 let restart = false;
 setInterval(async () => {
-    if (basedata.environment == 'live') {
+    if (environment == 'live') {
         const fetchWebsite = getFunction('fetchWebsite');
         const shard_status_update = getFunction('shard_status_update');
         fetchWebsite(manager);
@@ -108,7 +107,7 @@ manager.on('shardCreate', async shard => {
     shard.on('ready', async rshard => {
         console.log('Ready', shard.id);
         if (manager.shards.size == manager.totalShards && restart == false) {
-            if (basedata.environment == 'live') {
+            if (environment == 'live') {
                 const fetchWebsite = getFunction('fetchWebsite');
                 const shard_status_update = getFunction('shard_status_update');
                 fetchWebsite(manager);
@@ -550,7 +549,7 @@ fastify.register(import('./routes/public.js'));
 fastify.register(import('./routes/rso.js'));
 fastify.register(import('./routes/test.js'));
 
-fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.environment == 'pbe' ? 4201 : 4200, host: '127.0.0.1'}, (err, address) => {
+fastify.listen({port: environment == 'staging' ? 4200 : environment == 'pbe' ? 4201 : 4200, host: '127.0.0.1'}, (err, address) => {
     if (err) throw err;
     fastify.io.on('connection', socket => {
         console.log('Connected: ', socket.id);
@@ -582,6 +581,6 @@ export {
     deleteRSO,
     _,
     existsSync,
-    readFileSync,
     brotliDecompressSync,
+    environment,
 };

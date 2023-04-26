@@ -1,4 +1,4 @@
-import {getFunction, getTranslations, getDB, axios, basedata, getManager, getAgents, getGamemodes, addRSO, updateRSO, deleteRSO, _} from '../shard.js';
+import {getFunction, getDB, axios, basedata, getManager, getAgents, getGamemodes, addRSO, updateRSO, deleteRSO, _} from '../shard.js';
 
 export const steps = {
     delete: [
