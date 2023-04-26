@@ -6,7 +6,9 @@
             <p class="text-l text-white mb-4">{{ personal_data.name }}</p>
             <p class="text-l text-white mb-4">{{ personal_data.address }}</p>
             <p class="text-l text-white mb-4">{{ personal_data.address_2 }}</p>
-            <p class="text-l text-white mb-4">{{ personal_data.email }}</p>
+            <p class="text-l text-white mb-4">{{ personal_data.address_3 }}</p>
+            <p class="text-l text-white mb-8">No parcels or packages - acceptance is refused!</p>
+            <p class="text-l text-white">{{ personal_data.email }}</p>
         </section>
     </div>
     <custom-footer></custom-footer>
@@ -58,6 +60,7 @@ export default {
                 name: null,
                 address: null,
                 address_2: null,
+                address_3: null,
                 email: null,
             },
         };
@@ -67,6 +70,7 @@ export default {
         this.personal_data.name = process.env.VUE_APP_IMPRINT_NAME;
         this.personal_data.address = process.env.VUE_APP_IMPRINT_ADDRESS;
         this.personal_data.address_2 = process.env.VUE_APP_IMPRINT_ADDRESS_2;
+        this.personal_data.address_2 = process.env.VUE_APP_IMPRINT_ADDRESS_3;
         this.personal_data.email = process.env.VUE_APP_IMPRINT_EMAIL;
     },
     computed: {},

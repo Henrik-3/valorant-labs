@@ -600,7 +600,7 @@ fastify.listen({port: basedata.environment == 'staging' ? 4200 : basedata.enviro
     fastify.io.on('connection', socket => {
         console.log('Connected: ', socket.id);
         const rso = getRSO(socket.handshake.query.rso);
-        if (!rso) return socket.emit('UNKNOWN_STATE');
+        if (!rso) return socket.emit('UNKNOWN_STATE', {unknown_state: true});
         socket.emit('INIT_PLAN', rso);
     });
 });

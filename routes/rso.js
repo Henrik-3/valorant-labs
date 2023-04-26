@@ -66,7 +66,7 @@ export default async function (fastify, opts, done) {
         const fstate = await getDB('state').findOne({code: req.query.state});
         addRSO(req.query.state, fstate.type, steps[fstate.type]);
         res.redirect(`/rso?uuid=${req.query.state ?? null}`);
-        if (!fstate) return fastify.io.to(getClient(req.query.state)).emit('UNKNOWN_STATE');
+        if (!fstate) return fastify.io.to(getClient(req.query.state)).emit('UNKNOWN_STATE', {unknown_state: true});
 
         const formData = new URLSearchParams();
         formData.append('grant_type', 'authorization_code');
