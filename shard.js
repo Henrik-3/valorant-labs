@@ -71,7 +71,6 @@ const getRSO = uuid => {
     return rso.find(i => i.uuid == uuid) ?? null;
 };
 const updateRSO = (uuid, data) => {
-    console.log(data);
     rso.find(i => i.uuid == uuid).steps[rso.find(i => i.uuid == uuid).steps.findIndex(i => i.step == data.step)] = data;
     return;
 };
@@ -90,7 +89,7 @@ setInterval(async () => {
         const shard_status_update = getFunction('shard_status_update');
         fetchWebsite(manager);
         shard_status_update(manager);
-        application_commands = await rest.get(Routes.applicationCommands(await shard.fetchClientValue('user.id')));
+        application_commands = await rest.get(Routes.applicationCommands(await manager.shards.first().fetchClientValue('user.id')));
     }
 }, 150000);
 

@@ -59,7 +59,6 @@ export default async function (fastify, opts, done) {
         return clients.find(i => i.handshake.query.rso == rso)?.id ?? null;
     };
     fastify.get('/oauth-finished.html', async (req, res) => {
-        console.log(req.query);
         const patchStats = getFunction('patchStats');
         const manager = getManager();
         if (!req.query.state) return res.redirect(`/rso?uuid=null`);

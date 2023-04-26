@@ -1,4 +1,4 @@
-import {getManager, getDB, readFileSync, ApplicationCommandType, ApplicationCommandOptionType, getApplicationCommands} from '../shard.js';
+import {getManager, getDB, readFileSync, ApplicationCommandType, ApplicationCommandOptionType, getApplicationCommands, environment} from '../shard.js';
 
 export default async function (fastify, opts, done) {
     fastify.get('/v1/public/stats', async (req, res) => {
@@ -9,7 +9,6 @@ export default async function (fastify, opts, done) {
                 member: client.guilds.cache.reduce((a, c) => a + c.memberCount, 0),
             };
         });
-        console.log(guilds);
         return res.code(200).send({
             shards: manager.shardList.length,
             commands: JSON.parse(readFileSync('./api.json')).all,
@@ -19,10 +18,13 @@ export default async function (fastify, opts, done) {
     });
 
     fastify.get('/v1/public/featured', async (req, res) => {
-        let guilds = await getManager().broadcastEval(client => {
-            return client.guilds.cache;
-            //return client.guilds.cache.filter(i => i.name.toLowerCase().includes('val'));
-        });
+        let guilds = await getManager().broadcastEval(
+            (client, {environment}) => {
+                if (environment == 'live') return client.guilds.cache.filter(i => i.name.toLowerCase().includes('val'));
+                return client.guilds.cache;
+            },
+            {context: {environment}}
+        );
         const carray = [];
         for (let i = 0; guilds.length > i; i++) {
             for (let k = 0; guilds[i].length > k; k++) {
