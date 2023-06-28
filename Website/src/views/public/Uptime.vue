@@ -20,7 +20,7 @@
                 class="s xq border-0 bg-gray-3 text-white rounded-xl w-content mb-8"
                 type="number"
             />
-            <div class="grid grid-cols-auto-0-200 gap-2 text-center mb-20 w-full">
+            <div class="grid grid-cols-auto-0-200 gap-2 text-center mb-20" style="width: 90%">
                 <div
                     v-for="shard of calculated_shard"
                     :key="shard"

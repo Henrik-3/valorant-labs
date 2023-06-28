@@ -1,7 +1,7 @@
 import {axios, getDB, riottoken} from '../methods.js';
 export const getStatsDB = async function (account) {
     const puuid = await axios
-        .get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURI(account.name)}/${encodeURI(account.tag)}`, {
+        .get(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURI(account.name)}/${encodeURI(account.tag)}`, {
             headers: {'X-Riot-Token': riottoken},
         })
         .catch(error => {
@@ -9,7 +9,7 @@ export const getStatsDB = async function (account) {
         });
     if (puuid.response) return {status: puuid.response.status, data: puuid.response.data};
     const region = await axios
-        .get(`https://europe.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/${puuid.data.puuid}`, {headers: {'X-Riot-Token': riottoken}})
+        .get(`https://americas.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/${puuid.data.puuid}`, {headers: {'X-Riot-Token': riottoken}})
         .catch(error => {
             return error;
         });

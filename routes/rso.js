@@ -95,7 +95,7 @@ export default async function (fastify, opts, done) {
         );
         if (tokens.response) return deleteRSO(req.query.state);
         const userinfo = await axios
-            .get('https://europe.api.riotgames.com/riot/account/v1/accounts/me', {
+            .get('https://americas.api.riotgames.com/riot/account/v1/accounts/me', {
                 headers: {Authorization: `Bearer ${tokens.data.access_token}`},
             })
             .catch(e => e);
@@ -147,7 +147,7 @@ export default async function (fastify, opts, done) {
             return;
         }
         const region = await axios
-            .get(`https://europe.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/${userinfo.data.puuid}`, {
+            .get(`https://americas.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/${userinfo.data.puuid}`, {
                 headers: {'X-Riot-Token': basedata.riottoken},
             })
             .catch(e => e);
@@ -297,7 +297,7 @@ export default async function (fastify, opts, done) {
                     ...steps[fstate.type][5],
                     done: true,
                     success: true,
-                    value: `${mmr.data?.data?.current_data?.currenttierpatched} (Elo: ${mmr.data?.data?.currenttierpatched?.elo})`,
+                    value: `${mmr.data?.data?.current_data?.currenttierpatched} (Elo: ${mmr.data?.data?.current_data?.elo})`,
                 },
                 req.query.state
             );
