@@ -29,7 +29,7 @@ client.context = new Collection();
 client.methods = new Collection();
 const normalcommands = readdirSync('./commands/normal').filter(file => file.endsWith('.js'));
 const slashcommands = readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
-const buttoncommand = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
+const buttoncommands = readdirSync('./commands/buttons').filter(file => file.endsWith('.js'));
 const selectcommands = readdirSync('./commands/select').filter(file => file.endsWith('.js'));
 const channelselectcommands = readdirSync('./commands/channel_select').filter(file => file.endsWith('.js'));
 const roleselectcommands = readdirSync('./commands/role_select').filter(file => file.endsWith('.js'));
@@ -38,42 +38,25 @@ const contextcommands = readdirSync('./commands/context').filter(file => file.en
 const methodfiles = readdirSync('./methods').filter(file => file.endsWith('.js'));
 
 async function update() {
-    for (let i = 0; normalcommands.length > i; i++) {
-        const command = await import(`./commands/normal/${normalcommands[i]}?update=${Date.now()}`);
-        client.ncommands.set(command.name, command);
-    }
-    for (let i = 0; slashcommands.length > i; i++) {
-        const command = await import(`./commands/slash/${slashcommands[i]}?update=${Date.now()}`);
-        client.scommands.set(command.name, command);
-    }
-    for (let i = 0; buttoncommand.length > i; i++) {
-        const cmd = await import(`./commands/buttons/${buttoncommand[i]}?update=${Date.now()}`);
-        client.buttoncommands.set(cmd.name, cmd);
-    }
-    for (let i = 0; selectcommands.length > i; i++) {
-        const cmd = await import(`./commands/select/${selectcommands[i]}?update=${Date.now()}`);
-        client.selectcommands.set(cmd.name, cmd);
-    }
-    for (let i = 0; channelselectcommands.length > i; i++) {
-        const cmd = await import(`./commands/channel_select/${channelselectcommands[i]}?update=${Date.now()}`);
-        client.channelselectcommands.set(cmd.name, cmd);
-    }
-    for (let i = 0; roleselectcommands.length > i; i++) {
-        const cmd = await import(`./commands/role_select/${roleselectcommands[i]}?update=${Date.now()}`);
-        client.roleselectcommands.set(cmd.name, cmd);
-    }
-    for (let i = 0; modalcommands.length > i; i++) {
-        const cmd = await import(`./commands/modals/${modalcommands[i]}?update=${Date.now()}`);
-        client.modals.set(cmd.name, cmd);
-    }
-    for (let i = 0; contextcommands.length > i; i++) {
-        const cmd = await import(`./commands/context/${contextcommands[i]}?update=${Date.now()}`);
-        client.context.set(cmd.name, cmd);
-    }
+    [
+        // Name of the array, name of the folder, name of the collection in the client
+        [normalcommands,"normal","ncommands"],
+        [slashcommands,"slash","scommands"],
+        [buttoncommands,"buttons","buttoncommands"],
+        [selectcommands,"select","selectcommands"],
+        [channelselectcommands,"channel_select","channelselectcommands"],
+        [roleselectcommands,"role_select","roleselectcommands"],
+        [modalcommands,"modals","modalcommands"],
+        [contextcommands,"context","contextcommands"]
+    ].forEach(arr => set(...arr))
     updateFunctions();
-    for (let i = 0; methodfiles.length > i; i++) {
-        const cmd = await import(`./methods/${methodfiles[i]}?update=${Date.now()}`);
-        client.methods.set(cmd.name, cmd);
+    set(methodfiles,"methods","methods")
+    
+    function set(arr,folder,collection){
+        for(let element of arr[0]){
+            const data = await import(`./${arr[1]}/${element}?update=${Date.now()}`);
+            client[arr[2]].set(data.name,data);
+        }
     }
 }
 update();
@@ -154,13 +137,17 @@ client.on('interactionCreate', async interaction => {
     const guilddata = await guildSettings(interaction.guild);
     if (!interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand()) {
         const args = interaction.customId?.split(';');
-        if (interaction.isButton()) return client.buttoncommands.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction instanceof ModalSubmitInteraction) return client.modals.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isStringSelectMenu()) return client.selectcommands.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isChannelSelectMenu()) return client.channelselectcommands.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isRoleSelectMenu()) return client.roleselectcommands.get(args[0]).execute({interaction, args, guilddata});
-        if (interaction.isUserContextMenuCommand() || interaction.isMessageContextMenuCommand())
-            return client.context.get(interaction.commandName).execute({interaction, args, guilddata});
+        const type = {
+            "Button":"buttoncommands",
+            "ModalSubmit":"modals",
+            "StringSelectMenu":"selectcommands",
+            "ChannelSelectMenu":"channelselectcommands",
+            "RoleSelectMenu":"roleselectcommands",
+            "UserContextMenuCommand":"context",
+            "MessageContextMenuCommand":"context"
+        };
+        for(let type of Object.keys(types)){
+            if(interaction[`is${type}`]()) return client[types[type]].get(args[0]).execute({interaction, args, guilddata});
     }
     if (interaction.commandName == 'shard-restart') {
         client.shard.send(`restart-${interaction.options.get('shard').value}`);
