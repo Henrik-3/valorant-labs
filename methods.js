@@ -157,6 +157,11 @@ export const agents = [
         discord_id: '<:sentinel:868802869967597568>',
     },
     {
+        name: 'Deadlock',
+        id: 'cc8b64c8-4b25-4ff9-6e7f-37b4da43d235',
+        discord_id: '<:sentinel:868802869967597568>',
+    },
+    {
         name: 'Fade',
         id: 'dade69b4-4f5a-8528-247b-219e5a1facd6',
         discord_id: '<:initiator:868802616732303362>',
@@ -240,6 +245,11 @@ export const agents = [
         name: 'Gekko',
         id: 'e370fa57-4757-3604-3648-499e1f642d3f',
         discord_id: '<:initiator:868802616732303362>',
+    },
+    {
+        name: 'Iso',
+        id: '0e38b510-41a8-5780-5e8f-568b2a4f2d6c',
+        discord_id: '<:duelist:868802702258352178>',
     },
 ];
 export const weapons = {
@@ -338,6 +348,15 @@ export const gamemodes = {
             animated: false,
         },
     },
+    hurm: {
+        name: 'Team Deathmatch',
+        path: 'teamdeathmatch.png',
+        emoji: {
+            name: 'teamdeathmatch',
+            id: '1125484333008957480',
+            animated: false,
+        },
+    },
 };
 export const maps = {
     '/Game/Maps/Triad/Triad': 'Haven',
@@ -349,6 +368,10 @@ export const maps = {
     '/Game/Maps/Canyon/Canyon': 'Fracture',
     '/Game/Maps/Pitt/Pitt': 'Pearl',
     '/Game/Maps/Jam/Jam': 'Lotus',
+    '/Game/Maps/Juliett/Juliett': 'Sunset',
+    '/Game/Maps/HURM/HURM_Alley/HURM_Alley': 'District',
+    '/Game/Maps/HURM/HURM_Bowl/HURM_Bowl': 'Kasbah',
+    '/Game/Maps/HURM/HURM_Yard/HURM_Yard': 'Piazza',
 };
 export const ranks = {
     0: {

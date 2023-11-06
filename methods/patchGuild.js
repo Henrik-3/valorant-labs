@@ -25,29 +25,52 @@ export const patchGuild = async function ({interaction, key, value, additionalda
     const translations = getTranslations();
     switch (key) {
         case 'prefix': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {prefix: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = await getDB('settings').findOneAndUpdate(
+                {gid: interaction.guildId},
+                {$set: {prefix: value}},
+                {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+            );
             break;
         }
         case 'language': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {lang: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = await getDB('settings').findOneAndUpdate(
+                {gid: interaction.guildId},
+                {$set: {lang: value}},
+                {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+            );
             break;
         }
         case 'patchnotes': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {news: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = await getDB('settings').findOneAndUpdate(
+                {gid: interaction.guildId},
+                {$set: {news: value}},
+                {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+            );
             break;
         }
         case 'othernews': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {onews: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = await getDB('settings').findOneAndUpdate(
+                {gid: interaction.guildId},
+                {$set: {onews: value}},
+                {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+            );
             break;
         }
         case 'serverstatus': {
-            doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {serverstatus: value}}, {upsert: false, returnDocument: 'after'})).value;
+            doc = await getDB('settings').findOneAndUpdate(
+                {gid: interaction.guildId},
+                {$set: {serverstatus: value}},
+                {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+            );
             break;
         }
         case 'background': {
             if (value == false) {
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background: value}}, {upsert: false, returnDocument: 'before'}))
-                    .value;
+                doc = await getDB('settings').findOneAndUpdate(
+                    {gid: interaction.guildId},
+                    {$set: {background: value}},
+                    {upsert: false, returnDocument: 'before', includeResultMetadata: false}
+                );
                 unlinkSync(`./settings/backgrounds/${doc.background}.png`);
                 doc.background = false;
             } else {
@@ -133,14 +156,23 @@ export const patchGuild = async function ({interaction, key, value, additionalda
             const compressed = brotliCompressSync(background.data, {params: {[constants.BROTLI_PARAM_QUALITY]: 6}});
             writeFileSync(`./settings/backgrounds/${value}.png`, compressed);
             if (additionaldata == 'stats')
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background_stats: value}}, {upsert: false, returnDocument: 'after'}))
-                    .value;
+                doc = await getDB('settings').findOneAndUpdate(
+                    {gid: interaction.guildId},
+                    {$set: {background_stats: value}},
+                    {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+                );
             if (additionaldata == 'game')
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background_game: value}}, {upsert: false, returnDocument: 'after'}))
-                    .value;
+                doc = await getDB('settings').findOneAndUpdate(
+                    {gid: interaction.guildId},
+                    {$set: {background_game: value}},
+                    {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+                );
             if (additionaldata == 'mmr')
-                doc = (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: {background_mmr: value}}, {upsert: false, returnDocument: 'after'}))
-                    .value;
+                doc = await getDB('settings').findOneAndUpdate(
+                    {gid: interaction.guildId},
+                    {$set: {background_mmr: value}},
+                    {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+                );
             break;
         }
         case 'autoroles': {
@@ -148,14 +180,16 @@ export const patchGuild = async function ({interaction, key, value, additionalda
             autoroleupdate[`autoroles.${guilddata.autoroles?.findIndex(item => item.name == value)}`] = {id: additionaldata, name: value};
             doc =
                 guilddata.autoroles && guilddata.autoroles.some(item => item.name == value)
-                    ? (await getDB('settings').findOneAndUpdate({gid: interaction.guildId}, {$set: autoroleupdate}, {upsert: false, returnDocument: 'after'})).value
-                    : (
-                          await getDB('settings').findOneAndUpdate(
-                              {gid: interaction.guildId},
-                              {$push: {autoroles: {id: additionaldata, name: value}}},
-                              {upsert: false, returnDocument: 'after'}
-                          )
-                      ).value;
+                    ? await getDB('settings').findOneAndUpdate(
+                          {gid: interaction.guildId},
+                          {$set: autoroleupdate},
+                          {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+                      )
+                    : await getDB('settings').findOneAndUpdate(
+                          {gid: interaction.guildId},
+                          {$push: {autoroles: {id: additionaldata, name: value}}},
+                          {upsert: false, returnDocument: 'after', includeResultMetadata: false}
+                      );
             const autoroles_data = await getAutoRoles({interaction, guilddata: doc});
             const mapping = {
                 0: 0,
