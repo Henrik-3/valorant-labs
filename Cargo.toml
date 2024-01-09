@@ -1,3 +1,24 @@
+[package]
+name = "valorant_labs"
+version = "8.0.0"
+edition = "2021"
+
 [dependencies]
-serenity = "0.11"
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+serenity = {version = "0.12", default-features = true}
+tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1.0"
+mongodb = "2.7.1"
+log="0.4"
+clap={version = "4.4.14", features = ["derive"]}
+lazy_static = "1.4"
+dotenv = "0.15.0"
+
+
+[[bin]]
+name = "bot"
+path = "main.rs"
+
+[package.metadata.scripts]
+canary = "cargo run --env=canary"
+deploy_canary = "echo Goodbye --env=canary --deploy"

@@ -452,9 +452,10 @@ export default async function (fastify, opts, done) {
         if (fstate.type == 'stats') {
             const matchlist = await axios
                 .get(`https://${region.data.activeShard}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${userinfo.data.puuid}`, {
-                    headers: {'X-Riot-Token': riottoken},
+                    headers: {'X-Riot-Token': basedata.riottoken},
                 })
                 .catch(e => e);
+            console.log(matchlist);
             await stepUpdate(
                 fastify.io.to(getClient(req.query.state)),
                 {
