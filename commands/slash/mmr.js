@@ -25,7 +25,7 @@ export async function execute({interaction, guilddata} = {}) {
                 return error;
             });
         if (topggvote.response)
-            return errorhandlerinteraction({interaction, status: topggvote.response.status, type: 'mmr', lang: guilddata.lang, data: topggvote.respnse.data});
+            return errorhandlerinteraction({interaction, status: topggvote.response.status, type: 'mmr', lang: guilddata.lang, data: topggvote.response.data});
         await getDB('rate-limit-key').updateOne({key: 'topgg'}, {$inc: {current: 1}, $setOnInsert: {createdAt: new Date()}}, {upsert: true});
         if (topggvote.response)
             return interaction.editReply({

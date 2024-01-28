@@ -11,6 +11,7 @@ import {
     getFunction,
     getAgents,
     getGamemodes,
+    axios,
 } from '../methods.js';
 
 const getAutoRoles = getFunction('getAutoRoles');

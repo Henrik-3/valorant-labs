@@ -36,3 +36,39 @@ pub struct TranslationBotTitleDesc {
     title: String,
     description: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Settings {
+    pub guild: String,
+    pub language: String,
+    pub channels: SettingChannels,
+    pub backgrounds: SettingBackgrounds,
+    pub autoroles: SettingAutorole,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SettingChannels {
+    pub game_news: Option<String>,
+    pub other_news: Option<String>,
+    pub server_status: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SettingBackgrounds {
+    pub stats: Option<String>,
+    pub game: Option<String>,
+    pub mmr: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SettingAutorole {
+    #[serde(rename = "type")]
+    pub type_: Option<String>,
+    pub config: Vec<SettingAutoroleConfig>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SettingAutoroleConfig {
+    pub role: String,
+    pub rank: String,
+}

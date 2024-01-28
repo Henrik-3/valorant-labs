@@ -6,10 +6,11 @@ use log::{error, warn};
 use mongodb::{bson::doc, Client as MongoClient};
 use serde::de::DeserializeOwned;
 use serenity::{
-    all::{CommandOptionType, Interaction},
+    all::{CommandOptionType, Interaction, OnlineStatus},
     async_trait,
     builder::{CreateCommand, CreateCommandOption},
     futures::StreamExt,
+    gateway::ActivityData,
     model::{application::Command, Permissions},
     prelude::*,
 };
@@ -17,7 +18,8 @@ use std::{
     env,
     sync::{Arc, Mutex},
 };
-use structs::database::{CommandEntry, TranslationEntry};
+use structs::database::{CommandEntry, Settings, TranslationEntry};
+use valorant_assets_api::models::language::Language;
 
 mod commands;
 mod structs;
@@ -49,7 +51,10 @@ struct Cli {
     #[arg(short)]
     deploy: Option<bool>,
 }
-struct Handler;
+struct Handler {
+    db: MongoClient,
+}
+
 #[async_trait]
 impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: serenity::all::Ready) {
@@ -61,6 +66,8 @@ impl EventHandler for Handler {
             },
             ready.shard.unwrap().total - 1,
         );
+        let activity = ActivityData::competing(format!("VALORANT | Canary Build | Rust Rewrite"));
+        ctx.set_presence(Some(activity), OnlineStatus::Online)
     }
     async fn interaction_create(&self, ctx: Context, interaction: serenity::all::Interaction) {
         let translation = get_translation("agent.unknown.title", "en");
@@ -72,7 +79,14 @@ impl EventHandler for Handler {
                     .defer_ephemeral(ctx.http)
                     .await
                     .expect("[ERROR][SLASH_COMMAND] Defer Ephemeral");
+            } else {
+                command
+                    .defer(ctx.http)
+                    .await
+                    .expect("[ERROR][SLASH_COMMAND] Defer");
             };
+            let guild_data =
+                get_settings(&self.db, command.guild_id.unwrap().to_string().as_str()).await;
             match name {
                 "shard-restart" => {
                     let options = command.data.options();
@@ -80,7 +94,7 @@ impl EventHandler for Handler {
                     warn!("[SHARD-RESTART] Shard ID: {:?}", shard_id);
                 }
                 "agent" => {
-                    commands::slash_commands::agent::execute(command).await;
+                    commands::slash_commands::agent::execute(command, guild_data).await;
                 }
                 _ => {
                     error!("[INVALID COMMAND] {:?}", command.data.name.as_str())
@@ -105,7 +119,60 @@ pub fn get_db<T: DeserializeOwned>(
             }
         }
     };
+    warn!("DB: {}", db);
     client.database(db).collection::<T>(collection)
+}
+pub async fn get_settings(client: &MongoClient, guild: &str) -> Settings {
+    let options = mongodb::options::FindOneAndUpdateOptions::builder()
+        .upsert(Some(true))
+        .return_document(Some(mongodb::options::ReturnDocument::After))
+        .build();
+    let db = get_db::<Settings>(client, "settings", None)
+        .find_one_and_update(
+            doc! {
+                "guild": guild
+            },
+            doc! {
+                "$setOnInsert": {
+                    "language": "en",
+                    "channels": {
+                        "game_news": null,
+                        "other_news": null,
+                        "server_status": null
+                    },
+                    "backgrounds": {
+                        "stats": null,
+                        "game": null,
+                        "mmr": null
+                    },
+                    "autoroles": {
+                        "type": "simple",
+                        "config": []
+                    }
+                }
+            },
+            Some(options),
+        )
+        .await
+        .expect("[ERROR][SLASH_COMMAND] Guild Data");
+    warn!("Guild Data: {:?}", db);
+    db.unwrap()
+}
+pub fn get_valo_papi_language(language: &str) -> Language {
+    match language {
+        "en-gb" => Language::EnUs,
+        "en-us" => Language::EnUs,
+        "de" => Language::DeDe,
+        "jp" => Language::JaJp,
+        "pt-br" => Language::PtBr,
+        "fr" => Language::FrFr,
+        "es" => Language::EsEs,
+        "vi" => Language::ViVn,
+        "pl" => Language::PlPl,
+        "it" => Language::ItIt,
+        "tr" => Language::TrTr,
+        _ => Language::EnUs,
+    }
 }
 pub fn get_translation(name: &str, language: &str) -> String {
     let mut new_name = format!("bot.{}.", language);
@@ -152,15 +219,18 @@ async fn main() {
     // Login with a bot token from the environment
     let token = env::var("CANARY").expect("token");
     let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
-    let mut client = Client::builder(token, intents)
-        .event_handler(Handler)
-        .await
-        .expect("Error creating client");
 
     warn!("[MONGO_DB] Init MongoDB");
     let mongo_client = MongoClient::with_uri_str(env::var("MONGO_DB").unwrap())
         .await
         .expect("failed to connect");
+
+    let mut client = Client::builder(token, intents)
+        .event_handler(Handler {
+            db: mongo_client.clone(),
+        })
+        .await
+        .expect("Error creating client");
 
     let cli = Cli::parse();
     if cli.deploy.is_some() {

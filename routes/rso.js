@@ -63,7 +63,7 @@ export default async function (fastify, opts, done) {
         const manager = getManager();
         if (!req.query.state) return res.redirect(`/rso?uuid=null`);
         const fstate = await getDB('state').findOne({code: req.query.state});
-        addRSO(req.query.state, fstate.type, steps[fstate.type]);
+        addRSO(req.query.state, fstate?.type ?? 'stats', steps[fstate?.type ?? 'stats']);
         res.redirect(`/rso?uuid=${req.query.state ?? null}`);
         if (!fstate) return fastify.io.to(getClient(req.query.state)).emit('UNKNOWN_STATE', {unknown_state: true});
 
