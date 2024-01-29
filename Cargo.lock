@@ -2451,9 +2451,9 @@ checksum = "f4bf03e0ca70d626ecc4ba6b0763b934b6f2976e8c744088bb3c1d646fbb1ad0"
 
 [[package]]
 name = "valorant-assets-api"
-version = "0.1.2"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77a10925e4623e8ceff005ea0705daaa6f35c407a4943a971db3b6db69cc3621"
+checksum = "fbe72c79d276597fddb1fafba8c966b22ada37865756b0e7f462316e76dfe99e"
 dependencies = [
  "chrono",
  "reqwest",

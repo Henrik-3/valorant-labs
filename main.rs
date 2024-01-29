@@ -22,6 +22,7 @@ use structs::database::{CommandEntry, Settings, TranslationEntry};
 use valorant_assets_api::models::language::Language;
 
 mod commands;
+mod methods;
 mod structs;
 
 lazy_static! {
@@ -70,18 +71,17 @@ impl EventHandler for Handler {
         ctx.set_presence(Some(activity), OnlineStatus::Online)
     }
     async fn interaction_create(&self, ctx: Context, interaction: serenity::all::Interaction) {
-        let translation = get_translation("agent.unknown.title", "en");
         if let Interaction::Command(command) = interaction {
             let name = command.data.name.as_str();
             let ephemeral_commands = ["autoroles", "settings", "private", "link"];
             if ephemeral_commands.contains(&name) {
                 command
-                    .defer_ephemeral(ctx.http)
+                    .defer_ephemeral(&ctx.http)
                     .await
                     .expect("[ERROR][SLASH_COMMAND] Defer Ephemeral");
             } else {
                 command
-                    .defer(ctx.http)
+                    .defer(&ctx.http)
                     .await
                     .expect("[ERROR][SLASH_COMMAND] Defer");
             };
@@ -94,7 +94,7 @@ impl EventHandler for Handler {
                     warn!("[SHARD-RESTART] Shard ID: {:?}", shard_id);
                 }
                 "agent" => {
-                    commands::slash_commands::agent::execute(command, guild_data).await;
+                    commands::slash_commands::agent::execute(command, ctx, guild_data).await;
                 }
                 _ => {
                     error!("[INVALID COMMAND] {:?}", command.data.name.as_str())
