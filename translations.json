@@ -1390,8 +1390,8 @@
                 "default": "Le bot n'a pas accès à cette source de données. Le plus souvent, cette erreur se produit pendant les mises à jour du jeu lorsque les serveurs sont hors service."
             },
             "400": {
-                "title": "Statut 400 | Erreur de requête",
-                "default": "Une erreur s'est produite pendant la requête, généralement due à son formatage."
+                "title": "Statut 400 | Requête incorrecte",
+                "default": "Une erreur s'est produite pendant la requête, généralement due à son format."
             },
             "410": {
                 "title": "Statut 410 | API non disponible",
