@@ -1365,24 +1365,24 @@
                 "default": "Le nom d'utilisateur et le slogan spécifiés n'ont pas été trouvés. Si vous avez lié votre compte, mettez-le à jour avec `/link add`, sinon vérifiez si le RiotID a été saisi correctement.",
                 "game": "Le jeu demandé n'a pas été trouvé",
                 "map": "La carte demandée n'a pas été trouvée",
-                "agent": "La agent demandée n'a pas été trouvée",
-                "patch": "La patch demandée n'a pas été trouvée",
-                "weapon": "La arme demandée n'a pas été trouvée"
+                "agent": "L'agent demandé n'a pas été trouvé",
+                "patch": "Le patch demandé n'a pas été trouvé",
+                "weapon": "L'arme demandée n'a pas été trouvée"
             },
             "503": {
-                "title": "Statut 503 | Serveur temporaire non disponible",
-                "default": "Le serveur de destination ne peut pas traiter la demande pour le moment, veuillez réessayer plus tard."
+                "title": "Statut 503 | Serveur temporairement indisponible",
+                "default": "Le serveur de destination ne peut pas traiter la requête pour le moment, veuillez réessayer plus tard."
             },
             "504": {
-                "title": "Statut 504 | Serveur temporaire non disponible",
-                "default": "Le serveur de destination ne peut pas traiter la demande pour le moment, veuillez réessayer plus tard."
+                "title": "Statut 504 | Serveur temporairement indisponible",
+                "default": "Le serveur de destination ne peut pas traiter la requête pour le moment, veuillez réessayer plus tard."
             },
             "429": {
-                "title": "Statut 429 | Limite du taux de Bot",
+                "title": "Statut 429 | Limite d'appels au Bot",
                 "default": "Le bot est actuellement surutilisé et a maintenant un temps de refroidissement, veuillez attendre un peu et réessayer."
             },
             "1015": {
-                "title": "Statut 1015 | Limite du taux de Bot",
+                "title": "Statut 1015 | Limite d'appels au Bot",
                 "default": "Le bot est actuellement surutilisé et a maintenant un temps de refroidissement, veuillez attendre un peu et réessayer."
             },
             "403": {
@@ -1390,8 +1390,8 @@
                 "default": "Le bot n'a pas accès à cette source de données. Le plus souvent, cette erreur se produit pendant les mises à jour du jeu lorsque les serveurs sont hors service."
             },
             "400": {
-                "title": "Statut 400 | Erreur de demande",
-                "default": "Une erreur s'est produite pendant la demande, généralement due au formatage de la demande."
+                "title": "Statut 400 | Requête incorrecte",
+                "default": "Une erreur s'est produite pendant la requête, généralement due à son format."
             },
             "410": {
                 "title": "Statut 410 | API non disponible",
@@ -1399,11 +1399,11 @@
             },
             "409": {
                 "title": "Statut 409 | Conflit",
-                "default": "Une erreur s'est produite pendant la demande, veuillez réessayer plus tard."
+                "default": "Une erreur s'est produite pendant la requête, veuillez réessayer plus tard."
             },
             "408": {
-                "title": "Statut 408 | Délai d'attente",
-                "default": "La demande a pris trop de temps, veuillez réessayer plus tard."
+                "title": "Statut 408 | Délai d'attente expiré",
+                "default": "La requête a pris trop de temps, veuillez réessayer plus tard."
             },
             "451": {
                 "title": "Statut: 451 | Ce compte est privé",
@@ -1413,7 +1413,7 @@
                 "component_rank": "MMR"
             },
             "500": {
-                "title": "Statut 500 | Erreur de serveur interne",
+                "title": "Statut 500 | Erreur interne du serveur",
                 "default": "Une erreur de serveur interne s'est produite, veuillez réessayer plus tard."
             }
         },
@@ -1423,35 +1423,35 @@
             "agentrole": "Rôle"
         },
         "autorole": {
-            "overview_title": "Gestion des rôles automatiques",
-            "overview_desc": "Pour personnaliser les rôles du système des rôles automatiques, cliquez sur le bouton `Paramètres`.\nPour créer un message de rôle automatique, cliquez sur le bouton `Créer un message`",
+            "overview_title": "Gestion de l'AutoRole",
+            "overview_desc": "Pour personnaliser les rôles du système AutoRole, cliquez sur le bouton `Paramètres`.\nPour créer un message AutoRole, cliquez sur le bouton `Créer un message`",
             "overview_button_settings": "Paramètres",
             "overview_button_message": "Créer un message",
-            "settings_desc": "Ici vous pouvez voir tous rangs qu'il est possible d'assigner à des rôles ainsi que les rôles déjà assignés à un rang. Pour personnaliser un rôle de rang, sélectionnez le rang dans le menu de sélection ci-dessous. Vous aurez ensuite la possibilité de sélectionner le rôle approprié pour ce rang.",
+            "settings_desc": "Ici vous pouvez voir tous les rangs qu'il est possible d'assigner à des rôles ainsi que les rôles déjà assignés à un rang. Pour personnaliser un rôle de rang, sélectionnez le rang dans le menu de sélection ci-dessous. Vous aurez ensuite la possibilité de sélectionner le rôle approprié pour ce rang.",
             "settings_placeholder": "Veuillez sélectionner le rang VALORANT que vous souahitez personnaliser...",
             "settings_set": "✅ Déjà configuré",
             "settings_not_set": "⛔ Pas encore configuré",
             "settings_not_set_title": "Un ou plusieurs des rôles nécessaires ne sont pas configurés.",
             "settings_not_set_desc": "Un problème est survenu lors de l'exécution de cette action. Ci-dessous, vous pouvez voir le(s) rôle(s) qui doivent encore être configurés pour effectuer cette action.",
-            "settings_not_set_affected": "Rôle(s) affecté(s)",
+            "settings_not_set_affected": "Rôles affectés",
             "settings_role_desc": "Dans le menu déroulant ci-dessous, sélectionnez le rôle que vous souhaitez associé au rang VALORANT.",
             "settings_role_placeholder": "Veuillez sélectionner le rôle approprié...",
-            "message_desc": "Veuillez sélectionner, via le menu de sélection ci-dessous, le salon dans lequel vous souhaitez intégré le système de rôle automatique. Assurez vous que le bot ai les persmissions d'y écrire. \nVous pouvez choisir des salons d'annonce comme des salons de texte classique.",
+            "message_desc": "Veuillez sélectionner, via le menu de sélection ci-dessous, le salon dans lequel vous souhaitez intégré le système AutoRole. Assurez vous que le bot ai les persmissions d'y écrire. \nVous pouvez choisir des salons d'annonce comme des salons de texte classique.",
             "message_placeholder": "Veuillez sélectionner le salon dans lequel vous souhaitez envoyer le message...",
             "back_to_overview": "Retour à l'aperçu",
-            "roles_error_title": "Aucune permissions de rôles",
+            "roles_error_title": "Aucune permission de rôles",
             "roles_error_desc": "Le bot n'a pas les permissions requises pour assigner un rôle à l'utilisateur suivant. Assurez vous que les rôles soient disposés sous le rôle du bot.",
-            "message_send_error_title": "Aucune permissions de salons",
+            "message_send_error_title": "Aucune permission de salons",
             "message_send_error_desc": "Assurez vous que <@702201518329430117> a les permissions `ENVOYER UN MESSAGE`",
-            "message_edit_error_title": "Aucun message de rôle automatique",
-            "message_edit_error_desc": "Ce n'est pas un messgae de rôle automatique, il ne peut donc pas être modifié",
+            "message_edit_error_title": "Aucun message AutoRole",
+            "message_edit_error_desc": "Ce n'est pas un message AutoRole, il ne peut donc pas être modifié",
             "send_desc": "Afin d'obtenir votre rôle dans le jeu, cliquez sur le bouton `Ajouter`. Cliquez sur le lien qui s'affichera, vous serez redirigé vers la page de connexion de Riot Games. \n\n**Important** : <@702201518329430117> ne voit pas vos données de connexion, il recupère uniquement les données de l'exemple suivant : \n```{puuid: '000000000-000000000-000000000000000000000000000000000000000000', gameName: 'Henrik3', tagLine: 'VALO'}```\nLe bouton `Mettre à jour` vous permet de mettre à jour  votre rôle si vous devez par exemple être promu. \nLe bouton `Retirer` vous permet de retirer à nouveau votre rôle.",
             "add": "Ajouter",
             "update": "Mettre à jour",
             "remove": "Retirer",
-            "created_title": "Votre message de rôle automatique a été créé",
-            "created_desc": "Vous pouvez modifier ce message comme vous le souhaitez en faisant un clique droit dessus, en sélectionnant Applications et en cliquant sur 'Modifier le rôle automatique'. Une fenêtre s'ouvrira où vous pourrez modifier le message.",
-            "member_error_title": "Aucune permissions de membre",
+            "created_title": "Votre message AutoRole a été créé",
+            "created_desc": "Vous pouvez modifier ce message comme vous le souhaitez en faisant un clique droit dessus, en sélectionnant Applications et en cliquant sur 'Modifier l'AutoRole'. Une fenêtre s'ouvrira où vous pourrez modifier le message.",
+            "member_error_title": "Aucune permission de membre",
             "member_error_desc": "Le bot n'a pas les permissions pour vous attribuer ces rôles, assurez vous que le bot dispose des permissions de vous attribuer ces rôles.",
             "role_given_title": "Rôle attribué",
             "role_given_desc": "Votre rôle dans le jeu vous a été attribué, cela peut prendre jusqu'à 1 minute pour recevoir votre rôle en raison des limitations de l'API Discord.",
@@ -1471,7 +1471,7 @@
             "autorole_permission_title": "Aucune permission",
             "autorole_permission_desc": "Assurez vous que <@702201518329430117> a les permissions `MANAGE ROLES`.",
             "roles_missing_title": "Tous les rôles ne sont pas encore configurés",
-            "roles_missing_desc": "Etes-vous sûr de vouloir configurer le système d'autoroles sans avoir tous les rôles configurés?\nSi oui, appuyez sur `Continuer`.\nSi non, appuyez sur `Annuler`.",
+            "roles_missing_desc": "Etes-vous sûr de vouloir configurer le système d'AutoRole sans avoir tous les rôles configurés?\nSi oui, appuyez sur `Continuer`.\nSi non, appuyez sur `Annuler`.",
             "continue": "Continuer",
             "cancel": "Annuler"
         },
@@ -1491,7 +1491,7 @@
             "blacklistremoved_title": "Canal supprimé de la liste"
         },
         "botinfo": {
-            "title": "Bot informations sur VALORANT LABS"
+            "title": "Informations du Bot VALORANT LABS"
         },
         "embeds": {
             "title": "Titre",
@@ -1502,12 +1502,12 @@
             "fields": "Champs",
             "content": "Contenu",
             "send": "Envoyer",
-            "embed_edit_title": "Édition Embed (Titre)",
-            "embed_edit_desc": "Édition Embed (Description)",
-            "embed_edit_thumbnail": "Édition Embed (Vignette URL)",
-            "embed_edit_image": "Édition Embed (Image URL)",
-            "embed_edit_color": "Édition Embed (Couleur Hex)",
-            "embed_edit_content": "Édition Embed (Contenu)",
+            "embed_edit_title": "Édition intégrée (Titre)",
+            "embed_edit_desc": "Édition intégrée (Description)",
+            "embed_edit_thumbnail": "Édition intégrée (Vignette URL)",
+            "embed_edit_image": "Édition intégrée (Image URL)",
+            "embed_edit_color": "Édition intégrée (Couleur Hex)",
+            "embed_edit_content": "Édition intégrée (Contenu)",
             "embed_edit_add_field": "Ajouter un champ",
             "embed_edit_edit_field": "Champ d'édition",
             "embed_edit_remove_field": "Retirer le champ",
@@ -1516,14 +1516,14 @@
             "value": "Valeur",
             "name_of_field": "Nom du champ",
             "value_of_field": "Valeur du champ",
-            "edited": "Embed edited"
+            "edited": "Edition terminée"
         },
         "feedback": {
             "title": "Donnez votre avis",
             "label": "Commentaires",
             "placeholder": "Veuillez saisir vos commentaires ici",
             "send_title": "Envoi de commentaires",
-            "send_desc": "Nous vous remercions de votre commentaire. Il a été envoyé au développeur et examiné dès que possible."
+            "send_desc": "Nous vous remercions de votre commentaire. Il a été envoyé au développeur et sera examiné dès que possible."
         },
         "game": {
             "unknown_title": "Jeu inconnu",
@@ -1533,7 +1533,7 @@
         },
         "link": {
             "clink_title": "Votre lien actuel",
-            "clink_desc": "Votre compte lié est nommé comme suit:",
+            "clink_desc": "Votre compte lié est nommé comme suit :",
             "nolink_title": "Pas de compte lié",
             "nolink_other_desc": "L'utilisateur demandé n'a pas de compte lié",
             "nolink_desc": "Vous n'avez pas actuellement de compte lié. Cliquez sur le bouton `Lien` sous ce message pour lier votre compte Discord à un compte VALORANT.",
@@ -1572,15 +1572,15 @@
         },
         "status": {
             "noerrors": "Aucune erreur n'a été trouvée sur le cluster",
-            "postedat": "Créé à:",
-            "platforms": "Plateformes concernées:",
-            "type": "Type de problème:"
+            "postedat": "Créé à :",
+            "platforms": "Plateformes concernées :",
+            "type": "Type de problème :"
         },
         "stats": {
             "missing_matches_title": "Certaines correspondances sont encore manquantes",
             "missing_matches_desc": "Les correspondances manquantes sont téléchargées et traitées en arrière-plan. Une fois cette opération terminée, l'image est mise à jour",
-            "invalidriotid_title": "ID d'émeute incorrecte",
-            "invalidriotid_desc": "Le Riot ID indiqué est incorrect. Veuillez vous assurer que vous avez également entré votre tag et pas seulement le nom.\n\nMauvais RiotID : Henrik3\nCorrect RiotID : Henrik3#VALO",
+            "invalidriotid_title": "Riot ID incorrect",
+            "invalidriotid_desc": "Le Riot ID indiqué est incorrect. Veuillez vous assurer que vous avez également entré votre tag et pas seulement le nom.\n\nMauvais Riot ID : Henrik3\nCorrect RiotID : Henrik3#VALO",
             "noriotid_title": "Pas de Riot ID spécifié",
             "noriotid_desc": "Vous n'avez pas de compte lié, ni de nom spécifié. Veuillez vous lier avec `/link add` ou entrer un Riot ID.",
             "game_select": "Sélectionnez un jeu"
@@ -1592,15 +1592,15 @@
         "weapon": {
             "name": "Armes",
             "cost": "Prix",
-            "magazinsize": "Taille du magazine",
-            "penetration": "Résistance des balles",
+            "magazinsize": "Taille du magasin",
+            "penetration": "Perforation des balles",
             "firerate": "Cadence de tir",
             "firerate_zoom": "Cadence de tir (Zoom)",
             "zoom": "Zoom",
-            "head": "Coup de tête",
+            "head": "Tir à la tête",
             "body": "Tir au corps",
-            "leg": "Coup de pied",
-            "rangedamage": "Coup de tête: ${String(cweapon.weaponStats.damageRanges[i].headDamage)} | Tir au corps: ${String(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Coup de pied: ${String(cweapon.weaponStats.damageRanges[i].legDamage)}",
+            "leg": "Tir aux jambes",
+            "rangedamage": "Tir à la tête : ${String(cweapon.weaponStats.damageRanges[i].headDamage)} | Tir au corps : ${String(cweapon.weaponStats.damageRanges[i].bodyDamage)} | Tir aux jambes : ${String(cweapon.weaponStats.damageRanges[i].legDamage)}",
             "mweapons": "Prix: ${weapons.shopData != null ? String(weapons.shopData.cost) : 'Libre'}"
         },
         "cmdurl": "https://valorantlabs.xyz/?scrollto=commands&lang=fr",
