@@ -1413,7 +1413,7 @@
                 "component_rank": "MMR"
             },
             "500": {
-                "title": "Statut 500 | Erreur interne de serveur interne",
+                "title": "Statut 500 | Erreur interne du serveur",
                 "default": "Une erreur de serveur interne s'est produite, veuillez réessayer plus tard."
             }
         },
