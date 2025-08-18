@@ -50,18 +50,9 @@ const embedBuilder = ({title, desc, additionalFields, color, thumbnail, image, f
 	};
 };
 const create_key = async ({userid, type, limit, name, details, info}) => {
-	const token = `HDEV-${uuidv4()}`;
-	await getDB({db: 'API', col: 'tokens'}).insertOne({
-		userid,
-		token,
-		limit,
-		name,
-		details,
-		info,
-		type,
-		admin: false,
-	})
-	return token
+	// check if the user already has a key
+	let token = await getDB({db: 'API', col: 'tokens'}).findOneAndUpdate({userid, type}, {"$set": {limit, name, details, info, admin: false}, "$setOnInsert": {token: `HDEV-${uuidv4})`}}, {upsert: true, returnDocument: 'after'});
+	return token.token
 }
 
 const select_icon = {
@@ -516,7 +507,7 @@ client.on('interactionCreate', async interaction => {
 			case 'genkey': {
 				let game = args[2];
 				let type = args[3];
-				if (game == "valorant" && type == "advanced" && (interaction.fields.getTextInputValue('title').toLowerCase().includes('obs') || interaction.fields.getTextInputValue('desc').toLowerCase().includes('obs'))) {
+				if (game == "valorant" && type == "advanced" && (["obs", "stream", "overlay"].some(i => interaction.fields.getTextInputValue('title').toLowerCase().includes(i)) || ["obs", "stream", "overlay"].some(i => interaction.fields.getTextInputValue('desc').toLowerCase().includes(i)))) {
 					return interaction.editReply({
 						embeds: [
 							embedBuilder({
@@ -705,7 +696,7 @@ client.on('interactionCreate', async interaction => {
 				const message = await client.channels.cache.get('983100719840256090').messages.fetch(interaction.customId.split(';')[2]);
 				const sub_type = message.embeds[0].fields.find(i => i.name == 'Sub').value;
 				const type = message.embeds[0].fields.find(i => i.name == 'Type').value;
-				const custom_limit = Number(interaction.fields.getTextInputValue('limit'))
+				const custom_limit = Number(interaction.fields.getTextInputValue('limit').trim())
 				const limit = !isNaN(custom_limit) ? custom_limit : sub_type == "basic" && type == "valorant" ? 30 : sub_type == "advanced" && type == "valorant" ? 90 : sub_type == "production" && type == "valorant" ? 90 : 30;
 				const token = await create_key({
 					userid: user.id,
@@ -927,8 +918,9 @@ client.on('interactionCreate', async interaction => {
 			}
 			case 'upgrade': {
 				const key = await getDB({db: 'API', col: 'tokens'}).findOne({token: interaction.values[0]});
-				if (key.title.toLowerCase().includes('OBS') || key.details.toLowerCase().includes('OBS')) {
+				if (["obs", "stream", "overlay"].some(i => key.name.toLowerCase().includes(i)) || ["obs", "stream", "overlay"].some(i => key.details.toLowerCase().includes(i))) {
 					return interaction.reply({
+						ephemeral: true,
 						embeds: [
 							embedBuilder({
 								title: 'Invalid Key',

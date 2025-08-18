@@ -1,4 +1,4 @@
-use serenity::builder::{CreateEmbed, CreateEmbedFooter};
+use poise::serenity_prelude::{CreateEmbed, CreateEmbedFooter};
 
 use crate::structs::methods::EmbedBuilderStruct;
 

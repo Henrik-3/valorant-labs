@@ -267,7 +267,8 @@ pub async fn start_discord(client: Client) -> serenity::prelude::Client {
                 })
             }),
             commands: vec![
-                commands::slash_commands::agent::execute(), //agents
+                commands::slash_commands::agent::execute(), // agents
+                commands::slash_commands::autoroles::execute(), // autoroles
             ],
             ..Default::default()
         })

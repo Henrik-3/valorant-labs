@@ -4,7 +4,7 @@ version = "8.0.0"
 edition = "2021"
 
 [dependencies]
-serenity = {version = "0.12", default-features = true}
+serenity = {git="https://github.com/serenity-rs/serenity.git", default-features = true}
 tokio = { version = "1.40", features = ["macros", "rt-multi-thread"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1.0"
@@ -22,6 +22,7 @@ ab_glyph = "0.2"
 chrono = "0.4"
 serde_path_to_error = "0.1"
 poise = "0.6.1"
+openrouter_api = "0.1.6"
 
 [[bin]]
 name = "bot"

@@ -1,8 +1,6 @@
 use std::ops::Deref;
-use poise::CreateReply;
+use poise::{CreateReply, serenity_prelude::{CreateAttachment}};
 use crate::{get_translation, get_valo_papi_language, methods::{embed_builder::embed_builder, http_error_handler::http_error_handler}, structs::{database::Settings, methods::EmbedBuilderStruct}, Context, Error, InvocationData};
-use serenity::{all::CommandInteraction, builder::EditInteractionResponse};
-use serenity::all::CreateAttachment;
 use valorant_assets_api::{agents::get_agents, models::agent::AgentAbilitySlot};
 
 #[poise::command(slash_command, rename = "agent")]

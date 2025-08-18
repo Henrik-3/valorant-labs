@@ -66,11 +66,13 @@ pub struct SettingBackgrounds {
 pub struct SettingAutorole {
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    pub use_platform_synced_roles: bool,
     pub config: Vec<SettingAutoroleConfig>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SettingAutoroleConfig {
+    pub platform: String,
     pub role: String,
     pub rank: String,
 }

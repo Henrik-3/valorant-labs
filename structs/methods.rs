@@ -1,6 +1,7 @@
 use image::Rgba;
 use serde::{Deserialize, Serialize};
-use serenity::all::{CurrentUser, EmbedField, User};
+use poise::serenity_prelude::{CurrentUser};
+use serenity::all::{EmbedField, User};
 use valorant_assets_api::models::language::Language;
 
 #[derive(Serialize, Deserialize, Debug)]

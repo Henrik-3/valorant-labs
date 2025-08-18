@@ -1,9 +1,5 @@
-use std::ops::Deref;
-use poise::CreateReply;
-use crate::{get_translation, get_valo_papi_language, methods::{embed_builder::embed_builder, http_error_handler::http_error_handler}, structs::{database::Settings, methods::EmbedBuilderStruct}, Context, Error, InvocationData};
-use serenity::{all::CommandInteraction, builder::EditInteractionResponse};
-use serenity::all::{CreateActionRow, CreateAttachment, CreateButton};
-use valorant_assets_api::{agents::get_agents, models::agent::AgentAbilitySlot};
+use poise::{CreateReply, serenity_prelude::{CreateActionRow, CreateButton}};
+use crate::{get_translation, methods::{embed_builder::embed_builder}, structs::{methods::EmbedBuilderStruct}, Context, Error, InvocationData};
 
 #[poise::command(slash_command, rename = "api")]
 pub async fn execute(
